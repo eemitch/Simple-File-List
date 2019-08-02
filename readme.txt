@@ -4,7 +4,7 @@ Donate link: http://simplefilelist.com/donations/simple-file-list-project/
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
 Tested up to: 5.2.3
-Stable tag: 3.2.13
+Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -161,6 +161,12 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Upgrade Notice ==
+
+
+
+* ... NEED TO UPDATE
+
+
 
 3.2.13 - Improvements and new features for Folder Support
 

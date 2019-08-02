@@ -129,8 +129,6 @@ function eeSFL_CreatePostwithShortcode() {
 	
 	global $eeSFL_Log;
 	
-	$eeAdmin = is_admin(); // Better be FALSE
-	
 	$eeShortcode = FALSE;
 	$eeCreatePostType = FALSE;
 	$eeCreatePostType = filter_var(@$_POST['eeCreatePostType'], FILTER_SANITIZE_STRING);
@@ -173,6 +171,8 @@ function eeSFL_Shortcode($atts, $content = null) {
     
     global $eeSFL, $eeSFL_DevMode, $eeSFL_Log, $eeSFL_Env, $eeSFL_Config, $eeListNumber; // Number of the list on same page
     global $eeSFLF, $eeSFLS; // Extensions
+	
+	$eeAdmin = is_admin(); // Better be FALSE
 	
 	$eeSFL_Log['L' . $eeListNumber][] = 'Shortcode Loading: ' . get_permalink();
     
@@ -245,7 +245,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 	}
 	
 	if($eeSFL_Config['AllowUploads'] != 'NO' AND $eeListNumber == 1 AND !@$_POST['eeSFLS_Searching']) {
-		include(WP_PLUGIN_DIR . '/' . $eeSFL->PluginNameSlug . '/includes/ee-uploader.php');
+		include(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/includes/ee-uploader.php');
 	}
 	
 	// Who Can View the List?
@@ -264,7 +264,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 	}
 	if($eeSFL_Config['ShowList'] != 'NO') {
 		
-		include(WP_PLUGIN_DIR . '/' . $eeSFL->PluginNameSlug . '/ee-list-display.php');
+		include(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/ee-list-display.php');
 	}
 	
 	$eeOutput .= '</div>';
@@ -403,6 +403,13 @@ add_action( 'admin_menu', 'eeSFL_AdminMenu' );
 function eeSFL_FileListDirCheck($eeFileListDir) {
 	
 	global $eeSFL_Log, $eeSFL;
+	
+	// Set some standards
+	if(!$eeFileListDir OR $eeFileListDir == '/' OR strpos($eeFileListDir, '.') === 0) {
+		$eeSFL_Log['errors'][] = 'This File List Location is Not Allowed: ' . $eeFileListDir;
+		return FALSE;
+	}
+	
 	$eeSFL_FileListDirCheck = get_transient('eeSFL-' . $eeSFL->eeListID . '-FileListDirCheck');
 	
 	// Check Transient First

@@ -15,11 +15,13 @@ if($eeSFLF) {
 	}
 }
 
-$eeSFL_Files = array(); // This will be our file list
-$eeSFL_FileCount = 0;
+// Get the File List Transient
+$eeSFL_Files = $eeSFL->eeSFL_createFileListArray($eeSFL->eeListID, $eeSFL_Config['FileListDirName']);
+$eeSFL_Log['fileTransient'] = $eeSFL_Files;
+
 $eeSFL_ListClass = 'eeSFL'; // The basic list's CSS class. Extensions might change this.
 
-$eeSFL_FrontSideManage = 'NO'; // Front-side freedom <--- TO DO
+$eeSFL_AllowFrontManage = 'NO'; // Front-side freedom <--- TO DO
 
 // If Delete Files...
 if(@$_POST['eeDeleteFile']) {
@@ -69,7 +71,7 @@ if(@$_POST['eeDeleteFile']) {
 	}
 	
 	// Re-index the File List
-	$eeSFL_Files = $eeSFL->eeSFL_ListFiles( $eeSFL_Config['FileListDir'] , 'Re-Index', 1);
+	$eeSFL_Files = $eeSFL->eeSFL_createFileListArray($eeSFL->eeListID, $eeSFL_Config['FileListDirName'], 'Re-Index');
 	
 } // END Delete Processor
 
@@ -88,8 +90,14 @@ if(@$_POST['eeNewFileName']) {
 			
 		$eeSFL_Log[] = 'Renaming: ' . $eeOldFileName . ' to ' . $eeNewFileName;
 		
-		if( !@rename($eeSFL_FileListDir . $eeOldFileName, $eeSFL_FileListDir . $eeNewFileName) ) {
+		if( !@rename($eeSFL_Config['FileListDir'] . $eeOldFileName, $eeSFL_Config['FileListDir'] . $eeNewFileName) ) {
+			
 			$eeSFL_Log['errors'][] = 'Could Not Rename ' . $eeOldFileName . ' to ' . $eeNewFileName;
+		
+		} else {
+			
+			// Re-index the File List
+			$eeSFL->eeSFL_createFileListArray($eeSFL->eeListID, $eeSFL_Config['FileListDirName'], 'Re-Index');
 		}
 	}
 }
@@ -101,31 +109,28 @@ if($eeSFLF) {
 	// Create a new folder, if needed
 	if(@$_POST['eeSFLF_NewFolderName']) { $eeSFLF->eeSFLF_CreateFolder( $eeSFL_Config['FileListDir'] ); }
 	
-	$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
-	
 	// Run the File/Folder Listing and Sorting Engines
-	include(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_ListSetup.php');	
+	$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
+	include(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_ListSetup.php');
 
-} else {
+} else { // Default Sort <<<----  TO DO
 
-	// Default File Listing and Sorting Engines
-	$eeSFL_Files = $eeSFL->eeSFL_ListFiles( $eeSFL_Config['FileListDir'] );
-	$eeSFL_Files = $eeSFL->eeSFL_SortFiles($eeSFL_Config['FileListDir'] ,$eeSFL_Files, $eeSFL_Config['SortBy'], $eeSFL_Config['SortOrder']);
+	// $eeSFL_Files = $eeSFL->eeSFL_SortFiles($eeSFL_Config['FileListDir'] ,$eeSFL_Files, $eeSFL_Config['SortBy'], $eeSFL_Config['SortOrder']);
 }
 
-// Reset the array index
-$eeSFL_Files = array_values($eeSFL_Files); // Nice Array
-$eeSFL_FileTotalCount = count($eeSFL_Files); // How many?
+// Getting Ready...
+$eeSFL_Files = array_values($eeSFL_Files); // Reset Keys
 
 // Extension Check
 if($eeSFLS) {
+	$eeSFL_FileTotalCount = count($eeSFL_Files); // Before search
 	$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-search-processor.php');
+	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-search-processor.php'); // Run the Search Processor
 	$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-processing.php');
+	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-processing.php'); // Run Pagination Processing
 }
 
-$eeSFL_FileCount = count($eeSFL_Files); // Files on this page
+$eeSFL_FileCount = count($eeSFL_Files); // How Many Here?
 
 // User Messaging	
 if(@$eeSFL_Log['messages']) { 
@@ -153,7 +158,13 @@ if($eeSFLS) {
 	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-search-form.php');
 }
 
+
+
 if($eeSFLF) {
+	
+	
+	// MOVE this to eeSFLF an INCLUDE <<<---- TO DO
+	
 	if($eeAdmin OR $eeSFL_Config['ShowBreadCrumb'] == 'YES') {
 		if($eeListNumber == 1) {
 			$eeOutput .= $eeSFLF_FunctionBar;
@@ -164,22 +175,22 @@ if($eeSFLF) {
 		<span class="eeSFL_Hide" id="eeSFLF_MoveNonce">' . $eeSFLF_MoveNonce . '</span>';
 }
 
-// Prepare a form so we can delete files
-if($eeAdmin OR ($eeSFL_Config['AllowFrontManage'] == 'YES' AND $eeListNumber == 1 )) {
 
-	$eeOutput .= '
-	
-	<form action="' . eeSFL_GetThisURL();	
-	
-	if($eeSFLF) {
-		if($eeSFLF_ListFolder) {
-			$eeOutput .= '&eeSFLF_ListFolder=' . urlencode($eeSFLF_ListFolder);
-		}
-	}
-		
-	$eeOutput .= '" method="POST" id="eeSFL_FilesForm">';
-			
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if($eeAdmin) {
 
@@ -256,8 +267,6 @@ if(count($eeSFL_Files)) {
 					$eeSFL_File = FALSE;
 				}
 				
-				// $eeSFL_FileName = $eeSFL_File; // FileName is used for visible link, if we trim the owner info
-				
 				
 				// Check for the actual file
 				if($eeSFL_IsFile AND $eeAdmin) { // Only check URLs if in Admin area (speed tweak)
@@ -319,9 +328,9 @@ if(count($eeSFL_Files)) {
 					
 					// Path display for searching in folders
 					if($eeSFLF AND @$_POST['eeSFLS_Searching']) {
-						$eeSFL_FileNameBase = trim( str_replace('/', ' / ', $eeSFL_FileName) );
+						$eeSFL_FileNameBase = trim( str_replace('/', ' / ', $eeSFL_File) );
 					} else {
-						$eeSFL_FileNameBase = basename($eeSFL_FileName);
+						$eeSFL_FileNameBase = basename($eeSFL_File);
 					}
 					
 					$eeOutput .= $eeSFL_FileNameBase . '</a>';
@@ -347,7 +356,7 @@ if(count($eeSFL_Files)) {
 						
 						
 						// Append Addition (admin or authorized) Actions
-						if($eeAdmin OR $eeSFL_Config['FrontSideManage'] == 'YES') { // Only Admins can rename
+						if($eeAdmin OR $eeSFL_Config['AllowFrontManage'] == 'YES') { // Only Admins can rename
 							
 							$eeFileActions = ' | <a href="#" onclick="eeSFL_Rename(' . $eeSFL_RowID . ')">' . __('Rename', 'ee-simple-file-list') . '</a>
 							
@@ -456,8 +465,6 @@ if(count($eeSFL_Files)) {
 	}
 	
 	if($eeAdmin) { $eeOutput .= '<p class="eeFileListInfo">' . $eeSFL_Msg . '</p>'; }
-
-	if($eeAdmin OR ($eeSFL_Config['AllowFrontManage'] == 'YES' AND $eeListNumber == 1 )) { $eeOutput .= '</form>'; }
 	
 	
 	// Pagination Controls

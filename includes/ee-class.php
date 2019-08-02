@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Class' ) ) exit('That is Noncense! (' . basename(__FILE__) . ')' ); // Exit if nonce fails
 
-// $eeSFL_Log[] = 'Loaded: ee-class';
+$eeSFL_Log[] = 'Loaded: ee-class';
 
 
 // Plugin Setup
@@ -23,9 +23,10 @@ class eeSFL_MainClass { // Plugin Configuration --> Environment, User, Settings
     public $eeDynamicImageThumbFormats = array('gif', 'jpg', 'jpeg', 'png');
     public $eeDynamicVideoThumbFormats = array('mp4', 'mov', 'wmf', 'webm');
     public $eeExcludedFileNames = array('error_log', 'index.html');
+    private $eeForbiddenTypes = array('.php', '.exe', '.js', '.com', '.wsh', '.vbs');
     
-    // Default List Definition
-    
+    // The Default List Definition (Unsorted)
+    // Extensions Add as Needed
     public $DefaultListSettings = array( // An array of file list settings arrays
 		
 		1 => array(
@@ -51,23 +52,6 @@ class eeSFL_MainClass { // Plugin Configuration --> Environment, User, Settings
 			'Updated' => '00-00-00 00:00:00' // Time/Date of Last File Upload
 		)
 	);
-    
-    
-    // Default File List Definition
-    public $eeSFL_Files = array(
-	    
-		0 => array(
-			'FileList' => 1, // The ID of the File List, contained in the above array.
-		    'FilePath' => '/Example-File.jpg', // Path to file, relative to the list root
-		    'FileNiceName' => 'Example File', // The name displayed
-		    'FileExt' => 'jpg', // The file extension
-			'FileDateAdded' => '', // Date the file was added to the list
-			'FileDateChanged' => '', // Last date the file was renamed or otherwise changed
-			'FileSize' => '', // The size of the file
-			'FileDescription' => '', // A short descriotion of the file
-			'FileOwner' => '' // (Coming Later)
-		)
-    );
     
     
     
@@ -130,7 +114,7 @@ class eeSFL_MainClass { // Plugin Configuration --> Environment, User, Settings
 		
 		$eeSFL_Config['FileListDirName'] = $eeSFL_Config['FileListDir']; // Relative to the WP Root
 		$eeSFL_Config['FileListDir'] = ABSPATH . $eeSFL_Config['FileListDir']; // The Full Path
-		$eeSFL_Config['FileListURL'] = $eeSFL_Env['wpSiteURL'] . $eeSFL_Config['FileListDir']; // The Full URL
+		$eeSFL_Config['FileListURL'] = $eeSFL_Env['wpSiteURL'] . $eeSFL_Config['FileListDirName']; // The Full URL
 				
 		// Get the files for this List ID
 		// $eeSFL_Config['eeSFL_Files'] = get_transient('eeSFL-' . $eeSFL->eeListID . '-Files');
@@ -145,6 +129,131 @@ class eeSFL_MainClass { // Plugin Configuration --> Environment, User, Settings
 		return $eeSFL_Config; // Associative array
 		
 	}
+	
+	
+	
+    
+    
+    // Default File List Definition
+    public $eeSFL_Files = array(
+	    
+		0 => array(
+			'FileList' => 1, // The ID of the File List, contained in the above array.
+		    'FilePath' => '/Example-File.jpg', // Path to file, relative to the list root
+		    'FileNiceName' => 'Example File', // The name displayed
+		    'FileExt' => 'jpg', // The file extension
+			'FileDateAdded' => '', // Date the file was added to the list
+			'FileDateChanged' => '', // Last date the file was renamed or otherwise changed
+			'FileSize' => '', // The size of the file
+			'FileDescription' => '', // A short descriotion of the file
+			'FileOwner' => '' // (Coming Later)
+		)
+    );
+	
+	
+	// Create an array: $eeArray( array('filepath/name', 'date', 'size' , 'etc...') )
+	public function eeSFL_createFileListArray($eeID, $eeDir, $eeForce = FALSE) {
+		
+		global $eeSFL_Log;
+		$eeArray = array();
+		
+		if($eeForce) {
+			delete_transient('eeSFL-FileList-' . $eeID);
+		} else {
+			$eeArray = get_transient('eeSFL-FileList-' . $eeID); // From the database
+			if(!$eeArray) { $eeArray = array(); } // Ensure it's not FALSE
+		}
+		
+		// We store our array of file info in a transient
+		if( !count($eeArray) ) {
+			
+			$eeSFL_Log[] = 'Creating new search transient for List # ' . $eeID . ' at ' . $eeDir;
+			
+			$eeFileArray = $this->eeSFL_IndexFileListDir($eeDir);
+			
+			foreach( $eeFileArray as $eeKey => $eeValue) {
+				
+				$eeFileTime = @filemtime($eeValue);
+				$eeFileSize = @eeSFL_GetFileSize($eeValue);
+				
+				// Get just the folder/file
+				$ee1 = strlen(ABSPATH . $eeDir);
+				$ee2 = strlen($eeValue);
+				$eeStart = $ee2 - ($ee2-$ee1) -1;
+				$eeFile = substr($eeValue, $eeStart);
+				
+				// Check forbidden types
+				foreach( $this->eeForbiddenTypes as $eeValue2) {
+					if(strpos($eeFile, $eeValue2)) {
+						$eeFile = FALSE;
+					}
+				}
+				
+				if($eeFile) {
+					$eeArray[] = $eeFile . '|' . date_i18n('Y-m-d', $eeFileTime) . '|' .  $eeFileSize;
+				}
+			}
+			
+			if(@count($eeArray) AND set_transient('eeSFL-FileList-' . $eeID, $eeArray, 6 * HOUR_IN_SECONDS) ) {
+				$eeSFL_Log['eeSFL']['transient set'] = $eeArray;
+			} else {
+				$eeSFL_Log['errors'][] = 'File Transient Could Not Be Set.';
+				return FALSE;
+			}
+		
+			$eeArray = array_unique($eeArray); // Remove duplicates
+		
+		}
+		
+		// echo '<pre>'; print_r($eeSFL_Log); echo '</pre>'; exit;
+			
+		return $eeArray;
+	}
+	
+	
+	
+	
+	// Get All the Files
+	private function eeSFL_IndexFileListDir($eeDir) {
+	    
+	    global $eeSFLF, $eeSFL_Log;
+	    
+	    $eeFileArray = array();
+	    
+	    $eeDir = ABSPATH . $eeDir;
+	    
+	    if($eeSFLF) {
+		    
+		    $eeSFL_Log[] = 'Getting files and folders for searching...';
+		    
+		    $eeFileArray = $eeSFLF->eeSFLF_IndexCompleteFileListDirectory($eeDir);
+		    
+	    } else {
+		    
+		    $eeSFL_Log[] = 'Getting files from: ' . $eeDir; 
+		    
+		    
+		    $eeFileNameOnlyArray = scandir($eeDir);
+		    
+		    foreach($eeFileNameOnlyArray as $eeValue) {
+		    	
+		    	if(strpos($eeValue, '.') !== 0 AND is_file($eeDir . $eeValue) ) {
+			    	$eeFileArray[] = $eeDir . $eeValue; // Add the path
+		    	}
+		    }
+	    }
+	    
+	    if(!count($eeFileArray)) {
+		    $eeSFL_Log['errors'][] = 'No Files Found';
+	    }
+		
+		// $eeSFL_Log['fileArray'][] = $eeFileArray;
+
+		return $eeFileArray;
+	}
+	
+	
+	
 	
 	
 	

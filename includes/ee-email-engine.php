@@ -24,7 +24,7 @@ if(@$_POST['eeSFL_Body']) {
 		exit;
 	}
 	
-	$eeSFL_Notify = filter_var($_POST['eeSFL_Notify'], FILTER_VALIDATE_EMAIL);
+	$eeSFL_Notify = filter_var($_POST['eeSFL_Notify'], FILTER_SANITIZE_STRING);
 	
 	if(!$eeSFL_Notify) {
 		trigger_error("eeSFL_Notify is NULL", E_USER_ERROR);
@@ -40,7 +40,7 @@ if(@$_POST['eeSFL_Body']) {
 // Tie into Wordpress
 define('WP_USE_THEMES', FALSE);
 $wordpress = getcwd() . '/../../../../wp-blog-header.php';
-if(!is_readable($wordpress)) { trigger_error("No Wordpress", E_USER_ERROR); exit; }
+if(!is_file($wordpress)) { trigger_error("No Wordpress", E_USER_ERROR); exit; }
 require($wordpress);
 
 // WP Security
@@ -57,20 +57,28 @@ $verifyToken = md5('eeSFL_' . $_POST['eeSFL_Timestamp']);
 	
 if($_POST['eeSFL_Token'] == $verifyToken) { // Security
 
-	$eeAdminEmail = get_option('admin_email');
+	$eeSFL_AdminEmail = get_option('admin_email');
 	
-	$eeSFL_Headers = "From: " . __('Simple File List', 'ee-simple-file-list') . " <$eeAdminEmail>\n\rReturn-Path: $eeAdminEmail\n\rReply-To: $eeAdminEmail";
+	$eeSFL_Headers = "From: " . __('Simple File List', 'ee-simple-file-list') . " <$eeSFL_AdminEmail>\n\rReturn-Path: $eeSFL_AdminEmail\n\rReply-To: $eeSFL_AdminEmail";
 	$eeSFL_Subject = __('File Upload Notice', 'ee-simple-file-list');
 	
-	if(wp_mail($eeSFL_Notify, $eeSFL_Subject, $eeSFL_Body, $eeSFL_Headers)) { // Email Notice
-		
-		exit('SENT');
-	
+	if(strpos($eeSFL_Notify, ',')) {
+		$eeArray = explode(',', $eeSFL_Notify); // Many
 	} else {
+		$eeArray = array($eeSFL_Notify); // Just one
+	}
+	
+	foreach( $eeArray as $eeEmail) {
 		
-		trigger_error('Mail Did Not Send to ' . $eeSFL_Notify, E_USER_ERROR);
-		exit;
-	}	
+		if(!wp_mail($eeEmail, $eeSFL_Subject, $eeSFL_Body, $eeSFL_Headers)) { // Email Notice
+			trigger_error('Mail Did Not Send to ' . $eeSFL_Notify, E_USER_ERROR);
+			exit;
+		}
+	}
+	
+	exit('SENT');
+	
+		
 } else {
 	trigger_error('Token Failure', E_USER_ERROR);
 }
