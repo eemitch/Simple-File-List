@@ -5,6 +5,101 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Functions' ) ) exit('That is Noncen
 
 $eeSFL_Log[] = 'Loaded: ee-functions';
 
+
+
+
+// Check for the Upload Folder, Create if Needed
+function eeSFL_FileListDirCheck($eeFileListDir) {
+	
+	global $eeSFL_Log, $eeSFL;
+	
+	// Set some standards
+	if(strpos($eeFileListDir, '.') === 0 OR strpos($eeFileListDir, 'p-admin') OR strpos($eeFileListDir, 'p-includes') ) {
+		$eeSFL_Log['errors'][] = 'This File List Location is Not Allowed: ' . $eeFileListDir;
+		return FALSE;
+	}
+	
+	$eeSFL_FileListDirCheck = get_transient('eeSFL-' . $eeSFL->eeListID . '-FileListDirCheck');
+	
+	// Check Transient First
+	if( strlen($eeSFL_FileListDirCheck) AND $eeFileListDir == $eeSFL_FileListDirCheck) {
+		
+		return TRUE; // OKAY, No Change
+		
+	} elseif( strlen($eeFileListDir) ) { // Transient Expired or Dir Changed
+	
+		$eeSFL_Log[] = 'Transient Expired or Folder Change...';
+		
+		if( !is_writable( ABSPATH . $eeFileListDir ) ) {
+			
+			$eeSFL_Log[] = 'No Directory Found.';
+			$eeSFL_Log[] = 'Creating Upload Directory ...';
+			
+			// Environment Detection
+			if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+			    $eeSFL_Log[] = 'Windows detected.';
+			    mkdir( ABSPATH . $eeFileListDir ); // Windows
+			} else {
+			    $eeSFL_Log[] = 'Linux detected.';
+			    if(!mkdir( ABSPATH . $eeFileListDir , 0755)) { // Linux - Need to set permissions
+				    $eeSFL_Log['errors'][] = 'Cannot Create: ' . $eeFileListDir;
+				}
+			}
+			
+			if(!is_writable( ABSPATH . $eeFileListDir )) {
+				$eeSFL_Log['errors'][] = 'ERROR: I could not create the upload directory: ' . $eeFileListDir;
+				
+				return FALSE;
+			
+			} else {
+				
+				$eeSFL_Log[] = 'FileListDir Has Been Created!';
+				$eeSFL_Log[] = $eeFileListDir;
+			}
+		} else {
+			$eeSFL_Log[] = 'FileListDir Looks Good';
+		}
+		
+		// Check index.html, create if needed.
+				
+		$eeFile = ABSPATH . $eeFileListDir . 'index.html'; // Disallow direct file indexing.
+		
+		if($handle = @fopen($eeFile, "a+")) {
+			
+			if(!@is_readable($eeFile)) {
+			    
+				$eeSFL_Log['errors'][] = 'ERROR: Could not write index.html';
+				
+				return FALSE;
+				
+			} else {
+				
+				fclose($handle);
+				
+				// $eeSFL_Log[] = 'index.html is in place.';
+			}
+		}
+		
+		
+	
+		// Set Transient
+		set_transient('eeSFL-' . $eeSFL->eeListID . '-FileListDirCheck', $eeFileListDir, 86400); // 1 Expires in Day
+
+		return TRUE;
+		
+	} else {
+		
+		return FALSE;
+	}
+	
+}
+
+
+
+
+
+
+
 // Post-process an upload job
 function eeSFL_ProcessUpload($eeSFL_UploadURL, $eeSFL_FileListDir, $eeSFL_Notify) {
 	
@@ -58,7 +153,7 @@ function eeSFL_ProcessUpload($eeSFL_UploadURL, $eeSFL_FileListDir, $eeSFL_Notify
 						// Notification
 						$eeSFL_UploadJob['Message'] .=  $eeSFL_File . "\n" . 
 							$eeSFL_UploadURL . $eeSFL_File . 
-								"\n(" . @eeSFL_GetFileSize($eeSFL_FileListDir . $eeSFL_File) . ")\n\n\n";
+								"\n(" . @eeSFL_GetFileSize(ABSPATH . $eeSFL_FileListDir . $eeSFL_File) . ")\n\n\n";
 					}
 						
 					$eeSFL_Log['messages'][] = __('File Upload Complete', 'ee-simple-file-list');
@@ -67,7 +162,7 @@ function eeSFL_ProcessUpload($eeSFL_UploadURL, $eeSFL_FileListDir, $eeSFL_Notify
 					$eeOutput = $eeSFL->eeSFL_AjaxEmail($eeSFL_UploadJob, $eeSFL_Notify);
 					
 					// Re-index the File List
-					$eeSFL_Files = $eeSFL->eeSFL_ListFiles($eeSFL_FileListDir, 'Re-Index', 1);
+					$eeSFL_Files = $eeSFL->eeSFL_createFileListArray($eeSFL->eeListID, $eeSFL_FileListDir, TRUE);
 					
 					return $eeOutput; // All done.
 					
@@ -176,6 +271,20 @@ function eeSFL_SanitizeFileName($eeSFL_FileName) {
 
 
 
+// Yes or No Settings Checkboxes
+function eeSFL_ProcessCheckboxInput($eeTerm) {
+			
+	global $eeSFL_Config;
+	
+	if(@$_POST['eeShowList'] != 'NO') {
+		$eeValue = filter_var(@$_POST['ee' . $eeTerm], FILTER_SANITIZE_STRING);
+		if($eeValue == 'YES') { $eeSFL_Config[$eeTerm] = 'YES'; } 
+			else { $eeSFL_Config[$eeTerm] = 'NO'; }
+	}
+}
+
+
+
 
 // Check if a file already exists, then number it so file will not be over-written.
 function eeSFL_CheckForDuplicateFile($eeSFL_DirPath, $eeSFL_TargetFile) {
@@ -188,7 +297,7 @@ function eeSFL_CheckForDuplicateFile($eeSFL_DirPath, $eeSFL_TargetFile) {
 	// Check Transient First
 	if(in_array($eeSFL_TargetFile, $eeSFL_Files) ) {
 		
-		if(is_file($eeSFL_DirPath . $eeSFL_TargetFile)) { // Confirm the file is really there
+		if(is_file(ABSPATH . $eeSFL_DirPath . $eeSFL_TargetFile)) { // Confirm the file is really there
 			
 			// Get the file extension
 			$eeSFL_Dot = strrpos($eeSFL_TargetFile, '.');
@@ -203,7 +312,7 @@ function eeSFL_CheckForDuplicateFile($eeSFL_DirPath, $eeSFL_TargetFile) {
 				
 				$eeSFL_TargetFile = $eeSFL_FilePath . '_(' . $i . ').' . $eeSFL_Extension; // Indicate the copy number
 				
-				if(!is_file($eeSFL_DirPath . $eeSFL_TargetFile)) { break; }
+				if(!is_file(ABSPATH . $eeSFL_DirPath . $eeSFL_TargetFile)) { break; }
 			}							
 		}
 	}
@@ -215,9 +324,9 @@ function eeSFL_CheckForDuplicateFile($eeSFL_DirPath, $eeSFL_TargetFile) {
 
 
 // Return the general size of a file in a nice format.
-function eeSFL_GetFileSize($eeSFL_File) {  
+function eeSFL_FormatFileSize($eeFileSizeBytes) {  
     
-    $bytes = filesize($eeSFL_File);
+    $bytes = $eeFileSizeBytes;
     $kilobyte = 1024;
     $megabyte = $kilobyte * 1024;
     $gigabyte = $megabyte * 1024;

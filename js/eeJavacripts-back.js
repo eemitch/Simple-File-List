@@ -195,64 +195,6 @@ function eeShortcodeBuilder(eeNewOption, eeInputType) {
 
 
 
-// Delete a File
-function eeSFL_Delete() {
-	
-	event.preventDefault(); // Don't follow the link
-	
-	alert('BANG');
-	
-	// Get the file name
-	
-	
-	
-}
-
-
-
-
-// Rename a File/Folder
-function eeSFL_Rename(eeSFL_FileID) {
-   
-   event.preventDefault(); // Don't follow the link
-   
-   // The File Link Element <a>
-   var eeFileLinkElement = '#eeSFL_RowID-' + eeSFL_FileID + ' td.eeSFL_FileName a:first';
-   
-   // Get the File Name
-   var eeSFL_FileName = jQuery(eeFileLinkElement).text();
-   
-   // The Rename Form
-   var eeFileRenameEntry = '<span class="eeSFL_FileRenameEntry"><input type="hidden" name="eeOldFileName" value="' + eeSFL_FileName + '" /><input required="required" type="text" name="eeNewFileName" value="' + eeSFL_FileName + '" size="32" /><input type="submit" value="Rename" class="button" /><a href="#" class="button" onclick="window.location.reload(true);">Cancel</a></span>';
-   
-   // Remove the link/name
-   jQuery(eeFileLinkElement).remove();
-   
-   // Uncheck all delete checkboxes to be safe
-   // jQuery('.eeDeleteFile').attr('checked', false);
-   
-   
-   // Remove the td to the right so we have lots of room
-   var eeCols = 4;
-   
-   jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' td.eeSFL_FileSize').remove();
-   jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' td.eeSFL_FileDate').remove();
-   jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' td.eeSFL_FileOwner').remove();
-   jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' td.eeSFL_FileOps').remove();
-   
-   if(jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' td.eeSFL_FileOwner').length) {
-	   jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' td.eeSFL_FileOwner').remove();
-	   eeCols++;
-   }
-   jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' td.eeSFL_FileName').attr('colspan', eeCols);
-   jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' td.eeSFL_FileName').css('background-color', '#FFF');
-   
-   // Insert the Form
-   jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' td.eeSFL_FileName').html(eeFileRenameEntry);   
-}
-
-
-
 
 jQuery(function() {
    

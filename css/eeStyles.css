@@ -109,6 +109,10 @@
 	text-align: left;
 	padding-left: 3px;
 }
+#eeSFL p.eeSFL_FileLink {
+	margin: 0;
+	padding: 0;
+}
 #eeSFL .eeFiles th.eeSFL_FileName,
 #eeSFL .eeFiles td.eeSFL_FileName {
 	text-align: left;
@@ -146,7 +150,7 @@
 }
 
 
-.eeSFL_Hide {
+.eeSFL_Hide, .eeSFL_FileRenameEntry {
 	display: none;
 }
 

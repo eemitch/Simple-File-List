@@ -8,7 +8,7 @@ Plugin Name: Simple File List 4
 Plugin URI: http://simplefilelist.com
 Description: Full Featured File List with Front-Side File Uploading | <a href="https://simplefilelist.com/donations/simple-file-list-project/">Donate</a> | <a href="admin.php?page=ee-simple-file-list&tab=extensions">Add Features</a>
 Author: Mitchell Bennis - Element Engage, LLC
-Version: 4.0.1
+Version: 4.0.2
 Author URI: http://elementengage.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -20,15 +20,18 @@ $eeSFL_DevMode = TRUE; // Enables visible logging
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Version
-define('eeSFL_Version', '4.0.1');
+define('eeSFL_Version', '4.0.2');
 
 // Our Core
 $eeSFL = FALSE; // Our main class
+$eeSFL_Config = array(); // Database Info
+$eeSFL_Env = array(); // Environment
 
 // $eeListNumber = 1; // Used for multiple list displays per page - TO DO
 
 // The Log - Written to wp_option -> eeSFL-Log
 $eeSFL_Log = array('Simple File List is Loading...');
+$eeSFL_Log[] = 'ABSPATH: ' . ABSPATH;
 // Format: [] => 'log entry'
 //	['messages'][] = 'Message to the user'
 //	['errors'][] = 'Error condition to user'
@@ -39,13 +42,13 @@ $eeSFL_Extensions = array( // Slugs
 	,'ee-simple-file-list-search' // Search & Pagination
 );
 $eeSFLF = FALSE; $eeSFLS = FALSE; $eeSFLU = FALSE; // Coming Soon
-
+$eeSFLF_ListFolder = FALSE;
 
 
 // Plugin Setup
 function eeSFL_Setup() {
 	
-	global $eeSFL, $eeSFL_Extensions, $eeSFL_Log, $eeSFL_Config;
+	global $eeSFL, $eeSFL_Extensions, $eeSFL_Log, $eeSFL_Config, $eeSFL_Env;
 	
 	$eeSFL_Log[] = 'Running eeSFL_Setup...';
 
@@ -64,7 +67,7 @@ function eeSFL_Setup() {
 	
 	eeSFL_VersionCheck(); // Update database if needed.
 	
-	if(!eeSFL_FileListDirCheck( $eeSFL_Config['FileListDir']  )) { // Check/Create the Upload Folder
+	if( !eeSFL_FileListDirCheck( $eeSFL_Config['FileListDir'] ) ) { // Check/Create the Upload Folder
 		wp_die('The upload directory is acting up.', 'Error');
 	}
 	
@@ -399,91 +402,6 @@ add_action( 'admin_menu', 'eeSFL_AdminMenu' );
 
 
 
-// Check for the Upload Folder, Create if Needed
-function eeSFL_FileListDirCheck($eeFileListDir) {
-	
-	global $eeSFL_Log, $eeSFL;
-	
-	// Set some standards
-	if(!$eeFileListDir OR $eeFileListDir == '/' OR strpos($eeFileListDir, '.') === 0) {
-		$eeSFL_Log['errors'][] = 'This File List Location is Not Allowed: ' . $eeFileListDir;
-		return FALSE;
-	}
-	
-	$eeSFL_FileListDirCheck = get_transient('eeSFL-' . $eeSFL->eeListID . '-FileListDirCheck');
-	
-	// Check Transient First
-	if( strlen($eeSFL_FileListDirCheck) ) {
-		return TRUE;
-	}
-	
-	// Transient Expired or Dir Changed
-	if( $eeFileListDir != $eeSFL_FileListDirCheck) {
-	
-		$eeSFL_Log[] = 'Transient Expired or Folder Change...';
-		
-		if( !@is_writable( $eeFileListDir ) ) {
-			
-			$eeSFL_Log[] = 'No Directory Found.';
-			$eeSFL_Log[] = 'Creating Upload Directory ...';
-			
-			// Environment Detection
-			if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-			    $eeSFL_Log[] = 'Windows detected.';
-			    mkdir( $eeFileListDir ); // Windows
-			} else {
-			    $eeSFL_Log[] = 'Linux detected.';
-			    if(!mkdir( $eeFileListDir , 0755)) { // Linux - Need to set permissions
-				    $eeSFL_Log['errors'][] = 'Cannot Create: ' . $eeSFL_Config['FileListDir'];
-				}
-			}
-			
-			if(!@is_writable( $eeFileListDir )) {
-				$eeSFL_Log['errors'][] = 'ERROR: I could not create the upload directory: ' . $eeSFL_Config['FileListDir'];
-				
-				return FALSE;
-			
-			} else {
-				
-				$eeSFL_Log[] = 'FileListDir Has Been Created!';
-				$eeSFL_Log[] = $eeFileListDir;
-			}
-		} else {
-			$eeSFL_Log[] = 'FileListDir Looks Good';
-		}
-		
-		// Check index.html, create if needed.
-				
-		$eeFile = $eeFileListDir . 'index.html'; // Disallow direct file indexing.
-		
-		if($handle = @fopen($eeFile, "a+")) {
-			
-			if(!@is_readable($eeFile)) {
-			    
-				$eeSFL_Log['errors'][] = 'ERROR: Could not write index.html';
-				
-				return FALSE;
-				
-			} else {
-				
-				fclose($handle);
-				
-				// $eeSFL_Log[] = 'index.html is in place.';
-			}
-		}
-		
-	} else {
-		$eeSFL_Log['errors'] = 'No upload directory defined';	
-		return FALSE;
-	}
-	
-	// Set Transient
-	set_transient('eeSFL-' . $eeSFL->eeListID . '-FileListDirCheck', $eeFileListDir, 86400); // 1 Expires in Day
-
-	return TRUE;
-	
-}
-
 
 // Plugin Upgrade =====================
 
@@ -496,7 +414,7 @@ function eeSFL_VersionCheck() {
 	
 	$eeSFL_Log[] = 'Plugin Version: ' . $eeSFL_VersionInstalled;
 	
-	if($eeSFL_VersionInstalled == eeSFL_Version) {
+	if($eeSFL_VersionInstalled < eeSFL_Version OR !get_option('eeSFL-Settings') ) {
 		
 		eeSFL_UpdateThisPlugin(); // Run the DB update process
 		$eeSFL_Log[] = 'UPDATING: ' . $eeSFL_VersionInstalled . ' to ' . eeSFL_Version;

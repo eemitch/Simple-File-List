@@ -15,7 +15,7 @@ function eeSFL_ManageLists() { // All Plugin Settings are Displayed in Here
 	$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
 	
 	// Process the Config Array
-	if(!is_array($eeSFL_Config)) {
+	if(!is_array($eeSFL_Config) OR !is_array($eeSFL_Env)) {
 		$eeSFL_Log['errors'] = 'No SFL Configuration';
 		return FALSE;
 	}
@@ -107,13 +107,13 @@ function eeSFL_ManageLists() { // All Plugin Settings are Displayed in Here
 		$eeOutput .= '<h2 class="nav-tab-wrapper">';
 		
 		// List Settings
-		$eeOutput .= '<a href="?page=' . $eeSFL_Page . '&tab=list_settings&subtab=list_settings" class="nav-tab ';  
+		$eeOutput .= '<a href="?page=' . $eeSFL_Page . '&tab=settings&subtab=list_settings" class="nav-tab ';  
 		if($active_subtab == 'list_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'list_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('File List Settings', 'ee-simple-file-list') . '</a>';
 	    
 	    // Uploader Settings
-		$eeOutput .= '<a href="?page=' . $eeSFL_Page . '&tab=list_settings&subtab=uploader_settings" class="nav-tab ';  
+		$eeOutput .= '<a href="?page=' . $eeSFL_Page . '&tab=settings&subtab=uploader_settings" class="nav-tab ';  
 		if($active_subtab == 'uploader_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'uploader_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('Uploader Settings', 'ee-simple-file-list') . '</a>';

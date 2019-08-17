@@ -16,12 +16,12 @@ if($eeSFLF) {
 }
 
 $eeSFL_Log[] = 'Uploading to...';
-$eeSFL_Log[] = $eeSFL_Config['FileListDirName'];
+$eeSFL_Log[] = $eeSFL_Config['FileListDir'];
 
 // Check for an upload job, then run notification routine.
 if(@$_POST['eeSFL_Upload']) { 
 	
-	$eeOutput .= eeSFL_ProcessUpload($eeSFL_Config['FileListURL'], $$eeSFL_Config['FileListDir'], $eeSFL_Config['Notify']);
+	$eeOutput .= eeSFL_ProcessUpload($eeSFL_Config['FileListURL'], $eeSFL_Config['FileListDir'], $eeSFL_Config['Notify']);
 	
 	if(!$eeAdmin) {
 		eeSFL_UploadCompleted(); // Action Hook: eeSFL_UploadCompleted
@@ -274,7 +274,7 @@ if(@$eeSFL_Config['FileListDir']) {
 			    
 			    eeFd.append("eeSFL_ID", "' . $eeSFL->eeListID . '");
 			    
-			    eeFd.append("eeSFL_FileListDirName", "' . urlencode($eeSFL_Config['FileListDirName']) . '");
+			    eeFd.append("eeSFL_FileListDir", "' . urlencode($eeSFL_Config['FileListDir']) . '");
 			        
 			    // Send the AJAX request...
 			    eeXhr.send(eeFd);

@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('That is Noncense! (' . basename(__FILE__) . ')' ); // Exit if nonce fails
 
 $eeSFL_Log[] = 'Loading List Settings Page ...';
-	
+
 // Check for POST and Nonce
 if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {
 	
@@ -15,33 +15,29 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		 elseif($_POST['eeShowList'] == 'ADMIN') { $eeSFL_Config['ShowList'] = 'ADMIN'; } // Show only to logged in Admins
 			else { $eeSFL_Config['ShowList'] = 'NO'; }
 			
-	if($eeSFL_Config['ShowList'] == 'YES') { // Only update if showing the list
+	if($eeSFL_Config['ShowList'] != 'NO') { // Only update if showing the list
 		
-		if(@$_POST['eeShowFileThumb'] == 'YES') { $eeSFL_Config['ShowFileThumb'] = 'YES'; } 
-			else { $eeSFL_Config['ShowFileThumb'] = 'NO'; }
+		// YES/NO Checkboxes
+		$eeCheckboxes = array(
+			'ShowFileThumb'
+			,'ShowFileDate'
+			,'ShowFileSize'
+			,'AllowFrontManage'
+			,'ShowFileActions'
+			,'ShowHeader'
+		);
+		foreach( $eeCheckboxes as $eeTerm){
+			eeSFL_ProcessCheckboxInput($eeTerm);
+		}
 		
-		if(@$_POST['eeShowFileDate'] == 'YES') { $eeSFL_Config['ShowFileDate'] = 'YES'; } 
-			else { $eeSFL_Config['ShowFileDate'] = 'NO'; }
-		
-		if(@$_POST['eeShowFileSize'] == 'YES') { $eeSFL_Config['ShowFileSize'] = 'YES'; } 
-			else { $eeSFL_Config['ShowFileSize'] = 'NO'; }
-		
-		if(@$_POST['eeAllowFrontManage'] == 'YES') { $eeSFL_Config['AllowFrontManage'] = 'YES'; } 
-			else { $eeSFL_Config['AllowFrontManage'] = 'NO'; }
-	
+		// Sort by Select Box	
 		if(@$_POST['eeSortBy']) { $eeSFL_Config['SortBy'] = filter_var($_POST['eeSortBy'], FILTER_SANITIZE_STRING); }
-			else { $eeSFL_Config['SortBy'] = 'Name'; }
+			elseif(@$_POST['eeSortBy'] == 'NO') { $eeSFL_Config['SortBy'] = 'Name'; }
 		
+		// Asc/Desc Checkbox
 		if(@$_POST['eeSortOrder'] == 'Descending') { $eeSFL_Config['SortOrder'] = 'Descending'; }
-			else { $eeSFL_Config['SortOrder'] = 'Ascending'; }
-		
-		if(@$_POST['eeShowFileActions'] == 'YES') { $eeSFL_Config['ShowFileActions'] = 'YES'; } 
-			else { $eeSFL_Config['ShowFileActions'] = 'NO'; }
-		
-		if(@$_POST['eeShowHeader'] == 'YES') { $eeSFL_Config['ShowHeader'] = 'YES'; } else { $eeSFL_Config['ShowHeader'] = 'NO'; }
-	
+			elseif($_POST['eeSortBy'] AND !@$_POST['eeSortOrder']) { $eeSFL_Config['SortOrder'] = 'Ascending'; }
 	}
-	
 	
 	// Get all the settings
 	$eeSettings = get_option('eeSFL-Settings');
@@ -80,7 +76,10 @@ if(@$eeSFL_Log['errors']) {
 }
 
 // Begin the Form	
-$eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL_Page . '&tab=list_settings&subtab=list_settings" method="post" id="eeSFL_Settings">
+$eeOutput .= '
+
+<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=list_settings" method="post" id="eeSFL_Settings">
+		
 		<input type="hidden" name="eePost" value="TRUE" />';	
 		
 		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce' );
@@ -127,41 +126,43 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL_Page . 
 				$eeOutput .= '<h3>' . __('Columns to Show', 'ee-simple-file-list') . '</h3>
 				
 				<label class="eeNoClear" for="eeShowFileThumb">' . __('Show Thumbnail', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowFileThumb" value="YES" id="eeShowFileThumb"'; 
-				if(get_option('eeSFL-' . $eeSFL->eeListID . '-ShowFileThumb') == 'YES') { $eeOutput .= ' checked'; }
+				if($eeSFL_Config['ShowFileThumb'] == 'YES') { $eeOutput .= ' checked'; }
 				$eeOutput .= ' />
 				
 				<label class="eeNoClear" for="eeShowFileDate">' . __('Show File Date', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowFileDate" value="YES" id="eeShowFileDate"'; 
-				if(get_option('eeSFL-' . $eeSFL->eeListID . '-ShowFileDate') == 'YES') { $eeOutput .= ' checked'; }
+				if($eeSFL_Config['ShowFileDate'] == 'YES') { $eeOutput .= ' checked'; }
 				$eeOutput .= ' /> 
 				
 				<label class="eeNoClear" for="eeShowFileSize">' . __('Show File Size', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowFileSize" value="YES" id="eeShowFileSize"'; 
-				if(get_option('eeSFL-' . $eeSFL->eeListID . '-ShowFileSize') == 'YES') { $eeOutput .= ' checked'; }
+				if($eeSFL_Config['ShowFileSize'] == 'YES') { $eeOutput .= ' checked'; }
 				$eeOutput .= ' />';
 				
 				$eeOutput .= '<div class="eeNote">' . __('Limit the columns of file details to display on the front-side file list.', 'ee-simple-file-list') . '</div>
 					
 				<h3>' . __('File Sorting and Order', 'ee-simple-file-list') . '</h3>	
 				
-				<label for="eeSortList">' . __('Sort By', 'ee-simple-file-list') . ':</label><select name="eeSortBy" id="eeSortList">
+				<label for="eeSortList">' . __('Sort By', 'ee-simple-file-list') . ':</label>
+				
+				<select name="eeSortBy" id="eeSortList">
 				
 						<option value="Name"';
 						
-						if($eeSFL_Config['SortBy'] == 'Name') { $eeOutput .=  'selected'; }
+						if($eeSFL_Config['SortBy'] == 'Name') { $eeOutput .=  ' selected'; }
 						
 						$eeOutput .= '>' . __('File Name', 'ee-simple-file-list') . '</option>
 						<option value="Date"';
 						
-						if($eeSFL_Config['SortBy'] == 'Date') { $eeOutput .=  'selected'; }
+						if($eeSFL_Config['SortBy'] == 'Date') { $eeOutput .=  ' selected'; }
 						
 						$eeOutput .= '>' . __('File Date', 'ee-simple-file-list') . '</option>
 						<option value="Size"';
 						
-						if($eeSFL_Config['SortBy'] == 'Size') { $eeOutput .=  'selected'; }
+						if($eeSFL_Config['SortBy'] == 'Size') { $eeOutput .=  ' selected'; }
 						
 						$eeOutput .= '>' . __('File Size', 'ee-simple-file-list') . '</option>
 						<option value="Random"';
 						
-						if($eeSFL_Config['SortBy'] == 'Random') { $eeOutput .=  'selected'; }
+						if($eeSFL_Config['SortBy'] == 'Random') { $eeOutput .=  ' selected'; }
 						
 						$eeOutput .= '>' . __('Random', 'ee-simple-file-list') . '</option>
 					</select> 
@@ -172,7 +173,7 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL_Page . 
 				<label for="eeSortOrder">' . __('Reverse Order', 'ee-simple-file-list') . ':</label>
 				<input type="checkbox" name="eeSortOrder" value="Descending" id="eeSortOrder"';
 				
-				if(get_option('eeSFL-' . $eeSFL->eeListID . '-SortOrder') == 'Descending') { $eeOutput .= ' checked="checked"'; }
+				if( $eeSFL_Config['SortOrder'] == 'Descending') { $eeOutput .= ' checked="checked"'; }
 				
 				$eeOutput .= ' /> <p>&darr; ' . __('Descending', 'ee-simple-file-list') . '</p>
 				
@@ -185,9 +186,9 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL_Page . 
 				
 				
 				<label for="eeShowListHeader">' . __('Show Header', 'ee-simple-file-list') . ':</label>
-				<input type="checkbox" name="eeShowListHeader" value="YES" id="eeShowListHeader"';
+				<input type="checkbox" name="eeShowHeader" value="YES" id="eeShowListHeader"';
 				
-				if(get_option('eeSFL-' . $eeSFL->eeListID . '-ShowListHeader') == 'YES') { $eeOutput .= ' checked="checked"'; }
+				if( $eeSFL_Config['ShowHeader'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 				
 				$eeOutput .= ' />
 				
@@ -199,7 +200,7 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL_Page . 
 				<label for="eeShowFileActions">' . __('Show File Actions', 'ee-simple-file-list') . ':</label>
 				<input type="checkbox" name="eeShowFileActions" value="YES" id="eeShowFileActions"';
 				
-				if(get_option('eeSFL-' . $eeSFL->eeListID . '-ShowFileActions') == 'YES') { $eeOutput .= ' checked="checked"'; }
+				if( $eeSFL_Config['ShowFileActions'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 				
 				$eeOutput .= ' /> <p>' . __('Open | Download', 'ee-simple-file-list') . '</p>
 				
@@ -208,14 +209,14 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL_Page . 
 				<br class=eeClearFix />
 				
 				
-				<label for="eeAllowFrontManage">' . __('Allow Front Delete', 'ee-simple-file-list') . ':</label>
+				<label for="eeAllowFrontManage">' . __('Front-Side File Management', 'ee-simple-file-list') . ':</label>
 				<input type="checkbox" name="eeAllowFrontManage" value="YES" id="eeAllowFrontManage"';
 				
-				if(get_option('eeSFL-' . $eeSFL->eeListID . '-AllowFrontManage') == 'YES') { $eeOutput .= ' checked="checked"'; }
+				if( $eeSFL_Config['AllowFrontManage'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 				
 				$eeOutput .= ' /> <p>' . __('Use with Caution', 'ee-simple-file-list') . '</p>
 								
-				<div class="eeNote">' . __('Allows file deletion on the front-side of the website', 'ee-simple-file-list') . '</div>
+				<div class="eeNote">' . __('Allow front-side users full control over all files in the list.', 'ee-simple-file-list') . '</div>
 				
 				<br class=eeClearFix />';
 				

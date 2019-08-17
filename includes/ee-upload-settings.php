@@ -25,10 +25,11 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	}
 	
 	// Get Uploader Info
-	if($eeSFL_Config['AllowUploads'] != 'NO') { // Only update if allowing uploads
+	if($eeSFL_Config['AllowUploads'] != 'NO' AND @$_POST['eeUploadLimit']) { // Only update if showing these
 			
-		if(@$_POST['eeGetUploaderInfo'] == 'YES') { $eeSFL_Config['GetUploaderInfo'] = 'YES'; } 
-			else { $eeSFL_Config['GetUploaderInfo'] = 'NO'; }
+		
+		// YES/NO Checkboxes
+		eeSFL_ProcessCheckboxInput('GetUploaderInfo');
 		
 		// File Number Limit
 		$eeSFL_Config['UploadLimit'] = filter_var(@$_POST['eeUploadLimit'], FILTER_VALIDATE_INT);
@@ -42,6 +43,8 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 			// Can't be more than the system allows.
 			if(! $eeSFL_Config['UploadMaxFileSize'] OR $eeSFL_Config['UploadMaxFileSize'] > $eeSFL_Env['the_max_upload_size']) { 
 				$eeSFL_Config['UploadMaxFileSize'] = $eeSFL_Env['the_max_upload_size'];
+			} else {
+				$eeSFL_Config['UploadMaxFileSize'] = $eeSFL_UploadMaxFileSize;
 			}
 			
 		} else {
@@ -49,38 +52,62 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 		}
 		
 		
+		
 		// File Formats
 		if(@$_POST['eeFileFormats']) { // Strip all but what we need for the comma list of file extensions
 			$eeSFL_Config['FileFormats'] = preg_replace("/[^a-z0-9 ,]/i", "", $_POST['eeFileFormats']);
 		}
 		
-		// Custom Upload Folder
+		
+		
+		// File List Folder
 		$eeSFL_LastFileListDir = $eeSFL_Config['FileListDir'];
 		
 		if(@$_POST['eeFileListDir']) {
 			
 			$eeSFL_FileListDir = filter_var($_POST['eeFileListDir'], FILTER_SANITIZE_STRING);
 			
-			// Get rid of leading slash
-			if(strpos($eeSFL_FileListDir, '/') === 0) {
-				$eeSFL_FileListDir = substr($eeSFL_FileListDir, 1);
+			$eeArray = explode('/', $eeSFL_FileListDir);
+			
+			$eeSFL_FileListDir = ''; // Reset for rebuilding
+			
+			foreach( $eeArray as $eeValue) { // Rebuild as we sanitize
+				
+				// Sanitize
+				$eeValue = strip_tags($eeValue);
+			    $eeValue = preg_replace('/[\r\n\t ]+/', ' ', $eeValue);
+			    $eeValue = preg_replace('/[\"\*\/\:\<\>\?\'\|]+/', ' ', $eeValue);
+			    $eeValue = html_entity_decode( $eeValue, ENT_QUOTES, "utf-8" );
+			    $eeValue = htmlentities($eeValue, ENT_QUOTES, "utf-8");
+			    $eeValue = preg_replace("/(&)([a-z])([a-z]+;)/i", '$2', $eeValue);
+			    $eeValue = str_replace(' ', '-', $eeValue);
+			    $eeValue = rawurlencode($eeValue);
+			    $eeValue = str_replace('%', '-', $eeValue);
+			    
+			    if($eeValue AND strlen($eeValue) <= 255) {
+				    $eeSFL_FileListDir .= $eeValue . '/';
+			    }  
 			}
 			
-			$eeSFL_DirCheck = eeSFL_FileListDirCheck(ABSPATH . $eeSFL_Config['FileListDir']);
-			$eeSFL_Log[] = $eeSFL_DirCheck;	
+			if( strlen($eeSFL_FileListDir) ) {
 			
-			if(@$eeSFL_DirCheck['Error']) {
-				$eeSFL_Log['errors'][] = $eeSFL_DirCheck;
-				$eeSFL_Log['errors'][] = __('Cannot create the file directory. Reverting to default.', 'ee-simple-file-list');
+				$eeSFL_DirCheck = eeSFL_FileListDirCheck($eeSFL_FileListDir);
+			
+				if(!$eeSFL_DirCheck) {
+					$eeSFL_Log['errors'][] = $eeSFL_DirCheck;
+					$eeSFL_Log['errors'][] = __('Cannot create the file directory. Reverting to default.', 'ee-simple-file-list');
+					$eeSFL_Config['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
+				
+				} else {
+					$eeSFL_Config['FileListDir'] = $eeSFL_FileListDir;
+				}
+			} else {
 				$eeSFL_Config['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
 			}
-		
-		} else {
-			
-			$eeSFL_Config['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
 		}
+
 		
-		
+		// Notifications
 		$eeSFL_To = @$_POST['eeNotify'];
 			
 		if(strpos($eeSFL_To, ',')) { // Multiple Addresses
@@ -164,7 +191,7 @@ if(@$eeSFL_Log['errors']) {
 
 
 	
-$eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL_Page . '&tab=list_settings&subtab=uploader_settings" method="post" id="eeSFL_Settings">
+$eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=uploader_settings" method="post" id="eeSFL_Settings">
 		<input type="hidden" name="eePost" value="TRUE" />
 		<input type="hidden" name="eeListID" value="' . $eeSFL->eeListID . '" />';	
 		
@@ -227,20 +254,8 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL_Page . 
 					
 				
 				// The File List Folder
-				$eeOutput .= '<label for="eeFileListDir">' . __('Upload Directory', 'ee-simple-file-list') . ':</label><input type="text" name="eeFileListDir" value="';
-			
-				if( $eeSFL_Config['FileListDir'] ) { 
-					
-					$eeDir = str_replace(ABSPATH, '', $eeSFL_Config['FileListDir']); // Strip ABSPATH for saving
-					$eeOutput .= $eeDir;
-				
-				} else { 
-					
-					$eeDir = str_replace(ABSPATH, '', $eeSFL_Env['FileListDefaultDir']);
-					$eeOutput .= $eeDir;
-				}
-			
-				$eeOutput .= '" class="eeAdminInput" id="eeFileListDir" size="64" />
+				$eeOutput .= '<label for="eeFileListDir">' . __('Upload Directory', 'ee-simple-file-list') . ':</label>
+					<input type="text" name="eeFileListDir" value="' . $eeSFL_Config['FileListDir'] . '" class="eeAdminInput" id="eeFileListDir" size="64" />
 					<div class="eeNote">' . __('This is relative to your Wordpress home folder.', 'ee-simple-file-list') . ' <em>wp-content/uploads/simple-file-list/</em> ' . __('is the default', 'ee-simple-file-list') . '.<br />
 						' . __('This will create the directory if it does not yet exist.', 'ee-simple-file-list') . '
 					</div>
