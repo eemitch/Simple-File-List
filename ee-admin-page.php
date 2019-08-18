@@ -93,7 +93,7 @@ function eeSFL_ManageLists() { // All Plugin Settings are Displayed in Here
 	
 		$eeOutput .= '<div id="uploadFilesDiv">';
 		
-		include($eeSFL_PluginPath . 'includes/ee-uploader.php'); // The Uploader
+		include($eeSFL_PluginPath . 'includes/ee-upload-form.php'); // The Uploader
 		
 		$eeOutput .= '</div>';
 		
@@ -178,7 +178,9 @@ function eeSFL_ManageLists() { // All Plugin Settings are Displayed in Here
 				
 				$eeOutput .= '</p>
 				
-				<p><a href="' . $eeSFL->eePluginWebPage . '">' . $eeSFL->eePluginName . '</a> &mdash; ' . __('Version', 'ee-simple-file-list') . ': ' . eeSFL_Version . '</p>
+				<p>' . __('Website', 'ee-simple-file-list') . ': <a href="' . $eeSFL->eePluginWebPage . '">' . $eeSFL->eePluginName . '</a><br />
+				
+				' . __('Version', 'ee-simple-file-list') . ': ' . eeSFL_Version . ' | DB: ' . eeSFL_DB_Version . ' | CB: ' . eeSFL_Cache_Version . '</p>
 				
 			</fieldset>
 		</div>

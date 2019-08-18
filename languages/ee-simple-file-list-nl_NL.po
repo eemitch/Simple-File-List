@@ -180,7 +180,7 @@ msgstr "Miniatuurbestand verwijderen is mislukt"
 msgid "File Delete Failed"
 msgstr "Bestand verwijderen mislukt"
 
-#: ee-list-display.php:186 includes/ee-uploader.php:66
+#: ee-list-display.php:186 includes/ee-upload-form.php:66
 msgid "Upload Files"
 msgstr "Bestanden uploaden"
 
@@ -503,46 +503,46 @@ msgstr "U krijgt een email zodra een bestand is geüpload."
 msgid "Separate multiple addresses with a comma."
 msgstr "Scheid meerdere adressen met een komma."
 
-#: includes/ee-uploader.php:62
+#: includes/ee-upload-form.php:62
 msgid "Upload Settings"
 msgstr "Upload-instellingen"
 
-#: includes/ee-uploader.php:288
+#: includes/ee-upload-form.php:288
 msgid "Uploading"
 msgstr "Bezig met uploaden"
 
-#: includes/ee-uploader.php:290
+#: includes/ee-upload-form.php:290
 msgid "Upload"
 msgstr "Uploaden"
 
-#: includes/ee-uploader.php:292
+#: includes/ee-upload-form.php:292
 msgid "File Limit"
 msgstr "Bestandslimiet"
 
-#: includes/ee-uploader.php:292
+#: includes/ee-upload-form.php:292
 msgid "files"
 msgstr "bestanden"
 
-#: includes/ee-uploader.php:294
+#: includes/ee-upload-form.php:294
 msgid "Size Limit"
 msgstr "Maximale grootte"
 
-#: includes/ee-uploader.php:296
+#: includes/ee-upload-form.php:296
 msgid "per file"
 msgstr "per bestand"
 
-#: includes/ee-uploader.php:296
+#: includes/ee-upload-form.php:296
 msgid ""
 "To select multiple files, hold down the Control key while choosing files"
 msgstr ""
 "Als u meerdere bestanden wilt selecteren, houdt u de Control-toets ingedrukt "
 "en kiest u de gewenste bestanden"
 
-#: includes/ee-uploader.php:296
+#: includes/ee-upload-form.php:296
 msgid "Command key on Macs"
 msgstr "Command-toets op Macs"
 
-#: includes/ee-uploader.php:304
+#: includes/ee-upload-form.php:304
 msgid "No upload directory configured."
 msgstr "Geen upload-map geconfigureerd."
 

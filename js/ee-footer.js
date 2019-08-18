@@ -50,7 +50,7 @@ function eeSFL_Delete(eeSFL_FileID) {
 	
 	event.preventDefault(); // Don't follow the link
 	
-	console.log('Deleting: ' + eeSFL_FileID);
+	console.log('Deleting File ID #' + eeSFL_FileID);
 	
 	// Get the File Name
     var eeSFL_FileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileLink').text();

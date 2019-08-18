@@ -8,7 +8,7 @@ Plugin Name: Simple File List 4
 Plugin URI: http://simplefilelist.com
 Description: Full Featured File List with Front-Side File Uploading | <a href="https://simplefilelist.com/donations/simple-file-list-project/">Donate</a> | <a href="admin.php?page=ee-simple-file-list&tab=extensions">Add Features</a>
 Author: Mitchell Bennis - Element Engage, LLC
-Version: 4.0.3
+Version: 4.0.4
 Author URI: http://elementengage.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -19,8 +19,10 @@ $eeSFL_DevMode = TRUE; // Enables visible logging
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-// SFL Version
-define('eeSFL_Version', '4.0.3');
+// SFL Versions
+define('eeSFL_Version', '4.0.4'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_DB_Version', '4.0.1'); // Database structure version - used for eeSFL_VersionCheck()
+define('eeSFL_Cache_Version', '.05'); // Cache-Buster version for static files - used when updating CSS/JS
 
 // Our Core
 $eeSFL = FALSE; // Our main class
@@ -66,10 +68,12 @@ function eeSFL_Setup() {
 	
 	$eeSFL_Files = get_transient('eeSFL-FileList-' . $eeSFL_Config['ID']);
 	
-	// STOP
-	// echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
 	
-	// exit('STOP at ee-functions line 319');
+	
+	wp_die('STOP --> Finish Upload Progress Display --> ee-uploader.js (Line 145)');  // exit();
+	
+	
+	
 	
 	eeSFL_VersionCheck(); // Update database if needed.
 	
@@ -254,7 +258,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 	}
 	
 	if($eeSFL_Config['AllowUploads'] != 'NO' AND $eeListNumber == 1 AND !@$_POST['eeSFLS_Searching']) {
-		include(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/includes/ee-uploader.php');
+		include(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/includes/ee-upload-form.php');
 	}
 	
 	// Who Can View the List?
@@ -299,56 +303,62 @@ function eeSFL_Shortcode($atts, $content = null) {
 add_shortcode( 'eeSFL', 'eeSFL_Shortcode' );
 
 
-// HTML =====================
+
 
 // Load Front-side <head>
 function eeSFL_Enqueue() {
 	
 	// Register the style like this for a theme:
-    wp_register_style( 'ee-simple-file-list-css', plugin_dir_url(__FILE__) . 'css/eeStyles.css');
+    wp_register_style( 'ee-simple-file-list-css', plugin_dir_url(__FILE__) . 'css/eeStyles.css', '', eeSFL_Cache_Version);
  
     // Enqueue the style:
     wp_enqueue_style('ee-simple-file-list-css');
 	
 	// Now with Javascript !
 	$deps = array('jquery');
-	wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js',$deps,'30',FALSE); // Head
-	wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js',$deps,'40',TRUE); // Footer
+	wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js',$deps,eeSFL_Cache_Version,FALSE); // Head
+	wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js',$deps,eeSFL_Cache_Version,TRUE); // Footer
 }
 add_action( 'wp_enqueue_scripts', 'eeSFL_Enqueue' );
 
 
 
+
+
 // Admin <head>
 function eeSFL_AdminHead($eeHook) {
+	
+	global $eeCacheBuster;
         
-        // wp_die($eeHook); // Use this to discover the hook for each page
+    // wp_die($eeHook); // Use this to discover the hook for each page
+    
+    // https://codex.wordpress.org/Plugin_API/Action_Reference/admin_enqueue_scripts
+    
+    $deps = array('jquery');
+    
+    $eeHooks = array(
+    	'toplevel_page_ee-simple-file-list',
+    	'simple-file-list_page_ee-simple-file-list',
+    	'simple-file-list_page_ee-simple-file-list-settings'
+    );
+    
+    if(in_array($eeHook, $eeHooks)) {
+        wp_enqueue_style( 'ee-simple-file-list-css-front', plugins_url('css/eeStyles.css', __FILE__), '', eeSFL_Cache_Version );
+        wp_enqueue_style( 'ee-simple-file-list-css-back', plugins_url('css/eeStyles-Back.css', __FILE__), '', eeSFL_Cache_Version );
         
-        // https://codex.wordpress.org/Plugin_API/Action_Reference/admin_enqueue_scripts
-        
-        $deps = '';
-        
-        $eeHooks = array(
-        	'toplevel_page_ee-simple-file-list',
-        	'simple-file-list_page_ee-simple-file-list',
-        	'simple-file-list_page_ee-simple-file-list-settings'
-        );
-        
-        if(in_array($eeHook, $eeHooks)) {
-            wp_enqueue_style( 'ee-simple-file-list-css-front', plugins_url('css/eeStyles.css', __FILE__) );
-            wp_enqueue_style( 'ee-simple-file-list-css-back', plugins_url('css/eeStyles-Back.css', __FILE__) );
-            
-            // Now with Javascript !
-            wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js');
-			wp_enqueue_script('ee-simple-file-list-js-back', plugin_dir_url(__FILE__) . 'js/ee-back.js');
-            wp_enqueue_script('ee-simple-file-list-js-footer', plugin_dir_url(__FILE__) . 'js/ee-footer.js','','30',TRUE);
-			
-			wp_localize_script('ee-simple-file-list-js-head', 'eeSFL_JS', array( 'pluginsUrl' => plugins_url() ) );
-        }
+        // Now with Javascript !
+        wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js',$deps,eeSFL_Cache_Version,FALSE);
+		wp_enqueue_script('ee-simple-file-list-js-back', plugin_dir_url(__FILE__) . 'js/ee-back.js',$deps,eeSFL_Cache_Version,FALSE);
+        wp_enqueue_script('ee-simple-file-list-js-footer', plugin_dir_url(__FILE__) . 'js/ee-footer.js',$deps,eeSFL_Cache_Version,TRUE);
+		
+		wp_localize_script('ee-simple-file-list-js-head', 'eeSFL_JS', array( 'pluginsUrl' => plugins_url() ) );
+    }
         
         
 }
 add_action('admin_enqueue_scripts', 'eeSFL_AdminHead');
+
+
 
 
 
@@ -366,8 +376,9 @@ add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'eeSFL_actionPlu
 
 
 
-// === ADMIN PAGES ========================================================
 
+
+// Admin Pages
 function eeSFL_AdminMenu() {
 	
 	global $eeSFL, $eeSFL_Env, $eeSFL_Log; // , $eeSFL_DevMode, $eeSFL_Config;
@@ -411,25 +422,25 @@ add_action( 'admin_menu', 'eeSFL_AdminMenu' );
 
 
 
-// Plugin Upgrade =====================
 
-// Plugin Update Check
-function eeSFL_VersionCheck() {
+
+// Plugin Version Check
+//   We only run the update function if there has been a change in the database structure.
+function eeSFL_VersionCheck() { 
 		
 	global $eeSFL_Log;
 	
-	$eeSFL_VersionInstalled = get_option('eeSFL-Version');
+	$eeSFL_DB_VersionInstalled = get_option('eeSFL-Version'); // We store the DB version in the DB, okay?
 	
-	$eeSFL_Log[] = 'Plugin Version: ' . $eeSFL_VersionInstalled;
-	
-	if($eeSFL_VersionInstalled < eeSFL_Version OR !get_option('eeSFL-Settings') ) {
+	if($eeSFL_DB_VersionInstalled < eeSFL_DB_Version OR !get_option('eeSFL-Settings') ) {
 		
 		eeSFL_UpdateThisPlugin(); // Run the DB update process
-		$eeSFL_Log[] = 'UPDATING: ' . $eeSFL_VersionInstalled . ' to ' . eeSFL_Version;
+		$eeSFL_Log[] = '--> Updating Database: ' . $eeSFL_DB_VersionInstalled . ' to ' . eeSFL_DB_Version;
 
 	}
 }
 
+// Perform DB Update
 function eeSFL_UpdateThisPlugin() {
 	
 	global $eeSFL, $eeSFL_Log;
@@ -597,14 +608,14 @@ function eeSFL_UpdateThisPlugin() {
 	update_option('eeSFL-Settings', $eeArray);	
 	
 	// Update the Version
-	update_option('eeSFL-Version', eeSFL_Version);
+	update_option('eeSFL-Version', eeSFL_DB_Version);
 	
 	// TO DO
 	
 	// Delete old options
 	
 	
-	$eeSFL_Log[] = 'Plugin Updated to ' . eeSFL_Version;
+	$eeSFL_Log[] = 'Plugin Updated to database version: ' . eeSFL_DB_Version;
 	
 	
 }
@@ -613,6 +624,8 @@ function eeSFL_UpdateThisPlugin() {
 // Plugin Activation ==========================================================
 
 function eeSFL_Activate() {
+	
+	// TO DO - Ceck extension versions - Fail unless they are updated first.
 	
 	return TRUE; // All done, nothing to do here.	
 }

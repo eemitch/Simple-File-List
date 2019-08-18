@@ -131,12 +131,36 @@ function eeUploadProcessor(eeSFL_FileObjects) {
 function eeUploadFile(eeSFL_File) { // Pass in file object
     
     var eeXhr = new XMLHttpRequest();
+    
+    if(eeXhr.upload) { // Upload progress
+	    
+	    console.log('Upload in progress ...');
+	    
+	    eeXhr.upload.addEventListener("progress", function(e) {
+		    
+			var percent = parseInt(100 - (e.loaded / e.total * 100)); // Percent remaining
+			console.log('Upload Progress: ' + percent + "%" );
+			
+			// Progress Bar
+			alert('STOP - Upload Progress Display');
+			
+			
+			
+		}, false);
+	}
+	
+	
+	
+	
+	
+	
+    
     var eeFormData = new FormData();
     
     console.log("Uploading: " + eeSFL_File.name);
     console.log("Calling Engine: " + eeSFL_UploadEngineURL);
     
-    eeXhr.open("POST", eeSFL_UploadEngineURL, true); // URL set in ee-uploader.php
+    eeXhr.open("POST", eeSFL_UploadEngineURL, true); // URL set in ee-upload-form.php
     
     eeXhr.onreadystatechange = function() {
         
@@ -181,7 +205,7 @@ function eeUploadFile(eeSFL_File) { // Pass in file object
     // Pass to the Upload Engine...
     eeFormData.append("file", eeSFL_File);
     
-    // These values are set in ee-uploader.php
+    // These values are set in ee-upload-form.php
     eeFormData.append("eeSFL_ID", eeSFL_ListID);
     eeFormData.append("eeSFL_FileListDir", eeSFL_FileListDir);
     eeFormData.append("eeSFL_Timestamp", eeSFL_TimeStamp); 

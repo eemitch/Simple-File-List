@@ -1,4 +1,4 @@
-<?php  // Simple File List - ee-uploader.php - mitchellbennis@gmail.com
+<?php  // Simple File List - ee-upload-form.php - mitchellbennis@gmail.com
 
 // Security	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -58,20 +58,18 @@ if(@$eeSFL_Config['FileListDir']) {
 			
 		<form action="" method="POST" enctype="multipart/form-data" name="eeSFL_UploadForm" id="eeSFL_UploadForm">
 		
-		<input type="hidden" name="MAX_FILE_SIZE" value="' .(($eeSFL_Config['UploadMaxFileSize']*1024)*1024) . '" />
-		<input type="hidden" name="eeSFL_Upload" value="TRUE" />
-		<input type="hidden" name="eeSFL_ID" value="' . $eeSFL_Config['ID'] . '" id="eeSFL_ID" />
-		<input type="hidden" name="eeSFL_FileCount" value="" id="eeSFL_FileCount" />
-		<input type="hidden" name="eeSFL_FileList" value="" id="eeSFL_FileList" />
-		';
+			<input type="hidden" name="MAX_FILE_SIZE" value="' .(($eeSFL_Config['UploadMaxFileSize']*1024)*1024) . '" />
+			<input type="hidden" name="eeSFL_Upload" value="TRUE" />
+			<input type="hidden" name="eeSFL_ID" value="' . $eeSFL_Config['ID'] . '" id="eeSFL_ID" />
+			<input type="hidden" name="eeSFL_FileCount" value="" id="eeSFL_FileCount" />
+			<input type="hidden" name="eeSFL_FileList" value="" id="eeSFL_FileList" />';
 		
-		if($eeSFLF) {
-			$eeOutput .= '<input type="hidden" name="eeSFLF_UploadFolder" value="' . urlencode($eeSFLF_ListFolder) . '" id="eeSFLF_UploadFolder" />
-			';
+		if($eeSFLF) { $eeOutput .= '
+			<input type="hidden" name="eeSFLF_UploadFolder" value="' . urlencode($eeSFLF_ListFolder) . '" id="eeSFLF_UploadFolder" />';
 		}
 		if($eeAdmin) {
-			$eeOutput .= '<a href="?page=ee-simple-file-list&tab=list_settings&subtab=uploader_settings" class="button eeRight">' . __('Upload Settings', 'ee-simple-file-list') . '</a>
-			';
+			$eeOutput .= '
+			<a href="?page=ee-simple-file-list&tab=list_settings&subtab=uploader_settings" class="button eeRight">' . __('Upload Settings', 'ee-simple-file-list') . '</a>';
 		}
 		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload', 'ee-simple-file-list-upload-nonce', TRUE, FALSE);
 	
@@ -104,9 +102,9 @@ if(@$eeSFL_Config['FileListDir']) {
 			
 		</script>
 		
-		<script src="' . $eeSFL_Env['pluginURL'] . '/js/ee-uploader.js"></script>
+		<script src="' . $eeSFL_Env['pluginURL'] . '/js/ee-uploader.js?v=1"></script>
 		
-		<span id="eeSFL_UploadingNow"><img class="eeSFL_UploadingImg" src="' . $eeSFL_Env['wpPluginsURL'] . '/images/sending.gif" width="32" height="32" alt="Spinner Icon" />' . __('Uploading', 'ee-simple-file-list') . '</span>
+		<span id="eeSFL_UploadProgress"></span>
 		
 		<button type="button" name="eeSFL_UploadGo" id="eeSFL_UploadGo" onclick="eeUploadProcessor(eeSFL_FileObjects);">' . __('Upload', 'ee-simple-file-list') . '</button>
 		

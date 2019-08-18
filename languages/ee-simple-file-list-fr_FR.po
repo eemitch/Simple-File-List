@@ -181,7 +181,7 @@ msgstr "Échec de la suppression du fichier miniature"
 msgid "File Delete Failed"
 msgstr "Échec de la suppression de fichier"
 
-#: ee-list-display.php:186 includes/ee-uploader.php:66
+#: ee-list-display.php:186 includes/ee-upload-form.php:66
 msgid "Upload Files"
 msgstr "Télécharger des fichiers"
 
@@ -508,46 +508,46 @@ msgstr "Vous recevrez un e-mail chaque fois qu'un fichier est téléchargé."
 msgid "Separate multiple addresses with a comma."
 msgstr "Séparez plusieurs adresses par une virgule."
 
-#: includes/ee-uploader.php:62
+#: includes/ee-upload-form.php:62
 msgid "Upload Settings"
 msgstr "﻿Paramètres de téléversement"
 
-#: includes/ee-uploader.php:288
+#: includes/ee-upload-form.php:288
 msgid "Uploading"
 msgstr "Chargement"
 
-#: includes/ee-uploader.php:290
+#: includes/ee-upload-form.php:290
 msgid "Upload"
 msgstr "Télécharger"
 
-#: includes/ee-uploader.php:292
+#: includes/ee-upload-form.php:292
 msgid "File Limit"
 msgstr "Limite de fichier"
 
-#: includes/ee-uploader.php:292
+#: includes/ee-upload-form.php:292
 msgid "files"
 msgstr "fichiers"
 
-#: includes/ee-uploader.php:294
+#: includes/ee-upload-form.php:294
 msgid "Size Limit"
 msgstr "Limite de taille"
 
-#: includes/ee-uploader.php:296
+#: includes/ee-upload-form.php:296
 msgid "per file"
 msgstr "par fichier"
 
-#: includes/ee-uploader.php:296
+#: includes/ee-upload-form.php:296
 msgid ""
 "To select multiple files, hold down the Control key while choosing files"
 msgstr ""
 "Pour sélectionner plusieurs fichiers, maintenez la touche CTRL enfoncée tout "
 "en choisissant les fichiers"
 
-#: includes/ee-uploader.php:296
+#: includes/ee-upload-form.php:296
 msgid "Command key on Macs"
 msgstr "Touche de commande sur Mac"
 
-#: includes/ee-uploader.php:304
+#: includes/ee-upload-form.php:304
 msgid "No upload directory configured."
 msgstr "Aucun répertoire de téléchargement configuré."
 

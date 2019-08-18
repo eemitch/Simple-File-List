@@ -181,7 +181,7 @@ msgstr "Miniatur-Datei gelöscht"
 msgid "File Delete Failed"
 msgstr "Datei gelöscht"
 
-#: ee-list-display.php:186 includes/ee-uploader.php:66
+#: ee-list-display.php:186 includes/ee-upload-form.php:66
 msgid "Upload Files"
 msgstr "Dateien hochladen"
 
@@ -508,46 +508,46 @@ msgstr "Sie erhalten eine E-Mail, wenn eine Datei hochgeladen wird."
 msgid "Separate multiple addresses with a comma."
 msgstr "Trennen Sie mehrere Adressen mit einem Komma."
 
-#: includes/ee-uploader.php:62
+#: includes/ee-upload-form.php:62
 msgid "Upload Settings"
 msgstr "Upload Einstellungen"
 
-#: includes/ee-uploader.php:288
+#: includes/ee-upload-form.php:288
 msgid "Uploading"
 msgstr "Lade gerade hoch"
 
-#: includes/ee-uploader.php:290
+#: includes/ee-upload-form.php:290
 msgid "Upload"
 msgstr "Hochladen"
 
-#: includes/ee-uploader.php:292
+#: includes/ee-upload-form.php:292
 msgid "File Limit"
 msgstr "Datei-Limit"
 
-#: includes/ee-uploader.php:292
+#: includes/ee-upload-form.php:292
 msgid "files"
 msgstr "Dateien"
 
-#: includes/ee-uploader.php:294
+#: includes/ee-upload-form.php:294
 msgid "Size Limit"
 msgstr "Größenbegrenzer"
 
-#: includes/ee-uploader.php:296
+#: includes/ee-upload-form.php:296
 msgid "per file"
 msgstr "Pro Datei"
 
-#: includes/ee-uploader.php:296
+#: includes/ee-upload-form.php:296
 msgid ""
 "To select multiple files, hold down the Control key while choosing files"
 msgstr ""
 "Um mehrere Dateien auszuwählen, halten Sie die Kontrolltaste bei der Auswahl "
 "der Dateien fest"
 
-#: includes/ee-uploader.php:296
+#: includes/ee-upload-form.php:296
 msgid "Command key on Macs"
 msgstr "Befehlsschlüssel zu Macs"
 
-#: includes/ee-uploader.php:304
+#: includes/ee-upload-form.php:304
 msgid "No upload directory configured."
 msgstr "Kein Upload-Verzeichnis konfiguriert."
 

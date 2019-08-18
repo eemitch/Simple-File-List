@@ -201,7 +201,7 @@ msgstr "Error al eliminar archivos"
 msgid "Delete Checked"
 msgstr "Eliminar comprobado"
 
-#: ee-list-display.php:160 includes/ee-uploader.php:68
+#: ee-list-display.php:160 includes/ee-upload-form.php:68
 msgid "Upload Files"
 msgstr "Subir archivos"
 
@@ -520,46 +520,46 @@ msgstr "Obtendrá un correo electrónico cada vez que se cargue un archivo."
 msgid "Separate multiple addresses with a comma."
 msgstr "Separe varias direcciones con una coma."
 
-#: includes/ee-uploader.php:64
+#: includes/ee-upload-form.php:64
 msgid "Upload Settings"
 msgstr "Ajustes para cargar"
 
-#: includes/ee-uploader.php:290
+#: includes/ee-upload-form.php:290
 msgid "Uploading"
 msgstr "Subiendo"
 
-#: includes/ee-uploader.php:292
+#: includes/ee-upload-form.php:292
 msgid "Upload"
 msgstr "Subir"
 
-#: includes/ee-uploader.php:294
+#: includes/ee-upload-form.php:294
 msgid "File Limit"
 msgstr "Límite del tamaño del archivo"
 
-#: includes/ee-uploader.php:294
+#: includes/ee-upload-form.php:294
 msgid "files"
 msgstr "archivos"
 
-#: includes/ee-uploader.php:296
+#: includes/ee-upload-form.php:296
 msgid "Size Limit"
 msgstr "Límite de tamaño"
 
-#: includes/ee-uploader.php:298
+#: includes/ee-upload-form.php:298
 msgid "per file"
 msgstr "por archivo"
 
-#: includes/ee-uploader.php:298
+#: includes/ee-upload-form.php:298
 msgid ""
 "To select multiple files, hold down the Control key while choosing files"
 msgstr ""
 "Para seleccionar varios archivos, mantenga pulsada la tecla control mientras "
 "elige los archivos"
 
-#: includes/ee-uploader.php:298
+#: includes/ee-upload-form.php:298
 msgid "Command key on Macs"
 msgstr "Tecla de comando en Macs"
 
-#: includes/ee-uploader.php:306
+#: includes/ee-upload-form.php:306
 msgid "No upload directory configured."
 msgstr "No se ha configurado ningún directorio de carga."
 

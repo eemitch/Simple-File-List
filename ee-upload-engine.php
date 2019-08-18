@@ -1,6 +1,6 @@
 <?php // Simple File List - ee-upload-engine.php - mitchellbennis@gmail.com
 	
-// This script is accessed via AJAX by ee-uploader.php
+// This script is accessed via AJAX by ee-upload-form.php
 	
 ini_set("log_errors", 1);
 error_reporting (E_ALL);
