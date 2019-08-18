@@ -101,88 +101,129 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 
 
 // Post-process an upload job
-function eeSFL_ProcessUpload($eeSFL_UploadURL, $eeSFL_FileListDir, $eeSFL_Notify) {
+function eeSFL_ProcessUpload($eeSFL_ID) {
 	
-	global $eeSFL, $eeSFL_Log;
+	global $eeSFL, $eeSFL_Config, $eeSFL_Log;
 	
-	$eeSFL_FileCount = filter_var($_POST['eeFileCount'], FILTER_VALIDATE_INT);
+	$eeOutput = FALSE;
 	
-	if($eeSFL_FileCount) { 
+	$eeFileCount = filter_var(@$_POST['eeSFL_FileCount'], FILTER_VALIDATE_INT);
+	$eeSFLF_UploadFolder = filter_var(@$_POST['eeSFLF_UploadFolder'], FILTER_SANITIZE_STRING);
 	
-		$eeSFL_Log[] = 'Post-processing Upload...';
-		$eeSFL_Log[] = $eeSFL_FileCount . ' Files';
+	if($eeFileCount) {
 		
-		$eeSFL_FileList = stripslashes($_POST['eeFileList']);
+		// Re-index the File List
+		$eeFiles = $eeSFL->eeSFL_createFileListArray($eeSFL_ID, $eeSFL_Config['FileListDir'], TRUE);
+	
+		$eeSFL_Log[] = 'Post-processinging Upload Job ...';
+		$eeSFL_Log[] = $eeFileCount . ' Files';
+		
+		$eeFileList = stripslashes($_POST['eeSFL_FileList']);
 		
 		// Check for Nonce
 		if(check_admin_referer( 'ee-simple-file-list-upload', 'ee-simple-file-list-upload-nonce')) {
 			
-			$eeSFL_FileArray = json_decode($eeSFL_FileList);
+			$eeArray = json_decode($eeFileList);
 			$eeNewArray = array(); // For our lowered-case extensions
 			
 			// Drop file extensions to lowercase
-			foreach( $eeSFL_FileArray as $eeFile){
+			foreach( $eeArray as $eeFile) {  // We need to do this here and in ee-upload-engine.php
 				$eeArray = explode('.', $eeFile);
 				$eeNewArray[] = $eeArray[0] . '.' . strtolower($eeArray[1]);
 			}
-			$eeSFL_FileArray = $eeNewArray;
+			$eeArray = $eeNewArray;
 			
-			// Files have been uploaded
-			if(is_array($eeSFL_FileArray)) {
+			
+			// Notification
+			if( count($eeArray) ) {
 				
-				$eeSFL_UploadJob = array(); // This will be what happened
-				
-				// Notification
-				$eeSFL_UploadJob['Message'] = __('You should know that', 'ee-simple-file-list') . ' ';
+				$eeUploadJob = array(); // This will be what happened
+				$eeUploadJob['Message'] = __('You should know that', 'ee-simple-file-list') . ' ';
 				
 				// Semantics
-				if($eeSFL_FileCount > 1) { 
-					$eeSFL_UploadJob['Message'] .= $eeSFL_FileCount . ' ' . __('files have', 'ee-simple-file-list');	
+				if($eeFileCount > 1) { 
+					$eeUploadJob['Message'] .= $eeFileCount . ' ' . __('files have', 'ee-simple-file-list');	
 				} else {
-					$eeSFL_UploadJob['Message'] .= __('a file has', 'ee-simple-file-list');
+					$eeUploadJob['Message'] .= __('a file has', 'ee-simple-file-list');
 				}
-				$eeSFL_UploadJob['Message'] .= ' ' . __('been uploaded to your website', 'ee-simple-file-list') . ".\n\n";
+				$eeUploadJob['Message'] .= ' ' . __('been uploaded to your website', 'ee-simple-file-list') . ".\n\n";
 				
 				// Loop through the uploaded files
-				if(count($eeSFL_FileArray)) {
+				if(count($eeArray)) {
 					
-					foreach($eeSFL_FileArray as $eeSFL_File) { 
+					foreach($eeArray as $eeFile) { 
 						
-						$eeSFL_File = eeSFL_SanitizeFileName($eeSFL_File);
+						$eeFile = eeSFL_SanitizeFileName($eeFile);
 						
 						// Notification
-						$eeSFL_UploadJob['Message'] .=  $eeSFL_File . "\n" . 
-							$eeSFL_UploadURL . $eeSFL_File . 
-								"\n(" . @eeSFL_GetFileSize(ABSPATH . $eeSFL_FileListDir . $eeSFL_File) . ")\n\n\n";
+						$eeUploadJob['Message'] .=  $eeSFLF_UploadFolder . $eeFile . "\n" . 
+							$eeSFL_Config['FileListURL'] . $eeSFLF_UploadFolder . $eeFile . 
+								"\n(" . eeSFL_GetFileSize( $eeSFL_Config['FileListDir'] . $eeSFLF_UploadFolder . $eeFile ) . ")\n\n\n";
 					}
 						
 					$eeSFL_Log['messages'][] = __('File Upload Complete', 'ee-simple-file-list');
 					
-					// Send Email Notice
-					$eeOutput = $eeSFL->eeSFL_AjaxEmail($eeSFL_UploadJob, $eeSFL_Notify);
 					
-					// Re-index the File List
-					$eeSFL_Files = $eeSFL->eeSFL_createFileListArray($eeSFL->eeListID, $eeSFL_FileListDir, TRUE);
-					
-					return $eeOutput; // All done.
-					
+					if( is_admin() ) {
+						$eeOutput = TRUE;
+					} else  {
+						$eeOutput = $eeSFL->eeSFL_AjaxEmail( $eeUploadJob, $eeSFL_Config['Notify'] );// Send Email Notice
+					}
 					
 				} else {
 					$eeSFL_Log['errors'][] = 'Bad File Array';
-					$eeSFL_Log['errors'][] = $eeSFL_UploadJob;
+					$eeSFL_Log['errors'][] = $eeUploadJob;
 					return FALSE;
 				}
 			}
 			
 		} else {
-			exit;
+			wp_die();
 		}
 	
 	} else {
-		$eeSFL_Log['errors'][] = 'No files?';
+		$eeSFL_Log['errors'][] = 'No ID or Files';
 		return FALSE;
 	}
+	
+	return $eeOutput; // All done.
 }
+
+
+
+
+
+
+// Return the general size of a file in a nice format.
+function eeSFL_GetFileSize($eeSFL_File) {  
+    
+    $bytes = filesize(ABSPATH . $eeSFL_File);
+    $kilobyte = 1024;
+    $megabyte = $kilobyte * 1024;
+    $gigabyte = $megabyte * 1024;
+    $terabyte = $gigabyte * 1024;
+    $precision = 2;
+   
+    if (($bytes >= 0) && ($bytes < $kilobyte)) {
+        return $bytes . ' B';
+ 
+    } elseif (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
+        return round($bytes / $kilobyte, $precision) . ' KB';
+ 
+    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
+        return round($bytes / $megabyte, $precision) . ' MB';
+ 
+    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
+        return round($bytes / $gigabyte, $precision) . ' GB';
+ 
+    } elseif ($bytes >= $terabyte) {
+        return round($bytes / $terabyte, $precision) . ' TB';
+    } else {
+        return $bytes . ' B';
+    }
+}
+
+
 
 
 
@@ -287,37 +328,39 @@ function eeSFL_ProcessCheckboxInput($eeTerm) {
 
 
 // Check if a file already exists, then number it so file will not be over-written.
-function eeSFL_CheckForDuplicateFile($eeSFL_DirPath, $eeSFL_TargetFile) {
+function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path from WP root
 	
 	global $eeSFL_Config;
-	
-	$eeSFL_Files = $eeSFL_Config['eeSFL_Files'];
-	$eeSFL_Files = get_transient('eeSFL-' . $eeSFL->eeListID . '-Files');
-	
-	// Check Transient First
-	if(in_array($eeSFL_TargetFile, $eeSFL_Files) ) {
+	$eeCopyLimit = 1000; // File copies limit
+	$eeDir = dirname($eeSFL_FilePathAdded) . '/';
 		
-		if(is_file(ABSPATH . $eeSFL_DirPath . $eeSFL_TargetFile)) { // Confirm the file is really there
-			
-			// Get the file extension
-			$eeSFL_Dot = strrpos($eeSFL_TargetFile, '.');
-			$eeSFL_Extension = strtolower(substr($eeSFL_TargetFile, $eeSFL_Dot+1));
-			
-			// Append a version to the name
-			$eeSFL_FilePath = substr($eeSFL_TargetFile, 0, $eeSFL_Dot);
-			
-			$eeSFL_CopyLimit = 1000; // Copy limit
-			
-			for ($i = 1; $i <= $eeSFL_CopyLimit; $i++) {
+	$eePathParts = pathinfo($eeSFL_FilePathAdded);
+	$eeNameOnly = $eePathParts['filename'];
+	$eeExtension = strtolower($eePathParts['extension']);
+	
+	$eeSFL_Files = get_transient('eeSFL-FileList-' . $eeSFL_Config['ID']); // Our array of file info
+	
+	foreach( $eeSFL_Files as $eeString) { // Loop through file array and look for a match.
+		
+		$eeArray = explode('|', $eeString); 
+		$eeFilePath = $eeArray[0]; // Get the /folder/name.ext
+		
+		// Check Transient
+		if( $eeSFL_FilePathAdded == $eeSFL_Config['FileListDir'] . $eeFilePath ) { // Duplicate found
+		
+			if( is_file(ABSPATH . $eeSFL_FilePathAdded) ) { // Confirm the file is really there
 				
-				$eeSFL_TargetFile = $eeSFL_FilePath . '_(' . $i . ').' . $eeSFL_Extension; // Indicate the copy number
-				
-				if(!is_file(ABSPATH . $eeSFL_DirPath . $eeSFL_TargetFile)) { break; }
-			}							
+				for ($i = 1; $i <= $eeCopyLimit; $i++) { // Look for existing copies
+					
+					$eeSFL_FilePathAdded = $eeDir . $eeNameOnly . '_(' . $i . ').' . $eeExtension; // Indicate the copy number
+					
+					if(!is_file(ABSPATH . $eeSFL_FilePathAdded)) { break; } // If no copy is there, we're done.
+				}							
+			}
 		}
 	}
 		
-	return 	$eeSFL_DirPath . $eeSFL_TargetFile;
+	return 	$eeSFL_FilePathAdded; // Return the new file name and path
 }
 
 

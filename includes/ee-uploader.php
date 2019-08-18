@@ -19,9 +19,13 @@ $eeSFL_Log[] = 'Uploading to...';
 $eeSFL_Log[] = $eeSFL_Config['FileListDir'];
 
 // Check for an upload job, then run notification routine.
-if(@$_POST['eeSFL_Upload']) { 
+if(@$_POST['eeSFL_Upload']) {
 	
-	$eeOutput .= eeSFL_ProcessUpload($eeSFL_Config['FileListURL'], $eeSFL_Config['FileListDir'], $eeSFL_Config['Notify']);
+	$eeSFL_ID = filter_var(@$_POST['eeSFL_ID'], FILTER_VALIDATE_INT);
+	
+	if($eeSFL_ID OR $eeSFL_ID === 0) {
+		$eeOutput .= eeSFL_ProcessUpload($eeSFL_ID);
+	}
 	
 	if(!$eeAdmin) {
 		eeSFL_UploadCompleted(); // Action Hook: eeSFL_UploadCompleted
@@ -52,246 +56,59 @@ if(@$eeSFL_Config['FileListDir']) {
 	
 	<!-- Simple File List Uploader -->
 			
-		<form action="" method="POST" enctype="multipart/form-data" name="eeUploadForm" id="eeUploadForm">
+		<form action="" method="POST" enctype="multipart/form-data" name="eeSFL_UploadForm" id="eeSFL_UploadForm">
 		
 		<input type="hidden" name="MAX_FILE_SIZE" value="' .(($eeSFL_Config['UploadMaxFileSize']*1024)*1024) . '" />
 		<input type="hidden" name="eeSFL_Upload" value="TRUE" />
-		<input type="hidden" name="eeFileCount" value="" id="eeFileCount" />
-		<input type="hidden" name="eeFileList" value="" id="eeFileList" />';
+		<input type="hidden" name="eeSFL_ID" value="' . $eeSFL_Config['ID'] . '" id="eeSFL_ID" />
+		<input type="hidden" name="eeSFL_FileCount" value="" id="eeSFL_FileCount" />
+		<input type="hidden" name="eeSFL_FileList" value="" id="eeSFL_FileList" />
+		';
 		
 		if($eeSFLF) {
-			$eeOutput .= '<input type="hidden" name="eeSFLF_UploadFolder" value="' . urlencode($eeSFLF_ListFolder) . '" id="eeSFLF_UploadFolder" />';
+			$eeOutput .= '<input type="hidden" name="eeSFLF_UploadFolder" value="' . urlencode($eeSFLF_ListFolder) . '" id="eeSFLF_UploadFolder" />
+			';
 		}
 		if($eeAdmin) {
-			$eeOutput .= '<a href="?page=ee-simple-file-list&tab=list_settings&subtab=uploader_settings" class="button eeRight">' . __('Upload Settings', 'ee-simple-file-list') . '</a>';
+			$eeOutput .= '<a href="?page=ee-simple-file-list&tab=list_settings&subtab=uploader_settings" class="button eeRight">' . __('Upload Settings', 'ee-simple-file-list') . '</a>
+			';
 		}
 		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload', 'ee-simple-file-list-upload-nonce', TRUE, FALSE);
 	
-		$eeOutput .= '<h2>' . __('Upload Files', 'ee-simple-file-list') . '</h2>';
+		$eeOutput .= '
+		
+		<h2>' . __('Upload Files', 'ee-simple-file-list') . '</h2>';
 		
 		if($eeSFL_Config['GetUploaderInfo'] == 'YES' AND !$eeAdmin) { $eeOutput .= $eeSFL->eeSFL_UploadInfoForm(); }
 		
 		$eeSFL_FileFormats = str_replace(' ' , '', $eeSFL_Config['FileFormats']); // Strip spaces
+		
+		// Security
+		$eeSFL_Timestamp = time();
+		$eeSFL_TimestampMD5 = md5('unique_salt' . $eeSFL_Timestamp);
 	    
-		$eeOutput .= '<input type="file" name="eeFileInput" id="eeFileInput" multiple />
+		$eeOutput .= '<input type="file" name="eeSFL_FileInput" id="eeSFL_FileInput" multiple />
 		
 		<br class="eeClearFix" />
 		
 		<script type="text/javascript">
 		
-			console.log("Simple File List - Multi-Uploader");
-			
-			var eeUploadFiles = document.querySelector("#eeFileInput");
-			var eeFiles = "";
-			var eeFileSet = new Array(); // Names
-			var eeFileObjects = new Array(); // File objects
-			var eeFileCount = 0; // How many to upload
-			
-			var eeFileLimit = ' . $eeSFL_Config['UploadLimit'] . '; // Maximum number of files allowed
-			var eeUploaded = 0; // How many have uploaded
-			var eeError = false; // Bad things have happened
-			
-			// Allowed file extentions
-			var eeFormats = "' . $eeSFL_Config['FileFormats'] . '";
-			var eeFormatsArray = eeFormats.split(","); // An array of the things.
-			
-			jQuery(document).ready(function() {
-			
-				jQuery( "#eeUploadingNow" ).hide(); // Hide the spinner
-				
-				// File Queue Information
-				document.getElementById("eeFileInput").addEventListener("change", function(){
-				    
-				    console.log("File Added");
-				    
-				    if(this.files.length > eeFileLimit) {
-					    
-					    alert(this.files.length + " files selected. The maximum allowed is " + eeFileLimit);
-					    
-					    eeError = false;
-					    eeFile = false;
-					    jQuery("#eeFileInput").val("");
-					    return false;
-					       
-					}
-				    
-				    for(var i = 0; i < this.files.length; i++){
-				        
-				        var eeFile =  this.files[i];
-				        
-				        console.group("File # " + i);
-				        console.log("Name: " + eeFile.name);
-				        
-				        // Validation
-				        
-				        // Size
-				        console.log("Size: " + eeFile.size);
-				        
-				        if(eeFile.size > ' . (($eeSFL_Config['UploadMaxFileSize']*1024)*1024) . ') {
-					        eeError = eeFile.name + " is too large to upload.";
-				        }
-				        
-				        // Type
-				        var eeExtension = eeFile.name.split(".").pop();
-				        eeExtension = eeExtension.toLowerCase();
-				        
-				        if(eeFormatsArray.indexOf(eeExtension) == -1) {
-					        eeError = "This file type (" + eeExtension + ") is not allowed.";
-				        }
-				        
-				        console.log("Extension: " + eeExtension);
-				        console.log("Type: " + eeFile.type);
-				        
-				        // Modified date
-				        // console.log("Date: " + eeFile.lastModified);
-				        
-				        console.groupEnd();
-				        
-				        if(!eeError) { // If no errors
-				        	
-							eeFileObjects.push(eeFile); // Add object
-							eeFileSet.push(eeFile.name); // Add name   
-							
-				        } else {
-					        
-					        alert(eeError); // Alert the user.
-					        
-					        eeError = false;
-					        eeFile = false;
-					        jQuery("#eeFileInput").val("");
-					        return false;
-				        }
-				        
-				    }
-				    
-				    eeFileCount = eeFileObjects.length; // Reset based on set
-				    var eeFileQstring = JSON.stringify(eeFileSet);
-				            
-		            jQuery("#eeFileList").val(eeFileQstring); // Set the hidden inputs
-					jQuery("#eeFileCount").val(eeFileCount); // The number of files
-		            
-		            console.log("#eeFileList  Set: " + eeFileQstring);
-					console.log("#eeFileCount Set: " + eeFileCount);
-				        
-				    console.log("Files: " + eeFileSet);
-				    console.log("Count: " + eeFileCount);
-				    
-				}, false);
-				
-				
-		
-			}); // END Ready Function
-			
-			
-			
-			// The Upload Queue Processor
-			function eeUploadProcessor(eeFileObjects) {
-				
-				eeFileCount = eeFileObjects.length;
-				
-				if(eeFileCount) {
-					
-					// Remove button and replace with spinner
-				    jQuery("#eeUploadGo" ).fadeOut( function(){ jQuery( "#eeUploadingNow" ).fadeIn(); } );
-					// jQuery( "#eeUploadingNow" ).fadeIn();
-				
-					console.log("Uploading " + eeFileCount + " files...");
-					
-					for (var i = 0; i < eeFileCount; i++) { // Loop through and upload the files
-						
-						console.log("Processing File: " + eeFileObjects[i].name);
-									            
-			            eeUploadFile(eeFileObjects[i]); // Upload the file using the function below...
-					}
-				}		
-			}
-			
-			
-			// File Upload AJAX Call
-			function eeUploadFile(eeFile) { // Pass in file object
-			    
-			    var eeUrl = "' . plugin_dir_url( __FILE__ ) . '../ee-upload-engine.php' . '";
-			    var eeXhr = new XMLHttpRequest();
-			    var eeFd = new FormData();
-			    
-			    console.log("Calling Engine: " + eeUrl);
-			    console.log("Uploading: " + eeFile.name);
-			    
-			    eeXhr.open("POST", eeUrl, true);
-			    
-			    eeXhr.onreadystatechange = function() {
-			        
-			        if (eeXhr.readyState == 4) { // && eeXhr.status == 200 <-- Windows returns 404?
-		            
-		            	eeUploaded ++;
-			            
-			            console.log("File Uploaded (" + eeUploaded + " of " + eeFileCount + ")");
-			            
-						// Every thing ok, file uploaded
-			            console.log("RESPONSE: " + eeXhr.responseText); // handle response.
-			            
-			            // Submit the Form
-			            if(eeUploaded == eeFileCount) {
-				            
-				            if(eeXhr.responseText == "SUCCESS") {
-				            
-				            	console.log("--->>> SUBMITTING FORM ...");
-				            	
-				            	document.forms.eeUploadForm.submit(); // SUCCESS - Process the Form <<<----- FORM SUBMIT
-								
-					        } else {
-						    	console.log("XHR Status: " + eeXhr.status);
-						    	console.log("XHR State: " + eeXhr.readyState);
-						    	
-						    	var n = eeXhr.responseText.search("<"); // Error condition
-						    	if(n === 0) {
-							    	alert("Upload Error: " + eeFile.name);
-							    	jQuery( "#eeUploadingNow" ).fadeOut();
-							    }
-							    return false;
-					        }
-				        }
-			        
-			        } else {
-				    	console.log("XHR Status: " + eeXhr.status);
-				    	console.log("XHR State: " + eeXhr.readyState);
-				    	return false;
-			        }
-			    };
-			    
-			    // Pass the file name to the Upload Engine
-			    eeFd.append("file", eeFile);
-			    
-			    // Security
-			    ';
-			    
-			    $eeSFL_Timestamp = time();
-			    $eeSFL_TimestampMD5 = md5('unique_salt' . $eeSFL_Timestamp);
-			    
-			    $eeOutput .= 'eeFd.append("timestamp", "' . $eeSFL_Timestamp . '"); 
-			    
-			    eeFd.append("token", "' . $eeSFL_TimestampMD5 . '");  
-			    
-			    eeFd.append("eeSFL_ID", "' . $eeSFL->eeListID . '");
-			    
-			    eeFd.append("eeSFL_FileListDir", "' . urlencode($eeSFL_Config['FileListDir']) . '");
-			        
-			    // Send the AJAX request...
-			    eeXhr.send(eeFd);
-			}
-
-			
-			console.log("Waiting for files...");
-			
-			// Populate the action attribute in the form
-			var eeCurrentURL = document.location.href;
-			jQuery("#eeUploadForm").attr("action", eeCurrentURL);
+			var eeSFL_ListID = ' . $eeSFL_Config['ID'] . ';
+			var eeSFL_FileListDir = "' . $eeSFL_Config['FileListDir'] . '";
+			var eeSFL_FileLimit = ' . $eeSFL_Config['UploadLimit'] . '; // Maximum number of files allowed
+			var eeSFL_UploadMaxFileSize = ' . (($eeSFL_Config['UploadMaxFileSize']*1024)*1024) . ';
+			var eeSFL_FileFormats = "' . $eeSFL_Config['FileFormats'] . '"; // Allowed file extensions
+			var eeSFL_TimeStamp = "' . $eeSFL_Timestamp . '"; // Security
+			var eeSFL_TimeStampMD5 = "' . $eeSFL_TimestampMD5 . '"; // Security
+			var eeSFL_UploadEngineURL = "' . $eeSFL_Env['pluginURL'] . '/ee-upload-engine.php";
 			
 		</script>
 		
-		<span id="eeUploadingNow"><img class="eeSFL_UploadingImg" src="' . $eeSFL_Env['wpPluginsURL'] . '/images/sending.gif" width="32" height="32" alt="Spinner Icon" />' . __('Uploading', 'ee-simple-file-list') . '</span>
+		<script src="' . $eeSFL_Env['pluginURL'] . '/js/ee-uploader.js"></script>
 		
-		<button type="button" name="eeUploadGo" id="eeUploadGo" onclick="eeUploadProcessor(eeFileObjects);">' . __('Upload', 'ee-simple-file-list') . '</button>
+		<span id="eeSFL_UploadingNow"><img class="eeSFL_UploadingImg" src="' . $eeSFL_Env['wpPluginsURL'] . '/images/sending.gif" width="32" height="32" alt="Spinner Icon" />' . __('Uploading', 'ee-simple-file-list') . '</span>
+		
+		<button type="button" name="eeSFL_UploadGo" id="eeSFL_UploadGo" onclick="eeUploadProcessor(eeSFL_FileObjects);">' . __('Upload', 'ee-simple-file-list') . '</button>
 		
 		<p class="sfl_instuctions">' . __('File Limit', 'ee-simple-file-list') . ': ' . $eeSFL_Config['UploadLimit'] . ' ' . __('files', 'ee-simple-file-list') . '<br />
 		

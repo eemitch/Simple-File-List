@@ -107,10 +107,6 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 	var eeActionEngine = eeSFL_PluginURL + '/ee-file-engine.php';
 	
 	
-	// The List ID
-	var eeID = jQuery('#eeSFL_ID').html();
-	
-	
 	// AJAX --------------
 	
 	// Get the Nonce
@@ -122,7 +118,7 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 		var eeSFL_NewFileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeNewFileName').val();
 	
 		var eeFormData = {
-			'eeSFL_ID': eeID,
+			'eeSFL_ID': eeSFL_ListID,
 			'eeFilePath': eeSFL_FileListPath + eeSFL_OldFileName,
 			'eeFileAction': eeSFL_Action + '|' + eeSFL_FileListPath + eeSFL_NewFileName,
 			'eeSecurity': eeSFL_ActionNonce
@@ -134,7 +130,7 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 		var eeSFL_FileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileLink').text();
 		
 		var eeFormData = {
-			'eeSFL_ID': eeID,
+			'eeSFL_ID': eeSFL_ListID,
 			'eeFilePath': eeSFL_FileListPath + eeSFL_FileName,
 			'eeFileAction': eeSFL_Action,
 			'eeSecurity': eeSFL_ActionNonce

@@ -14,7 +14,7 @@ if(@$_POST['eeSFL_ID']) { $eeSFL_ID = filter_var($_POST['eeSFL_ID'], FILTER_VALI
 if(!$eeSFL_ID) { 
 	$eeSFL_Error = "Missing ID";
 	trigger_error($eeSFL_Error, E_USER_ERROR);
-	exit();
+	exit($eeSFL_Error);
 }
 
 
@@ -24,7 +24,7 @@ if(@$_POST['eeFilePath']) {
 } else { 
 	$eeSFL_Error = "Missing the File";
 	trigger_error($eeSFL_Error, E_USER_ERROR);
-	exit();
+	exit($eeSFL_Error);
 }
 
 // The Action
@@ -33,7 +33,7 @@ if(@$_POST['eeFileAction']) {
 } else { 
 	$eeSFL_Error = "Missing the Action";
 	trigger_error($eeSFL_Error, E_USER_ERROR);
-	exit();
+	exit($eeSFL_Error);
 }
 
 // If Renaming
@@ -57,8 +57,9 @@ require($wordpress); // Get all that wonderfullness
 function eeSFL_CheckNonce() {
 	
 	if( !check_ajax_referer( 'ee-simple-file-list-upload', 'ee-simple-file-list-upload-nonce', FALSE ) ) {
-		trigger_error("WP AJAX Error", E_USER_ERROR);
-		exit();
+		$eeSFL_Error = "WP AJAX Error";
+		trigger_error($eeSFL_Error, E_USER_ERROR);
+		exit($eeSFL_Error);
 	}	
 }
 add_action( 'plugins_loaded', 'eeSFL_CheckNonce' );

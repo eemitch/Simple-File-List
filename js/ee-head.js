@@ -1,6 +1,8 @@
 /* Simple File List Javascript | Mitchell Bennis | Element Engage, LLC | mitch@elementengage.com */
 
-console.log('eeSFL Frontside Head JS Loaded');
+// console.log('eeSFL Frontside Head JS Loaded');
+
+var eeSFL_FileFormats = '';
 
 
 // File Size Formatting

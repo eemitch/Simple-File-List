@@ -18,7 +18,7 @@ if($eeSFLF) {
 }
 
 // Get the File List Transient
-$eeSFL_Files = $eeSFL->eeSFL_createFileListArray($eeSFL->eeListID, $eeSFL_Config['FileListDir'], FALSE);
+$eeSFL_Files = $eeSFL->eeSFL_createFileListArray($eeSFL_Config['ID'], $eeSFL_Config['FileListDir'], FALSE);
 $eeSFL_Log['fileTransient'] = $eeSFL_Files;
 $eeSFL_ListClass = 'eeSFL'; // The basic list's CSS class. Extensions might change this.
 $eeSFL_AllowFrontManage = 'NO'; // Front-side freedom <--- TO DO
@@ -78,7 +78,7 @@ $eeSFL_ActionNonce = wp_create_nonce('eeSFL_ActionNonce'); // Security for Ajax
 $eeOutput .= '
 
 <!-- File List -->
-<span class="eeSFL_Hide" id="eeSFL_ID">' . $eeSFL->eeListID . '</span>
+<span class="eeSFL_Hide" id="eeSFL_ID">' . $eeSFL_Config['ID'] . '</span>
 <span class="eeSFL_Hide" id="eeSFL_ActionNonce">' . $eeSFL_ActionNonce . '</span>
 <script>
 	var eeSFL_PluginURL = "' . $eeSFL_Env['pluginURL'] . '";
@@ -172,7 +172,7 @@ if(count($eeSFL_Files)) {
 			// Go
 			if($eeFileName) {
 			
-				$eeFileCount++; // Bump the count
+				$eeFileCount++; // Bump the file count
 				
 				if( strpos($eeFilePath, '.') ) { // This is a file
 					
@@ -198,16 +198,19 @@ if(count($eeSFL_Files)) {
 				}
 				
 				
-				// Check for the first file on the admin side.
-				if($eeIsFile AND $eeAdmin AND $eeFileCount = 1 ) {
-					
-					// exit($eeFileURL);
+				// Check for the file on the admin side.
+				if($eeIsFile AND $eeAdmin) {
 					
 					$eeFileURL = eeSFL_UrlExists($eeFileURL); // Sets to FALSE if file not found.
 					
 					if(!$eeFileURL) {
-						$eeError = 'First file is not reachable';
+						$eeError = 'File is not reachable: ' . $eeFileURL;
 						$eeSFL_Log['errors'][] = $eeError;
+						
+						// Rebuild the array
+						$eeSFL->eeSFL_createFileListArray($eeSFL_Config['ID'], $eeSFL_Config['FileListDir'], TRUE);
+						
+						wp_die(__('A file is missing from the list. Please reload this page to show the proper view.', 'ee-simple-file-list') );
 					}
 				}
 				

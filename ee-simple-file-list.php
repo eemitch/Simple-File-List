@@ -8,7 +8,7 @@ Plugin Name: Simple File List 4
 Plugin URI: http://simplefilelist.com
 Description: Full Featured File List with Front-Side File Uploading | <a href="https://simplefilelist.com/donations/simple-file-list-project/">Donate</a> | <a href="admin.php?page=ee-simple-file-list&tab=extensions">Add Features</a>
 Author: Mitchell Bennis - Element Engage, LLC
-Version: 4.0.2
+Version: 4.0.3
 Author URI: http://elementengage.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -20,14 +20,13 @@ $eeSFL_DevMode = TRUE; // Enables visible logging
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Version
-define('eeSFL_Version', '4.0.2');
+define('eeSFL_Version', '4.0.3');
 
 // Our Core
 $eeSFL = FALSE; // Our main class
 $eeSFL_Config = array(); // Database Info
 $eeSFL_Env = array(); // Environment
-
-// $eeListNumber = 1; // Used for multiple list displays per page - TO DO
+$eeListNumber = 1; // Count of lists per page
 
 // The Log - Written to wp_option -> eeSFL-Log
 $eeSFL_Log = array('Simple File List is Loading...');
@@ -64,6 +63,13 @@ function eeSFL_Setup() {
 		$eeSFL_Env = $eeSFL->eeSFL_GetEnv(); // Get the Environment Array
 		$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_Env, $eeSFL->eeListID); // Get the Configuration Array	
 	}
+	
+	$eeSFL_Files = get_transient('eeSFL-FileList-' . $eeSFL_Config['ID']);
+	
+	// STOP
+	// echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
+	
+	// exit('STOP at ee-functions line 319');
 	
 	eeSFL_VersionCheck(); // Update database if needed.
 	
@@ -238,10 +244,10 @@ function eeSFL_Shortcode($atts, $content = null) {
 	        break; // Show It
 	    case 'USER':
 	        // Show It If...
-	        if( get_current_user_id() ) { break; } else { $eeSFL_AllowUploads = 'NO'; }
+	        if( get_current_user_id() ) { break; } else { $eeSFL_Config['AllowUploads'] = 'NO'; }
 	    case 'ADMIN':
 	        // Show It If...
-	        if(current_user_can('manage_options')) { break; } else { $eeSFL_AllowUploads = 'NO'; }
+	        if(current_user_can('manage_options')) { break; } else { $eeSFL_Config['AllowUploads'] = 'NO'; }
 	        break;
 		default:
 			$eeSFL_Config['AllowUploads'] = 'NO'; // Show Nothing
@@ -306,8 +312,8 @@ function eeSFL_Enqueue() {
 	
 	// Now with Javascript !
 	$deps = array('jquery');
-	wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/eeJavacripts-head.js',$deps,'30',FALSE); // Head
-	wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/eeJavacripts-footer.js',$deps,'30',TRUE); // Footer
+	wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js',$deps,'30',FALSE); // Head
+	wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js',$deps,'40',TRUE); // Footer
 }
 add_action( 'wp_enqueue_scripts', 'eeSFL_Enqueue' );
 
@@ -320,6 +326,8 @@ function eeSFL_AdminHead($eeHook) {
         
         // https://codex.wordpress.org/Plugin_API/Action_Reference/admin_enqueue_scripts
         
+        $deps = '';
+        
         $eeHooks = array(
         	'toplevel_page_ee-simple-file-list',
         	'simple-file-list_page_ee-simple-file-list',
@@ -331,9 +339,9 @@ function eeSFL_AdminHead($eeHook) {
             wp_enqueue_style( 'ee-simple-file-list-css-back', plugins_url('css/eeStyles-Back.css', __FILE__) );
             
             // Now with Javascript !
-            wp_enqueue_script('ee-simple-file-list-js-footer', plugin_dir_url(__FILE__) . 'js/eeJavacripts-footer.js');
-            wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/eeJavacripts-head.js');
-			wp_enqueue_script('ee-simple-file-list-js-back', plugin_dir_url(__FILE__) . 'js/eeJavacripts-back.js');
+            wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js');
+			wp_enqueue_script('ee-simple-file-list-js-back', plugin_dir_url(__FILE__) . 'js/ee-back.js');
+            wp_enqueue_script('ee-simple-file-list-js-footer', plugin_dir_url(__FILE__) . 'js/ee-footer.js','','30',TRUE);
 			
 			wp_localize_script('ee-simple-file-list-js-head', 'eeSFL_JS', array( 'pluginsUrl' => plugins_url() ) );
         }

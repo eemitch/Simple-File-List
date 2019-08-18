@@ -99,7 +99,7 @@ class eeSFL_MainClass { // Plugin Configuration --> Environment, User, Settings
     
    
     // Get Data
-    public function eeSFL_Config($eeSFL_Env, $eeID = 1) {
+    public function eeSFL_Config($eeSFL_Env, $eeSFL_ID = 1) {
 	    
 	    global $eeSFL_Log;
 	    
@@ -111,8 +111,8 @@ class eeSFL_MainClass { // Plugin Configuration --> Environment, User, Settings
 	    if(is_array($eeArray)) {
 	    
 			// Get sub-array for this list ID
-			$eeSFL_Config = $eeArray[$eeID];
-			$eeSFL_Config['eeID'] = $eeID;  // The List ID
+			$eeSFL_Config = $eeArray[$eeSFL_ID];
+			$eeSFL_Config['ID'] = $eeSFL_ID;  // The List ID
 			
 			// Check Environment
 			if($eeSFL_Env['the_max_upload_size'] < $eeSFL_Config['UploadMaxFileSize']) {
@@ -162,22 +162,22 @@ class eeSFL_MainClass { // Plugin Configuration --> Environment, User, Settings
 	
 	
 	// Create an array: $eeArray( array('filepath/name', 'date', 'size' , 'etc...') )
-	public function eeSFL_createFileListArray($eeID, $eeFileListDir, $eeForce = FALSE) {
+	public function eeSFL_createFileListArray($eeSFL_ID, $eeFileListDir, $eeForce = FALSE) {
 		
 		global $eeSFL_Log, $eeSFL_Config;
 		$eeArray = array();
 		
 		if($eeForce) {
-			delete_transient('eeSFL-FileList-' . $eeID);
+			delete_transient('eeSFL-FileList-' . $eeSFL_ID);
 		} else {
-			$eeArray = get_transient('eeSFL-FileList-' . $eeID); // From the database
+			$eeArray = get_transient('eeSFL-FileList-' . $eeSFL_ID); // From the database
 			if(!$eeArray) { $eeArray = array(); } // Ensure it's not FALSE
 		}
 		
 		// We store our array of file info in a transient
 		if( !count($eeArray) ) {
 			
-			$eeSFL_Log[] = 'Creating new file list transient for List # ' . $eeID . ' at ' . $eeFileListDir;
+			$eeSFL_Log[] = 'Creating new file list transient for List # ' . $eeSFL_ID . ' at ' . $eeFileListDir;
 			
 			$eeFileArray = $this->eeSFL_IndexFileListDir($eeFileListDir);
 			
@@ -217,7 +217,7 @@ class eeSFL_MainClass { // Plugin Configuration --> Environment, User, Settings
 				}
 			}
 			
-			if(@count($eeArray) AND set_transient('eeSFL-FileList-' . $eeID, $eeArray, 6 * HOUR_IN_SECONDS) ) {
+			if(@count($eeArray) AND set_transient('eeSFL-FileList-' . $eeSFL_ID, $eeArray, 6 * HOUR_IN_SECONDS) ) {
 				$eeSFL_Log['eeSFL']['transient set'] = $eeArray;
 			} else {
 				$eeSFL_Log['errors'][] = 'File Transient Could Not Be Set.';
@@ -483,7 +483,7 @@ class eeSFL_MainClass { // Plugin Configuration --> Environment, User, Settings
 		$eeSFL_Body = '';
 		
 		// Notifications via AJAX Engine
-		if($_POST AND !@$eeSFL_UploadJob['Error'] AND !is_admin() ) {
+		if($_POST AND !@$eeSFL_UploadJob['Error']) {
 		
 			$eeSFL_Log['notice'][] = 'Sending Notification to ' . $eeSFL_Notify;
 			

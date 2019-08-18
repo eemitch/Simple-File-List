@@ -55,7 +55,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 		
 		// File Formats
 		if(@$_POST['eeFileFormats']) { // Strip all but what we need for the comma list of file extensions
-			$eeSFL_Config['FileFormats'] = preg_replace("/[^a-z0-9 ,]/i", "", $_POST['eeFileFormats']);
+			$eeSFL_Config['FileFormats'] = preg_replace("/[^a-z0-9,]/i", "", $_POST['eeFileFormats']);
 		}
 		
 		
