@@ -129,15 +129,33 @@
 	float: left;
 }
 
+
+#eeSFL_FileDropZone {
+	
+	padding: 10px;
+	border: 5px dashed #444;
+}
+
+
+
+
+
+
 #eeSFL_UploadProgress {
 	
 	display: none; /* Show with javascript */
 	
-	width: 100%;
-	height: 3em;
+	width: 1%;
+	height: 2em;
+	line-height: 2em;
 	background-color: #23e100;
+	color: #FFF;
+	font-size: 1em;
+	text-align: center;
 }
-
+#eeSFL_UploadProgress em {
+	display: none; /* Show with javascript */
+}
 
 
 

@@ -1,11 +1,10 @@
 // Simple File List - Multi-File Uploader - mitch@elementengage.com
 
-// alert(eeSFL_FileFormats);
 
-console.log("Upload JS Loaded - ver 3.0");
 
-// var eeUploadFiles = document.querySelector("#eeSFL_FileInput");
-// var eeSFL_Files = "";
+console.log("ee-upload.js | ver 3.1");
+
+
 var eeSFL_FileSet = new Array(); // Names
 var eeSFL_FileObjects = new Array(); // File objects
 var eeSFL_FileCount = 0; // How many to upload
@@ -13,31 +12,61 @@ var eeSFL_Uploaded = 0; // How many have uploaded
 var eeSFL_Error = false; // Bad things have happened
 var eeSFL_FormatsArray = eeSFL_FileFormats.split(","); // An array of the things.
 
-jQuery(document).ready(function() {
 
-	jQuery( "#eeSFL_UploadingNow" ).hide(); // Hide the spinner
+
+
+// Receive files from input[type=file]
+function eeSFL_FileInputHandler(eeEvent) {
 	
-	// File Queue Information
-	document.getElementById("eeSFL_FileInput").addEventListener("change", function(){
+	console.log("File Added via Input");
+	
+	var eeSFL_Files = document.getElementById("eeSFL_FileInput").files;
+	
+	eeSFL_ProcessFileInput(eeSFL_Files);
+
+}
+
+// Receive files from the drop zone
+function eeSFL_DropHandler(eeEvent) {
+  
+  	console.log('File Added via Drop Zone');
+
+	// Prevent default behavior (Prevent file from being opened)
+	eeEvent.preventDefault();
+	  
+	eeSFL_ProcessFileInput(eeEvent.dataTransfer.files); // The file object
+}
+
+// Prevent file from being opened in the browser window
+function eeSFL_DragOverHandler(eeEvent) {
+	eeEvent.preventDefault();
+}
+
+
+
+
+
+	
+// Check the files and prepare for upload
+function eeSFL_ProcessFileInput(eeSFL_Files) { // The files object
+    
+    // Make sure it's not too many
+    if(eeSFL_Files.length > eeSFL_FileLimit) { // If so, reset
 	    
-	    console.log("File Added");
-	    
-	    if(this.files.length > eeSFL_FileLimit) {
-		    
-		    alert(this.files.length + " files selected. The maximum allowed is " + eeSFL_FileLimit);
-		    
-		    eeSFL_Error = false;
-		    eeSFL_File = false;
-		    jQuery("#eeSFL_FileInput").val("");
-		    return false;
-		       
-		}
-	    
-	    for(var i = 0; i < this.files.length; i++){
+	    eeSFL_Error = false;
+	    eeSFL_File = false;
+	    jQuery("#eeSFL_FileInput").val("");
+	    alert(this.files.length + " files selected. The maximum allowed is " + eeSFL_FileLimit);
+	    return false;   
+	}
+    
+    // Loop through file object
+    for(var i = 0; i < eeSFL_Files.length; i++){
+        
+        var eeSFL_File =  eeSFL_Files[i];
+        
+        console.group("File # " + i);
 	        
-	        var eeSFL_File =  this.files[i];
-	        
-	        console.group("File # " + i);
 	        console.log("Name: " + eeSFL_File.name);
 	        
 	        // Validation
@@ -61,43 +90,40 @@ jQuery(document).ready(function() {
 	        console.log("Type: " + eeSFL_File.type);
 	        
 	        // Modified date
-	        // console.log("Date: " + eeSFL_File.lastModified);
-	        
-	        console.groupEnd();
-	        
-	        if(!eeSFL_Error) { // If no errors
-	        	
-				eeSFL_FileObjects.push(eeSFL_File); // Add object
-				eeSFL_FileSet.push(eeSFL_File.name); // Add name   
-				
-	        } else {
-		        
-		        alert(eeSFL_Error); // Alert the user.
-		        
-		        eeSFL_Error = false;
-		        eeSFL_File = false;
-		        jQuery("#eeSFL_FileInput").val("");
-		        return false;
-	        }
-	        
-	    }
-	    
-	    eeSFL_FileCount = eeSFL_FileObjects.length; // Reset based on set
-	    var eeSFL_FileQstring = JSON.stringify(eeSFL_FileSet);
-	            
-        jQuery("#eeSFL_FileList").val(eeSFL_FileQstring); // Set the hidden inputs
-		jQuery("#eeSFL_FileCount").val(eeSFL_FileCount); // The number of files
+	        console.log("Date: " + eeSFL_File.lastModified);
         
-        console.log("#eeSFL_FileList  Set: " + eeSFL_FileQstring);
-		console.log("#eeSFL_FileCount Set: " + eeSFL_FileCount);
+        console.groupEnd();
+        
+        if(!eeSFL_Error) { // If no errors
+        	
+			eeSFL_FileObjects.push(eeSFL_File); // Add this object
+			eeSFL_FileSet.push(eeSFL_File.name); // Add this name for the post-processor 
+			
+        } else {
 	        
-	    console.log("Files: " + eeSFL_FileSet);
-	    console.log("Count: " + eeSFL_FileCount);
-	    
-	}, false);
-
-}); // END Ready Function
-
+	        alert(eeSFL_Error); // Alert the user.
+	        
+	        eeSFL_Error = false;
+	        eeSFL_File = false;
+	        jQuery("#eeSFL_FileInput").val("");
+	        return false;
+        } 
+    }
+    
+    
+    eeSFL_FileCount = eeSFL_FileObjects.length; // Reset based on set
+    var eeSFL_FileQstring = JSON.stringify(eeSFL_FileSet);
+            
+    jQuery("#eeSFL_FileList").val(eeSFL_FileQstring); // Set the hidden inputs
+	jQuery("#eeSFL_FileCount").val(eeSFL_FileCount); // The number of files
+    
+    // Helpful information
+    console.log("#eeSFL_FileList  Set: " + eeSFL_FileQstring);
+	console.log("#eeSFL_FileCount Set: " + eeSFL_FileCount);
+    console.log("Files: " + eeSFL_FileSet);
+    console.log("Count: " + eeSFL_FileCount);
+    
+}
 
 
 
@@ -109,9 +135,8 @@ function eeUploadProcessor(eeSFL_FileObjects) {
 	
 	if(eeSFL_FileCount) {
 		
-		// Remove button and replace with spinner
-	    jQuery("#eeSFL_UploadGo" ).fadeOut( function(){ jQuery( "#eeSFL_UploadingNow" ).fadeIn(); } );
-		// jQuery( "#eeUploadingNow" ).fadeIn();
+		// Remove button and replace with progress bar
+	    jQuery("#eeSFL_UploadGo" ).hide();
 	
 		console.log("Uploading " + eeSFL_FileCount + " files...");
 		
@@ -126,36 +151,35 @@ function eeUploadProcessor(eeSFL_FileObjects) {
 
 
 
-
 // File Upload AJAX Call
 function eeUploadFile(eeSFL_File) { // Pass in file object
     
     var eeXhr = new XMLHttpRequest();
     
     if(eeXhr.upload) { // Upload progress
+			
+		jQuery('#eeSFL_UploadProgress').css('display', 'block');
 	    
 	    console.log('Upload in progress ...');
 	    
 	    eeXhr.upload.addEventListener("progress", function(e) {
 		    
-			var percent = parseInt(100 - (e.loaded / e.total * 100)); // Percent remaining
-			console.log('Upload Progress: ' + percent + "%" );
+			var percent = parseInt((e.loaded / e.total * 100)); // Percent completed
+			console.log('Upload Progress: ' + percent + '%' );
 			
 			// Progress Bar
-			alert('STOP - Upload Progress Display');
-			
-			
+			if(percent < 100) {
+				jQuery('#eeSFL_UploadProgress').css('width', percent + '%'); // Width based on percent
+			} else {
+				jQuery('#eeSFL_UploadProgress').css('width', '100%');
+			}
 			
 		}, false);
 	}
 	
 	
-	
-	
-	
-	
-    
-    var eeFormData = new FormData();
+	// Add our form data
+	var eeFormData = new FormData();
     
     console.log("Uploading: " + eeSFL_File.name);
     console.log("Calling Engine: " + eeSFL_UploadEngineURL);
@@ -164,9 +188,9 @@ function eeUploadFile(eeSFL_File) { // Pass in file object
     
     eeXhr.onreadystatechange = function() {
         
-        if (eeXhr.readyState == 4) { // && eeXhr.status == 200 <-- Windows returns 404?
-        
-        	eeSFL_Uploaded ++;
+        if (eeXhr.readyState == 4 && eeXhr.status != 500) { // && eeXhr.status == 200 <-- Windows returns 404?
+	        
+	        eeSFL_Uploaded ++;
             
             console.log("File Uploaded (" + eeSFL_Uploaded + " of " + eeSFL_FileCount + ")");
             
@@ -177,6 +201,8 @@ function eeUploadFile(eeSFL_File) { // Pass in file object
             if(eeSFL_Uploaded == eeSFL_FileCount) {
 	            
 	            if(eeXhr.responseText == "SUCCESS") {
+				
+					jQuery('#eeSFL_UploadProgress em').fadeIn(); // Show "Processing the Upload" message
 	            
 	            	console.log("--->>> SUBMITTING FORM ...");
 	            	
@@ -193,6 +219,10 @@ function eeUploadFile(eeSFL_File) { // Pass in file object
 				    }
 				    return false;
 		        }
+		        
+	        } else { // Not the last file, so reset the progress bar
+		        
+		        jQuery('#eeSFL_UploadProgress').css('width', '0%'); // Reset the progress bar
 	        }
         
         } else {

@@ -75,7 +75,9 @@ if(@$eeSFL_Config['FileListDir']) {
 	
 		$eeOutput .= '
 		
-		<h2>' . __('Upload Files', 'ee-simple-file-list') . '</h2>';
+		<h2>' . __('Upload Files', 'ee-simple-file-list') . '</h2>
+		
+		<div id="eeSFL_FileDropZone" ondrop="eeSFL_DropHandler(event);" ondragover="eeSFL_DragOverHandler(event);">';
 		
 		if($eeSFL_Config['GetUploaderInfo'] == 'YES' AND !$eeAdmin) { $eeOutput .= $eeSFL->eeSFL_UploadInfoForm(); }
 		
@@ -85,7 +87,7 @@ if(@$eeSFL_Config['FileListDir']) {
 		$eeSFL_Timestamp = time();
 		$eeSFL_TimestampMD5 = md5('unique_salt' . $eeSFL_Timestamp);
 	    
-		$eeOutput .= '<input type="file" name="eeSFL_FileInput" id="eeSFL_FileInput" multiple />
+		$eeOutput .= '<input type="file" name="eeSFL_FileInput" id="eeSFL_FileInput" onchange="eeSFL_FileInputHandler(event)" multiple />
 		
 		<br class="eeClearFix" />
 		
@@ -102,9 +104,9 @@ if(@$eeSFL_Config['FileListDir']) {
 			
 		</script>
 		
-		<script src="' . $eeSFL_Env['pluginURL'] . '/js/ee-uploader.js?v=1"></script>
+		<script src="' . $eeSFL_Env['pluginURL'] . '/js/ee-uploader.js?v=' . eeSFL_Cache_Version . '"></script>
 		
-		<span id="eeSFL_UploadProgress"></span>
+		<span id="eeSFL_UploadProgress"><em>' . __('Processing the Upload', 'ee-simple-file-list') . '</em></span>
 		
 		<button type="button" name="eeSFL_UploadGo" id="eeSFL_UploadGo" onclick="eeUploadProcessor(eeSFL_FileObjects);">' . __('Upload', 'ee-simple-file-list') . '</button>
 		
@@ -112,9 +114,11 @@ if(@$eeSFL_Config['FileListDir']) {
 		
 		' . __('Size Limit', 'ee-simple-file-list') . ': ' . $eeSFL_Config['UploadMaxFileSize'] . ' MB
 		
-		' . __('per file', 'ee-simple-file-list') . '.<br />' . __('To select multiple files, hold down the Control key while choosing files', 'ee-simple-file-list') . ' (' . __('Command key on Macs', 'ee-simple-file-list') . ')</p>
+		' . __('per file', 'ee-simple-file-list') . '.<br />' . __('Drag-and-drop files here or use the Browse button.', 'ee-simple-file-list') . '</p>
 		
 		<br class="eeClearFix" />
+		
+		</div>
 	
 	</form>';
 	

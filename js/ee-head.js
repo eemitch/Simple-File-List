@@ -2,8 +2,8 @@
 
 // console.log('eeSFL Frontside Head JS Loaded');
 
-var eeSFL_FileFormats = '';
-
+// var eeSFL_FileFormats = '';
+var eeSFL_isTouchscreen = false;
 
 // File Size Formatting
 function eeSFL_GetFileSize(bytes, si) {

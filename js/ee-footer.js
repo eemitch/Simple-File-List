@@ -8,6 +8,10 @@ jQuery(document).ready(function($) {
 
 	console.log('eeSFL Document Ready');
 	
+	window.addEventListener('touchstart', function() {
+		eeSFL_isTouchscreen = true;
+	});
+	
 	// File List Table Sorting
 	jQuery('.eeFiles th.eeSFL_Sortable').click(function(){
 	    
