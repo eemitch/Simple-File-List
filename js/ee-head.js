@@ -4,6 +4,7 @@
 
 // var eeSFL_FileFormats = '';
 var eeSFL_isTouchscreen = false;
+var eeSFL_FileID = false;
 
 // File Size Formatting
 function eeSFL_GetFileSize(bytes, si) {

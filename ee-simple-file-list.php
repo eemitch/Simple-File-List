@@ -66,11 +66,14 @@ function eeSFL_Setup() {
 		$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_Env, $eeSFL->eeListID); // Get the Configuration Array	
 	}
 	
-	$eeSFL_Files = get_transient('eeSFL-FileList-' . $eeSFL_Config['ID']);
+	
+	
+	// If Sending Files
+	if(@$_POST['eeSFL_Send']) { $eeSFL->eeSFL_SendFilesEmail($_POST); }
 	
 	
 	
-	// wp_die('STOP --> Finish Upload Progress Display --> ee-uploader.js (Line 145)');  // exit();
+	wp_die('Fix Sorting in Class File');  // exit();
 	
 	
 	

@@ -8,6 +8,25 @@ $eeSFL_Log[] = 'Loaded: ee-functions';
 
 
 
+// Detect upward path traversal
+function eeSFL_DetectUpwardTraversal($eeFilePath) {
+
+	global $eeSFL_Log;
+	
+	$eeUserPath = ABSPATH . dirname($eeFilePath);  // This could be problematic with things like ../
+	$eeRealPath = realpath( ABSPATH . dirname($eeFilePath) ); // Expunge the badness and then compare...
+	
+	if ($eeUserPath != $eeRealPath) { // They must match
+	    $eeSFL_Log['errors'] = 'Error 99'; // The infamous Error 99
+	    wp_die('Error 99 :-('); // Bad guy found, bail out :-(
+	}
+
+}
+
+
+
+
+
 // Check for the Upload Folder, Create if Needed
 function eeSFL_FileListDirCheck($eeFileListDir) {
 	
@@ -113,7 +132,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 	if($eeFileCount) {
 		
 		// Re-index the File List
-		$eeFiles = $eeSFL->eeSFL_createFileListArray($eeSFL_ID, $eeSFL_Config['FileListDir'], TRUE);
+		$eeFiles = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID);
 	
 		$eeSFL_Log[] = 'Post-processinging Upload Job ...';
 		$eeSFL_Log[] = $eeFileCount . ' Files';
@@ -338,12 +357,11 @@ function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path from W
 	$eeNameOnly = $eePathParts['filename'];
 	$eeExtension = strtolower($eePathParts['extension']);
 	
-	$eeSFL_Files = get_transient('eeSFL-FileList-' . $eeSFL_Config['ID']); // Our array of file info
+	$eeSFL_Files = get_option('eeSFL-FileList-' . $eeSFL_Config['ID']); // Our array of file info
 	
-	foreach( $eeSFL_Files as $eeString) { // Loop through file array and look for a match.
+	foreach($eeSFL_Files as $eeArray) { // Loop through file array and look for a match.
 		
-		$eeArray = explode('|', $eeString); 
-		$eeFilePath = $eeArray[0]; // Get the /folder/name.ext
+		$eeFilePath = $eeArray['FilePath']; // Get the /folder/name.ext
 		
 		// Check Transient
 		if( $eeSFL_FilePathAdded == $eeSFL_Config['FileListDir'] . $eeFilePath ) { // Duplicate found
@@ -448,6 +466,73 @@ function eeSFL_MessageDisplay($eeSFL_Message) {
 		return $eeSFL_Message;
 	}
 }
+
+
+// Return a formatted header string
+function eeSFL_ReturnHeaderString($eeFrom, $eeCc = FALSE, $eeBcc = FALSE) {
+	
+	$eeAdminEmail = get_option('admin_email');
+	
+	$eeHeaders = "From: " . get_option('blogname') . " < " . $eeAdminEmail . " >\n";
+	
+	if($eeCc) { $eeHeaders .= "CC: " . $eeCc . "\n"; }
+	
+	if($eeBcc) { $eeHeaders .= "BCC: " . $eeBcc . "\n"; }
+	
+	if( !filter_var($eeFrom, FILTER_VALIDATE_EMAIL) ) {
+		$eeFrom = $eeAdminEmail;
+	}
+	
+	$eeHeaders .= "Return-Path: " . $eeAdminEmail . "\n" . "Reply-To: " . $eeFrom . "\n";
+	
+	return $eeHeaders;
+
+}
+
+
+
+
+// Process a raw input of email addresses
+// Can be a single address or a comma sep list
+function eeSFL_ProcessEmailString($eeString) {
+	
+	$eeString = filter_var($eeString, FILTER_SANITIZE_STRING);
+	
+	if( strpos($eeString, ',') ) { // More than one address?
+		
+		$eeArray = explode(',', $eeString);
+		
+		$eeAddresses = ''; // Reset
+		
+		foreach( $eeArray as $eeEmail) {
+			
+			$eeEmail = filter_var($eeEmail, FILTER_VALIDATE_EMAIL);
+			
+			if($eeEmail) {
+				
+				$eeAddresses .= $eeEmail . ','; // Reassemble validated addresses
+			}
+		}
+		
+		$eeAddresses = substr($eeAddresses, 0, -1); // Strip the last comma
+	
+	} else {
+		
+		$eeAddresses = filter_var($eeString, FILTER_VALIDATE_EMAIL);
+	}
+	
+	if( strpos($eeAddresses, '@') ) {
+		
+		return $eeAddresses;
+		
+	} else {
+		
+		return FALSE;
+	}
+}
+
+
+
 
 
 

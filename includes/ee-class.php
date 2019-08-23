@@ -147,96 +147,91 @@ class eeSFL_MainClass { // Plugin Configuration --> Environment, User, Settings
     // Default File List Definition
     public $eeSFL_Files = array(
 	    
-		0 => array(
+		0 => array( // The File ID
 			'FileList' => 1, // The ID of the File List, contained in the above array.
 		    'FilePath' => '/Example-File.jpg', // Path to file, relative to the list root
-		    'FileNiceName' => 'Example File', // The name displayed
 		    'FileExt' => 'jpg', // The file extension
+			'FileSize' => '', // The size of the file
 			'FileDateAdded' => '', // Date the file was added to the list
 			'FileDateChanged' => '', // Last date the file was renamed or otherwise changed
-			'FileSize' => '', // The size of the file
-			'FileDescription' => '', // A short descriotion of the file
+			'FileDescription' => '', // A short description of the file
+			
+			'FileUserGroup' => '', // (Coming Later)
 			'FileOwner' => '' // (Coming Later)
 		)
     );
-	
-	
-	// Create an array: $eeArray( array('filepath/name', 'date', 'size' , 'etc...') )
-	public function eeSFL_createFileListArray($eeSFL_ID, $eeFileListDir, $eeForce = FALSE) {
+    
+    
+    
+    
+    public function eeSFL_UpdateFileListArray($eeSFL_ID) {
+	    
+	    global $eeSFL_Log, $eeSFL_Config;
+			
+		$eeFilePathsArray = $this->eeSFL_IndexFileListDir($eeSFL_Config['FileListDir']); // Get all the files
 		
-		global $eeSFL_Log, $eeSFL_Config;
-		$eeArray = array();
+		$eeFileArray = get_option('eeSFL-FileList-' . $eeSFL_ID);
 		
-		if($eeForce) {
-			delete_transient('eeSFL-FileList-' . $eeSFL_ID);
-		} else {
-			$eeArray = get_transient('eeSFL-FileList-' . $eeSFL_ID); // From the database
-			if(!$eeArray) { $eeArray = array(); } // Ensure it's not FALSE
+		if (!is_array($eeFileArray) ) { // Creating New 
+			
+			$eeFileArray = array();
+			
+			foreach( $eeFilePathsArray as $eeKey => $eeFile) {
+				
+				$eeFileArray[$eeKey]['FileList'] = $eeSFL_ID;
+				$eeFileArray[$eeKey]['FilePath'] = $eeFile;
+				$eePathParts = pathinfo($eeFile);
+				$eeFileNameAlone = $eePathParts['filename'];
+				$eeExtension = strtolower($eePathParts['extension']);
+				$eeFileArray[$eeKey]['FileExt'] = $eeExtension;
+				$eeFileArray[$eeKey]['FileSize'] = @filesize(ABSPATH . $eeFile);
+				$eeFileArray[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s", filemtime(ABSPATH . $eeFile));
+				$eeFileArray[$eeKey]['FileDateChanged'] = $eeFileArray[$eeKey]['FileDateAdded'];
+				$eeFileArray[$eeKey]['FileDescription'] = '';
+				
+				$eeFileArray[$eeKey]['FileOwner'] = '';
+				$eeFileArray[$eeKey]['FileUserGroup'] = '';
+				
+			}
+		
+		} else { // Update file info
+			
+			foreach( $eeFilePathsArray as $eeKey => $eeFile) {
+				
+				$eeFileArray[$eeKey]['FilePath'] = $eeFile;
+				$eePathParts = pathinfo($eeFile);
+				$eeFileNameAlone = $eePathParts['filename'];
+				$eeExtension = strtolower($eePathParts['extension']);
+				$eeFileArray[$eeKey]['FileExt'] = $eeExtension;
+				$eeFileArray[$eeKey]['FileSize'] = @filesize(ABSPATH . $eeFile);
+			}
 		}
 		
-		// We store our array of file info in a transient
-		if( !count($eeArray) ) {
-			
-			$eeSFL_Log[] = 'Creating new file list transient for List # ' . $eeSFL_ID . ' at ' . $eeFileListDir;
-			
-			$eeFileArray = $this->eeSFL_IndexFileListDir($eeFileListDir);
-			
-			foreach( $eeFileArray as $eeKey => $eeFile) {
-				
-				$eeFileTime = date("Y-m-d H:i:s", filemtime(ABSPATH . $eeFile));
-				$eeFileSize = @filesize(ABSPATH . $eeFile);
-				
-				// Get just the folder/file
-				// $ee1 = strlen(ABSPATH . $eeFileListDir);
-				// $ee2 = strlen($eeValue);
-				// $eeStart = $ee2 - ($ee2-$ee1) -1;
-				// $eeFile = substr($eeValue, $eeStart);
-				
-				// Check forbidden types
-				foreach( $this->eeForbiddenTypes as $eeValue2) {
-					if(strpos($eeFile, $eeValue2)) {
-						$eeFile = FALSE;
-					}
-				}
-				
-				if($eeFile) {
-					
-					// Remove the base file list directory string
-					$eeFile = str_replace($eeSFL_Config['FileListBaseDir'], '', $eeFile);
-					
-					// Add line to array
-					$eeArray[] = $eeFile . '|' . $eeFileTime . '|' .  $eeFileSize;
-					
-					// Get file extension
-					$eeExt = substr(strrchr($eeFile,'.'), 1); 
-					
-					// Check and create thumbnail if needed...
-					if(in_array($eeExt, $this->eeDynamicImageThumbFormats) OR in_array($eeExt, $this->eeDynamicImageThumbFormats)) {
-						$this->eeSFL_CheckThumbnail($eeFileListDir . $eeFile);
-					}
-				}
+
+	    // echo '<pre>'; print_r($eeFilePathsArray); echo '</pre>'; exit;
+	    
+	    if( @$eeFileArray[$eeKey]['FilePath'] ) {
+	    
+		    // Update the DB
+		    update_option('eeSFL-FileList-' . $eeSFL_ID, $eeFileArray);
+		    
+		    // Check and create thumbnail if needed...
+			$eeExt = $eeFileArray[$eeKey]['FileExt'];
+			if( in_array($eeExt, $this->eeDynamicImageThumbFormats) OR in_array($eeExt, $this->eeDynamicImageThumbFormats) ) {
+				$this->eeSFL_CheckThumbnail($eeSFL_Config['FileListDir'] . $eeFile);
 			}
-			
-			if(@count($eeArray) AND set_transient('eeSFL-FileList-' . $eeSFL_ID, $eeArray, 6 * HOUR_IN_SECONDS) ) {
-				$eeSFL_Log['eeSFL']['transient set'] = $eeArray;
-			} else {
-				$eeSFL_Log['errors'][] = 'File Transient Could Not Be Set.';
-				return FALSE;
-			}
-		
-			$eeArray = array_unique($eeArray); // Remove duplicates
-			
-			// Check for FFmpeg here
-			if(trim(@shell_exec('type -P ffmpeg'))) {
-				update_option('eeSFL_Supported', 'ffMpeg');
-			}
-		
+		}
+	    
+	    
+	    // Check for FFmpeg here
+		if(trim(@shell_exec('type -P ffmpeg'))) {
+			update_option('eeSFL_Supported', 'ffMpeg');
 		}
 		
-		// echo '<pre>'; print_r($eeSFL_Log); echo '</pre>'; exit;
-			
-		return $eeArray;
-	}
+		
+		return $eeFileArray;
+	    
+    }
 	
 	
 	
@@ -415,7 +410,7 @@ class eeSFL_MainClass { // Plugin Configuration --> Environment, User, Settings
 	
 	
 	
-	
+	// Move the sort item to the array key and then sort. Preserve the key (File ID) in a new element
 	public function eeSFL_SortFiles($eeFiles, $eeSortBy, $eeSortOrder) {
 		
 		$eeFilesSorted = array();
@@ -427,30 +422,45 @@ class eeSFL_MainClass { // Plugin Configuration --> Environment, User, Settings
 				
 				// echo '<p>Sorting by date...</p>';
 				
-				foreach($eeFiles as $eeFileInfo) {
+				foreach($eeFiles as $eeKey => $eeFileArray) {
 					
-					$eeArray = explode('|', $eeFileInfo);
-					
-					$eeFilesSorted[ $eeArray[1] ] = $eeFileInfo; // Associative Array
+					if(@$eeFileArray['FileDateChanged']) {
+						
+						$eeFilesSorted[ $eeFileArray['FileDateChanged'] . ' ' . $eeKey ] = $eeFileArray; // Add the file key to preserve files with same date or size.
+						$eeFilesSorted[ $eeFileArray['FileDateChanged'] ]['FileID'] = $eeKey; // Save the ID in new element
+						
+					} else {
+						
+						$eeFilesSorted[ $eeFileArray['FileDateAdded'] . ' ' . $eeKey ] = $eeFileArray;
+						$eeFilesSorted[ $eeFileArray['FileDateAdded'] ]['FileID'] = $eeKey;
+					}
 				}
 				
 			} elseif($eeSortBy == 'Size') { // Files by Size
 				
-				foreach($eeFiles as $eeFileInfo) {
+				foreach($eeFiles as $eeKey => $eeFileArray) {
 					
-					$eeArray = explode('|', $eeFileInfo);
-					
-					$eeFilesSorted[ $eeArray[2] ] = $eeFileInfo; // Associative Array
+					// Add the file key to preserve files with same size.
+					$eeFilesSorted[ $eeFileArray['FileSize'] . ' ' . $eeKey ] = $eeFileArray;
+					$eeFilesSorted[ @$eeFileArray['FileSize'] ]['FileID'] = $eeKey;
 				}
 		
 			} elseif($eeSortBy == 'Name') { // Alpha
 				
-				natcasesort($eeFiles);
-				$eeFilesSorted = $eeFiles;
+				foreach($eeFiles as $eeKey => $eeFileArray) {
+					
+					$eeFilesSorted[ @$eeFileArray['FilePath'] ] = $eeFileArray; // These keys shall always be unique
+					$eeFilesSorted[ @$eeFileArray['FilePath'] ]['FileID'] = $eeKey;
+				}
 			
 			} else { // Random
 				
-				$eeFilesSorted = shuffle($eeFiles);
+				foreach($eeFiles as $eeKey => $eeFileArray) {
+					
+					$eeFilesSorted[$eeKey]['FileID'] = $eeKey;
+				}
+				
+				$eeFilesSorted = shuffle($eeFilesSorted);
 				
 				return $eeFilesSorted;
 			}
@@ -465,12 +475,84 @@ class eeSFL_MainClass { // Plugin Configuration --> Environment, User, Settings
 			$eeFilesSorted = array_values($eeFilesSorted); // Reindex the array keys
 		}
 		
+		// echo '<pre>'; print_r($eeFilesSorted); echo '</pre>'; exit;
+		
 		return $eeFilesSorted;
 	}
 	
-
 	
 	
+	public function eeSFL_SendFilesEmail($eePOST) {
+		
+		global $eeSFL_Config, $eeSFL_Env;
+		$eeFiles = '';
+		
+		// echo '<pre>'; print_r($eePOST); echo '</pre>'; exit;
+		
+		// Process a raw input of email addresses
+		$eeFrom = filter_var(@$eePOST['eeSFL_SendFrom'], FILTER_VALIDATE_EMAIL); // 1 Required
+		if(!$eeFrom) { return FALSE; }
+		
+		$eeTo = eeSFL_ProcessEmailString(@$eePOST['eeSFL_SendTo']); // Required
+		if(!$eeTo) { return FALSE; }
+		
+		// Optional Inputs
+		$eeCc = eeSFL_ProcessEmailString(@$eePOST['eeSFL_SendCc']);
+		
+		// Email Headers
+		$eeHeaders = eeSFL_ReturnHeaderString($eeFrom, $eeCc);
+		
+		// Subject
+		$eeSubject = filter_var(@$eePOST['eeSFL_SendSubject'], FILTER_SANITIZE_STRING);
+		if(!$eeSubject) { $eeSubject = __('File Notification', 'ee-simple-file-list'); }
+		
+		// Message
+		$eeMessage = filter_var(@$eePOST['eeSFL_SendMessage'], FILTER_SANITIZE_STRING);
+		
+		if( is_array($eePOST['eeSFL_SendTheseFiles']) ) { // The files array checkboxes
+			
+			foreach( $eePOST['eeSFL_SendTheseFiles'] as $eeFile) {
+				$eeFiles .= '-> ' . $eeSFL_Config['FileListURL'] . $eeFile . "\r\n";
+			}
+		}
+		
+		// Footer
+		if(@$eeSFL_Config['SendFooter']) {
+			$eeFooter = $eeSFL_Config['SendFooter'];
+		} else {
+			if( is_admin() ) {
+				$eeURL = $eeSFL_Env['wpSiteURL']; // The main URL
+			} else {
+				$eeURL = get_permalink(); // The exact page
+			}
+			$eeFooter = 'Sent from the file list at ' . $eeURL;
+		}
+		
+		// The Body
+		$eeMessage .= "\r\n\r\n" . $eeFiles . "\r\n\r\n" . $eeFooter; // with Custom Footer
+		
+		// TO DO -- Allow files to be attached if less than X MB
+		$eeAttached = array();
+		
+		// Send the Message
+		wp_mail($eeTo, $eeSubject, $eeMessage, $eeHeaders, $eeAttached);
+		
+		
+		
+		
+/*
+		$eeout = 'Message From:  ' . $eeTo . "\r\n";
+		$eeout .= $eeTo . "\r\n";
+		$eeout .= $eeCc . "\r\n";
+		$eeout .= $eeSubject . "\r\n";
+		$eeout .= $eeMessage . "\r\n";
+		$eeout .= $eeFiles . "\r\n";
+		exit( nl2br($eeout) );
+*/
+		
+		
+		
+	}
 	
 	
 	// Send a system notification email, via ee-email-engine.php 

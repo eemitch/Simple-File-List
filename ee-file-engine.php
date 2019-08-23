@@ -17,16 +17,6 @@ if(!$eeSFL_ID) {
 	exit($eeSFL_Error);
 }
 
-
-// The File Path
-if(@$_POST['eeFilePath']) { 
-	$eeFilePath = urldecode( filter_var($_POST['eeFilePath'], FILTER_SANITIZE_STRING) ); 
-} else { 
-	$eeSFL_Error = "Missing the File";
-	trigger_error($eeSFL_Error, E_USER_ERROR);
-	exit($eeSFL_Error);
-}
-
 // The Action
 if(@$_POST['eeFileAction']) { 
 	$eeFileAction = filter_var($_POST['eeFileAction'], FILTER_SANITIZE_STRING); 
@@ -36,15 +26,6 @@ if(@$_POST['eeFileAction']) {
 	exit($eeSFL_Error);
 }
 
-// If Renaming
-if( strpos($eeFileAction, '|') ) {
-	$eeArray = explode('|', $eeFileAction);
-	$eeFileAction = $eeArray[0];
-	$eeNewFileName = urldecode( $eeArray[1] );
-}
-
-
-// ---------------------------------
 
 // Tie into Wordpress
 define('WP_USE_THEMES', false); // Just the core please
@@ -64,17 +45,27 @@ function eeSFL_CheckNonce() {
 }
 add_action( 'plugins_loaded', 'eeSFL_CheckNonce' );
 
-// Detect upward path traversal
-$eeUserPath = ABSPATH . dirname($eeFilePath);  // This could be problematic with things like ../
-$eeRealPath = realpath( ABSPATH . dirname($eeFilePath) ); // Expunge the badness and then compare...
-
-if ($eeUserPath != $eeRealPath) { // They must match
-    $eeSFL_Log['errors'] = 'Error 99'; // The infamous Error 99
-    exit('Error 99 :-('); // Bad guy found, bail out :-(
-}
 
 if($eeFileAction == 'Rename') {
 		
+	// The File Path
+	if(@$_POST['eeFilePath']) { 
+		$eeFilePath = urldecode( filter_var($_POST['eeFilePath'], FILTER_SANITIZE_STRING) ); 
+	} else { 
+		$eeSFL_Error = "Missing the File";
+		trigger_error($eeSFL_Error, E_USER_ERROR);
+		exit($eeSFL_Error);
+	}
+	
+	eeSFL_DetectUpwardTraversal($eeFilePath); // Die if foolishness
+	
+	// If Renaming
+	if( strpos($eeFileAction, '|') ) {
+		$eeArray = explode('|', $eeFileAction);
+		$eeFileAction = $eeArray[0];
+		$eeNewFileName = urldecode( $eeArray[1] );
+	}
+	
 	if($eeNewFileName) {
 	
 		// If Renaming a File/Folder
@@ -88,14 +79,25 @@ if($eeFileAction == 'Rename') {
 			
 			$eeSFL_Log['errors'][] = 'Could Not Rename ' . $eeOldFileName . ' to ' . $eeNewFileName;
 		
-		} else {
-			
-			// Re-index the File List
-			$eeSFL->eeSFL_createFileListArray($eeSFL->eeListID, $eeSFL_Config['FileListDir'], 'Re-Index');
 		}
 	}
 	
+	// Re-index the File List
+	$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID);
+	
+	
 } elseif($eeFileAction == 'Delete') {
+		
+	// The File Path
+	if(@$_POST['eeFilePath']) { 
+		$eeFilePath = urldecode( filter_var($_POST['eeFilePath'], FILTER_SANITIZE_STRING) ); 
+	} else { 
+		$eeSFL_Error = "Missing the File";
+		trigger_error($eeSFL_Error, E_USER_ERROR);
+		exit($eeSFL_Error);
+	}
+	
+	eeSFL_DetectUpwardTraversal($eeFilePath); // Die if foolishness
 	
 	if( strpos($eeFilePath, '.') ) { // Gotta be a File - Looking for the dot rather than using is_file() for better speed
 		
@@ -116,10 +118,52 @@ if($eeFileAction == 'Rename') {
 		
 		
 	}
+	
+	// Re-index the File List
+	$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID);
+	
+	
+	
+} elseif($eeFileAction == 'UpdateDesc') {
+	
+	// The Description
+	if($_POST['eeFileID'] OR @$_POST['eeFileID'] === 0) { 
+		$eeFileID = filter_var($_POST['eeFileID'], FILTER_VALIDATE_INT); 
+	} else { 
+		$eeSFL_Error = "Missing the File ID";
+		trigger_error($eeSFL_Error, E_USER_ERROR);
+		exit($eeSFL_Error);
+	}
+	
+	// The Description
+	if(@$_POST['eeFileDesc']) { 
+		$eeFileDesc = filter_var($_POST['eeFileDesc'], FILTER_SANITIZE_STRING); 
+	} else { 
+		$eeSFL_Error = "Missing the Description";
+		trigger_error($eeSFL_Error, E_USER_ERROR);
+		exit($eeSFL_Error);
+	}
+	
+	// Get the file array
+	$eeFileArray = get_option('eeSFL-FileList-' . $eeSFL_ID);
+	
+	foreach( $eeFileArray as $eeKey => $eeThisFileArray ) {
+		
+		if($eeKey == $eeFileID) {
+					
+				$eeFileArray[$eeFileID]['FileDescription'] = $eeFileDesc;
+		}
+	}
+		
+	// Save the updated array
+	$eeFileArray = update_option('eeSFL-FileList-' . $eeSFL_ID, $eeFileArray);
+	
+	
+} else {
+	
+	echo 'Nothing to do';
+	
 }
-
-// Re-index the File List
-$eeSFL_Files = $eeSFL->eeSFL_createFileListArray($eeSFL_ID, $eeSFL_Config['FileListDir'], 'Re-Index');
 
 // Timer
 $eeSFL_Time = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
