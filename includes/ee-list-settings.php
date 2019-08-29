@@ -10,10 +10,15 @@ $eeSFL_Log[] = 'Loading List Settings Page ...';
 // Check for POST and Nonce
 if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {
 	
-	if($_POST['eeShowList'] == 'YES') { $eeSFL_Config['ShowList'] = 'YES'; } 
-		elseif($_POST['eeShowList'] == 'USER') { $eeSFL_Config['ShowList'] = 'USER'; } // Show only to logged in users
-		 elseif($_POST['eeShowList'] == 'ADMIN') { $eeSFL_Config['ShowList'] = 'ADMIN'; } // Show only to logged in Admins
-			else { $eeSFL_Config['ShowList'] = 'NO'; }
+	// Get all the settings
+	$eeSettings = get_option('eeSFL-Settings');
+	
+	$eeID = $eeSFL_Config['ID'];
+	
+	if($_POST['eeShowList'] == 'YES') { $eeSettings[$eeID]['ShowList'] = 'YES'; } 
+		elseif($_POST['eeShowList'] == 'USER') { $eeSettings[$eeID]['ShowList'] = 'USER'; } // Show only to logged in users
+		 elseif($_POST['eeShowList'] == 'ADMIN') { $eeSettings[$eeID]['ShowList'] = 'ADMIN'; } // Show only to logged in Admins
+			else { $eeSettings[$eeID]['ShowList'] = 'NO'; }
 			
 	if($eeSFL_Config['ShowList'] != 'NO') { // Only update if showing the list
 		
@@ -22,45 +27,35 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 			'ShowFileThumb'
 			,'ShowFileDate'
 			,'ShowFileSize'
-			,'AllowFrontManage'
-			,'ShowFileActions'
-			,'ShowHeader'
+			,'ShowFileDescription'
+			,'ShowSubmitterName'
+			,'ShowSubmitterEmail'
+			,'ShowSubmitterDesc'
 		);
-		foreach( $eeCheckboxes as $eeTerm){
-			eeSFL_ProcessCheckboxInput($eeTerm);
+		
+		foreach( $eeCheckboxes as $eeTerm){ // "ee" is added in the function
+			
+			$eeSettings[$eeID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
 		}
 		
 		// Sort by Select Box	
-		if(@$_POST['eeSortBy']) { $eeSFL_Config['SortBy'] = filter_var($_POST['eeSortBy'], FILTER_SANITIZE_STRING); }
-			elseif(@$_POST['eeSortBy'] == 'NO') { $eeSFL_Config['SortBy'] = 'Name'; }
+		if(@$_POST['eeSortBy']) { $eeSettings[$eeID]['SortBy'] = filter_var($_POST['eeSortBy'], FILTER_SANITIZE_STRING); }
+			elseif(@$_POST['eeSortBy'] == 'NO') { $eeSettings[$eeID]['SortBy'] = 'Name'; }
 		
 		// Asc/Desc Checkbox
-		if(@$_POST['eeSortOrder'] == 'Descending') { $eeSFL_Config['SortOrder'] = 'Descending'; }
-			elseif($_POST['eeSortBy'] AND !@$_POST['eeSortOrder']) { $eeSFL_Config['SortOrder'] = 'Ascending'; }
+		if(@$_POST['eeSortOrder'] == 'Descending') { $eeSettings[$eeID]['SortOrder'] = 'Descending'; }
+			elseif($_POST['eeSortBy'] AND !@$_POST['eeSortOrder']) { $eeSettings[$eeID]['SortOrder'] = 'Ascending'; }
+		
+		// Expiration
+		if( is_numeric($_POST['eeExpireTime']) AND $_POST['eeExpireTime'] <= 24 ) { $eeSettings[$eeID]['ExpireTime'] = $_POST['eeExpireTime']; }
 	}
 	
-	// Get all the settings
-	$eeSettings = get_option('eeSFL-Settings');
-	
-	// Update this sub-array
-	$eeSettings[$eeSFL->eeListID] = $eeSFL_Config;
 	
 	// Update DB
 	update_option('eeSFL-Settings', $eeSettings );
 	
-	
-	// Extension Processing
-	if($eeSFLF) {
-		if(!@$eeSFLF_ListFolder) { // If not already set up
-			$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
-			include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_ListSettingsProcess.php');
-		}
-	}
-	
-	if($eeSFLS) {
-		$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-		include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-settings-process.php');
-	}
+	// Update the array with new values
+	$eeSFL_Config = $eeSettings[$eeID];
 	
 	$eeSFL_Confirm = __('List Settings Saved', 'ee-simple-file-list');
 }
@@ -86,7 +81,7 @@ $eeOutput .= '
 		
 		$eeOutput .= '<fieldset>
 		
-			<h2>' . __('File List Settings', 'ee-simple-file-list') . '</h2>
+			<h1>' . __('File List Settings', 'ee-simple-file-list') . '</h1>
 			
 			<label for="eeShowList">' . __('File List Display', 'ee-simple-file-list') . '</label>
 			
@@ -123,7 +118,7 @@ $eeOutput .= '
 				
 			if($eeSFL_Config['ShowList'] != 'NO') {
 			
-				$eeOutput .= '<h3>' . __('Columns to Show', 'ee-simple-file-list') . '</h3>
+				$eeOutput .= '<h3>' . __('Information to Show', 'ee-simple-file-list') . '</h3>
 				
 				<label class="eeNoClear" for="eeShowFileThumb">' . __('Show Thumbnail', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowFileThumb" value="YES" id="eeShowFileThumb"'; 
 				if($eeSFL_Config['ShowFileThumb'] == 'YES') { $eeOutput .= ' checked'; }
@@ -135,11 +130,42 @@ $eeOutput .= '
 				
 				<label class="eeNoClear" for="eeShowFileSize">' . __('Show File Size', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowFileSize" value="YES" id="eeShowFileSize"'; 
 				if($eeSFL_Config['ShowFileSize'] == 'YES') { $eeOutput .= ' checked'; }
-				$eeOutput .= ' />';
+				$eeOutput .= ' />
 				
-				$eeOutput .= '<div class="eeNote">' . __('Limit the columns of file details to display on the front-side file list.', 'ee-simple-file-list') . '</div>
+				<label class="eeNoClear" for="eeShowFileDescription">' . __('Show Description', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowFileDescription" value="YES" id="eeShowFileDescription"'; 
+				if($eeSFL_Config['ShowFileDescription'] == 'YES') { $eeOutput .= ' checked'; }
+				$eeOutput .= ' />
+				
+				<div class="eeNote">' . __('Limit the file information to display on the front-side file list.', 'ee-simple-file-list') . '</div>
+				
+				<br class="eeClearFix" />';
+				
+				if($eeSFL_Config['GetUploaderInfo'] == 'YES') {
 					
-				<h3>' . __('File Sorting and Order', 'ee-simple-file-list') . '</h3>	
+					$eeOutput .= '
+					
+					<h2>Submitter Information</h2>
+					
+					<label class="eeNoClear" for="eeShowSubmitterName">' . __('Show Submitter\'s Name', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowSubmitterName" value="YES" id="eeShowSubmitterName"'; 
+					if(@$eeSFL_Config['ShowSubmitterName'] == 'YES') { $eeOutput .= ' checked'; }
+					$eeOutput .= ' />
+					
+					<label class="eeNoClear" for="eeShowSubmitterEmail">' . __('Show Submitter\'s Email', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowSubmitterEmail" value="YES" id="eeShowSubmitterEmail"'; 
+					if(@$eeSFL_Config['ShowSubmitterEmail'] == 'YES') { $eeOutput .= ' checked'; }
+					$eeOutput .= ' />
+					
+					<label class="eeNoClear" for="eeShowSubmitterDesc">' . __('Show Submitter\'s Comment', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowSubmitterDesc" value="YES" id="eeShowSubmitterDesc"'; 
+					if(@$eeSFL_Config['ShowSubmitterDesc'] == 'YES') { $eeOutput .= ' checked'; }
+					$eeOutput .= ' />
+					
+					<div class="eeNote">' . __('Show who uploaded the file, add a link to their email address, and show their comments.', 'ee-simple-file-list') . '</div>';
+				}
+				
+				$eeOutput .= '
+					
+				<br class="eeClearFix" />
+				
+				<h2>' . __('File Sorting and Order', 'ee-simple-file-list') . '</h2>	
 				
 				<label for="eeSortList">' . __('Sort By', 'ee-simple-file-list') . ':</label>
 				
@@ -180,57 +206,15 @@ $eeOutput .= '
 				<div class="eeNote">' . __('Check this box to reverse the default sort order.', 'ee-simple-file-list') . '<br />
 					' . __('The list is sorted Ascending by default', 'ee-simple-file-list') . ': A to Z, ' . __('Small to Large', 'ee-simple-file-list') . ', ' . __('Old to New', 'ee-simple-file-list') . '</div>
 					
-				<br class=eeClearFix />
-					
-				<h3>' . __('File List Display', 'ee-simple-file-list') . '</h3>	
+				<br class="eeClearFix" />
 				
+				<h2>' . __('File List Performance', 'ee-simple-file-list') . '</h2>	
 				
-				<label for="eeShowListHeader">' . __('Show Header', 'ee-simple-file-list') . ':</label>
-				<input type="checkbox" name="eeShowHeader" value="YES" id="eeShowListHeader"';
-				
-				if( $eeSFL_Config['ShowHeader'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-				
-				$eeOutput .= ' />
-				
-				<div class="eeNote">' . __('Show file list\'s table header or not.', 'ee-simple-file-list') . '</div>
-				
-				<br class=eeClearFix />
-				
-				
-				<label for="eeShowFileActions">' . __('Show File Actions', 'ee-simple-file-list') . ':</label>
-				<input type="checkbox" name="eeShowFileActions" value="YES" id="eeShowFileActions"';
-				
-				if( $eeSFL_Config['ShowFileActions'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-				
-				$eeOutput .= ' /> <p>' . __('Open | Download', 'ee-simple-file-list') . '</p>
-				
-				<div class="eeNote">' . __('Show file action links below each file name on the front-side list', 'ee-simple-file-list') . '</div>
-				
-				<br class=eeClearFix />
-				
-				
-				<label for="eeAllowFrontManage">' . __('Front-Side File Management', 'ee-simple-file-list') . ':</label>
-				<input type="checkbox" name="eeAllowFrontManage" value="YES" id="eeAllowFrontManage"';
-				
-				if( $eeSFL_Config['AllowFrontManage'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-				
-				$eeOutput .= ' /> <p>' . __('Use with Caution', 'ee-simple-file-list') . '</p>
-								
-				<div class="eeNote">' . __('Allow front-side users full control over all files in the list.', 'ee-simple-file-list') . '</div>
-				
-				<br class=eeClearFix />';
-				
-				if($eeSFLF) {
-					
-					$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
-					include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_ListSettings.php');
-				}
-				
-				if($eeSFLS) {
-					
-					$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-					include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-settings.php');
-				}
+				<label for="eeExpireTime">' . __('Re-Scan Interval', 'ee-simple-file-list') . ':</label>
+				<input type="range" id="eeExpireTime" name="eeExpireTime" min="0" max="24" step="1" value="' . $eeSFL_Config['ExpireTime'] . '" /> 
+					<p><span id="eeExpireTimeValue">' . $eeSFL_Config['ExpireTime'] . '</span> ' . __('Hours', 'ee-simple-file-list') . '</p>
+					<div class="eeNote">' . __('Choose how often the file list on your disc drive is re-scanned. Set to zero to re-scan on each list page load.', 'ee-simple-file-list') . '<br />
+					<em>' . __('If you use FTP or another method to upload files to your list, set the interval low.', 'ee-simple-file-list') . '</em></div>';	
 					
 			}
 			

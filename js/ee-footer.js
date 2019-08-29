@@ -72,10 +72,14 @@ function eeSFL_EditFile(eeSFL_FileID) {
 
 function eeSFL_EditSave(eeSFL_FileID) {
 	
+	var eeRenaming = false;
+	
 	var eeName1 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileLink').text(); // Current File Name
 	var eeName2 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeNewFileName').val(); // New File Name
 	
 	if(eeName1 != eeName2) { // If no match, we rename
+		
+		eeRenaming = true;
 		eeSFL_FileAction(eeSFL_FileID, 'Rename');
 	}
 	
@@ -83,6 +87,9 @@ function eeSFL_EditSave(eeSFL_FileID) {
 	var eeDesc2 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeSFL_NewFileDesc').val(); // New Desc
 	
 	if(eeDesc1 != eeDesc2) { // If no match, we update
+		
+		if(eeRenaming) { confirm('Update Description Too?'); }
+		
 		eeSFL_FileAction(eeSFL_FileID, 'UpdateDesc');
 	}
 	
@@ -193,8 +200,9 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 	
 		var eeFormData = {
 			'eeSFL_ID': eeSFL_ListID,
-			'eeFilePath': eeSFL_FileListPath + eeSFL_OldFileName,
-			'eeFileAction': eeSFL_Action + '|' + eeSFL_FileListPath + eeSFL_NewFileName,
+			'eeFileOld': eeSFL_OldFileName,
+			'eeListFolder': eeSFL_ListFolder,
+			'eeFileAction': eeSFL_Action + '|' + eeSFL_NewFileName,
 			'eeSecurity': eeSFL_ActionNonce
 		};
 	
@@ -205,7 +213,8 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 		
 		var eeFormData = {
 			'eeSFL_ID': eeSFL_ListID,
-			'eeFilePath': eeSFL_FileListPath + eeSFL_FileName,
+			'eeListFolder': eeSFL_ListFolder,
+			'eeFileName': eeSFL_FileName,
 			'eeFileAction': eeSFL_Action,
 			'eeSecurity': eeSFL_ActionNonce
 		};
@@ -216,6 +225,8 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 		
 		// alert(eeSFL_FileID + ' -> ' + eeSFL_NewFileDesc);
 		
+		// return;
+		
 		var eeFormData = {
 			'eeSFL_ID': eeSFL_ListID,
 			'eeFileAction': eeSFL_Action,
@@ -225,7 +236,7 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 		};	
 	}
 	
-	if(eeFormData) {
+	if(eeSFL_Action && eeFormData) {
 
 		console.log('Calling: ' + eeActionEngine);
 
@@ -238,7 +249,7 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 					jQuery('div.eeSFL_FileRenameEntry').hide();
 					
 					// Make a New Link
-					var eeNewLink = '<a class="eeSFL_FileName" href="/' + eeSFL_FileListPath + eeSFL_NewFileName + '">' + eeSFL_NewFileName + '</a>';
+					var eeNewLink = '<a class="eeSFL_FileName" href="/' + eeSFL_FileListDir + eeSFL_NewFileName + '">' + eeSFL_NewFileName + '</a>';
 					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileLink').html(eeNewLink);
 					
 				} else if (eeSFL_Action == 'Delete') {

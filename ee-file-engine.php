@@ -26,6 +26,15 @@ if(@$_POST['eeFileAction']) {
 	exit($eeSFL_Error);
 }
 
+// Are we in a Folder?
+if(@$_POST['eeListFolder']) { 
+	$eeListFolder = urldecode( filter_var($_POST['eeListFolder'], FILTER_SANITIZE_STRING) ); 
+} else {
+	$eeListFolder = '';
+}
+
+// exit($eeFileAction . '(' . $eeSFL_ID . ')');
+
 
 // Tie into Wordpress
 define('WP_USE_THEMES', false); // Just the core please
@@ -46,69 +55,81 @@ function eeSFL_CheckNonce() {
 add_action( 'plugins_loaded', 'eeSFL_CheckNonce' );
 
 
-if($eeFileAction == 'Rename') {
-		
-	// The File Path
-	if(@$_POST['eeFilePath']) { 
-		$eeFilePath = urldecode( filter_var($_POST['eeFilePath'], FILTER_SANITIZE_STRING) ); 
-	} else { 
-		$eeSFL_Error = "Missing the File";
-		trigger_error($eeSFL_Error, E_USER_ERROR);
-		exit($eeSFL_Error);
-	}
-	
-	eeSFL_DetectUpwardTraversal($eeFilePath); // Die if foolishness
-	
+
+if( strpos($eeFileAction, 'Rename') === 0 ) {
+
 	// If Renaming
 	if( strpos($eeFileAction, '|') ) {
 		$eeArray = explode('|', $eeFileAction);
 		$eeFileAction = $eeArray[0];
 		$eeNewFileName = urldecode( $eeArray[1] );
+		$eeNewFileName = eeSFL_SanitizeFileName($eeNewFileName);
 	}
-	
-	if($eeNewFileName) {
-	
-		// If Renaming a File/Folder
-		$eeNewFileName = dirname($eeFilePath) . '/' . eeSFL_SanitizeFileName( basename($eeNewFileName) );
-	
-		$eeString = 'Renaming: ' . $eeFilePath . ' to ' . $eeNewFileName;
-			
-		$eeSFL_Log[] = $eeString;
 		
-		if( !rename(ABSPATH . $eeFilePath, ABSPATH . $eeNewFileName) ) {
-			
-			$eeSFL_Log['errors'][] = 'Could Not Rename ' . $eeOldFileName . ' to ' . $eeNewFileName;
-		
-		}
-	}
-	
-	// Re-index the File List
-	$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID);
-	
-	
-} elseif($eeFileAction == 'Delete') {
-		
-	// The File Path
-	if(@$_POST['eeFilePath']) { 
-		$eeFilePath = urldecode( filter_var($_POST['eeFilePath'], FILTER_SANITIZE_STRING) ); 
+	// The File Name
+	if(@$_POST['eeFileOld']) { 
+		$eeOldFileName = filter_var( $_POST['eeFileOld'], FILTER_SANITIZE_STRING ); 
 	} else { 
-		$eeSFL_Error = "Missing the File";
+		$eeSFL_Error = "Missing the Current File Name";
 		trigger_error($eeSFL_Error, E_USER_ERROR);
 		exit($eeSFL_Error);
 	}
 	
-	eeSFL_DetectUpwardTraversal($eeFilePath); // Die if foolishness
-	
-	if( strpos($eeFilePath, '.') ) { // Gotta be a File - Looking for the dot rather than using is_file() for better speed
+	if($eeNewFileName) {
 		
-		if(unlink(ABSPATH . $eeFilePath)) {
+		eeSFL_DetectUpwardTraversal($eeSFL_Config['FileListDir'] . $eeNewFileName); // Die if foolishness
+		
+		$eeFullPath = ABSPATH . $eeSFL_Config['FileListDir'] . $eeListFolder;
+		$eeOldFilePath = $eeFullPath . $eeOldFileName;
+		$eeNewFilePath = $eeFullPath . $eeNewFileName;
+	
+		$eeString = 'Renaming: ' . $eeListFolder . $eeOldFileName . ' to ' . $eeListFolder . $eeNewFileName;
+		
+		// echo $eeString; exit;
+		
+		if( !rename($eeOldFilePath, $eeNewFilePath) ) {
 			
-			$eeSFL_Msg = __('Deleted the File', 'ee-simple-file-list') . ' &rarr; ' . basename($eeFilePath);
+			$eeSFL_Log['errors'][] = 'Could Not Rename ' . $eeOldFileName . ' to ' . $eeNewFileName;
+		
+		} else {
+			
+			$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeListFolder . $eeOldFileName, 'FilePath', $eeListFolder . $eeNewFileName);
+
+			// Re-index the File List
+			$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID);
+		}
+	
+	} else { 
+		$eeSFL_Error = "Missing the New File Name";
+		trigger_error($eeSFL_Error, E_USER_ERROR);
+		exit($eeSFL_Error);
+	}
+	
+} elseif($eeFileAction == 'Delete') {
+	
+	// The File Path
+	if(@$_POST['eeFileName']) { 
+		$eeFileName = filter_var( $_POST['eeFileName'], FILTER_SANITIZE_STRING ); 
+	} else { 
+		$eeSFL_Error = "Missing the File to Delete";
+		trigger_error($eeSFL_Error, E_USER_ERROR);
+		exit($eeSFL_Error);
+	}
+		
+	eeSFL_DetectUpwardTraversal($eeSFL_Config['FileListDir'] . $eeListFolder . $eeFileName); // Die if foolishness
+	
+	$eeFilePath = ABSPATH . $eeSFL_Config['FileListDir'] . $eeListFolder . $eeFileName;
+	
+	if( strpos($eeFileName, '.') ) { // Gotta be a File - Looking for the dot rather than using is_file() for better speed
+		
+		if(unlink($eeFilePath)) {
+			
+			$eeSFL_Msg = __('Deleted the File', 'ee-simple-file-list') . ' &rarr; ' . $eeListFolder . $eeFileName;
 			$eeSFL_Log[] = $eeSFL_Msg;
 			$eeSFL_Log['messages'][] = $eeSFL_Msg;
 			
 		} else {
-			$eeSFL_Msg = __('File Delete FAILED', 'ee-simple-file-list') . ':' . $eeSFL_File;
+			$eeSFL_Msg = __('File Delete FAILED', 'ee-simple-file-list') . ':' . $eeListFolder . $eeFileName;
 			$eeSFL_Log['errors'] = $eeSFL_Msg;
 			$eeSFL_Log['messages'][] = $eeSFL_Msg;
 		}
@@ -123,26 +144,26 @@ if($eeFileAction == 'Rename') {
 	$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID);
 	
 	
-	
 } elseif($eeFileAction == 'UpdateDesc') {
 	
 	// The Description
-	if($_POST['eeFileID'] OR @$_POST['eeFileID'] === 0) { 
-		$eeFileID = filter_var($_POST['eeFileID'], FILTER_VALIDATE_INT); 
+	if(filter_var($_POST['eeFileID'], FILTER_VALIDATE_INT) !== FALSE) { // Might be a zero
+		$eeFileID = $_POST['eeFileID'];
 	} else { 
-		$eeSFL_Error = "Missing the File ID";
-		trigger_error($eeSFL_Error, E_USER_ERROR);
-		exit($eeSFL_Error);
+		$eeFileID = 0;
 	}
 	
 	// The Description
 	if(@$_POST['eeFileDesc']) { 
 		$eeFileDesc = filter_var($_POST['eeFileDesc'], FILTER_SANITIZE_STRING); 
 	} else { 
-		$eeSFL_Error = "Missing the Description";
-		trigger_error($eeSFL_Error, E_USER_ERROR);
-		exit($eeSFL_Error);
+		$eeFileDesc = '';
 	}
+	
+	$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, 'FileDescription', $eeFileDesc);
+	
+	// exit($eeFileDesc . '(' . $eeFileID . ')');
+	
 	
 	// Get the file array
 	$eeFileArray = get_option('eeSFL-FileList-' . $eeSFL_ID);
@@ -151,6 +172,8 @@ if($eeFileAction == 'Rename') {
 		
 		if($eeKey == $eeFileID) {
 					
+				// exit( $eeFileArray[$eeFileID]['FilePath'] . ' - ' . $eeFileDesc . '(' . $eeFileID . ')');
+				
 				$eeFileArray[$eeFileID]['FileDescription'] = $eeFileDesc;
 		}
 	}
@@ -161,7 +184,7 @@ if($eeFileAction == 'Rename') {
 	
 } else {
 	
-	echo 'Nothing to do';
+	echo 'Nothing to do'; exit;
 	
 }
 

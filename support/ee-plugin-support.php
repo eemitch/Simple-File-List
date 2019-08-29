@@ -102,7 +102,7 @@ $eeOutput .= '<article class="eeSupp">
 				<input type="email" name="eeContact_email" id="eeContact_email" value="' . $eeContact_email . '" required /><span class="eeContact_Required">*</span>
 				<br class="eeClearFix" />
 				
-				<label for="eeContact_page">' . __('Page with Shortcode', 'ee-simple-file-list') . ':</label><input type="url" name="eeContact_Problem-Page" value="' . $eeContact_link . '" id="eeContact_page">' . "\n" . '
+				<label for="eeContact_page">' . __('Page with Shortcode', 'ee-simple-file-list') . ':</label><input type="url" name="eeContact_Problem-Page" value="' . $eeContact_link . '" id="eeContact_page">
 
 				<label for="eeContact_message">' . __('Your Message', 'ee-simple-file-list') . ':</label>
 				<textarea required name="eeContact_message" id="eeContact_message" cols="60" rows="6">' . $eeContact_message . '</textarea><span class="eeContact_Required">*</span>

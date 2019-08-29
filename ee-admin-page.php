@@ -118,15 +118,25 @@ function eeSFL_ManageLists() { // All Plugin Settings are Displayed in Here
 	    $active_subtab == 'uploader_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('Uploader Settings', 'ee-simple-file-list') . '</a>';
 	    
+	    // Display Settings
+		$eeOutput .= '<a href="?page=' . $eeSFL_Page . '&tab=settings&subtab=display_settings" class="nav-tab ';  
+		if($active_subtab == 'display_settings') {$eeOutput .= '  eeActiveTab ';}    
+	    $active_subtab == 'display_settings' ? 'nav-tab-active' : '';    
+	    $eeOutput .= $active_subtab . '">' . __('Display Settings', 'ee-simple-file-list') . '</a>';
+	    
 	    $eeOutput .= '</h2>'; // END Subtabs
 	    
-		if($active_subtab != 'list_settings') {
+		if($active_subtab == 'uploader_settings') {
 			
 			include($eeSFL_PluginPath . 'includes/ee-upload-settings.php'); // The Uploader Settings
 		
+		} elseif($active_subtab == 'display_settings') {
+			
+			include($eeSFL_PluginPath . 'includes/ee-list-display-settings.php'); // The List Display Settings
+		
 		} else {
 			
-			include($eeSFL_PluginPath . 'includes/ee-list-settings.php'); // The File Settings
+			include($eeSFL_PluginPath . 'includes/ee-list-settings.php'); // The File List Settings
 		}
 		
 	} elseif($active_tab == 'extensions') { // Instructions Tab Display...

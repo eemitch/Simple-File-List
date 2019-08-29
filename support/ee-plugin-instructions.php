@@ -66,7 +66,9 @@ $eeOutput .= '<article class="eeSupp">
 
 	<script>
 	
-		var eeSFL_DefaultSettings = new Object;' . "\n\n";
+		var eeSFL_DefaultSettings = new Object;
+		
+		';
 		
 		foreach($eeSFL_ShortcodeArray as $eeSetting => $eeSettingSet) { // Loop through shortcodes
 			
@@ -79,12 +81,14 @@ $eeOutput .= '<article class="eeSupp">
 				if($eeSettingString AND $eeSettingCurrentValue) {
 				
 					// Pass to javascript
-					$eeOutput .= 'eeSFL_DefaultSettings["' . $eeSettingSet[0] . '"] = "' . $eeSettingCurrentValue . '"' . "\n";
+					$eeOutput .= 'eeSFL_DefaultSettings["' . $eeSettingSet[0] . '"] = "' . $eeSettingCurrentValue . '"' . PHP_EOL;
 				}
 			}
 		}
 	
-	$eeOutput .= "\n\n" . '</script>
+	$eeOutput .= '
+	
+	</script>
 
 	<form class="eeShortcodeBuilderTop">
 	
@@ -144,7 +148,9 @@ $eeOutput .= '<article class="eeSupp">
 
 		$eeOutput = '
 		
-		<p onclick="eeShortcodeBuilder(\'' . $eeSetting . '\', \'toggle\')" class="" id="' . $eeSetting . '">' . $eeLabel . "</p>\n";
+		<p onclick="eeShortcodeBuilder(\'' . $eeSetting . '\', \'toggle\')" class="" id="' . $eeSetting . '">' . $eeLabel . "</p>
+		
+		";
 		
 		return $eeOutput;
 	}

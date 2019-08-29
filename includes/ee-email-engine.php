@@ -59,7 +59,8 @@ if($_POST['eeSFL_Token'] == $verifyToken) { // Security
 
 	$eeSFL_AdminEmail = get_option('admin_email');
 	
-	$eeSFL_Headers = "From: " . __('Simple File List', 'ee-simple-file-list') . " <$eeSFL_AdminEmail>\n\rReturn-Path: $eeSFL_AdminEmail\n\rReply-To: $eeSFL_AdminEmail";
+	$eeSFL_Headers = "From: " . __('Simple File List', 'ee-simple-file-list') . " <$eeSFL_AdminEmail>" . PHP_EOL . 
+		"Return-Path: $eeSFL_AdminEmail" . PHP_EOL . "Reply-To: $eeSFL_AdminEmail";
 	$eeSFL_Subject = __('File Upload Notice', 'ee-simple-file-list');
 	
 	if(strpos($eeSFL_Notify, ',')) {

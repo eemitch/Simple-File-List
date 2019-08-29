@@ -8,7 +8,7 @@ Plugin Name: Simple File List 4
 Plugin URI: http://simplefilelist.com
 Description: Full Featured File List with Front-Side File Uploading | <a href="https://simplefilelist.com/donations/simple-file-list-project/">Donate</a> | <a href="admin.php?page=ee-simple-file-list&tab=extensions">Add Features</a>
 Author: Mitchell Bennis - Element Engage, LLC
-Version: 4.0.5
+Version: 4.0.6
 Author URI: http://elementengage.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -20,9 +20,9 @@ $eeSFL_DevMode = TRUE; // Enables visible logging
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
-define('eeSFL_Version', '4.0.5'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_Version', '4.0.6'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_DB_Version', '4.0.1'); // Database structure version - used for eeSFL_VersionCheck()
-define('eeSFL_Cache_Version', '.1'); // Cache-Buster version for static files - used when updating CSS/JS
+define('eeSFL_Cache_Version', '.2'); // Cache-Buster version for static files - used when updating CSS/JS
 
 // Our Core
 $eeSFL = FALSE; // Our main class
@@ -67,16 +67,18 @@ function eeSFL_Setup() {
 	}
 	
 	
+	// echo '<pre>'; print_r($eeSFL_Config); echo '</pre>'; exit;
+	
+	
+	
+	
+	// wp_die('Fix Sorting in Class File');  // exit();
+	
+	
+	
 	
 	// If Sending Files
 	if(@$_POST['eeSFL_Send']) { $eeSFL->eeSFL_SendFilesEmail($_POST); }
-	
-	
-	
-	wp_die('Fix Sorting in Class File');  // exit();
-	
-	
-	
 	
 	eeSFL_VersionCheck(); // Update database if needed.
 	

@@ -7,34 +7,54 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('That is Noncense! ('
 
 global $eeSFLF_ListFolder;
 
-// $eeSFL_Log[] = 'Loaded: ee-list-display';
-// $eeSFL_Log[] = 'Listing File in: ' . $eeSFL_FileListDir;
-
-if($eeSFLF) {
-	if(!@$eeSFLF_ListFolder) { // If not already set up
-		$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
-		include(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_PathSetup.php');
-	}
-}
-
-// Get the File List Transient
-$eeSFL_Files = get_option('eeSFL-FileList-' . $eeSFL_Config['ID']);
-if(!$eeSFL_Files) { 
-	$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_Config['ID']);
-}
-
-// echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
-
-
-$eeSFL_Log['fileArray'] = $eeSFL_Files;
 $eeSFL_ListClass = 'eeSFL'; // The basic list's CSS class. Extensions might change this.
 $eeClass = '';
 $eeSFL_AllowFrontManage = 'NO'; // Front-side freedom <--- TO DO
 $eeSFL_SendFile_AddFileArray = array(); // We use this for the Send File function
 
-// Extension Check
-if($eeSFLF) { 
+// $eeSFL_Log[] = 'Loaded: ee-list-display';
+// $eeSFL_Log[] = 'Listing File in: ' . $eeSFL_FileListDir;
+
+// Get the File List
+if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR !$eeSFL_Config['ExpireTime']) { // Only admins can force a rescan
+
+	$eeSFL_Log[] = 'Re-Scanning File List...';
+	$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_Config['ID']);
 	
+} else {
+	
+	$eeSFL_Log[] = 'Checking List Freshness...';
+	$eeCheckFreshness = get_transient('eeSFL_FileList-' . $eeSFL_Config['ID']); // Get the File List Transient
+	
+	if($eeCheckFreshness == 'Good') { // Get the list
+		
+		$eeSFL_Log[] = 'Fresh :-)';
+		
+		$eeSFL_Files = get_option('eeSFL-FileList-' . $eeSFL_Config['ID']); // Get the File List
+		
+	} else { // Update the list
+		
+		$eeSFL_Log[] = 'Expired :-(';
+		
+		$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_Config['ID']); // Stale, so Re-Scan
+	}
+	
+	// If not found, rescan
+	if(!$eeSFL_Files) { 
+		$eeSFL_Log['errors'] = __('No File List Found. Please Re-Scan', 'ee-simple-file-list');
+	}
+}
+
+// echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
+
+// Extension Check
+if($eeSFLF) {
+	
+	if(!@$eeSFLF_ListFolder) { // If not already set up
+		$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
+		include(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_PathSetup.php');
+	}
+
 	// Create a new folder, if needed
 	if(@$_POST['eeSFLF_NewFolderName']) { $eeSFLF->eeSFLF_CreateFolder( $eeSFL_Config['FileListDir'] ); }
 	
@@ -42,7 +62,7 @@ if($eeSFLF) {
 	$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
 	include(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_ListSetup.php');
 
-} else { // Default Sort <<<----  TO DO
+} else { // Default Sort
 
 	$eeSFL_Files = $eeSFL->eeSFL_SortFiles($eeSFL_Files, $eeSFL_Config['SortBy'], $eeSFL_Config['SortOrder']);
 }
@@ -90,7 +110,8 @@ $eeOutput .= '
 <span class="eeSFL_Hide" id="eeSFL_ActionNonce">' . $eeSFL_ActionNonce . '</span>
 <script>
 	var eeSFL_PluginURL = "' . $eeSFL_Env['pluginURL'] . '";
-	var eeSFL_FileListPath = "' . urlencode($eeSFL_Config['FileListDir'] . $eeSFLF_ListFolder) . '";
+	var eeSFL_FileListDir = "' . urlencode($eeSFL_Config['FileListDir']) . '";
+	var eeSFL_ListFolder = "' . urlencode($eeSFLF_ListFolder) . '";
 </script>
 ';
 
@@ -117,14 +138,26 @@ if($eeSFLF) {
 }
 
 if($eeAdmin) {
+	 
+	$eeOutput .= '<p class="eeRight">' . __('Total Items', 'ee-simple-file-list') . ': ' . $eeSFL_FileCount . ' | '  . __('Sorted by', 'ee-simple-file-list') . ': ' . ucwords($eeSFL_Config['SortBy']) . '</p>';
 
-	$eeOutput .= '<a href="#" class="button eeButton" id="uploadFilesButton">' . __('Upload Files', 'ee-simple-file-list') . '</a>';
+	$eeOutput .= '
+	
+	<h2>Main File List</h2>
+	
+	<a href="#" class="button eeButton" id="eeSFL_UploadFilesButton">' . __('Upload Files', 'ee-simple-file-list') . '</a>
+	
+	<a href="?page=ee-simple-file-list&tab=settings" class="button eeButton">' . __('Settings', 'ee-simple-file-list') . '</a>
+	
+	 <a href="#" class="button eeButton" id="eeSFL_ReScanButton">' . __('Re-Scan', 'ee-simple-file-list') . '</a>';
 }
 
 
 // TABLE HEAD ==================================================================================================
 
 if(count($eeSFL_Files)) { 
+	
+	$eeSFL_Log['files'] = $eeSFL_Files;
 	
 	$eeRowID = 0; // Assign an ID number to each row
 	
@@ -214,21 +247,23 @@ if(count($eeSFL_Files)) {
 				// Check for the file on the admin side.
 				if($eeIsFile AND $eeAdmin) {
 					
-					$eeFileURL = eeSFL_UrlExists($eeFileURL); // Sets to FALSE if file not found.
+					$eeResult = eeSFL_UrlExists($eeFileURL); // Sets to FALSE if file not found.
 					
-					if(!$eeFileURL) {
+					if(!$eeResult) {
 						$eeError = 'File is not reachable: ' . $eeFileURL;
 						$eeSFL_Log['errors'][] = $eeError;
 						
 						// Rebuild the array
-						$eeSFL->eeSFL_UpdateFileListArray($eeSFL_Config['ID']);
+						// $eeSFL->eeSFL_UpdateFileListArray($eeSFL_Config['ID']);
 						
-						wp_die(__('A file is missing from the list. Please reload this page to show the proper view.', 'ee-simple-file-list') );
+						// wp_die(__('A file is missing from the list. Please reload this page to show the proper view.', 'ee-simple-file-list') );
 					}
 				}
 				
 				// Add an ID to use in javascript
-				$eeOutput .= "\n\r" . '<tr id="eeSFL_RowID-' . $eeRowID . '">';
+				$eeOutput .= '
+				
+				<tr id="eeSFL_RowID-' . $eeRowID . '">';
 				
 				
 				// Start The List --------------------------------------------------------------
@@ -300,12 +335,34 @@ if(count($eeSFL_Files)) {
 					$eeOutput .= $eeFileName . '</a></p>';
 					
 					// Show File Description, or not.
-					if(!$eeFileArray['FileDescription']) { // @$eeSFL_Config['showFileDesc'] != 'YES' OR 
+					if(@$eeFileArray['FileDescription'] OR @$eeFileArray['SubmitterComments']) { // @$eeSFL_Config['showFileDesc'] != 'YES' OR 
 						
+						$eeClass = ''; // Show
+						if(!@$eeFileArray['FileDescription']) {
+							$eeFileArray['FileDescription'] = $eeFileArray['SubmitterComments']; // Show the submitter comment if no desc
+						}
+						
+					} else {
 						$eeClass = 'eeSFL_Hide';
 					}
 					
-					$eeOutput .= '<p class="eeSFL_FileDesc ' . $eeClass . '">' . $eeFileArray['FileDescription'] . '</p>';
+					// This is always here because for js access
+					$eeOutput .= '<p class="eeSFL_FileDesc ' . $eeClass . '">' . stripslashes(@$eeFileArray['FileDescription']) . '</p>';
+					
+					
+					// Submitter Info
+					if(@$eeFileArray['SubmitterName'] AND @$eeSFL_Config['ShowSubmitterName'] == 'YES') {
+						
+						$eeOutput .= '<p class="eeSFL_FileSubmitter">';
+						
+						if(@$eeFileArray['SubmitterEmail'] AND $eeSFL_Config['ShowSubmitterEmail'] == 'YES') {
+							$eeOutput .= '<a href="mailto:' . $eeFileArray['SubmitterEmail'] . '">' . $eeFileArray['SubmitterName'] . '</a>';
+						} else {
+							$eeOutput .= stripslashes($eeFileArray['SubmitterName']); // Just the name
+						}
+						$eeOutput .= '</p>';
+					}
+					
 					
 					// File Actions
 					if($eeIsFile) { //  ------------------------------------------------------------------------------------
@@ -348,8 +405,8 @@ if(count($eeSFL_Files)) {
 								<input required="required" type="text" class="eeNewFileName" name="eeNewFileName" value="' . $eeFileName . '" size="32" /></p>
 									
 								<p class="eeSFL_FileDesc_in"><small>' . __('File Description', 'ee-simple-file-list') . '</small>
-									<span class="eeSFL_SavedDesc">' . $eeFileArray['FileDescription'] . '</span>
-									<input type="text" class="eeSFL_NewFileDesc" name="eeSFL_FileID_' . $eeFileKey . '" value="' . $eeFileArray['FileDescription'] . '" size="32" /></p> 
+									<span class="eeSFL_SavedDesc">' . @$eeFileArray['FileDescription'] . '</span>
+									<input type="text" class="eeSFL_NewFileDesc" name="eeSFL_FileID_' . $eeFileKey . '" value="' . @$eeFileArray['FileDescription'] . '" size="32" /></p> 
 									
 								<p class="eeCenter">
 									<a class="button" href="#" onclick="eeSFL_EditSave(' . $eeRowID . ')">' . __('Save', 'ee-simple-file-list') . '</a> 
@@ -423,7 +480,7 @@ if(count($eeSFL_Files)) {
 				}
 				
 				
-				$eeOutput .= "</tr>\n";
+				$eeOutput .= '</tr>';
 			}
 		}
 		
@@ -432,16 +489,17 @@ if(count($eeSFL_Files)) {
 	} // END loop
 	
 	
-	$eeMsg = __('Number of Items', 'ee-simple-file-list') . ': ' . $eeFileCount . ' | '  . __('Sorted by', 'ee-simple-file-list') . ' ' . $eeSFL_Config['SortBy'];
-	$eeSFL_Log[] = $eeMsg;
 	
-	$eeOutput .= '</tbody></table>
+	
+	$eeOutput .= '
+	
+	</tbody></table>
 	
 	<p class="eeSFL_Hide">
 			<span id="eeSFL_FileCount">' . $eeFileCount . '</span>
 		</p>'; // This allows javascript to access the info
 	
-	if($eeAdmin OR $eeSFL_Config['AllowFrontManage']) { $eeOutput .= '<p class="eeFileListInfo">' . $eeMsg . '</p>'; }
+	
 	
 	
 	// Pagination Controls
@@ -451,7 +509,7 @@ if(count($eeSFL_Files)) {
 	}
 	
 	
-	// Send Files Overlay
+	// Send Files Overlay - Hidden until the Send link is clicked
 	$eeOutput .= '<div id="eeSFL_SendPop" class="eeActive">
 	
 		<article>

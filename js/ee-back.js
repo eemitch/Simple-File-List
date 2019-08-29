@@ -247,9 +247,9 @@ jQuery(document).ready(function() {
 	jQuery('#eeSFL_ShortCode').val('[eeSFL]');
 	jQuery('input[name="eeShortcode"]').val('[eeSFL]');
 	
-	jQuery('#uploadFilesButton').click(function( event ) { 
+	jQuery('#eeSFL_UploadFilesButton').click(function( event ) { 
 		
-		// event.preventDefault();
+		event.preventDefault();
 		
 		if ( jQuery('#uploadFilesDiv').is(':visible') ) {
 		
@@ -262,6 +262,19 @@ jQuery(document).ready(function() {
 			jQuery(this).text('Hide Uploader');
 			
 		}
+	});
+	
+	
+	
+	jQuery('#eeSFL_ReScanButton').click(function( event ) { 
+		
+		event.preventDefault();
+		
+		console.log('Re-scanning...');
+		
+		let eeSFL_ThisURL = document.location;
+		
+		document.location = eeSFL_ThisURL + '&eeSFL_Scan=true'; 
 	});
 	
 	
@@ -281,8 +294,18 @@ jQuery(document).ready(function() {
 	
 	
 	
+	// List Settings
+	jQuery('#eeExpireTime').change(function( event ) {
 	
+		let eeNum = jQuery('#eeExpireTime').val();
 		
+		if(eeNum === 0) {
+			eeNum = 'Refresh each time';
+		}
+		
+		jQuery('#eeExpireTimeValue').html( eeNum );
+	
+	});	
 	
 		
 

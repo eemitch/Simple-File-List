@@ -60,7 +60,7 @@
 	border-top-width: 2px;
 }
 
-.eeSFL_Admin label, .eeSFL_Admin span {
+.eeSFL_Admin label, .eeSFL_Admin span.eeLabel {
 	float: left;
 	clear: left;
 	width: 23%;
@@ -77,8 +77,9 @@
 	background: transparent;
 }
 
-.eeSFL_Admin select, 
-.eeSFL_Admin input[type=text], 
+.eeSFL_Admin select,
+.eeSFL_Admin input[type=text],
+.eeSFL_Admin input[type=range], 
 .eeSFL_Admin input[type=url], 
 .eeSFL_Admin input[type=password], 
 .eeSFL_Admin input[type=tel], 
@@ -88,6 +89,10 @@
 	float: left;
 	width: 65%;
 	padding: 4px;
+}
+.eeSFL_Admin input[type=range] {
+	width: 50%;
+	margin-right: 2%;
 }
 .eeSFL_Admin textarea {
 	margin-bottom: 10px;

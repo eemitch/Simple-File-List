@@ -165,7 +165,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 				} else {
 					$eeUploadJob['Message'] .= __('a file has', 'ee-simple-file-list');
 				}
-				$eeUploadJob['Message'] .= ' ' . __('been uploaded to your website', 'ee-simple-file-list') . ".\n\n";
+				$eeUploadJob['Message'] .= ' ' . __('been uploaded to your website', 'ee-simple-file-list') . "." . PHP_EOL . PHP_EOL;
 				
 				// Loop through the uploaded files
 				if(count($eeArray)) {
@@ -175,20 +175,40 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 						$eeFile = eeSFL_SanitizeFileName($eeFile);
 						
 						// Notification
-						$eeUploadJob['Message'] .=  $eeSFLF_UploadFolder . $eeFile . "\n" . 
+						$eeUploadJob['Message'] .=  $eeSFLF_UploadFolder . $eeFile . PHP_EOL . 
 							$eeSFL_Config['FileListURL'] . $eeSFLF_UploadFolder . $eeFile . 
-								"\n(" . eeSFL_GetFileSize( $eeSFL_Config['FileListDir'] . $eeSFLF_UploadFolder . $eeFile ) . ")\n\n\n";
+								"(" . eeSFL_GetFileSize( $eeSFL_Config['FileListDir'] . $eeSFLF_UploadFolder . $eeFile ) . ")" . PHP_EOL . PHP_EOL;
+					
+								
+						// Add submitter data to file list
+						if($eeSFL_Config['GetUploaderInfo'] == 'YES') {
+						
+							$eeSFL_Log[] = 'Adding submitter info...';
+							
+							foreach( $eeFiles as $eeKey => $eeArray2) {
+								
+								// $eeSFL_Log[] = 'Does ' . $eeArray2['FilePath'] . ' == ' . $eeSFLF_UploadFolder . $eeFile;
+								
+								if( $eeArray2['FilePath'] ==  $eeSFLF_UploadFolder . $eeFile) {
+									
+									// $eeSFL_Log[] = 'MATCH';
+									
+									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterName', filter_var($_POST['eeSFL_Name'], FILTER_SANITIZE_STRING));
+									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterEmail', filter_var($_POST['eeSFL_Email'], FILTER_VALIDATE_EMAIL));
+									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterComments', filter_var($_POST['eeSFL_Comments'], FILTER_SANITIZE_STRING));
+								}
+							}
+						}
 					}
 						
 					$eeSFL_Log['messages'][] = __('File Upload Complete', 'ee-simple-file-list');
-					
 					
 					if( is_admin() ) {
 						$eeOutput = TRUE;
 					} else  {
 						$eeOutput = $eeSFL->eeSFL_AjaxEmail( $eeUploadJob, $eeSFL_Config['Notify'] );// Send Email Notice
 					}
-					
+				
 				} else {
 					$eeSFL_Log['errors'][] = 'Bad File Array';
 					$eeSFL_Log['errors'][] = $eeUploadJob;
@@ -293,7 +313,7 @@ function eeSFL_UrlExists($eeSFL_FileURL) {
 		} else { 
 		  
 		  	$success = FALSE;
-		  	$eeSFL_Log = array($response); // No code found
+		  	$eeSFL_Log[] = array($response); // No code found
 		}
 	
 	} else {
@@ -333,14 +353,11 @@ function eeSFL_SanitizeFileName($eeSFL_FileName) {
 
 // Yes or No Settings Checkboxes
 function eeSFL_ProcessCheckboxInput($eeTerm) {
-			
-	global $eeSFL_Config;
 	
-	if(@$_POST['eeShowList'] != 'NO') {
-		$eeValue = filter_var(@$_POST['ee' . $eeTerm], FILTER_SANITIZE_STRING);
-		if($eeValue == 'YES') { $eeSFL_Config[$eeTerm] = 'YES'; } 
-			else { $eeSFL_Config[$eeTerm] = 'NO'; }
-	}
+	$eeValue = filter_var(@$_POST['ee' . $eeTerm], FILTER_SANITIZE_STRING);
+	
+	if($eeValue == 'YES') { return 'YES'; } else { return 'NO'; }
+	
 }
 
 
@@ -444,21 +461,21 @@ function eeSFL_MessageDisplay($eeSFL_Message) {
 	
 	if(is_array($eeSFL_Message)) {
 		
-		if(!$eeAdmin) { $eeReturn .= '<div id="eeMessageDisplay">'; }
+		if(!$eeAdmin) { $eeReturn .= '<div id="eeMessageDisplay">' . PHP_EOL; }
 		
-		$eeReturn .= '<ul>'; // Loop through $eeSFL_Messages array
+		$eeReturn .= '<ul>' . PHP_EOL; // Loop through $eeSFL_Messages array
 		foreach($eeSFL_Message as $key => $value) { 
 			if(is_array($value)) {
 				foreach ($value as $value2) {
-					$eeReturn .= "<li>$value2</li>\n";
+					$eeReturn .= "<li>$value2</li>" . PHP_EOL;
 				}
 			} else {
-				$eeReturn .= "<li>$value</li>\n";
+				$eeReturn .= "<li>$value</li>" . PHP_EOL;
 			}
 		}
-		$eeReturn .= "</ul>\n";
+		$eeReturn .= "</ul>" . PHP_EOL;
 		
-		if(!$eeAdmin) { $eeReturn .= '</div>'; }
+		if(!$eeAdmin) { $eeReturn .= '</div>' . PHP_EOL; }
 		
 		return $eeReturn;
 		
@@ -473,17 +490,18 @@ function eeSFL_ReturnHeaderString($eeFrom, $eeCc = FALSE, $eeBcc = FALSE) {
 	
 	$eeAdminEmail = get_option('admin_email');
 	
-	$eeHeaders = "From: " . get_option('blogname') . " < " . $eeAdminEmail . " >\n";
+	$eeHeaders = 'From: ' . get_option('blogname') . ' < ' . $eeAdminEmail . ' >'  . PHP_EOL;
 	
-	if($eeCc) { $eeHeaders .= "CC: " . $eeCc . "\n"; }
+	if($eeCc) { $eeHeaders .= "CC: " . $eeCc . PHP_EOL; }
 	
-	if($eeBcc) { $eeHeaders .= "BCC: " . $eeBcc . "\n"; }
+	if($eeBcc) { $eeHeaders .= "BCC: " . $eeBcc . PHP_EOL; }
 	
 	if( !filter_var($eeFrom, FILTER_VALIDATE_EMAIL) ) {
 		$eeFrom = $eeAdminEmail;
 	}
 	
-	$eeHeaders .= "Return-Path: " . $eeAdminEmail . "\n" . "Reply-To: " . $eeFrom . "\n";
+	$eeHeaders .= "Return-Path: " . $eeAdminEmail . PHP_EOL . 
+		"Reply-To: " . $eeFrom . PHP_EOL;
 	
 	return $eeHeaders;
 

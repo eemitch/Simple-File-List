@@ -7,33 +7,37 @@ $eeSFL_Log[] = 'Loading Uploader Settings Page ...';
 	
 // Check for POST and Nonce
 if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce')) {
-		
+	
+	// Get all the settings
+	$eeSettings = get_option('eeSFL-Settings');
+	
+	$eeID = $eeSFL_Config['ID'];
+	
 	if($_POST['eeAllowUploads'] == 'YES') { 
 		
-		$eeSFL_Config['AllowUploads'] = 'YES';
+		$eeSettings[$eeID]['AllowUploads'] = 'YES';
 	
 	} elseif($_POST['eeAllowUploads'] == 'USER') { // Only logged in users
 		 
-		 $eeSFL_Config['AllowUploads'] = 'USER';
+		 $eeSettings[$eeID]['AllowUploads'] = 'USER';
 		 
 	} elseif($_POST['eeAllowUploads'] == 'ADMIN') { // Only logged in users
 		 
-		 $eeSFL_Config['AllowUploads'] = 'ADMIN';
+		 $eeSettings[$eeID]['AllowUploads'] = 'ADMIN';
 		 
 	} else { 
-		$eeSFL_Config['AllowUploads'] = 'NO';
+		$eeSettings[$eeID]['AllowUploads'] = 'NO';
 	}
 	
 	// Get Uploader Info
-	if($eeSFL_Config['AllowUploads'] != 'NO' AND @$_POST['eeUploadLimit']) { // Only update if showing these
-			
+	if($eeSettings[$eeID]['AllowUploads'] != 'NO' AND @$_POST['eeUploadLimit']) { // Only update if showing these
 		
 		// YES/NO Checkboxes
-		eeSFL_ProcessCheckboxInput('GetUploaderInfo');
+		$eeSettings[$eeID]['GetUploaderInfo'] = eeSFL_ProcessCheckboxInput('GetUploaderInfo');
 		
 		// File Number Limit
-		$eeSFL_Config['UploadLimit'] = filter_var(@$_POST['eeUploadLimit'], FILTER_VALIDATE_INT);
-		if(! $eeSFL_Config['UploadLimit'] ) { $eeSFL_Config['UploadLimit'] = $eeSFL->eeDefaultUploadLimit; }
+		$eeSettings[$eeID]['UploadLimit'] = filter_var(@$_POST['eeUploadLimit'], FILTER_VALIDATE_INT);
+		if(!$eeSettings[$eeID]['UploadLimit'] ) { $eeSettings[$eeID]['UploadLimit'] = $eeSFL->eeDefaultUploadLimit; }
 		
 		// Maximum File Size
 		if(@$_POST['eeUploadMaxFileSize']) {
@@ -42,9 +46,9 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 			
 			// Can't be more than the system allows.
 			if(! $eeSFL_Config['UploadMaxFileSize'] OR $eeSFL_Config['UploadMaxFileSize'] > $eeSFL_Env['the_max_upload_size']) { 
-				$eeSFL_Config['UploadMaxFileSize'] = $eeSFL_Env['the_max_upload_size'];
+				$eeSettings[$eeID]['UploadMaxFileSize'] = $eeSFL_Env['the_max_upload_size'];
 			} else {
-				$eeSFL_Config['UploadMaxFileSize'] = $eeSFL_UploadMaxFileSize;
+				$eeSettings[$eeID]['UploadMaxFileSize'] = $eeSFL_UploadMaxFileSize;
 			}
 			
 		} else {
@@ -55,7 +59,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 		
 		// File Formats
 		if(@$_POST['eeFileFormats']) { // Strip all but what we need for the comma list of file extensions
-			$eeSFL_Config['FileFormats'] = preg_replace("/[^a-z0-9,]/i", "", $_POST['eeFileFormats']);
+			$eeSettings[$eeID]['FileFormats'] = preg_replace("/[^a-z0-9,]/i", "", $_POST['eeFileFormats']);
 		}
 		
 		
@@ -96,13 +100,13 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 				if(!$eeSFL_DirCheck) {
 					$eeSFL_Log['errors'][] = $eeSFL_DirCheck;
 					$eeSFL_Log['errors'][] = __('Cannot create the file directory. Reverting to default.', 'ee-simple-file-list');
-					$eeSFL_Config['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
+					$eeSettings[$eeID]['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
 				
 				} else {
-					$eeSFL_Config['FileListDir'] = $eeSFL_FileListDir;
+					$eeSettings[$eeID]['FileListDir'] = $eeSFL_FileListDir;
 				}
 			} else {
-				$eeSFL_Config['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
+				$eeSettings[$eeID]['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
 			}
 		}
 
@@ -128,7 +132,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 				}
 			}
 			
-			$eeSFL_Config['Notify'] = substr($eeSFL_AddressesString, 0, -1); // Remove last comma
+			$eeSettings[$eeID]['Notify'] = substr($eeSFL_AddressesString, 0, -1); // Remove last comma
 			
 		
 		} elseif(filter_var(@$_POST['eeNotify'], FILTER_SANITIZE_EMAIL)) { // Only one address
@@ -136,30 +140,25 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 			$add = $_POST['eeNotify'];
 			
 			if(filter_var($add, FILTER_VALIDATE_EMAIL)) {
-				$eeSFL_Config['Notify'] = $add;
+				$eeSettings[$eeID]['Notify'] = $add;
 			} else {
 				$eeSFL_Log['errors'][] = $add . ' - ' . __('This is not a valid email address.', 'ee-simple-file-list');
 			}
 			
 		} else {
 			
-			$eeSFL_Config['Notify'] = ''; // Anything but a good email gets null.
+			$eeSettings[$eeID]['Notify'] = ''; // Anything but a good email gets null.
 		}
 	
 	
 	}
 	
-	// Get all the settings
-	$eeSettings = get_option('eeSFL-Settings');
-	
-	// Update this sub-array
-	$eeSettings[$eeSFL->eeListID] = $eeSFL_Config;
-	
 	// Update DB
 	update_option('eeSFL-Settings', $eeSettings );
 	
+	// Update the array with new values
+	$eeSFL_Config = $eeSettings[$eeID];
 	
-		
 	$eeSFL_Confirm = __('Uploader Settings Saved', 'ee-simple-file-list');
 	$eeSFL_Log[] = $eeSFL_Confirm;
 	
@@ -277,7 +276,7 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePlug
 				
 				
 				// Get Uploader Info
-				$eeOutput .= '<span>' . __('Get Uploader\'s Information?', 'ee-simple-file-list') . '</span><label for="eeGetUploaderInfoYes" class="eeRadioLabel">' . __('Yes', 'ee-simple-file-list') . '</label><input type="radio" name="eeGetUploaderInfo" value="YES" id="eeGetUploaderInfoYes"';
+				$eeOutput .= '<span class="eeLabel">' . __('Get Uploader\'s Information?', 'ee-simple-file-list') . '</span><label for="eeGetUploaderInfoYes" class="eeRadioLabel">' . __('Yes', 'ee-simple-file-list') . '</label><input type="radio" name="eeGetUploaderInfo" value="YES" id="eeGetUploaderInfoYes"';
 				
 				if($eeSFL_Config['GetUploaderInfo'] == 'YES') { $eeOutput .= ' checked'; }
 				

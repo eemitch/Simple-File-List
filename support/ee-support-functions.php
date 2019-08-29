@@ -28,7 +28,7 @@ if(!function_exists('eeProcessSupportPost')) {
 					
 					$eeField = eeUnSlug($eeKey);
 					
-					$eeContact_Body .= $eeField . ': ' . $eeValue . "\n\n";
+					$eeContact_Body .= $eeField . ': ' . $eeValue . PHP_EOL . PHP_EOL;
 				}
 		    }
 		    
