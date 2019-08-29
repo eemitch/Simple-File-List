@@ -122,7 +122,7 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 // Post-process an upload job
 function eeSFL_ProcessUpload($eeSFL_ID) {
 	
-	global $eeSFL, $eeSFL_Config, $eeSFL_Log;
+	global $eeSFL, $eeSFL_Config, $eeSFL_Env, $eeSFL_Log;
 	
 	$eeOutput = FALSE;
 	
@@ -151,6 +151,8 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 				$eeNewArray[] = $eeArray[0] . '.' . strtolower($eeArray[1]);
 			}
 			$eeArray = $eeNewArray;
+			
+			$eeSFL_Env['UploadedFiles'] = $eeNewArray;
 			
 			
 			// Notification
@@ -191,11 +193,11 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 								
 								if( $eeArray2['FilePath'] ==  $eeSFLF_UploadFolder . $eeFile) {
 									
-									// $eeSFL_Log[] = 'MATCH';
-									
-									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterName', filter_var($_POST['eeSFL_Name'], FILTER_SANITIZE_STRING));
-									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterEmail', filter_var($_POST['eeSFL_Email'], FILTER_VALIDATE_EMAIL));
-									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterComments', filter_var($_POST['eeSFL_Comments'], FILTER_SANITIZE_STRING));
+									if(@$_POST['eeSFL_Name']) {
+										$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterName', filter_var($_POST['eeSFL_Name'], FILTER_SANITIZE_STRING));
+										$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterEmail', filter_var($_POST['eeSFL_Email'], FILTER_VALIDATE_EMAIL));
+										$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterComments', filter_var($_POST['eeSFL_Comments'], FILTER_SANITIZE_STRING));
+									}
 								}
 							}
 						}
@@ -208,6 +210,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 					} else  {
 						$eeOutput = $eeSFL->eeSFL_AjaxEmail( $eeUploadJob, $eeSFL_Config['Notify'] );// Send Email Notice
 					}
+					
 				
 				} else {
 					$eeSFL_Log['errors'][] = 'Bad File Array';

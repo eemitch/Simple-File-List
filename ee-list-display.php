@@ -11,9 +11,15 @@ $eeSFL_ListClass = 'eeSFL'; // The basic list's CSS class. Extensions might chan
 $eeClass = '';
 $eeSFL_AllowFrontManage = 'NO'; // Front-side freedom <--- TO DO
 $eeSFL_SendFile_AddFileArray = array(); // We use this for the Send File function
+$eeUploadedFiles = FALSE;
 
 // $eeSFL_Log[] = 'Loaded: ee-list-display';
 // $eeSFL_Log[] = 'Listing File in: ' . $eeSFL_FileListDir;
+
+
+
+
+
 
 // Get the File List
 if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR !$eeSFL_Config['ExpireTime']) { // Only admins can force a rescan
@@ -45,7 +51,31 @@ if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR !$eeSFL_Config['ExpireTime
 	}
 }
 
-// echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
+// Only show files just uploaded
+if(@$eeSFL_Env['UploadedFiles']) {
+	
+	$eeUploadedFiles = array();
+	
+	foreach( $eeSFL_Files as $eeKey => $eeFileArray) {
+		
+		if( in_array($eeFileArray['FilePath'], $eeSFL_Env['UploadedFiles']) ) {
+			$eeUploadedFiles[] = $eeFileArray;
+		}
+		
+		if(count($eeUploadedFiles)) {
+			$eeSFL_Files = $eeUploadedFiles;
+		}
+	}
+	
+	// echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
+	
+} else {
+	$eeSFL_Env['UploadedFiles'] = '';
+}
+
+
+
+
 
 // Extension Check
 if($eeSFLF) {
@@ -143,13 +173,17 @@ if($eeAdmin) {
 
 	$eeOutput .= '
 	
-	<h2>Main File List</h2>
+	<h2>Main File List</h2>';
 	
-	<a href="#" class="button eeButton" id="eeSFL_UploadFilesButton">' . __('Upload Files', 'ee-simple-file-list') . '</a>
+	if($eeUploadedFiles) { 
+		$eeOutput .= '<a href="#" onclick="location.reload();" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . __('Back to the Files', 'ee-simple-file-list') . '</a>';
+	}
 	
-	<a href="?page=ee-simple-file-list&tab=settings" class="button eeButton">' . __('Settings', 'ee-simple-file-list') . '</a>
+	$eeOutput .= '<a href="#" class="button eeButton" id="eeSFL_UploadFilesButton">' . __('Upload Files', 'ee-simple-file-list') . '</a>
 	
-	 <a href="#" class="button eeButton" id="eeSFL_ReScanButton">' . __('Re-Scan', 'ee-simple-file-list') . '</a>';
+	<a href="?page=ee-simple-file-list&tab=settings" class="button eeButton">' . __('Settings', 'ee-simple-file-list') . '</a> 
+	
+	<a href="#" class="button eeButton" id="eeSFL_ReScanButton">' . __('Re-Scan', 'ee-simple-file-list') . '</a>';
 }
 
 
