@@ -1,13 +1,7 @@
-<?php // PLUGIN AUTHOR PAGE - Mitchell Bennis | Element Engage, LLC | mitch@elementengage.com
-	
-	// Rev 10/18
-	
-	// text-domain = ee-simple-file-list
-	
-	// TO DO -- Add credit: https://github.com/dmhendricks/file-icon-vectors
+<?php // Simple File List Script: ee-plugin-author.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
 	
 defined( 'ABSPATH' ) or die( 'No direct access is allowed' );
-if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('That is Noncense!'); // Exit if nonce fails
+if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
 $eeSFL_Log[] = 'Loaded: ee-plugin-author';
 	
@@ -22,22 +16,19 @@ $eeOutput .= '<article class="eeSupp">
 
 	<a href="http://simplefilelist.com/donations/simple-file-list-project/" title="' . esc_attr__('Show Your Support', 'ee-simple-file-list') . '" target="_blank">
 	
-		<img id="mitchellbennisHeadshot" src="' . plugin_dir_url( __FILE__ ) . '/images/Mitchell-Bennis-Head-Shot.jpg" />
+		<img id="mitchellbennisHeadshot" src="' . plugin_dir_url( __FILE__ ) . '/images/Mitchell-Bennis-Head-Shot.jpg" alt="Mitchell Bennis" />
 	
 	</a>
 
 	<h2>' . __('Thank You', 'ee-simple-file-list') . '</h2>
 	
-	<p>' . __('Thank you for using my plugin. I am proud of this work and want very much to improve upon it. The goal is to keep it simple, yet make it do what you need it to do. Tell me about the features that you want!', 'ee-simple-file-list') . ' </p>
+	<p>' . __('Thank you for using my plugin. I am proud of this work and am committed to supporting it.') . ' ' . __('The goal is to keep it simple, yet make it do what you need it to do.') . ' ' . __('Tell me about the features that you want.', 'ee-simple-file-list') . ' </p>
 
 	
-	<p><a href="http://mitchellbennis.com/" target="_blank">Mitchell Bennis</a></p>
-	
-	<p><a href="https://elementengage.com/" target="_blank">Element Engage</a><br />Cokato, Minnesota, USA</p>'; // That's me!
+	<p><a href="http://mitchellbennis.com/" target="_blank">Mitchell Bennis</a><br />
+	Cokato, Minnesota, USA</p>'; // That's me!
 		
-		$eeOutput .= '<p>' . __('Contact Me', 'ee-simple-file-list') . ': <a href="?page=' . $eePageSlug . '&tab=help ">' . __('Feedback or Questions', 'ee-simple-file-list') . '</a></p><p>'  
-			
- 		. __('Please rate this plugin', 'ee-simple-file-list') . ' <a href="https://wordpress.org/plugins/simple-file-list/reviews/" target="_blank">here</a>.</p>'; // It's a good thing
+		$eeOutput .= '<p>' . __('Contact Me', 'ee-simple-file-list') . ': <a href="https://simplefilelist.com/support/">' . __('Feedback or Questions', 'ee-simple-file-list') . '</a></p>';
 	
 	if(is_array($eeContributors)) {
 		
@@ -58,6 +49,5 @@ $eeOutput .= '<article class="eeSupp">
 	}
 		
 	$eeOutput .= '</article>';
-	
-	
+
 ?>

@@ -1,4 +1,4 @@
-<?php // Simple File List Uploader Settings - Mitchell Bennis | Element Engage, LLC | mitch@elementengage.com
+<?php // Simple File List Script: ee-upload-settings.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('That is Noncense! (' . basename(__FILE__) . ')' ); // Exit if nonce fails
@@ -30,7 +30,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	}
 	
 	// Get Uploader Info
-	if($eeSettings[$eeID]['AllowUploads'] != 'NO' AND @$_POST['eeUploadLimit']) { // Only update if showing these
+	if($eeSettings[$eeID]['AllowUploads'] != 'NO') { // Only update if showing these
 		
 		// YES/NO Checkboxes
 		$eeSettings[$eeID]['GetUploaderInfo'] = eeSFL_ProcessCheckboxInput('GetUploaderInfo');
@@ -55,102 +55,10 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 			$eeSFL_UploadMaxFileSize = 1;
 		}
 		
-		
-		
 		// File Formats
 		if(@$_POST['eeFileFormats']) { // Strip all but what we need for the comma list of file extensions
 			$eeSettings[$eeID]['FileFormats'] = preg_replace("/[^a-z0-9,]/i", "", $_POST['eeFileFormats']);
 		}
-		
-		
-		
-		// File List Folder
-		$eeSFL_LastFileListDir = $eeSFL_Config['FileListDir'];
-		
-		if(@$_POST['eeFileListDir']) {
-			
-			$eeSFL_FileListDir = filter_var($_POST['eeFileListDir'], FILTER_SANITIZE_STRING);
-			
-			$eeArray = explode('/', $eeSFL_FileListDir);
-			
-			$eeSFL_FileListDir = ''; // Reset for rebuilding
-			
-			foreach( $eeArray as $eeValue) { // Rebuild as we sanitize
-				
-				// Sanitize
-				$eeValue = strip_tags($eeValue);
-			    $eeValue = preg_replace('/[\r\n\t ]+/', ' ', $eeValue);
-			    $eeValue = preg_replace('/[\"\*\/\:\<\>\?\'\|]+/', ' ', $eeValue);
-			    $eeValue = html_entity_decode( $eeValue, ENT_QUOTES, "utf-8" );
-			    $eeValue = htmlentities($eeValue, ENT_QUOTES, "utf-8");
-			    $eeValue = preg_replace("/(&)([a-z])([a-z]+;)/i", '$2', $eeValue);
-			    $eeValue = str_replace(' ', '-', $eeValue);
-			    $eeValue = rawurlencode($eeValue);
-			    $eeValue = str_replace('%', '-', $eeValue);
-			    
-			    if($eeValue AND strlen($eeValue) <= 255) {
-				    $eeSFL_FileListDir .= $eeValue . '/';
-			    }  
-			}
-			
-			if( strlen($eeSFL_FileListDir) ) {
-			
-				$eeSFL_DirCheck = eeSFL_FileListDirCheck($eeSFL_FileListDir);
-			
-				if(!$eeSFL_DirCheck) {
-					$eeSFL_Log['errors'][] = $eeSFL_DirCheck;
-					$eeSFL_Log['errors'][] = __('Cannot create the file directory. Reverting to default.', 'ee-simple-file-list');
-					$eeSettings[$eeID]['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
-				
-				} else {
-					$eeSettings[$eeID]['FileListDir'] = $eeSFL_FileListDir;
-				}
-			} else {
-				$eeSettings[$eeID]['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
-			}
-		}
-
-		
-		// Notifications
-		$eeSFL_To = @$_POST['eeNotify'];
-			
-		if(strpos($eeSFL_To, ',')) { // Multiple Addresses
-		
-			$eeSFL_Addresses = explode(',', $eeSFL_To); // Make array
-			
-			$eeSFL_AddressesString = '';
-			
-			foreach($eeSFL_Addresses as $add){
-				
-				$add = trim($add);
-				
-				if(filter_var($add, FILTER_VALIDATE_EMAIL)) {
-			
-					$eeSFL_AddressesString .= $add . ',';
-				} else {
-					$eeSFL_Log['errors'][] = $add . ' - ' . __('This is not a valid email address.', 'ee-simple-file-list');
-				}
-			}
-			
-			$eeSettings[$eeID]['Notify'] = substr($eeSFL_AddressesString, 0, -1); // Remove last comma
-			
-		
-		} elseif(filter_var(@$_POST['eeNotify'], FILTER_SANITIZE_EMAIL)) { // Only one address
-			
-			$add = $_POST['eeNotify'];
-			
-			if(filter_var($add, FILTER_VALIDATE_EMAIL)) {
-				$eeSettings[$eeID]['Notify'] = $add;
-			} else {
-				$eeSFL_Log['errors'][] = $add . ' - ' . __('This is not a valid email address.', 'ee-simple-file-list');
-			}
-			
-		} else {
-			
-			$eeSettings[$eeID]['Notify'] = ''; // Anything but a good email gets null.
-		}
-	
-	
 	}
 	
 	// Update DB
@@ -165,42 +73,33 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	if($eeSFL_DevMode) {
 		$eeSFL_Log[] = $_POST;
 	}
-	
 }
 
 // Settings Display =========================================
 	
 $eeOutput .= '<div class="eeSFL_Admin">';
-
-
-
-
 	
 if(@$eeSFL_Log['errors']) { 
-	
-	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_Log['errors'], 'error');
-	
+	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_Log['errors'], 'notice-error');
 } elseif(@$eeSFL_Confirm) { 
-	
-	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_Confirm, 'updated');
+	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_Confirm, 'notice-success');
 }
-
-
-
-
-
 	
 $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=uploader_settings" method="post" id="eeSFL_Settings">
+
+		<p class="eeSettingsRight"><a class="eeInstructionsLink" href="https://simplefilelist.com/upload-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list') . '</a>
+		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" /></p>
+			
+		<h2>' . __('Upload Settings', 'ee-simple-file-list') . '</h2>
+
 		<input type="hidden" name="eePost" value="TRUE" />
 		<input type="hidden" name="eeListID" value="' . $eeSFL->eeListID . '" />';	
 		
-		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce' );
+		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce', TRUE, FALSE);
 		
 		$eeOutput .= '<fieldset>
 			
-			<h2>' . __('File Upload Settings', 'ee-simple-file-list') . '</h2>
-			
-			<label for="eeAllowUploads">' . __('File Uploader', 'ee-simple-file-list') . '</label>
+			<label for="eeAllowUploads">' . __('Allow File Upload', 'ee-simple-file-list') . '</label>
 			
 			<select name="eeAllowUploads" id="eeAllowUploads">
 			
@@ -232,15 +131,14 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePlug
 			
 			
 			$eeOutput .= '<div class="eeNote">' . 
-				__('Allow anyone to upload, only logged in users, administrators or nobody.', 'ee-simple-file-list') . '</div>
+				__('Allow anyone to upload, only logged-in users, administrators or nobody.', 'ee-simple-file-list') . '</div>
 					
 			<br class="eeClearFix" />';
 			
 			
 			if($eeSFL_Config['AllowUploads'] != 'NO') {
 				
-				// Uploader Engine
-				
+				// The File List Folder
 				$eeOutput .= '
 				
 				<label for="eeUploadLimit">' . __('Upload Limit', 'ee-simple-file-list') . '</label>
@@ -250,70 +148,29 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePlug
 					
 				<br class="eeClearFix" />';
 					
-					
-				
-				// The File List Folder
-				$eeOutput .= '<label for="eeFileListDir">' . __('Upload Directory', 'ee-simple-file-list') . ':</label>
-					<input type="text" name="eeFileListDir" value="' . $eeSFL_Config['FileListDir'] . '" class="eeAdminInput" id="eeFileListDir" size="64" />
-					<div class="eeNote">' . __('This is relative to your Wordpress home folder.', 'ee-simple-file-list') . ' <em>wp-content/uploads/simple-file-list/</em> ' . __('is the default', 'ee-simple-file-list') . '.<br />
-						' . __('This will create the directory if it does not yet exist.', 'ee-simple-file-list') . '
-					</div>
-				
-				<br class="eeClearFix" />';
-					
-				
-				
-				
 				// Maximum File Size
 				if(!$eeSFL_Config['UploadMaxFileSize']) { $eeSFL_Config['UploadMaxFileSize'] = $eeSFL_Env['the_max_upload_size']; }
 				
-				$eeOutput .= '<label for="eeUploadMaxFileSize">' . __('Maximum File Size', 'ee-simple-file-list') . ' (MB):</label><input type="number" min="1" max="' . $eeSFL_Env['the_max_upload_size']. '" step="1" name="eeUploadMaxFileSize" value="' . $eeSFL_Config['UploadMaxFileSize'] . '" class="eeAdminInput" id="eeUploadMaxFileSize" />
+				$eeOutput .= '<label for="eeUploadMaxFileSize">' . __('Maximum File Size', 'ee-simple-file-list') . ' (MB):</label><input type="number" min="1" max="' . $eeSFL_Env['the_max_upload_size']. '" step="1" name="eeUploadMaxFileSize" value="' . $eeSFL_Env['the_max_upload_size'] . '" class="eeAdminInput" id="eeUploadMaxFileSize" />
 					<div class="eeNote">' . __('Your hosting limits the maximum file upload size to', 'ee-simple-file-list') . ' <strong>' . $eeSFL_Env['the_max_upload_size']. ' MB</strong>.</div>
 				
 				<br class="eeClearFix" />';
 				
 				
-				
-				
-				// Get Uploader Info
-				$eeOutput .= '<span class="eeLabel">' . __('Get Uploader\'s Information?', 'ee-simple-file-list') . '</span><label for="eeGetUploaderInfoYes" class="eeRadioLabel">' . __('Yes', 'ee-simple-file-list') . '</label><input type="radio" name="eeGetUploaderInfo" value="YES" id="eeGetUploaderInfoYes"';
-				
-				if($eeSFL_Config['GetUploaderInfo'] == 'YES') { $eeOutput .= ' checked'; }
-				
-				$eeOutput .= '/>
-					<label for="eeFormNo" class="eeRadioLabel">' . __('No', 'ee-simple-file-list') . '</label><input type="radio" name="eeGetUploaderInfo" value="NO" id="eeFormNo"';
-					
-				if($eeSFL_Config['GetUploaderInfo'] != 'YES') { $eeOutput .= ' checked'; }
-				
-				$eeOutput .= ' />
-					<br class="eeClearFix" />
-					<div class="eeNote">' . __('Displays a form which must be filled out', 'ee-simple-file-list') . '; ' . __('Name, Email, with optional text Notes.', 'ee-simple-file-list') . '<br />
-						' . __('Submissions are sent to the Notice Email.', 'ee-simple-file-list') . '</div>
-				<br class="eeClearFix" />';
-				
-				
-				
-				
-				
 				// File Formats Allowed
-				$eeOutput .= '<label for="eeFormats">' . __('Allowed File Types', 'ee-simple-file-list') . ':</label><textarea name="eeFileFormats" class="eeAdminInput" id="eeFormats" cols="64" rows="3" />' . $eeSFL_Config['FileFormats'] . '</textarea>
+				$eeOutput .= '<label for="eeFormats">' . __('Allowed File Types', 'ee-simple-file-list') . ':</label><textarea name="eeFileFormats" class="eeAdminInput" id="eeFormats" cols="64" rows="3" >' . $eeSFL_Config['FileFormats'] . '</textarea>
 					<div class="eeNote">' . __('Only use the file types you absolutely need, such as', 'ee-simple-file-list') . ' jpg, jpeg, png, pdf, mp4, etc</div>';
 					
-				
-				// Upload Notification
-				$eeOutput .= '<label for="eeNotify">' . __('Notice Email', 'ee-simple-file-list') . ':</label><input type="text" name="eeNotify" value="' . $eeSFL_Config['Notify'] . '" class="eeAdminInput" id="eeNotify" size="64" />
-						<div class="eeNote">' . __('You will get an email whenever a file is uploaded.', 'ee-simple-file-list') . ' ' .  __('Separate multiple addresses with a comma.', 'ee-simple-file-list') . '</div>';
 			}
 			
 			$eeOutput .= '<br class="eeClearFix" />
 			
-			<input type="submit" name="submit" id="submit2" value="' . __('SAVE', 'ee-simple-file-list') . '" class="eeAlignRight" />
+			<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" />
 			
 			</fieldset>
 	
 	</form>
 	
 </div>';
-	
-	
+
 ?>

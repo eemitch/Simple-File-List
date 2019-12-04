@@ -1,4 +1,6 @@
-/* Simple File List Javascript | Mitchell Bennis | Element Engage, LLC | mitch@elementengage.com */
+// Simple File List Script: ee-footer.js | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.12.2019
+
+// Used in front-side and back-side file list display
 
 console.log('ee-footer.js Loaded');
 
@@ -9,41 +11,7 @@ jQuery(document).ready(function($) {
 	
 	window.addEventListener('touchstart', function() {
 		eeSFL_isTouchscreen = true;
-	});
-	
-/*
-	
-	
-	// File List Table Sorting
-	jQuery('.eeFiles th.eeSFL_Sortable').click(function(){
-	    
-	    var table = jQuery(this).parents('table').eq(0)
-	    var rows = table.find('tr:gt(0)').toArray().sort(eeSFL_comparer(jQuery(this).index()))
-	    this.asc = !this.asc
-	    if (!this.asc){rows = rows.reverse()}
-	    for (var i = 0; i < rows.length; i++){table.append(rows[i])}
-	})
-	
-	function eeSFL_comparer(index) {
-	    return function(a, b) {
-	        var valA = eeSFL_getCellValue(a, index), valB = eeSFL_getCellValue(b, index)
-	        var eeReturn = $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
-	        
-	        if($.isNumeric(eeReturn)) {
-		        eeReturn = eeSFL_GetFileSize(eeReturn, 1024);
-	        }
-	        
-	        return eeReturn;   
-	    }
-	}
-	
-	function eeSFL_getCellValue(row, index){
-		return jQuery(row).children('td').eq(index).text();
-	}
-	
-	
-*/
-	
+	});	
 
 }); // END Ready Function
 
@@ -110,7 +78,9 @@ function eeSFL_Delete(eeSFL_FileID) {
 	console.log('Deleting File ID #' + eeSFL_FileID);
 	
 	// Get the File Name
-    var eeSFL_FileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileLink').text();
+    var eeSFL_FileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' .eeSFL_RealFileName').text();
+    
+    console.log(eeSFL_FileName);
 	
 	if( confirm("Confirm Delete...\r\n" + eeSFL_FileName) ) {
 	
@@ -125,10 +95,10 @@ function eeSFL_Delete(eeSFL_FileID) {
 function eeSFL_SendFile(eeSFL_FileID) {
 	
 	event.preventDefault(); // Don't follow the link
-    var eeFileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileLink').text(); // Get the File Name
-	jQuery('#eeSFL_SendTheseFilesList em').text(eeFileName); // Add it to the list view
+    var eeFileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' .eeSFL_RealFileName').text(); // Get the File Name
+    jQuery('#eeSFL_SendTheseFilesList em').text(eeFileName); // Add it to the list view
 	jQuery('#eeSFL_SendMoreFiles input[type=checkbox]').prop("checked", false); // Uncheck all the boxes
-	jQuery('#eeSFL_AddFileID_' + eeSFL_FileID + ' input[type=checkbox]').prop("checked", true); // Check the first file's box
+	jQuery('.eeSFL_AddFileID_' + eeSFL_FileID + ' input[type=checkbox]').prop("checked", true); // Check the first file's box
 	jQuery('#eeSFL_SendPop').fadeIn();
 }
 
@@ -150,7 +120,7 @@ function eeSFL_Send_AddMoreFiles() {
 function eeSFL_Send_AddMoreCancel() {
 	event.preventDefault();
 	jQuery('eeSFL_SendMoreFiles input[type=checkbox]').prop("checked", false); // Uncheck all the boxes
-	jQuery('#eeSFL_AddFileID_' + eeSFL_FileID + ' input[type=checkbox]').prop("checked", true); // Check the first file's box
+	jQuery('.eeSFL_AddFileID_' + eeSFL_FileID + ' input[type=checkbox]').prop("checked", true); // Check the first file's box
 	jQuery('#eeSFL_SendInfo').show();
 	jQuery('#eeSFL_SendMoreFiles').slideUp();
 }
@@ -185,7 +155,7 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 	console.log(eeSFL_Action + ' -> ' + eeSFL_FileID);
 	
 	// The File Action Engine
-	var eeActionEngine = eeSFL_PluginURL + '/ee-file-engine.php';
+	var eeActionEngine = eeSFL_PluginURL + 'ee-file-engine.php';
 	
 	
 	// AJAX --------------
@@ -195,8 +165,20 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 	
 	if(eeSFL_Action == 'Rename') {
 		
-		var eeSFL_OldFileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileLink').text(); // Current File Name
+		var eeSFL_OldFileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_RealFileName').text(); // Current File Name
 		var eeSFL_NewFileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeNewFileName').val();
+		
+		// Basic Sanitize for Display
+		eeSFL_NewFileName = eeSFL_NewFileName.replace(' ', '-'); // Deal with spaces
+		
+		if(eeSFL_OldFileName.indexOf('.') == -1) { // It's a folder
+			
+			eeSFL_NewFileName = eeSFL_NewFileName.replace('.', '_'); // Replace dots
+		
+		} else if(eeSFL_NewFileName.indexOf('.') == -1) { // Disallow removing extension
+			
+			return false;
+		}
 	
 		var eeFormData = {
 			'eeSFL_ID': eeSFL_ListID,
@@ -248,9 +230,15 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 					
 					jQuery('div.eeSFL_FileRenameEntry').hide();
 					
+					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_RealFileName').text(eeSFL_NewFileName);
+					
 					// Make a New Link
 					var eeNewLink = '<a class="eeSFL_FileName" href="/' + eeSFL_FileListDir + eeSFL_NewFileName + '">' + eeSFL_NewFileName + '</a>';
 					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileLink').html(eeNewLink);
+					
+					// Update the Open link
+					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' a.eeSFL_FileOpen').attr('href', '/' + eeSFL_FileListDir + eeSFL_NewFileName);
+					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' a.eeSFL_FileDownload').attr('href', '/' + eeSFL_FileListDir + eeSFL_NewFileName);
 					
 				} else if (eeSFL_Action == 'Delete') {
 					

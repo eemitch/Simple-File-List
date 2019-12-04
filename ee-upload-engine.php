@@ -1,11 +1,12 @@
-<?php // Simple File List - ee-upload-engine.php - mitchellbennis@gmail.com
+<?php // Simple File List Script: ee-upload-engine.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
 	
-// This script is accessed via AJAX by ee-upload-form.php
-	
+// This script is accessed via AJAX by js/ee-uploader.js
+
+// Write problems to error log file
 ini_set("log_errors", 1);
 error_reporting (E_ALL);
 ini_set ('display_errors', FALSE);
-ini_set("error_log", "logs/ee-upload-error2.log");
+ini_set("error_log", "logs/ee-upload-error.log");
 $eeSFL_Error = FALSE;
 
 // The FILE object
@@ -26,11 +27,12 @@ if(!$eeSFL_ID) {
 
 
 // The Upload Destination
-if(@$_POST['eeSFL_FileListDir']) {
-	$eeSFL_FileListDir = filter_var($_POST['eeSFL_FileListDir'], FILTER_SANITIZE_STRING);
-	$eeSFL_FileListDir = urldecode($eeSFL_FileListDir);
+if(@$_POST['eeSFL_FileUploadDir']) {
 	
-	if(!$eeSFL_FileListDir) { trigger_error('No Upload Folder !!!', E_USER_ERROR); exit(); }
+	$eeSFL_FileUploadDir = filter_var( $_POST['eeSFL_FileUploadDir'] , FILTER_SANITIZE_STRING);
+	$eeSFL_FileUploadDir = urldecode($eeSFL_FileUploadDir);
+	
+	if(!$eeSFL_FileUploadDir) { trigger_error('No Upload Folder !!!', E_USER_ERROR); exit(); }
 		
 } else { 
 	trigger_error('No Upload Folder Given', E_USER_ERROR);
@@ -40,9 +42,17 @@ if(@$_POST['eeSFL_FileListDir']) {
 // ---------------------------------
 
 // Tie into Wordpress
-define('WP_USE_THEMES', false);
-$wordpress = getcwd() . '/../../../wp-blog-header.php';
-require($wordpress);
+$wordpress = getcwd() . '/../../../wp-load.php'; // Starting at this plugin's home dir
+$wordpress = realpath($wordpress);
+
+if(is_file($wordpress)) { 
+	include($wordpress); // Get all that wonderfullness
+} else {
+	trigger_error("No Wordpress", E_USER_ERROR);
+	exit;
+}
+
+
 
 // WP Security
 function eeSFL_CheckNonce() {
@@ -67,7 +77,7 @@ if($eeSFL_FileSize > $eeSFL_UploadMaxFileSize) {
 }
 
 // Go...
-if(is_dir(ABSPATH . $eeSFL_FileListDir)) {
+if(is_dir(ABSPATH . $eeSFL_FileUploadDir)) {
 		
 	// More Security
 	$verifyToken = md5('unique_salt' . $_POST['eeSFL_Timestamp']);
@@ -94,12 +104,10 @@ if(is_dir(ABSPATH . $eeSFL_FileListDir)) {
 		}
 		
 		// Assemble full name
-		$eeSFL_TargetFile = $eeSFL_FileListDir . $eeSFL_FileNameAlone . '.' . $eeSFL_Extension;
+		$eeSFL_TargetFile = $eeSFL_FileUploadDir . $eeSFL_FileNameAlone . '.' . $eeSFL_Extension;
 		
 		// Check if it already exists
 		$eeSFL_TargetFile = eeSFL_CheckForDuplicateFile($eeSFL_TargetFile);
-		
-		// exit('Target: ' . $eeSFL_TargetFile);
 		
 		$eeTarget = ABSPATH . $eeSFL_TargetFile;
 		

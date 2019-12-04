@@ -30,46 +30,8 @@
 #eeSFL label {
 	float: left;
 }
-#eeSFL input[type=text],
-#eeSFL input[type=tel],
-#eeSFL input[type=email],
-#eeSFL input[type=file],
-#eeSFL textarea {
-	float: left;
-	clear: left;
-	width: 100%;
-	margin-bottom: 20px;
-}
-#eeSFL input[type=submit] {
-	float: right;
-	clear: both;
-	margin-top: 30px;
-}
-#eeSFL .sfl_instuctions {
-	font-size: 70%;
-	font-style: italic;
-}
 
-#eeSFL input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: #DDD;
-  font-style: italic;
-  margin-left: 3em;
-}
-#eeSFL input::-moz-placeholder { /* Firefox 19+ */
-  color: #DDD;
-  font-style: italic;
-  margin-left: 3em;
-}
-#eeSFL input:-ms-input-placeholder { /* IE 10+ */
-  color: #DDD;
-  font-style: italic;
-  margin-left: 3em;
-}
-#eeSFL input:-moz-placeholder { /* Firefox 18- */
-  color: #DDD;
-  font-style: italic;
-  margin-left: 3em;
-}
+
 
 
 #eeSFL table.eeFiles {
@@ -96,8 +58,9 @@
 	overflow: hidden;
 	vertical-align: middle;
 }
+#eeSFL th,
 #eeSFL td {
-	text-align: center;
+	word-break: normal;
 }
 
 #eeSFL td.eeSFL_Thumbnail,
@@ -122,20 +85,32 @@
 }
 #eeSFL input[type=file] {
 	float: left;
-	margin-right: 2em;
+	margin-bottom: 1em;
 	font-size: 120%;
 }
-#eeSFL .eeUploadButton {
+#eeSFL_FilesDrug {
+	margin-left: 20px;
+	margin-bottom: 1em;
+	font-size: 120%;
+}
+#eeSFL_UploadGo {
 	float: left;
+	margin-left: 20px;
 }
 
+#eeMessageDisplay ul {
+	list-style: none;
+}
 
+#eeMessageDisplay ul li:before {
+	content: '✓ ';
+}
 
 
 #eeSFL_FileDropZone {
 	
 	padding: 10px;
-	border: 5px dashed #444;
+	border: 5px dashed #c7c7c7;
 }
 
 #eeSFL_UploadProgress {
@@ -166,12 +141,40 @@
 
 
 
-.eeSFL_EditFileWrap {
+
+
+
+#eeSFL .eeSFL_EditFileWrap {
 	display: none;
+	width: auto;
 	margin: 5px 0;
 	padding: 10px 3%;
-	border: 1px solid black;
+	border: 1px solid #6b6b6b;
+	border-radius: 6px;
+	background-color: #f6f6f6;
 }
+#eeSFL .eeSFL_EditFileWrap h4 {
+	margin: 0;
+}
+#eeSFL .eeSFL_EditFileWrap label {
+	float: none;
+	display: inline-block;
+	width: 98%;
+	margin: 0;
+	text-align: left;
+	font-size: 80%;
+}
+#eeSFL .eeSFL_EditFileWrap input[type=text] {
+	float: right;
+	display: inline-block;
+	width: 80%;
+	margin: 0; 
+}
+#eeSFL .eeSFL_EditFileWrap .eeDeleteButton:hover {
+	background-color: #a93838;
+	color: #EEE;
+}
+
 
 
 
@@ -250,6 +253,7 @@
 
 #eeSFL_SendPop p.eeSFL_SendButtons {
 	text-align: center;
+	margin-top: 1em;
 }
 
 #eeSFL_SendPop input[type="submit"],
@@ -265,14 +269,27 @@
 
 
 
-#eeSFL p.sfl_instuctions {
-	float: right;
+#eeSFL .sfl_instuctions {
+	font-size: 90%;
+	font-style: italic;
 	text-align: right;
-	width: 50%;
 }
+
+.eeValign {
+	position: relative;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
 
 .eeCenter {
 	text-align: center !important;
+}
+
+.eeAlignRight {
+	text-align: right;
 }
 
 .eeClearFix {

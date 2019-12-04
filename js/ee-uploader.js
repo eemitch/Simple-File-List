@@ -116,6 +116,11 @@ function eeSFL_ProcessFileInput(eeSFL_Files) { // The files object
             
     jQuery("#eeSFL_FileList").val(eeSFL_FileQstring); // Set the hidden inputs
 	jQuery("#eeSFL_FileCount").val(eeSFL_FileCount); // The number of files
+	
+	
+	jQuery('#eeSFL_FileInput').hide();
+	jQuery('#eeSFL_FilesDrug').text(eeSFL_FileCount + ' files selected.');
+	jQuery('#eeSFL_FilesDrug').show();
     
     // Helpful information
     console.log("#eeSFL_FileList  Set: " + eeSFL_FileQstring);
@@ -237,7 +242,7 @@ function eeUploadFile(eeSFL_File) { // Pass in file object
     
     // These values are set in ee-upload-form.php
     eeFormData.append("eeSFL_ID", eeSFL_ListID);
-    eeFormData.append("eeSFL_FileListDir", eeSFL_FileListDir);
+    eeFormData.append("eeSFL_FileUploadDir", eeSFL_FileUploadDir);
     eeFormData.append("eeSFL_Timestamp", eeSFL_TimeStamp); 
     eeFormData.append("eeSFL_Token", eeSFL_TimeStampMD5);
         

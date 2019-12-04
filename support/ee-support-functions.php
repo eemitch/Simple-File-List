@@ -1,6 +1,4 @@
-<?php // SUPPORT SYSTEM FUNCTIONS - Mitchell Bennis | Element Engage, LLC | mitch@elementengage.com
-	
-	// Rev 02.26.18
+<?php // Simple File List Script: ee-support-functions.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
 	
 defined( 'ABSPATH' ) or die( 'No direct access is allowed' );
 
@@ -81,6 +79,5 @@ if(!function_exists('eeUnSlug')) {
 	   return $eeSlug;
 	} 
 }
-
 	
 ?>

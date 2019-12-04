@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2019-07-20 10:46-0500\n"
-"PO-Revision-Date: 2019-07-20 11:07-0500\n"
+"POT-Creation-Date: 2019-12-04 11:19-0600\n"
+"PO-Revision-Date: 2019-12-04 12:20-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja_JP\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.4\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: ee-simple-file-list.php\n"
@@ -21,531 +21,871 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: ee-simple-file-list.php:428 ee-admin-page.php:60
-msgid "File List"
-msgstr "ファイルリスト"
-
-#: ee-simple-file-list.php:429 ee-list-display.php:187
-msgid "Settings"
-msgstr "設定"
-
-#. Plugin Name of the plugin/theme
-#: ee-simple-file-list.php:454 ee-simple-file-list.php:455
-#: includes/ee-email-engine.php:62
-msgid "Simple File List"
-msgstr "簡易ファイルリスト"
-
-#: ee-simple-file-list.php:470 ee-simple-file-list.php:471
-#: ee-admin-page.php:65
-msgid "User Manager"
-msgstr "ユーザーマネージャー"
-
-#: ee-simple-file-list.php:486 ee-simple-file-list.php:487
-msgid "New Extension"
-msgstr "新しい拡張機能"
-
-#: ee-admin-page.php:45
+#: ee-admin-page.php:30
 msgid "DEVELOPMENT MODE ON"
 msgstr "開発モードオン"
 
-#: ee-admin-page.php:72
-msgid "Help"
-msgstr "ヘルプ"
+#: ee-admin-page.php:43 ee-simple-file-list.php:364
+msgid "File List"
+msgstr "ファイルリスト"
 
-#: ee-admin-page.php:78
+#: ee-admin-page.php:49
 msgid "Author"
 msgstr "投稿者"
 
-#: ee-admin-page.php:84
-msgid "Instructions"
-msgstr "インストール手順"
+#: ee-admin-page.php:55
+msgid "Get Help"
+msgstr "助けをもらう"
 
-#: ee-admin-page.php:91
+#: ee-admin-page.php:61 ee-simple-file-list.php:365
+msgid "Settings"
+msgstr "設定"
+
+#: ee-admin-page.php:68
 msgid "Add Features"
 msgstr "機能の追加"
 
-#: ee-admin-page.php:125 includes/ee-list-settings.php:95
-#: support/ee-plugin-instructions.php:188
+#: ee-admin-page.php:75 support/ee-shortcode-builder.php:34
+msgid "Create Shortcode"
+msgstr "ショートコードの作成"
+
+#: ee-admin-page.php:99
+msgid "Main File List Settings"
+msgstr "メイン ファイルリストの設定"
+
+#: ee-admin-page.php:107
 msgid "File List Settings"
 msgstr "ファイルリストの設定"
 
-#: ee-admin-page.php:131 support/ee-plugin-instructions.php:200
-msgid "Uploader Settings"
-msgstr "アップローダー設定"
+#: ee-admin-page.php:113
+msgid "File Upload Settings"
+msgstr "ファイルアップロードの設定"
 
-#: ee-admin-page.php:175
+#: ee-admin-page.php:119
+msgid "Display Settings"
+msgstr "表示設定"
+
+#: ee-admin-page.php:125
+msgid "Notification Settings"
+msgstr "通知設定"
+
+#: ee-admin-page.php:177
 msgid ""
 "IMPORTANT: Allowing the public to upload files to your web server comes with "
-"risk. Please go to Upload Settings and ensure that you only use the file "
-"types that you absolutely need. Open each file submitted carefully."
+"risk."
 msgstr ""
-"重要: 一般のユーザーによる web サーバーへのファイルのアップロードを許可する"
-"と、リスクが伴います。[設定のアップロード] に移動して、絶対に必要なファイルの"
-"種類のみを使用するようにしてください。慎重に提出された各ファイルを開きます。"
+"重要: 一般ユーザーが Web サーバーにファイルをアップロードできるようにすると、"
+"リスクが伴います。"
 
-#: ee-admin-page.php:178 support/ee-get-extensions.php:29
-msgid "Add Feature Extensions"
-msgstr "機能拡張機能の追加"
+#: ee-admin-page.php:178
+msgid ""
+"Please go to Upload Settings and ensure that you only use the file types "
+"that you absolutely need."
+msgstr ""
+"[アップロードの設定] に移動し、絶対に必要なファイルの種類のみを使用するように"
+"してください。"
 
-#: ee-admin-page.php:181
-msgid "Website"
-msgstr "ウェブサイト"
+#: ee-admin-page.php:179
+msgid "Open each file submitted carefully."
+msgstr "送信された各ファイルを慎重に開きます。"
 
-#: ee-admin-page.php:182
-msgid "News"
-msgstr "ニュース"
+#: ee-admin-page.php:182 support/ee-get-help.php:99
+msgid "Plugin Documentation"
+msgstr "プラグインのドキュメントの例"
 
 #: ee-admin-page.php:183
-msgid "Feedback"
-msgstr "フィードバック"
+msgid "Review Plugin"
+msgstr "プラグインの確認"
 
 #: ee-admin-page.php:184
-msgid "Review"
-msgstr "レビュー"
+msgid "Plugin Website"
+msgstr "プラグインのウェブサイト"
 
-#: ee-admin-page.php:188
-msgid "Buy Me a Beer"
-msgstr "ビールを買ってくれ"
+#: ee-admin-page.php:185
+msgid "Give Feedback"
+msgstr "フィードバックを送信する"
 
-#: ee-admin-page.php:193
-msgid "Version"
-msgstr "バージョン"
+#: ee-admin-page.php:189
+msgid "Buy Me Lunch"
+msgstr "私のランチを買う"
 
-#: includes/ee-class.php:300
-msgid "Greetings"
-msgstr "ごきげんよう"
+#: ee-admin-page.php:194
+msgid "Plugin Version"
+msgstr "プラグインバージョン"
 
-#: includes/ee-class.php:309
-msgid "Uploaded By"
-msgstr "によってアップロード"
+#: ee-admin-page.php:198
+msgid "Folder Extension"
+msgstr "フォルダ拡張"
 
-#: includes/ee-class.php:321
-msgid "located at"
-msgstr "に位置する"
+#: ee-admin-page.php:203
+msgid "Search Extension"
+msgstr "検索拡張機能"
 
-#: includes/ee-class.php:413
-msgid "Your Information"
-msgstr "あなたの情報"
+#: ee-email-engine.php:75
+msgid "Simple File List"
+msgstr "簡易ファイルリスト"
 
-#: includes/ee-class.php:415 ee-list-display.php:203
-msgid "Name"
-msgstr "名前"
-
-#: includes/ee-class.php:418
-msgid "Email"
-msgstr "メールアドレス"
-
-#: includes/ee-class.php:421
-msgid "Comments"
-msgstr "コメント"
-
-#: includes/ee-class.php:548
-msgid "FFmpeg Error - File Not Created"
-msgstr "FFmpeg エラー-ファイルが作成されません"
-
-#: includes/ee-email-engine.php:63
+#: ee-email-engine.php:89
 msgid "File Upload Notice"
 msgstr "ファイルアップロードのお知らせ"
 
-#: includes/ee-file-functions.php:42
-msgid "You should know that"
-msgstr "知っておくべきことは"
-
-#: includes/ee-file-functions.php:46
-msgid "files have"
-msgstr "ファイルが"
-
-#: includes/ee-file-functions.php:48
-msgid "a file has"
-msgstr "、ファイルが"
-
-#: includes/ee-file-functions.php:50
-msgid "been uploaded to your website"
-msgstr "あなたのウェブサイトにアップロードされた"
-
-#: includes/ee-file-functions.php:65
-msgid "File Upload Complete"
-msgstr "ファイルのアップロード完了"
-
-#: ee-list-display.php:45
+#: ee-file-engine.php:131
 msgid "Deleted the File"
 msgstr "ファイルを削除しました"
 
-#: ee-list-display.php:60
-msgid "Thumbnail File Delete Failed"
-msgstr "サムネイルファイルの削除に失敗"
-
-#: ee-list-display.php:67
+#: ee-file-engine.php:136
 msgid "File Delete Failed"
 msgstr "ファイルの削除に失敗"
 
-#: ee-list-display.php:186 includes/ee-upload-form.php:66
+#: ee-file-engine.php:145
+msgid "Folder Delete Failed"
+msgstr "フォルダの削除に失敗しました"
+
+#: ee-list-display.php:49
+msgid "No File List Found. Please Re-Scan"
+msgstr "ファイル一覧が見つかりませんでした。再スキャンしてください"
+
+#: ee-list-display.php:145 includes/ee-upload-form.php:77
 msgid "Upload Files"
 msgstr "ファイルのアップロード"
 
-#: ee-list-display.php:201
-msgid "Thumb"
-msgstr "サムネイル"
+#: ee-list-display.php:148
+msgid "Re-Scan Files"
+msgstr "ファイルの再スキャン"
 
-#: ee-list-display.php:205
-msgid "Size"
-msgstr "サイズ"
+#: ee-list-display.php:154
+msgid "Create Folder"
+msgstr "フォルダの作成"
 
-#: ee-list-display.php:207
-msgid "Date"
-msgstr "日付"
+#: ee-list-display.php:159
+msgid "Search Files"
+msgstr "ファイルの検索"
 
-#: ee-list-display.php:209
-msgid "Owner"
-msgstr "所有者"
+#: ee-list-display.php:167
+msgid "Back to the Files"
+msgstr "ファイルに戻る"
 
-#: ee-list-display.php:318
-msgid "Open"
-msgstr "開く"
+#: ee-list-display.php:179
+msgid "Files"
+msgstr "ファイル"
 
-#: ee-list-display.php:320
-msgid "Download"
-msgstr "ダウンロード"
+#: ee-list-display.php:179
+msgid "Folders"
+msgstr "フォルダー"
 
-#: ee-list-display.php:328 ee-list-display.php:338
-msgid "Rename"
-msgstr "名前の変更"
-
-#: ee-list-display.php:348
-msgid "File Not Found"
-msgstr "ファイルが見つかりません"
-
-#: ee-list-display.php:370
-msgid "Folder"
-msgstr "フォルダ"
-
-#: ee-list-display.php:448
-msgid "Number of Items"
-msgstr "表示する項目数"
-
-#: ee-list-display.php:448
+#: ee-list-display.php:179
 msgid "Sorted by"
 msgstr "で並べ替え"
 
-#: ee-list-display.php:459
-msgid "Delete Checked"
-msgstr "チェックを削除"
+#: ee-list-display.php:180
+msgid "Last Changed"
+msgstr "サムネイル"
 
-#: ee-list-display.php:476
-msgid "No Files"
-msgstr "ファイル"
+#: ee-list-display.php:218 includes/ee-list-settings.php:270
+msgid "Thumb"
+msgstr "サムネイル"
 
-#: includes/ee-list-settings.php:68
-msgid "List Settings Saved"
-msgstr "保存されたリスト設定"
+#: ee-list-display.php:227 includes/ee-class.php:846
+#: includes/ee-list-settings.php:278
+msgid "Name"
+msgstr "名前"
 
-#: includes/ee-list-settings.php:97 includes/ee-list-settings.php:191
-msgid "File List Display"
-msgstr "ファイル一覧表示"
+#: ee-list-display.php:237 ee-list-display.php:570
+#: includes/ee-list-settings.php:298
+msgid "Size"
+msgstr "サイズ"
 
-#: includes/ee-list-settings.php:105 support/ee-plugin-instructions.php:99
-#: support/ee-plugin-instructions.php:120
-msgid "Show to Everyone"
-msgstr "すべての人に見せる"
+#: ee-list-display.php:248 includes/ee-list-settings.php:288
+msgid "Date"
+msgstr "日付"
 
-#: includes/ee-list-settings.php:111
-msgid "Show to Only Logged in Users"
-msgstr "ログインしているユーザーのみに表示"
+#: ee-list-display.php:472
+msgid "Submitted by"
+msgstr "投稿日"
 
-#: includes/ee-list-settings.php:117
-msgid "Show to Only Logged in Admins"
-msgstr "ログインしている管理者のみに表示"
+#: ee-list-display.php:486
+msgid "Open"
+msgstr "開く"
 
-#: includes/ee-list-settings.php:123
-msgid "Hide the File List Completely"
-msgstr "ファイルリストを完全に非表示にする"
+#: ee-list-display.php:492
+msgid "Download"
+msgstr "ダウンロード"
 
-#: includes/ee-list-settings.php:128
-msgid "You can use the uploader without showing the file list."
-msgstr "ファイルリストを表示せずにアップローダーを使用できます。"
+#: ee-list-display.php:495 ee-list-display.php:686
+msgid "Send"
+msgstr "送信"
 
-#: includes/ee-list-settings.php:132
-msgid "Columns to Show"
-msgstr "表示する列"
+#: ee-list-display.php:504
+msgid "Edit"
+msgstr "編集"
 
-#: includes/ee-list-settings.php:134
-msgid "Show Thumbnail"
-msgstr "サムネイルを表示"
+#: ee-list-display.php:511
+msgid "Move"
+msgstr "移動"
 
-#: includes/ee-list-settings.php:138
-msgid "Show File Date"
-msgstr "ファイルの日付を表示"
+#: ee-list-display.php:525
+msgid "Move to Folder"
+msgstr "フォルダに移動"
 
-#: includes/ee-list-settings.php:142
-msgid "Show File Size"
-msgstr "ファイルサイズの表示"
+#: ee-list-display.php:550
+msgid "Edit Details"
+msgstr "詳細を編集"
 
-#: includes/ee-list-settings.php:146
-msgid ""
-"Limit the columns of file details to display on the front-side file list."
-msgstr ""
-"ファイルの詳細の列を、フロント・サイド・ファイル・リストに表示するように制限"
-"します。"
-
-#: includes/ee-list-settings.php:148
-msgid "File Sorting and Order"
-msgstr "ファイルの並べ替えと順序"
-
-#: includes/ee-list-settings.php:150
-msgid "Sort By"
-msgstr "並び替え"
-
-#: includes/ee-list-settings.php:158
+#: ee-list-display.php:552 includes/ee-list-settings.php:275
+#: includes/ee-list-settings.php:323
 msgid "File Name"
 msgstr "ファイル名"
 
-#: includes/ee-list-settings.php:163
-msgid "File Date"
-msgstr "ファイルの日付"
+#: ee-list-display.php:555 includes/ee-class.php:852
+msgid "Description"
+msgstr "説明"
 
-#: includes/ee-list-settings.php:168
-msgid "File Size"
-msgstr "ファイルサイズ"
+#: ee-list-display.php:560
+msgid "Save"
+msgstr "保存"
 
-#: includes/ee-list-settings.php:173
-msgid "Random"
-msgstr "ランダム"
+#: ee-list-display.php:561 ee-list-display.php:685 ee-list-display.php:717
+msgid "Cancel"
+msgstr "キャンセル"
 
-#: includes/ee-list-settings.php:175
-msgid "Sort the list by name, date, file size, or randomly."
-msgstr "リストを名前、日付、ファイルサイズ、またはランダムに並べ替えます。"
+#: ee-list-display.php:562
+msgid "Delete"
+msgstr "削除"
 
-#: includes/ee-list-settings.php:179
-msgid "Reverse Order"
-msgstr "逆順"
+#: ee-list-display.php:565
+msgid "Added"
+msgstr "追加"
 
-#: includes/ee-list-settings.php:184
-msgid "Descending"
-msgstr "降順"
+#: ee-list-display.php:568
+msgid "Modified"
+msgstr "更新日"
 
-#: includes/ee-list-settings.php:186
-msgid "Check this box to reverse the default sort order."
-msgstr "既定の並べ替え順序を逆にするには、このチェックボックスをオンにします。"
+#: ee-list-display.php:600
+msgid "Folder"
+msgstr "フォルダ"
 
-#: includes/ee-list-settings.php:187
-msgid "The list is sorted Ascending by default"
-msgstr "リストはデフォルトで昇順にソートされています"
+#: ee-list-display.php:651
+msgid "Send Link"
+msgstr "リンクの送信"
 
-#: includes/ee-list-settings.php:187
-msgid "Small to Large"
-msgstr "小 ~ 大"
+#: ee-list-display.php:653
+msgid "Send an email with links to the files. Add more files if needed."
+msgstr ""
+"ファイルへのリンクを含む電子メールを送信します。必要に応じてファイルを追加し"
+"ます。"
 
-#: includes/ee-list-settings.php:187
-msgid "Old to New"
-msgstr "古いものから新しいものへ"
+#: ee-list-display.php:655
+msgid "Files to be sent:"
+msgstr "送信するファイル:"
 
-#: includes/ee-list-settings.php:194
-msgid "Show Header"
-msgstr "ヘッダーを表示"
+#: ee-list-display.php:661
+msgid "Your Address"
+msgstr "住所"
 
-#: includes/ee-list-settings.php:201
-msgid "Show file list's table header or not."
-msgstr "ファイルリストのテーブルヘッダーを表示するかどうかを示します。"
+#: ee-list-display.php:664
+msgid "The TO Address"
+msgstr "宛先アドレス"
 
-#: includes/ee-list-settings.php:206
+#: ee-list-display.php:666
+msgid "Separate multiple addresses with a comma"
+msgstr "複数のアドレスをコンマで区切る"
+
+#: ee-list-display.php:668
+msgid "The CC Address"
+msgstr "CC アドレス"
+
+#: ee-list-display.php:671
+msgid "The Subject"
+msgstr "主題"
+
+#: ee-list-display.php:674
+msgid "The Message"
+msgstr "ザ・メッセージ"
+
+#: ee-list-display.php:682 ee-list-display.php:716
+msgid "Add Files"
+msgstr "ファイルを追加"
+
+#: ee-list-display.php:697
+msgid "Add More Files"
+msgstr "ファイルを更に追加"
+
+#: ee-list-display.php:737
+msgid "Upload some files and they will appear here."
+msgstr "いくつかのファイルをアップロードすると、ここに表示されます。"
+
+#: ee-simple-file-list.php:99
+msgid "EXTENSION DISABLED"
+msgstr "拡張子が無効"
+
+#: ee-simple-file-list.php:100
+msgid "Please go to Plugins and update the extension to the latest version."
+msgstr "プラグインに移動し、最新バージョンに拡張機能を更新してください。"
+
+#: includes/ee-class.php:505
+msgid "FFmpeg Error - File Not Created"
+msgstr "FFmpeg エラー-ファイルが作成されません"
+
+#: includes/ee-class.php:672
+msgid "File Notification"
+msgstr "ファイル通知"
+
+#: includes/ee-class.php:734
+msgid "Uploader Information"
+msgstr "アップローダー情報"
+
+#: includes/ee-class.php:739
+msgid "Uploaded By"
+msgstr "によってアップロード"
+
+#: includes/ee-class.php:849
+msgid "Email"
+msgstr "メールアドレス"
+
+#: includes/ee-email-settings.php:45 includes/ee-email-settings.php:59
+msgid "This is not a valid email address."
+msgstr "これは有効な電子メールアドレスではありません。"
+
+#: includes/ee-email-settings.php:85
+msgid "Notification Settings Saved"
+msgstr "保存された通知設定"
+
+#: includes/ee-email-settings.php:105 includes/ee-list-display-settings.php:68
+#: includes/ee-list-settings.php:144 includes/ee-upload-settings.php:90
+msgid "Instructions"
+msgstr "インストール手順"
+
+#: includes/ee-email-settings.php:106 includes/ee-email-settings.php:175
+#: includes/ee-list-display-settings.php:69
+#: includes/ee-list-display-settings.php:219 includes/ee-list-settings.php:145
+#: includes/ee-list-settings.php:370 includes/ee-upload-settings.php:91
+#: includes/ee-upload-settings.php:168
+msgid "SAVE"
+msgstr "保存"
+
+#: includes/ee-email-settings.php:110
+msgid "Notifications"
+msgstr "通知"
+
+#: includes/ee-email-settings.php:123
+msgid "Send Notification"
+msgstr "通知の送信"
+
+#: includes/ee-email-settings.php:125
+msgid ""
+"Send an email notification when a file is uploaded on the front-side of the "
+"website."
+msgstr ""
+"Web サイトの前面にファイルがアップロードされたときに電子メール通知を送信しま"
+"す。"
+
+#: includes/ee-email-settings.php:129
+msgid "Notice Email"
+msgstr "通知メール"
+
+#: includes/ee-email-settings.php:131
+msgid "Send an email whenever a file is uploaded or changed."
+msgstr "ファイルがアップロードまたは変更されるたびにメールを送信します。"
+
+#: includes/ee-email-settings.php:131
+msgid "Separate multiple addresses with a comma."
+msgstr "複数のアドレスをコンマで区切ってください。"
+
+#: includes/ee-email-settings.php:134
+msgid "Copy to Email"
+msgstr "電子メールにコピー"
+
+#: includes/ee-email-settings.php:136
+msgid "Copy notice emails here."
+msgstr "ここに通知メールをコピーします。"
+
+#: includes/ee-email-settings.php:139
+msgid "Blind Copy to Email"
+msgstr "電子メールへのブラインド コピー"
+
+#: includes/ee-email-settings.php:141
+msgid "Blind copy notice emails here."
+msgstr "ブラインドコピー通知メールはこちら。"
+
+#: includes/ee-email-settings.php:147
+msgid "Sender Email"
+msgstr "送信者メール"
+
+#: includes/ee-email-settings.php:149
+msgid "The notification message's reply-to address."
+msgstr "通知メッセージの返信先アドレス。"
+
+#: includes/ee-email-settings.php:152
+msgid "Sender Name"
+msgstr "送信者名"
+
+#: includes/ee-email-settings.php:154
+msgid "The visible name in the From field."
+msgstr "[差出人] フィールドに表示される名前。"
+
+#: includes/ee-email-settings.php:157
+msgid "Notification Subject"
+msgstr "通知の件名"
+
+#: includes/ee-email-settings.php:159
+msgid "The notification email subject line."
+msgstr "通知電子メールの件名行。"
+
+#: includes/ee-email-settings.php:164
+msgid "Message Text"
+msgstr "メッセージ テキスト"
+
+#: includes/ee-email-settings.php:166
+msgid "This will be the text for the file upload notification messages."
+msgstr "これは、ファイルアップロード通知メッセージのテキストになります。"
+
+#: includes/ee-email-settings.php:167
+msgid "To insert file information and link, use this shortcode:"
+msgstr "ファイル情報とリンクを挿入するには、次のショートコードを使用します:"
+
+#: includes/ee-email-settings.php:168
+msgid "To insert a link pointing to the file list, use this shortcode:"
+msgstr ""
+"ファイル リストを指すリンクを挿入するには、次のショートコードを使用します:"
+
+#: includes/ee-functions.php:184
+msgid "Files uploaded"
+msgstr "アップロードされたファイル"
+
+#: includes/ee-functions.php:186
+msgid "File uploaded"
+msgstr "アップロードされたファイル"
+
+#: includes/ee-functions.php:224
+msgid "File Upload Complete"
+msgstr "ファイルのアップロード完了"
+
+#: includes/ee-list-display-settings.php:50 includes/ee-list-settings.php:126
+msgid "List Settings Saved"
+msgstr "保存されたリスト設定"
+
+#: includes/ee-list-display-settings.php:71
+msgid "Front-Side Settings"
+msgstr "フロントサイド設定"
+
+#: includes/ee-list-display-settings.php:93
+msgid "Appearance"
+msgstr "外観"
+
+#: includes/ee-list-display-settings.php:96
+msgid "Preserve Spaces"
+msgstr "スペースの保持"
+
+#: includes/ee-list-display-settings.php:101
+msgid "File Name Spaces"
+msgstr "ファイル名スペース"
+
+#: includes/ee-list-display-settings.php:103
+msgid ""
+"Spaces in file names are replaced with hyphens in order to make the URL "
+"legal."
+msgstr ""
+"URL を有効にするために、ファイル名のスペースはハイフンに置き換えられます。"
+
+#: includes/ee-list-display-settings.php:104
+msgid "This setting will revert this action for display."
+msgstr "この設定は、このアクションを表示に戻します。"
+
+#: includes/ee-list-display-settings.php:109
+msgid "Show File Description"
+msgstr "ファイルの説明の表示"
+
+#: includes/ee-list-display-settings.php:114
+msgid "Description of the file"
+msgstr "ファイルの説明"
+
+#: includes/ee-list-display-settings.php:116
+msgid "Display the file description below the file name."
+msgstr "ファイル名の下にファイルの説明を表示します。"
+
+#: includes/ee-list-display-settings.php:121
 msgid "Show File Actions"
 msgstr "ファイルアクションの表示"
 
-#: includes/ee-list-settings.php:211
+#: includes/ee-list-display-settings.php:126
 msgid "Open | Download"
 msgstr "ダウンロード"
 
-#: includes/ee-list-settings.php:213
+#: includes/ee-list-display-settings.php:128
 msgid "Show file action links below each file name on the front-side list"
 msgstr ""
 "フロントサイドリストの各ファイル名の下にファイルアクションリンクを表示する"
 
-#: includes/ee-list-settings.php:218
-msgid "Allow Front Delete"
-msgstr "フロント削除を許可する"
+#: includes/ee-list-display-settings.php:133
+msgid "Show Extension"
+msgstr "拡張機能の表示"
 
-#: includes/ee-list-settings.php:223
+#: includes/ee-list-display-settings.php:138
+msgid "File Type"
+msgstr "ファイルの種類"
+
+#: includes/ee-list-display-settings.php:140
+msgid "Show or hide the file extension."
+msgstr "ファイル拡張子の表示と非表示を切り替えます。"
+
+#: includes/ee-list-display-settings.php:145
+msgid "Show Header"
+msgstr "ヘッダーを表示"
+
+#: includes/ee-list-display-settings.php:152
+msgid "Show the table header above the file list or not."
+msgstr "ファイルリストの上にテーブルヘッダーを表示するかしないか。"
+
+#: includes/ee-list-display-settings.php:157
+msgid "Show Upload Limits"
+msgstr "アップロード制限の表示"
+
+#: includes/ee-list-display-settings.php:162
+msgid "Show the upload limitations"
+msgstr "アップロードの制限を表示する"
+
+#: includes/ee-list-display-settings.php:164
+msgid "Show the user file size, number and file type restrictions."
+msgstr ""
+"ユーザー ファイルのサイズ、数、およびファイルの種類の制限を表示します。"
+
+#: includes/ee-list-display-settings.php:169
+msgid "Functionality"
+msgstr "機能"
+
+#: includes/ee-list-display-settings.php:171
+msgid "Get Submitter Information"
+msgstr "提出者情報の取得"
+
+#: includes/ee-list-display-settings.php:176
+msgid "Get name, email and description"
+msgstr "名前、電子メール、説明を取得する"
+
+#: includes/ee-list-display-settings.php:178
+msgid "Display a form which must be filled out before a file is uploaded."
+msgstr "ファイルをアップロードする前に入力する必要があるフォームを表示します。"
+
+#: includes/ee-list-display-settings.php:179
+msgid ""
+"Submissions are included within the upload notification email and added to "
+"the file details."
+msgstr "送信はアップロード通知メールに含まれ、ファイルの詳細に追加されます。"
+
+#: includes/ee-list-display-settings.php:184
+msgid "Show Submitter Info"
+msgstr "提出者情報の表示"
+
+#: includes/ee-list-display-settings.php:189
+msgid "Show on Front-side"
+msgstr "フロントサイドに表示"
+
+#: includes/ee-list-display-settings.php:191
+msgid "Show the file submitters information on the website."
+msgstr "Web サイトにファイル提出者情報を表示します。"
+
+#: includes/ee-list-display-settings.php:196
+msgid "Allow File Sending"
+msgstr "ファイル送信を許可する"
+
+#: includes/ee-list-display-settings.php:201
+msgid "Send via Email"
+msgstr "電子メールで送信"
+
+#: includes/ee-list-display-settings.php:203
+msgid "Allow front-side users to email links to files."
+msgstr ""
+"フロントサイドのユーザーがファイルへのリンクを電子メールで送信できるようにし"
+"ます。"
+
+#: includes/ee-list-display-settings.php:208
+msgid "Front-Side Manage"
+msgstr "フロントサイド管理"
+
+#: includes/ee-list-display-settings.php:213
 msgid "Use with Caution"
 msgstr "注意して使用する"
 
-#: includes/ee-list-settings.php:225
-msgid "Allows file deletion on the front-side of the website"
-msgstr "Web サイトのフロントサイドでファイルの削除を許可します"
+#: includes/ee-list-display-settings.php:215
+msgid "Allow file editing and deletion on the front side of the site."
+msgstr "サイトの前面でファイルの編集と削除を許可します。"
 
-#: includes/ee-list-settings.php:243 includes/ee-upload-settings.php:308
-msgid "SAVE"
-msgstr "保存"
-
-#: includes/ee-upload-settings.php:97
+#: includes/ee-list-settings.php:51
 msgid "Cannot create the file directory. Reverting to default."
 msgstr "ファイルディレクトリを作成できません。デフォルトに戻します。"
 
-#: includes/ee-upload-settings.php:127 includes/ee-upload-settings.php:141
-msgid "This is not a valid email address."
-msgstr "これは有効な電子メールアドレスではありません。"
+#: includes/ee-list-settings.php:147
+msgid "List Settings"
+msgstr "リスト設定"
 
-#: includes/ee-upload-settings.php:151
-msgid "Uploader Settings Saved"
-msgstr "アップローダー設定の保存"
+#: includes/ee-list-settings.php:156
+msgid "File List Directory"
+msgstr "ファイル一覧ディレクトリ"
 
-#: includes/ee-upload-settings.php:181
-msgid "File Upload Settings"
-msgstr "ファイルアップロードの設定"
+#: includes/ee-list-settings.php:158
+msgid "This must be relative to your Wordpress home folder."
+msgstr "これは Wordpress のホーム フォルダに対して相対的である必要があります。"
 
-#: includes/ee-upload-settings.php:183
-msgid "File Uploader"
-msgstr "ファイルアップローダー"
+#: includes/ee-list-settings.php:159
+msgid "Default Location"
+msgstr "デフォルトの場所"
 
-#: includes/ee-upload-settings.php:191
-msgid "Anyone Can Upload"
-msgstr "誰でもアップロード可能"
+#: includes/ee-list-settings.php:160
+msgid "The directory you enter will be created if it does not exist."
+msgstr "入力したディレクトリが存在しない場合は作成されます。"
 
-#: includes/ee-upload-settings.php:197
-msgid "Only Logged in Users Can Upload"
-msgstr "ログインしているユーザーのみがアップロード可能"
+#: includes/ee-list-settings.php:166
+msgid "Front-Side Display"
+msgstr "フロントサイドディスプレイ"
 
-#: includes/ee-upload-settings.php:203
-msgid "Only Logged in Admins Can Upload"
-msgstr "ログイン管理者のみがアップロードできます"
+#: includes/ee-list-settings.php:174 support/ee-shortcode-builder.php:100
+#: support/ee-shortcode-builder.php:121
+msgid "Show to Everyone"
+msgstr "すべての人に見せる"
 
-#: includes/ee-upload-settings.php:209
-msgid "Hide the Front Side Uploader Completely"
-msgstr "フロントサイドアップローダーを完全に隠す"
+#: includes/ee-list-settings.php:180
+msgid "Show to Only Logged in Users"
+msgstr "ログインしているユーザーのみに表示"
 
-#: includes/ee-upload-settings.php:215
-msgid "Allow anyone to upload, only logged in users, administrators or nobody."
+#: includes/ee-list-settings.php:186
+msgid "Show to Only Logged in Admins"
+msgstr "ログインしている管理者のみに表示"
+
+#: includes/ee-list-settings.php:192
+msgid "Hide the File List Completely"
+msgstr "ファイルリストを完全に非表示にする"
+
+#: includes/ee-list-settings.php:197
+msgid "Determine who you will show the front-side list to."
+msgstr "フロントサイドリストを表示する相手を決定します。"
+
+#: includes/ee-list-settings.php:201
+msgid "Back-Side Settings Access"
+msgstr "背面設定アクセス"
+
+#: includes/ee-list-settings.php:209
+msgid "Show to Subscribers and Above"
+msgstr "購読者以上に表示"
+
+#: includes/ee-list-settings.php:216
+msgid "Show to Contributers and Above"
+msgstr "投稿者以上に表示"
+
+#: includes/ee-list-settings.php:223
+msgid "Show to Authors and Above"
+msgstr "著者に表示"
+
+#: includes/ee-list-settings.php:230
+msgid "Show to Editors and Above"
+msgstr "編集者以上に表示"
+
+#: includes/ee-list-settings.php:237
+msgid "Show to Admins Only"
+msgstr "管理者のみに表示"
+
+#: includes/ee-list-settings.php:242
+msgid "Determine who can access the back-side settings."
+msgstr "裏側の設定にアクセスできるユーザーを決定します。"
+
+#: includes/ee-list-settings.php:248
+msgid "Information to Show"
+msgstr "表示する情報"
+
+#: includes/ee-list-settings.php:250
+msgid "Limit the file information to display on the front-side file list."
+msgstr "フロントサイドのファイルリストに表示するファイル情報を制限します。"
+
+#: includes/ee-list-settings.php:257
+msgid "Item"
+msgstr "アイテム"
+
+#: includes/ee-list-settings.php:258
+msgid "Show"
+msgstr "表示"
+
+#: includes/ee-list-settings.php:259
+msgid "Label"
+msgstr "ラベル"
+
+#: includes/ee-list-settings.php:265
+msgid "File Thumbnail"
+msgstr "ファイルのサムネイル"
+
+#: includes/ee-list-settings.php:283 includes/ee-list-settings.php:328
+msgid "File Date"
+msgstr "ファイルの日付"
+
+#: includes/ee-list-settings.php:293 includes/ee-list-settings.php:333
+msgid "File Size"
+msgstr "ファイルサイズ"
+
+#: includes/ee-list-settings.php:313
+msgid "File Sorting and Order"
+msgstr "ファイルの並べ替えと順序"
+
+#: includes/ee-list-settings.php:315
+msgid "Sort By"
+msgstr "並び替え"
+
+#: includes/ee-list-settings.php:338
+msgid "Random"
+msgstr "ランダム"
+
+#: includes/ee-list-settings.php:342
+msgid "Sort the list by name, date, file size, or randomly."
+msgstr "リストを名前、日付、ファイルサイズ、またはランダムに並べ替えます。"
+
+#: includes/ee-list-settings.php:346
+msgid "Reverse Order"
+msgstr "逆順"
+
+#: includes/ee-list-settings.php:351
+msgid "Descending"
+msgstr "降順"
+
+#: includes/ee-list-settings.php:353
+msgid "Check this box to reverse the default sort order."
+msgstr "既定の並べ替え順序を逆にするには、このチェックボックスをオンにします。"
+
+#: includes/ee-list-settings.php:354
+msgid "The list is sorted Ascending by default"
+msgstr "リストはデフォルトで昇順にソートされています"
+
+#: includes/ee-list-settings.php:354
+msgid "Small to Large"
+msgstr "小 ~ 大"
+
+#: includes/ee-list-settings.php:354
+msgid "Old to New"
+msgstr "古いものから新しいものへ"
+
+#: includes/ee-list-settings.php:358
+msgid "File List Performance"
+msgstr "ファイルリストのパフォーマンス"
+
+#: includes/ee-list-settings.php:360
+msgid "Re-Scan Interval"
+msgstr "再スキャン間隔"
+
+#: includes/ee-list-settings.php:362
+msgid "Hours"
+msgstr "時間"
+
+#: includes/ee-list-settings.php:363
+msgid "Choose how often the file list on your disc drive is re-scanned."
+msgstr "ディスク ドライブ上のファイル一覧を再スキャンする頻度を選択します。"
+
+#: includes/ee-list-settings.php:364
+msgid "Set to zero to re-scan on each list page load."
+msgstr "リスト ページの読み込みごとに再スキャンするには、0 に設定します。"
+
+#: includes/ee-list-settings.php:365
+msgid ""
+"If you use FTP or another method to upload files to your list, set the "
+"interval to zero."
 msgstr ""
-"誰でもアップロードすることができ、ログインしているユーザー、管理者、または誰"
-"もいない。"
+"FTP またはその他の方法を使用してファイルをリストにアップロードする場合は、間"
+"隔を 0 に設定します。"
 
-#: includes/ee-upload-settings.php:228
-msgid "Upload Limit"
-msgstr "アップロード制限"
+#: includes/ee-upload-form.php:110
+msgid "Processing the Upload"
+msgstr "アップロードの処理"
 
-#: includes/ee-upload-settings.php:231
-msgid "The maximum number of files that may be uploaded per submission."
-msgstr "送信ごとにアップロードできるファイルの最大数。"
-
-#: includes/ee-upload-settings.php:243
-msgid "Upload Directory"
-msgstr "アップロードディレクトリ"
-
-#: includes/ee-upload-settings.php:248
-msgid "This is relative to your Wordpress home folder."
-msgstr "これはあなたの Wordpress のホームフォルダに関連しています。"
-
-#: includes/ee-upload-settings.php:248
-msgid "is the default"
-msgstr "がデフォルト"
-
-#: includes/ee-upload-settings.php:249
-msgid "This will create the directory if it does not yet exist."
-msgstr "これにより、ディレクトリがまだ存在しない場合は作成されます。"
-
-#: includes/ee-upload-settings.php:250
-msgid "Your website must use a FQDN in order to change the path."
-msgstr "パスを変更するには、web サイトで FQDN を使用する必要があります。"
-
-#: includes/ee-upload-settings.php:264
-msgid "Maximum File Size"
-msgstr "最大ファイルサイズ"
-
-#: includes/ee-upload-settings.php:265
-msgid "Your hosting limits the maximum file upload size to"
-msgstr "ホスティングによって、最大ファイルアップロードサイズが制限されます"
-
-#: includes/ee-upload-settings.php:276
-msgid "Get Uploader's Information?"
-msgstr "アップローダーの情報を取得しますか?"
-
-#: includes/ee-upload-settings.php:276
-msgid "Yes"
-msgstr "はい"
-
-#: includes/ee-upload-settings.php:281
-msgid "No"
-msgstr "いいえ"
-
-#: includes/ee-upload-settings.php:287
-msgid "Displays a form which must be filled out"
-msgstr "入力する必要があるフォームを表示します"
-
-#: includes/ee-upload-settings.php:287
-msgid "Name, Email, with optional text Notes."
-msgstr "名前、電子メール、オプションのテキストメモ付き。"
-
-#: includes/ee-upload-settings.php:288
-msgid "Submissions are sent to the Notice Email."
-msgstr "投稿は通知メールに送信されます。"
-
-#: includes/ee-upload-settings.php:297
-msgid "Allowed File Types"
-msgstr "許可されるファイルタイプ"
-
-#: includes/ee-upload-settings.php:298
-msgid "Only use the file types you absolutely need, such as"
-msgstr "必要なファイルの種類のみを使用します"
-
-#: includes/ee-upload-settings.php:302
-msgid "Notice Email"
-msgstr "通知メール"
-
-#: includes/ee-upload-settings.php:303
-msgid "You will get an email whenever a file is uploaded."
-msgstr "ファイルがアップロードされるたびにメールが届きます。"
-
-#: includes/ee-upload-settings.php:303
-msgid "Separate multiple addresses with a comma."
-msgstr "複数のアドレスをコンマで区切ってください。"
-
-#: includes/ee-upload-form.php:62
-msgid "Upload Settings"
-msgstr "アップロード設定"
-
-#: includes/ee-upload-form.php:288
-msgid "Uploading"
-msgstr "アップロード中"
-
-#: includes/ee-upload-form.php:290
+#: includes/ee-upload-form.php:112
 msgid "Upload"
 msgstr "アップロード"
 
-#: includes/ee-upload-form.php:292
+#: includes/ee-upload-form.php:116
 msgid "File Limit"
 msgstr "アップロードできるファイル数"
 
-#: includes/ee-upload-form.php:292
+#: includes/ee-upload-form.php:116
 msgid "files"
 msgstr "ファイル"
 
-#: includes/ee-upload-form.php:294
+#: includes/ee-upload-form.php:118
 msgid "Size Limit"
 msgstr "サイズ制限"
 
-#: includes/ee-upload-form.php:296
+#: includes/ee-upload-form.php:120
 msgid "per file"
 msgstr "ファイルごと"
 
-#: includes/ee-upload-form.php:296
-msgid ""
-"To select multiple files, hold down the Control key while choosing files"
+#: includes/ee-upload-form.php:122
+msgid "Types Allowed"
+msgstr "許可される型"
+
+#: includes/ee-upload-form.php:124
+msgid "Drag-and-drop files here or use the Browse button."
 msgstr ""
-"複数のファイルを選択するには、control キーを押しながらファイルをクリックしま"
-"す"
+"ここでファイルをドラッグ アンド ドロップするか、[参照] ボタンを使用します。"
 
-#: includes/ee-upload-form.php:296
-msgid "Command key on Macs"
-msgstr "Mac のコマンドキー"
-
-#: includes/ee-upload-form.php:304
+#: includes/ee-upload-form.php:134
 msgid "No upload directory configured."
 msgstr "アップロードディレクトリが構成されていません。"
 
-#: support/ee-get-extensions.php:25
-msgid "Add Folder Support Now"
-msgstr "今すぐフォルダのサポートを追加"
+#: includes/ee-upload-settings.php:70
+msgid "Uploader Settings Saved"
+msgstr "アップローダー設定の保存"
 
-#: support/ee-get-extensions.php:31
+#: includes/ee-upload-settings.php:93
+msgid "Upload Settings"
+msgstr "アップロード設定"
+
+#: includes/ee-upload-settings.php:102
+msgid "Allow File Upload"
+msgstr "ファイルアップロードを許可する"
+
+#: includes/ee-upload-settings.php:110
+msgid "Anyone Can Upload"
+msgstr "誰でもアップロード可能"
+
+#: includes/ee-upload-settings.php:116
+msgid "Only Logged in Users Can Upload"
+msgstr "ログインしているユーザーのみがアップロード可能"
+
+#: includes/ee-upload-settings.php:122
+msgid "Only Logged in Admins Can Upload"
+msgstr "ログイン管理者のみがアップロードできます"
+
+#: includes/ee-upload-settings.php:128
+msgid "Hide the Front Side Uploader Completely"
+msgstr "フロントサイドアップローダーを完全に隠す"
+
+#: includes/ee-upload-settings.php:134
+msgid "Allow anyone to upload, only logged-in users, administrators or nobody."
+msgstr ""
+"ログインしているユーザー、管理者、または誰もアップロードできないようにしま"
+"す。"
+
+#: includes/ee-upload-settings.php:144
+msgid "Upload Limit"
+msgstr "アップロード制限"
+
+#: includes/ee-upload-settings.php:147
+msgid "The maximum number of files that may be uploaded per submission."
+msgstr "送信ごとにアップロードできるファイルの最大数。"
+
+#: includes/ee-upload-settings.php:154
+msgid "Maximum File Size"
+msgstr "最大ファイルサイズ"
+
+#: includes/ee-upload-settings.php:155
+msgid "Your hosting limits the maximum file upload size to"
+msgstr "ホスティングによって、最大ファイルアップロードサイズが制限されます"
+
+#: includes/ee-upload-settings.php:161
+msgid "Allowed File Types"
+msgstr "許可されるファイルタイプ"
+
+#: includes/ee-upload-settings.php:162
+msgid "Only use the file types you absolutely need, such as"
+msgstr "必要なファイルの種類のみを使用します"
+
+#: support/ee-get-extensions.php:26
+msgid "Add Feature Extensions"
+msgstr "機能拡張機能の追加"
+
+#: support/ee-get-extensions.php:28
 msgid ""
 "Extensions add extended feature support to the free version of Simple File "
 "List. They are designed to improve the management of larger, more complex, "
@@ -555,11 +895,15 @@ msgstr ""
 "これらは、より大きく、より複雑なファイルリストの管理を改善するように設計され"
 "ています。"
 
-#: support/ee-get-extensions.php:35
+#: support/ee-get-extensions.php:34
+msgid "Add Folder Support Now"
+msgstr "今すぐフォルダのサポートを追加"
+
+#: support/ee-get-extensions.php:36
 msgid "Folder Support"
 msgstr "フォルダのサポート"
 
-#: support/ee-get-extensions.php:39
+#: support/ee-get-extensions.php:40
 msgid ""
 "Adds an extension that allows folder listing, navigation and management "
 "capabilities."
@@ -567,60 +911,73 @@ msgstr ""
 "フォルダの一覧表示、ナビゲーション、および管理機能を可能にする拡張機能を追加"
 "します。"
 
-#: support/ee-get-extensions.php:42
+#: support/ee-get-extensions.php:43
 msgid "Create folders and unlimited levels of sub-folders."
 msgstr "フォルダとサブフォルダの無制限のレベルを作成します。"
 
-#: support/ee-get-extensions.php:43
+#: support/ee-get-extensions.php:44
 msgid "Use a shortcode attribute to display specific folders."
 msgstr "特定のフォルダを表示するには、ショートコード属性を使用します。"
 
-#: support/ee-get-extensions.php:44
+#: support/ee-get-extensions.php:45
 msgid "Display different folders in different places on your site."
 msgstr "サイトのさまざまな場所に異なるフォルダを表示します。"
 
-#: support/ee-get-extensions.php:45
+#: support/ee-get-extensions.php:46
 msgid ""
 "You can even show several different folders on the same page and within "
 "widgets."
 msgstr ""
 "同じページとウィジェット内に複数の異なるフォルダーを表示することもできます。"
 
-#: support/ee-get-extensions.php:46
+#: support/ee-get-extensions.php:47
 msgid "Front-side users cannot navigate above the folder you specify."
 msgstr "フロントサイドユーザーは、指定したフォルダの上を移動できません。"
 
-#: support/ee-get-extensions.php:47
+#: support/ee-get-extensions.php:48
 msgid "Breadcrumb navigation indicates where you are."
 msgstr "階層リンクナビゲーションはどこにあるかを示します。"
 
-#: support/ee-get-extensions.php:48
+#: support/ee-get-extensions.php:49
+msgid "Easily move files or entire folders."
+msgstr "ファイルまたはフォルダ全体を簡単に移動できます。"
+
+#: support/ee-get-extensions.php:50
 msgid "Easily rename any folder."
 msgstr "簡単に任意のフォルダの名前を変更."
 
-#: support/ee-get-extensions.php:49
+#: support/ee-get-extensions.php:51
 msgid "Easily delete any folder, along with all contents."
 msgstr "簡単にすべてのコンテンツと一緒に、任意のフォルダを削除します。"
 
-#: support/ee-get-extensions.php:50
+#: support/ee-get-extensions.php:52
+msgid "Choose to sort folders first or sort along with the files."
+msgstr ""
+"最初にフォルダを並べ替えるか、ファイルと一緒に並べ替えるかを選択します。"
+
+#: support/ee-get-extensions.php:53
 msgid "Optionally display folder sizes."
 msgstr "必要に応じてフォルダサイズを表示します。"
 
-#: support/ee-get-extensions.php:51 support/ee-get-extensions.php:77
+#: support/ee-get-extensions.php:54 support/ee-get-extensions.php:85
 msgid "Updating to newer versions is just like other Wordpress plugins."
 msgstr ""
 "新しいバージョンに更新すると、他の Wordpress のプラグインと同じようになりま"
 "す。"
 
-#: support/ee-get-extensions.php:52 support/ee-get-extensions.php:78
+#: support/ee-get-extensions.php:55
+msgid "How to Organize Your Files into Folders"
+msgstr "ファイルをフォルダに整理する方法"
+
+#: support/ee-get-extensions.php:56 support/ee-get-extensions.php:86
 msgid "See the Demo"
 msgstr "デモを見る"
 
-#: support/ee-get-extensions.php:62
+#: support/ee-get-extensions.php:69
 msgid "Add Search &amp; Pagination Now"
 msgstr "今すぐ検索とページネーションを追加"
 
-#: support/ee-get-extensions.php:68
+#: support/ee-get-extensions.php:75
 msgid ""
 "Adds searching and pagination functionality to Simple File List. It is "
 "designed to make very large file lists more manageable."
@@ -628,80 +985,141 @@ msgstr ""
 "単純ファイルリストに検索および改ページ化機能を追加します。非常に大きなファイ"
 "ルリストをより管理しやすくするように設計されています。"
 
-#: support/ee-get-extensions.php:71
+#: support/ee-get-extensions.php:78
 msgid "Adds a search bar above the file list."
 msgstr "ファイル リストの上に検索バーを追加します。"
 
-#: support/ee-get-extensions.php:72
-msgid "Search by date and/or file name."
-msgstr "日付またはファイル名で検索します。"
+#: support/ee-get-extensions.php:79
+msgid "Search by name and/or a date range (if the date column is shown)."
+msgstr "名前や日付範囲で検索します (日付列が表示されている場合)。"
 
-#: support/ee-get-extensions.php:73
+#: support/ee-get-extensions.php:80
 msgid "Searches within sub-folder. (But not above the current folder)"
 msgstr "サブフォルダ内で検索します。(ただし、現在のフォルダの上ではありません)"
 
-#: support/ee-get-extensions.php:74
+#: support/ee-get-extensions.php:81
 msgid "Pagination breaks up large file lists into smaller pages."
 msgstr ""
 "ページネーションを使用すると、大きなファイル リストが小さなページに分割されま"
 "す。"
 
-#: support/ee-get-extensions.php:75
+#: support/ee-get-extensions.php:82
 msgid "Define the number of files per page in the settings."
 msgstr "設定でページごとのファイル数を定義します。"
 
-#: support/ee-get-extensions.php:76
+#: support/ee-get-extensions.php:83
 msgid "Show or hide the search bar and/or pagination in the settings."
 msgstr "設定で検索バーやページネーションを表示または非表示にします。"
 
-#: support/ee-plugin-author.php:23
+#: support/ee-get-extensions.php:84
+msgid "Use a shortcode to place a search form anywhere on your website."
+msgstr ""
+"ショートコードを使用して、ウェブサイト上の任意の場所に検索フォームを配置しま"
+"す。"
+
+#: support/ee-get-help.php:101
+msgid "Support Request"
+msgstr "サポートリクエスト"
+
+#: support/ee-get-help.php:103
+msgid ""
+"Do you need help or have a question? Send a message and I will reply "
+"promptly."
+msgstr ""
+"助けが必要ですか、それとも質問がありますか?メッセージを送信し、私はすぐに返信"
+"します。"
+
+#: support/ee-get-help.php:119
+msgid "Your Name"
+msgstr "名前"
+
+#: support/ee-get-help.php:122
+msgid "Your Email"
+msgstr "メールアドレス"
+
+#: support/ee-get-help.php:125
+msgid "Page with Shortcode"
+msgstr "ショートコード付きページ"
+
+#: support/ee-get-help.php:128
+msgid "Your Message"
+msgstr "メッセージ"
+
+#: support/ee-get-help.php:150
+msgid "SEND"
+msgstr "送信"
+
+#: support/ee-get-help.php:154
+msgid ""
+"Basic plugin environment details will be sent along with your message to:"
+msgstr ""
+"基本的なプラグイン環境の詳細は、メッセージと共に次の情報に送信されます:"
+
+#: support/ee-get-help.php:155
+msgid "To help me further, please include this information"
+msgstr "さらに私を助けるために、この情報を含めてください"
+
+#: support/ee-get-help.php:157
+msgid "Click here"
+msgstr "ここをクリック"
+
+#: support/ee-get-help.php:157
+msgid "Click the \"Copy site info to clipboard button\""
+msgstr "[サイト情報をクリップボードにコピー] ボタンをクリックします。"
+
+#: support/ee-get-help.php:157
+msgid "Paste the result into the message above."
+msgstr "上記のメッセージに結果を貼り付けます。"
+
+#: support/ee-plugin-author.php:17
 msgid "Show Your Support"
 msgstr "サポートを表示する"
 
-#: support/ee-plugin-author.php:29
+#: support/ee-plugin-author.php:23
 msgid "Thank You"
 msgstr "ありがとうございました"
 
-#: support/ee-plugin-author.php:31
+#: support/ee-plugin-author.php:25
 msgid ""
-"Thank you for using my plugin. I am proud of this work and want very much to "
-"improve upon it. The goal is to keep it simple, yet make it do what you need "
-"it to do. Tell me about the features that you want!"
+"Thank you for using my plugin. I am proud of this work and am committed to "
+"supporting it."
 msgstr ""
 "私のプラグインを使用していただきありがとうございます。私はこの仕事を誇りに思"
-"い、それを改善するために非常に多くをしたいです。目標は、それをシンプルに保つ"
-"ことです, まだそれはあなたがそれを行うために必要なものを行います.あなたが望む"
-"機能について教えてください!"
+"い、それをサポートすることにコミットしています。"
 
-#: support/ee-plugin-author.php:38
+#: support/ee-plugin-author.php:25
+msgid "The goal is to keep it simple, yet make it do what you need it to do."
+msgstr "目標は、シンプルに保ちながら、必要なことを行うことです。"
+
+#: support/ee-plugin-author.php:25
+msgid "Tell me about the features that you want."
+msgstr "必要な機能について教えてください。"
+
+#: support/ee-plugin-author.php:31
 msgid "Contact Me"
 msgstr "お問い合わせ"
 
-#: support/ee-plugin-author.php:38
+#: support/ee-plugin-author.php:31
 msgid "Feedback or Questions"
 msgstr "フィードバックまたは質問"
 
-#: support/ee-plugin-author.php:40
-msgid "Please rate this plugin"
-msgstr "このプラグインを評価してください"
-
-#: support/ee-plugin-author.php:46
+#: support/ee-plugin-author.php:37
 msgid "Contributors"
 msgstr "寄稿者"
 
-#: support/ee-plugin-author.php:54
+#: support/ee-plugin-author.php:45
 msgid "Thanks to"
 msgstr "に感謝"
 
-#: support/ee-plugin-instructions.php:26
+#: support/ee-shortcode-builder.php:26
 msgid "Default"
 msgstr "デフォルト"
 
-#: support/ee-plugin-instructions.php:34
-msgid "Shortcode Usage"
-msgstr "ショートコードの使い方"
+#: support/ee-shortcode-builder.php:32
+msgid "Shortcode Documentation"
+msgstr "ショートコードドキュメント"
 
-#: support/ee-plugin-instructions.php:36
+#: support/ee-shortcode-builder.php:36
 msgid ""
 "Simply place this bit of shortcode in any post, page or widget that you "
 "would like the plugin to appear."
@@ -709,135 +1127,75 @@ msgstr ""
 "単にあなたが表示するプラグインを希望する任意のポスト、ページやウィジェットに"
 "ショートコードのこのビットを配置します。"
 
-#: support/ee-plugin-instructions.php:38
+#: support/ee-shortcode-builder.php:37
 msgid ""
-"By default, both the file list and uploader will be displayed. To change "
-"this use Shortcode Builder below or refer to the documentation"
+"Both the file list and uploader will be displayed using the plugin settings."
 msgstr ""
-"デフォルトでは、ファイルリストとアップローダーの両方が表示されます。これを変"
-"更するには、以下のショートコードビルダーを使用するか、ドキュメントを参照して"
-"ください"
+"プラグインの設定を使用して、ファイルリストとアップローダーの両方が表示されま"
+"す。"
 
-#: support/ee-plugin-instructions.php:49
+#: support/ee-shortcode-builder.php:38
+msgid ""
+"Optionally, use the Shortcode Builder below to create a custom shortcode."
+msgstr ""
+"必要に応じて、以下のショートコードビルダーを使用してカスタムショートコードを"
+"作成します。"
+
+#: support/ee-shortcode-builder.php:40
+msgid "COPY"
+msgstr "COPY"
+
+#: support/ee-shortcode-builder.php:53
 msgid "Create Page with Shortcode"
 msgstr "ショートコードでページを作成する"
 
-#: support/ee-plugin-instructions.php:50
+#: support/ee-shortcode-builder.php:54
 msgid "Create Post with Shortcode"
 msgstr "ショートコードで投稿を作成"
 
-#: support/ee-plugin-instructions.php:56
-msgid "COPY"
-msgstr ""
-
-#: support/ee-plugin-instructions.php:61
+#: support/ee-shortcode-builder.php:67
 msgid "Shortcode Builder"
 msgstr "ショートコードビルダー"
 
-#: support/ee-plugin-instructions.php:63
-msgid "Use the Shortcode Builder to create a customized list."
+#: support/ee-shortcode-builder.php:69
+msgid ""
+"Use this Shortcode Builder to create a customized shortcode that over-rides "
+"your default settings."
 msgstr ""
-"ショートコードビルダーを使用して、カスタマイズされたリストを作成します。"
+"このショートコードビルダーを使用して、デフォルト設定を超過するカスタマイズさ"
+"れたショートコードを作成します。"
 
-#: support/ee-plugin-instructions.php:95
+#: support/ee-shortcode-builder.php:96
 msgid "Show File List"
 msgstr "ファイル一覧の表示"
 
-#: support/ee-plugin-instructions.php:103
-#: support/ee-plugin-instructions.php:124
+#: support/ee-shortcode-builder.php:104 support/ee-shortcode-builder.php:125
 msgid "Show Only to Logged-in Users"
 msgstr "ログインしたユーザーだけに表示"
 
-#: support/ee-plugin-instructions.php:107
-#: support/ee-plugin-instructions.php:128
+#: support/ee-shortcode-builder.php:108 support/ee-shortcode-builder.php:129
 msgid "Show Only to Logged-in Administrators"
 msgstr "ログイン管理者のみに表示"
 
-#: support/ee-plugin-instructions.php:111
+#: support/ee-shortcode-builder.php:112
 msgid "Hide the List"
 msgstr "リストを非表示"
 
-#: support/ee-plugin-instructions.php:116
+#: support/ee-shortcode-builder.php:117
 msgid "Show Uploader"
 msgstr "アップローダーのみを表示する"
 
-#: support/ee-plugin-instructions.php:132
+#: support/ee-shortcode-builder.php:133
 msgid "Hide the Uploader"
 msgstr "アップローダーを隠す"
 
-#: support/ee-plugin-instructions.php:177
-msgid "Shortcode Documentation"
-msgstr "ショートコードドキュメント"
-
-#: support/ee-plugin-instructions.php:186
-msgid "Go to File List Settings"
-msgstr "ファイル一覧の設定に移動する"
-
-#: support/ee-plugin-instructions.php:190
-msgid "List Settings Instructions"
-msgstr "リストの設定手順"
-
-#: support/ee-plugin-instructions.php:198
-msgid "Go to Uploader Settings"
-msgstr "アップローダーの設定に移動"
-
-#: support/ee-plugin-instructions.php:202
-msgid "Uploader Settings Instructions"
-msgstr "アップローダの設定手順"
-
-#: support/ee-plugin-instructions.php:208
-msgid "How to Customize the Look"
-msgstr "外観をカスタマイズする方法"
-
-#: support/ee-plugin-instructions.php:210
-msgid ""
-"Simple File List styles can be over-written in your theme's CSS to achieve "
-"the look you need."
-msgstr ""
-"シンプルなファイルリストスタイルは、あなたが必要とする外観を実現するために、"
-"テーマの CSS で上書きすることができます。"
-
-#: support/ee-plugin-instructions.php:210
-msgid "Please refer to the CSS styling documentation here:"
-msgstr "CSS スタイリングのドキュメントを参照してください:"
-
-#: support/ee-plugin-instructions.php:212
-msgid "Documentation"
-msgstr "ドキュメント"
-
-#: support/ee-plugin-support.php:89
-msgid ""
-"Do you need help or have a suggestion? Send me a message and I will reply "
-"promptly."
-msgstr ""
-"あなたは助けを必要とするか、提案を持っていますか?私にメッセージを送信し、私は"
-"すぐに返信します。"
-
-#: support/ee-plugin-support.php:97
-msgid "Your Name"
-msgstr "名前"
-
-#: support/ee-plugin-support.php:101
-msgid "Your Email"
-msgstr "メールアドレス"
-
-#: support/ee-plugin-support.php:105
-msgid "Page with Shortcode"
-msgstr "ショートコード付きページ"
-
-#: support/ee-plugin-support.php:107
-msgid "Your Message"
-msgstr "メッセージ"
-
-#: support/ee-plugin-support.php:133
-msgid ""
-"Plugin environment details will automatically be sent along with your "
-"message to:"
-msgstr "プラグイン環境の詳細は、メッセージと共に自動的に送信されます:"
-
-#: support/ee-support-functions.php:64
+#: support/ee-support-functions.php:62
 msgid "The message failed to send."
 msgstr "メッセージを送信できませんでした。"
+
+#. Plugin Name of the plugin/theme
+msgid "Simple File List 4"
+msgstr "簡易ファイルリスト 4"
 
 #. Plugin URI of the plugin/theme
 msgid "http://simplefilelist.com"
@@ -861,8 +1219,133 @@ msgstr "ミッチェル Bennis-エレメントエンゲージ、LLC"
 msgid "http://elementengage.com"
 msgstr "http://elementengage.com"
 
-#~ msgid "Folders"
-#~ msgstr "フォルダー"
+#~ msgid "User Manager"
+#~ msgstr "ユーザーマネージャー"
+
+#~ msgid "News"
+#~ msgstr "ニュース"
+
+#~ msgid "Buy Me a Beer"
+#~ msgstr "ビールを買ってくれ"
+
+#~ msgid "Greetings"
+#~ msgstr "ごきげんよう"
+
+#~ msgid "located at"
+#~ msgstr "に位置する"
+
+#~ msgid "Your Information"
+#~ msgstr "あなたの情報"
+
+#~ msgid "Comments"
+#~ msgstr "コメント"
+
+#~ msgid "You should know that"
+#~ msgstr "知っておくべきことは"
+
+#~ msgid "files have"
+#~ msgstr "ファイルが"
+
+#~ msgid "a file has"
+#~ msgstr "、ファイルが"
+
+#~ msgid "been uploaded to your website"
+#~ msgstr "あなたのウェブサイトにアップロードされた"
+
+#~ msgid "Thumbnail File Delete Failed"
+#~ msgstr "サムネイルファイルの削除に失敗"
+
+#~ msgid "Owner"
+#~ msgstr "所有者"
+
+#~ msgid "Rename"
+#~ msgstr "名前の変更"
+
+#~ msgid "Number of Items"
+#~ msgstr "表示する項目数"
+
+#~ msgid "You can use the uploader without showing the file list."
+#~ msgstr "ファイルリストを表示せずにアップローダーを使用できます。"
+
+#~ msgid "Show File Date"
+#~ msgstr "ファイルの日付を表示"
+
+#~ msgid "Show File Size"
+#~ msgstr "ファイルサイズの表示"
+
+#~ msgid "Allow Front Delete"
+#~ msgstr "フロント削除を許可する"
+
+#~ msgid "Upload Directory"
+#~ msgstr "アップロードディレクトリ"
+
+#~ msgid "is the default"
+#~ msgstr "がデフォルト"
+
+#~ msgid "Your website must use a FQDN in order to change the path."
+#~ msgstr "パスを変更するには、web サイトで FQDN を使用する必要があります。"
+
+#~ msgid "Yes"
+#~ msgstr "はい"
+
+#~ msgid "No"
+#~ msgstr "いいえ"
+
+#~ msgid "Name, Email, with optional text Notes."
+#~ msgstr "名前、電子メール、オプションのテキストメモ付き。"
+
+#~ msgid "Submissions are sent to the Notice Email."
+#~ msgstr "投稿は通知メールに送信されます。"
+
+#~ msgid "Uploading"
+#~ msgstr "アップロード中"
+
+#~ msgid ""
+#~ "To select multiple files, hold down the Control key while choosing files"
+#~ msgstr ""
+#~ "複数のファイルを選択するには、control キーを押しながらファイルをクリックし"
+#~ "ます"
+
+#~ msgid "Command key on Macs"
+#~ msgstr "Mac のコマンドキー"
+
+#~ msgid "Search by date and/or file name."
+#~ msgstr "日付またはファイル名で検索します。"
+
+#~ msgid ""
+#~ "Thank you for using my plugin. I am proud of this work and want very much "
+#~ "to improve upon it. The goal is to keep it simple, yet make it do what "
+#~ "you need it to do. Tell me about the features that you want!"
+#~ msgstr ""
+#~ "私のプラグインを使用していただきありがとうございます。私はこの仕事を誇りに"
+#~ "思い、それを改善するために非常に多くをしたいです。目標は、それをシンプルに"
+#~ "保つことです, まだそれはあなたがそれを行うために必要なものを行います.あな"
+#~ "たが望む機能について教えてください!"
+
+#~ msgid "Please rate this plugin"
+#~ msgstr "このプラグインを評価してください"
+
+#~ msgid "Shortcode Usage"
+#~ msgstr "ショートコードの使い方"
+
+#~ msgid "List Settings Instructions"
+#~ msgstr "リストの設定手順"
+
+#~ msgid "Uploader Settings Instructions"
+#~ msgstr "アップローダの設定手順"
+
+#~ msgid "How to Customize the Look"
+#~ msgstr "外観をカスタマイズする方法"
+
+#~ msgid ""
+#~ "Simple File List styles can be over-written in your theme's CSS to "
+#~ "achieve the look you need."
+#~ msgstr ""
+#~ "シンプルなファイルリストスタイルは、あなたが必要とする外観を実現するため"
+#~ "に、テーマの CSS で上書きすることができます。"
+
+#~ msgid "Please refer to the CSS styling documentation here:"
+#~ msgstr "CSS スタイリングのドキュメントを参照してください:"
 
 #~ msgid "File Download"
 #~ msgstr "ファイルダウンロード"
@@ -872,9 +1355,6 @@ msgstr "http://elementengage.com"
 
 #~ msgid "If the download fails to start"
 #~ msgstr "ダウンロードの開始に失敗した場合"
-
-#~ msgid "click here"
-#~ msgstr "ここをクリック"
 
 #~ msgid "Close this Window"
 #~ msgstr "このウィンドウを閉じる"
@@ -907,9 +1387,6 @@ msgstr "http://elementengage.com"
 
 #~ msgid "Show or hide the table header"
 #~ msgstr "表のヘッダーを表示または非表示にする"
-
-#~ msgid "Show or hide the file actions links"
-#~ msgstr "ファイルアクションリンクの表示と非表示を切り替える"
 
 #~ msgid "The List: ON, Logged-in, Admins Only or OFF"
 #~ msgstr "リスト: オン、ログイン、管理者のみ、またはオフ"
@@ -1021,9 +1498,6 @@ msgstr "http://elementengage.com"
 #~ "パスを変更すると、新しいディレクトリがまだ存在しない場合は作成されます。"
 #~ "(web サイトでは、このパスを変更するために FQDN を使用する必要があります"
 
-#~ msgid "Files"
-#~ msgstr "ファイル"
-
 #~ msgid ""
 #~ "You can limit the number of files that can be uploaded per submission"
 #~ msgstr "送信ごとにアップロードできるファイルの数を制限できます"
@@ -1046,9 +1520,6 @@ msgstr "http://elementengage.com"
 #~ "入力する必要があるフォームが表示されます。名前、電子メール、およびオプショ"
 #~ "ンのテキストメモ。\n"
 #~ "投稿は通知メールに送信されます。"
-
-#~ msgid "File Types"
-#~ msgstr "アップロードできるファイルの拡張子"
 
 #~ msgid ""
 #~ "Restrict the types of files that can be uploaded. Only accept the file "

@@ -1,12 +1,12 @@
-<?php // Simple File List - ee-file-engine.php - mitchellbennis@gmail.com
+<?php // Simple File List Script: ee-file-engine.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
 	
 // This script is accessed via AJAX by ee-list-display.php
-	
+
+// Write problems to error log file	
 ini_set("log_errors", 1);
 error_reporting (E_ALL);
 ini_set ('display_errors', FALSE);
 ini_set("error_log", "logs/ee-file-error.log");
-
 
 // The List ID
 if(@$_POST['eeSFL_ID']) { $eeSFL_ID = filter_var($_POST['eeSFL_ID'], FILTER_VALIDATE_INT); } else { $eeSFL_ID = FALSE; }
@@ -33,23 +33,25 @@ if(@$_POST['eeListFolder']) {
 	$eeListFolder = '';
 }
 
-// exit($eeFileAction . '(' . $eeSFL_ID . ')');
-
-
 // Tie into Wordpress
-define('WP_USE_THEMES', false); // Just the core please
-$wordpress = getcwd() . '/../../../wp-blog-header.php'; // Starting at this plugin's home dir
-require($wordpress); // Get all that wonderfullness
+$wordpress = getcwd() . '/../../../wp-load.php'; // Starting at this plugin's home dir
+$wordpress = realpath($wordpress);
 
+if(is_file($wordpress)) { 
+	include($wordpress); // Get all that wonderfullness
+} else {
+	trigger_error("No Wordpress", E_USER_ERROR);
+	exit;
+}
 
 
 // WP Security
 function eeSFL_CheckNonce() {
 	
-	if( !check_ajax_referer( 'ee-simple-file-list-upload', 'ee-simple-file-list-upload-nonce', FALSE ) ) {
+	if( !check_ajax_referer( 'eeSFL_ActionNonce', 'eeSecurity', FALSE ) ) {
 		$eeSFL_Error = "WP AJAX Error";
 		trigger_error($eeSFL_Error, E_USER_ERROR);
-		exit($eeSFL_Error);
+		exit;
 	}	
 }
 add_action( 'plugins_loaded', 'eeSFL_CheckNonce' );
@@ -72,10 +74,14 @@ if( strpos($eeFileAction, 'Rename') === 0 ) {
 	} else { 
 		$eeSFL_Error = "Missing the Current File Name";
 		trigger_error($eeSFL_Error, E_USER_ERROR);
-		exit($eeSFL_Error);
+		exit;
 	}
 	
 	if($eeNewFileName) {
+		
+		if(strpos($eeOldFileName, '.') === FALSE) { // Folder
+			$eeNewFileName = str_replace('.', '_', $eeNewFileName); // Prevent adding an extension
+		}
 		
 		eeSFL_DetectUpwardTraversal($eeSFL_Config['FileListDir'] . $eeNewFileName); // Die if foolishness
 		
@@ -85,18 +91,14 @@ if( strpos($eeFileAction, 'Rename') === 0 ) {
 	
 		$eeString = 'Renaming: ' . $eeListFolder . $eeOldFileName . ' to ' . $eeListFolder . $eeNewFileName;
 		
-		// echo $eeString; exit;
-		
 		if( !rename($eeOldFilePath, $eeNewFilePath) ) {
 			
 			$eeSFL_Log['errors'][] = 'Could Not Rename ' . $eeOldFileName . ' to ' . $eeNewFileName;
-		
-		} else {
 			
-			$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeListFolder . $eeOldFileName, 'FilePath', $eeListFolder . $eeNewFileName);
-
-			// Re-index the File List
-			$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID);
+			$eeSFL_Error = "Cannot Rename the File";
+			trigger_error($eeSFL_Error, E_USER_ERROR);
+			exit($eeSFL_Error);
+		
 		}
 	
 	} else { 
@@ -116,6 +118,8 @@ if( strpos($eeFileAction, 'Rename') === 0 ) {
 		exit($eeSFL_Error);
 	}
 		
+	echo $eeSFL_Config['FileListDir'] . $eeListFolder . $eeFileName; exit;
+	
 	eeSFL_DetectUpwardTraversal($eeSFL_Config['FileListDir'] . $eeListFolder . $eeFileName); // Die if foolishness
 	
 	$eeFilePath = ABSPATH . $eeSFL_Config['FileListDir'] . $eeListFolder . $eeFileName;
@@ -129,21 +133,22 @@ if( strpos($eeFileAction, 'Rename') === 0 ) {
 			$eeSFL_Log['messages'][] = $eeSFL_Msg;
 			
 		} else {
-			$eeSFL_Msg = __('File Delete FAILED', 'ee-simple-file-list') . ':' . $eeListFolder . $eeFileName;
+			$eeSFL_Msg = __('File Delete Failed', 'ee-simple-file-list') . ':' . $eeListFolder . $eeFileName;
 			$eeSFL_Log['errors'] = $eeSFL_Msg;
 			$eeSFL_Log['messages'][] = $eeSFL_Msg;
 		}
 	} else {
 		
 		// Delete Folder
-		
-		
+		if($eeSFLF) {
+			if( !$eeSFLF->eeSFLF_DeleteFolder($eeFilePath) ) {
+				$eeSFL_Msg = __('Folder Delete Failed', 'ee-simple-file-list') . ':' . $eeListFolder . $eeFileName;
+				$eeSFL_Log['errors'] = $eeSFL_Msg;
+				$eeSFL_Log['messages'][] = $eeSFL_Msg;
+			}
+		}
 	}
-	
-	// Re-index the File List
-	$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID);
-	
-	
+
 } elseif($eeFileAction == 'UpdateDesc') {
 	
 	// The Description
@@ -162,19 +167,14 @@ if( strpos($eeFileAction, 'Rename') === 0 ) {
 	
 	$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, 'FileDescription', $eeFileDesc);
 	
-	// exit($eeFileDesc . '(' . $eeFileID . ')');
-	
-	
 	// Get the file array
 	$eeFileArray = get_option('eeSFL-FileList-' . $eeSFL_ID);
 	
 	foreach( $eeFileArray as $eeKey => $eeThisFileArray ) {
 		
 		if($eeKey == $eeFileID) {
-					
-				// exit( $eeFileArray[$eeFileID]['FilePath'] . ' - ' . $eeFileDesc . '(' . $eeFileID . ')');
 				
-				$eeFileArray[$eeFileID]['FileDescription'] = $eeFileDesc;
+			$eeFileArray[$eeFileID]['FileDescription'] = $eeFileDesc;
 		}
 	}
 		
@@ -184,13 +184,16 @@ if( strpos($eeFileAction, 'Rename') === 0 ) {
 	
 } else {
 	
-	echo 'Nothing to do'; exit;
+	exit; // Nothing to do
 	
 }
 
 // Timer
 $eeSFL_Time = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
 $eeSFL_Log[] = 'Execution Time: ' . round($eeSFL_Time,3);
+
+// Re-index the File List
+$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID);
 
 // Write to the log file to the Database
 $eeSFL->eeSFL_WriteLogData($eeSFL_Log); 

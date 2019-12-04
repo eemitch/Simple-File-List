@@ -1,6 +1,4 @@
-<?php // Simple File List - ee-list-settings.php - mitchellbennis@gmail.com
-	
-	// tab=list_settings
+<?php // Simple File List Script: ee-list-settings.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('That is Noncense! (' . basename(__FILE__) . ')' ); // Exit if nonce fails
@@ -15,10 +13,65 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	
 	$eeID = $eeSFL_Config['ID'];
 	
+	// File List Folder
+	$eeSFL_LastFileListDir = $eeSFL_Config['FileListDir'];
+	
+	if(@$_POST['eeFileListDir']) {
+		
+		$eeSFL_FileListDir = filter_var($_POST['eeFileListDir'], FILTER_SANITIZE_STRING);
+		
+		$eeArray = explode('/', $eeSFL_FileListDir);
+		
+		$eeSFL_FileListDir = ''; // Reset for rebuilding
+		
+		foreach( $eeArray as $eeValue) { // Rebuild as we sanitize
+			
+			// Sanitize
+			$eeValue = strip_tags($eeValue);
+		    $eeValue = preg_replace('/[\r\n\t ]+/', ' ', $eeValue);
+		    $eeValue = preg_replace('/[\"\*\/\:\<\>\?\'\|]+/', ' ', $eeValue);
+		    $eeValue = html_entity_decode( $eeValue, ENT_QUOTES, "utf-8" );
+		    $eeValue = htmlentities($eeValue, ENT_QUOTES, "utf-8");
+		    $eeValue = preg_replace("/(&)([a-z])([a-z]+;)/i", '$2', $eeValue);
+		    $eeValue = str_replace(' ', '-', $eeValue);
+		    $eeValue = rawurlencode($eeValue);
+		    $eeValue = str_replace('%', '-', $eeValue);
+		    
+		    if($eeValue AND strlen($eeValue) <= 255) {
+			    $eeSFL_FileListDir .= $eeValue . '/';
+		    }  
+		}
+		
+		if( strlen($eeSFL_FileListDir) ) {
+		
+			$eeSFL_DirCheck = eeSFL_FileListDirCheck($eeSFL_FileListDir);
+		
+			if(!$eeSFL_DirCheck) {
+				$eeSFL_Log['errors'][] = $eeSFL_DirCheck;
+				$eeSFL_Log['errors'][] = __('Cannot create the file directory. Reverting to default.', 'ee-simple-file-list');
+				$eeSettings[$eeID]['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
+			
+			} else {
+				$eeSettings[$eeID]['FileListDir'] = $eeSFL_FileListDir;
+			}
+		} else {
+			$eeSettings[$eeID]['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
+		}
+	}
+	
+	
 	if($_POST['eeShowList'] == 'YES') { $eeSettings[$eeID]['ShowList'] = 'YES'; } 
 		elseif($_POST['eeShowList'] == 'USER') { $eeSettings[$eeID]['ShowList'] = 'USER'; } // Show only to logged in users
 		 elseif($_POST['eeShowList'] == 'ADMIN') { $eeSettings[$eeID]['ShowList'] = 'ADMIN'; } // Show only to logged in Admins
 			else { $eeSettings[$eeID]['ShowList'] = 'NO'; }
+			
+	
+	if($_POST['eeAdminRole'] == '1') { $eeSettings[$eeID]['AdminRole'] = '1'; } 
+		elseif($_POST['eeAdminRole'] == '3') { $eeSettings[$eeID]['AdminRole'] = '3'; } 
+			elseif($_POST['eeAdminRole'] == '4') { $eeSettings[$eeID]['AdminRole'] = '4'; } 
+				elseif($_POST['eeAdminRole'] == '5') { $eeSettings[$eeID]['AdminRole'] = '5'; }
+						else { $eeSettings[$eeID]['AdminRole'] = '2'; } // Default to Contributors
+			
 			
 	if($eeSFL_Config['ShowList'] != 'NO') { // Only update if showing the list
 		
@@ -27,15 +80,21 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 			'ShowFileThumb'
 			,'ShowFileDate'
 			,'ShowFileSize'
-			,'ShowFileDescription'
-			,'ShowSubmitterName'
-			,'ShowSubmitterEmail'
-			,'ShowSubmitterDesc'
 		);
 		
 		foreach( $eeCheckboxes as $eeTerm){ // "ee" is added in the function
 			
 			$eeSettings[$eeID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
+		}
+		
+		$eeTextInputs = array(
+			'LabelThumb'
+			,'LabelName'
+			,'LabelDate'
+			,'LabelSize'
+		);
+		foreach( $eeTextInputs as $eeTerm){
+			$eeSettings[$eeID][$eeTerm] = eeSFL_ProcessTextInput($eeTerm);
 		}
 		
 		// Sort by Select Box	
@@ -47,9 +106,16 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 			elseif($_POST['eeSortBy'] AND !@$_POST['eeSortOrder']) { $eeSettings[$eeID]['SortOrder'] = 'Ascending'; }
 		
 		// Expiration
-		if( is_numeric($_POST['eeExpireTime']) AND $_POST['eeExpireTime'] <= 24 ) { $eeSettings[$eeID]['ExpireTime'] = $_POST['eeExpireTime']; }
+		if( is_numeric($_POST['eeExpireTime']) AND $_POST['eeExpireTime'] <= 24 ) { 
+			
+			if($eeSFL_Config['ID'] != $_POST['eeExpireTime']) {
+				$eeSFL->eeSFL_UpdateFileListArray($eeID); // Re-scan if changed
+			}
+			
+			$eeSettings[$eeID]['ExpireTime'] = $_POST['eeExpireTime'];
+			
+		}
 	}
-	
 	
 	// Update DB
 	update_option('eeSFL-Settings', $eeSettings );
@@ -65,9 +131,9 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 $eeOutput .= '<div class="eeSFL_Admin">';
 	
 if(@$eeSFL_Log['errors']) { 
-	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_Log['errors'], 'error'); // TO DO - Make this a Function
+	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_Log['errors'], 'notice-error');
 } elseif(@$eeSFL_Confirm) { 
-	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_Confirm, 'updated');
+	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_Confirm, 'notice-success');
 }
 
 // Begin the Form	
@@ -75,15 +141,29 @@ $eeOutput .= '
 
 <form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=list_settings" method="post" id="eeSFL_Settings">
 		
+		<p class="eeSettingsRight"><a class="eeInstructionsLink" href="https://simplefilelist.com/file-list-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list') . '</a>
+		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" /></p>
+		
+		<h2>' . __('List Settings', 'ee-simple-file-list') . '</h2>
+		
 		<input type="hidden" name="eePost" value="TRUE" />';	
 		
-		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce' );
+		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce', TRUE, FALSE);
 		
 		$eeOutput .= '<fieldset>
-		
-			<h1>' . __('File List Settings', 'ee-simple-file-list') . '</h1>
 			
-			<label for="eeShowList">' . __('File List Display', 'ee-simple-file-list') . '</label>
+			
+			<label for="eeFileListDir">' . __('File List Directory', 'ee-simple-file-list') . ':</label>
+					<input type="text" name="eeFileListDir" value="' . $eeSFL_Config['FileListDir'] . '" class="eeAdminInput" id="eeFileListDir" size="64" />
+					<div class="eeNote">' . __('This must be relative to your Wordpress home folder.', 'ee-simple-file-list') . ' (ABSPATH)<br />
+					* ' . __('Default Location', 'ee-simple-file-list') . ': <em>wp-content/uploads/simple-file-list/</em><br />
+					* ' . __('The directory you enter will be created if it does not exist.', 'ee-simple-file-list') . '
+					</div>
+				
+			<br class="eeClearFix" />
+			
+			
+			<label for="eeShowList">' . __('Front-Side Display', 'ee-simple-file-list') . '</label>
 			
 			<select name="eeShowList" id="eeShowList">
 			
@@ -114,58 +194,123 @@ $eeOutput .= '
 			</select>
 			
 			<br class="eeClearFix" />
-			<div class="eeNote">' . __('You can use the uploader without showing the file list.', 'ee-simple-file-list') . '</div>';
+			<div class="eeNote">' . __('Determine who you will show the front-side list to.', 'ee-simple-file-list') . '</div>
+						
+			
+			
+			<label for="eeAdminRole">' . __('Back-Side Settings Access', 'ee-simple-file-list') . '</label>
+			
+			<select name="eeAdminRole" id="eeAdminRole">
+			
+				<option value="1"'; // 1
+
+				if($eeSFL_Config['AdminRole'] == '1') { $eeOutput .= ' selected'; }
 				
+				$eeOutput .= '>' . __('Show to Subscribers and Above', 'ee-simple-file-list') . '</option>
+				
+				
+				<option value="2"'; // 2
+
+				if($eeSFL_Config['AdminRole'] == '2') { $eeOutput .= ' selected'; }
+				
+				$eeOutput .= '>' . __('Show to Contributers and Above', 'ee-simple-file-list') . '</option>
+				
+				
+				<option value="3"'; // 3
+
+				if($eeSFL_Config['AdminRole'] == '3') { $eeOutput .= ' selected'; }
+				
+				$eeOutput .= '>' . __('Show to Authors and Above', 'ee-simple-file-list') . '</option>
+				
+				
+				<option value="4"'; // 4
+
+				if($eeSFL_Config['AdminRole'] == '4') { $eeOutput .= ' selected'; }
+				
+				$eeOutput .= '>' . __('Show to Editors and Above', 'ee-simple-file-list') . '</option>
+				
+				
+				<option value="5"'; // 5
+
+				if($eeSFL_Config['AdminRole'] == '5') { $eeOutput .= ' selected'; }
+				
+				$eeOutput .= '>' . __('Show to Admins Only', 'ee-simple-file-list') . '</option>
+			
+			</select>
+			
+			<br class="eeClearFix" />
+			<div class="eeNote">' . __('Determine who can access the back-side settings.', 'ee-simple-file-list') . '</div>';
+				
+			
+			
 			if($eeSFL_Config['ShowList'] != 'NO') {
 			
 				$eeOutput .= '<h3>' . __('Information to Show', 'ee-simple-file-list') . '</h3>
 				
-				<label class="eeNoClear" for="eeShowFileThumb">' . __('Show Thumbnail', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowFileThumb" value="YES" id="eeShowFileThumb"'; 
-				if($eeSFL_Config['ShowFileThumb'] == 'YES') { $eeOutput .= ' checked'; }
-				$eeOutput .= ' />
-				
-				<label class="eeNoClear" for="eeShowFileDate">' . __('Show File Date', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowFileDate" value="YES" id="eeShowFileDate"'; 
-				if($eeSFL_Config['ShowFileDate'] == 'YES') { $eeOutput .= ' checked'; }
-				$eeOutput .= ' /> 
-				
-				<label class="eeNoClear" for="eeShowFileSize">' . __('Show File Size', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowFileSize" value="YES" id="eeShowFileSize"'; 
-				if($eeSFL_Config['ShowFileSize'] == 'YES') { $eeOutput .= ' checked'; }
-				$eeOutput .= ' />
-				
-				<label class="eeNoClear" for="eeShowFileDescription">' . __('Show Description', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowFileDescription" value="YES" id="eeShowFileDescription"'; 
-				if($eeSFL_Config['ShowFileDescription'] == 'YES') { $eeOutput .= ' checked'; }
-				$eeOutput .= ' />
-				
 				<div class="eeNote">' . __('Limit the file information to display on the front-side file list.', 'ee-simple-file-list') . '</div>
+
+				
+				
+				<table id="eeListSettingsTable">
+					<thead>
+					  	<tr>
+					     	<th>' . __('Item', 'ee-simple-file-list') . '</th>
+						 	<th>' . __('Show', 'ee-simple-file-list') . '</th>
+						 	<th>' . __('Label', 'ee-simple-file-list') . '</th>
+						 </tr>
+					</thead>
+				<tbody>
+				  
+				<tr>
+				     <td>' . __('File Thumbnail', 'ee-simple-file-list') . '</td>
+				     <td><input type="checkbox" name="eeShowFileThumb" value="YES" id="eeShowFileThumb"'; 
+				if($eeSFL_Config['ShowFileThumb'] == 'YES') { $eeOutput .= ' checked'; }
+				$eeOutput .= ' /></td>
+				     <td><input type="text" name="eeLabelThumb" value="';
+				if(@$eeSFL_Config['LabelThumb']) { $eeOutput .= $eeSFL_Config['LabelThumb']; } else { $eeOutput .= __('Thumb', 'ee-simple-file-list'); }
+				$eeOutput .= '" size="16" /></td>
+				  </tr>
+				  
+				  <tr>
+				     <td>' . __('File Name', 'ee-simple-file-list') . '</td>
+				     <td><input type="checkbox" name="eeShowFileName" value="YES" id="eeLabelName" checked="checked" disabled /></td>
+				     <td><input type="text" name="eeLabelName" value="';
+				if(@$eeSFL_Config['LabelName']) { $eeOutput .= $eeSFL_Config['LabelName']; } else { $eeOutput .= __('Name', 'ee-simple-file-list'); }
+				$eeOutput .= '" size="16" /></td>
+				  </tr>
+				  
+				  <tr>
+				     <td>' . __('File Date', 'ee-simple-file-list') . '</td>
+				     <td><input type="checkbox" name="eeShowFileDate" value="YES" id="eeShowFileDate"'; 
+				if($eeSFL_Config['ShowFileDate'] == 'YES') { $eeOutput .= ' checked'; }
+				$eeOutput .= ' /></td>
+				     <td><input type="text" name="eeLabelDate" value="';
+				if(@$eeSFL_Config['LabelDate']) { $eeOutput .= $eeSFL_Config['LabelDate']; } else { $eeOutput .= __('Date', 'ee-simple-file-list'); }
+				$eeOutput .= '" size="16" /></td>
+				  </tr>
+				  
+				  <tr>
+				     <td>' . __('File Size', 'ee-simple-file-list') . '</td>
+				     <td><input type="checkbox" name="eeShowFileSize" value="YES" id="eeShowFileSize"'; 
+				if($eeSFL_Config['ShowFileSize'] == 'YES') { $eeOutput .= ' checked'; }
+				$eeOutput .= ' /></td>
+				     <td><input type="text" name="eeLabelSize" value="';
+				if(@$eeSFL_Config['LabelSize']) { $eeOutput .= $eeSFL_Config['LabelSize']; } else { $eeOutput .= __('Size', 'ee-simple-file-list'); }
+				$eeOutput .= '" size="16" /></td>
+				  </tr>
+				 
+				 
+				  	</tbody>
+				</table>
+				
 				
 				<br class="eeClearFix" />';
-				
-				if($eeSFL_Config['GetUploaderInfo'] == 'YES') {
-					
-					$eeOutput .= '
-					
-					<h2>Submitter Information</h2>
-					
-					<label class="eeNoClear" for="eeShowSubmitterName">' . __('Show Submitter\'s Name', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowSubmitterName" value="YES" id="eeShowSubmitterName"'; 
-					if(@$eeSFL_Config['ShowSubmitterName'] == 'YES') { $eeOutput .= ' checked'; }
-					$eeOutput .= ' />
-					
-					<label class="eeNoClear" for="eeShowSubmitterEmail">' . __('Show Submitter\'s Email', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowSubmitterEmail" value="YES" id="eeShowSubmitterEmail"'; 
-					if(@$eeSFL_Config['ShowSubmitterEmail'] == 'YES') { $eeOutput .= ' checked'; }
-					$eeOutput .= ' />
-					
-					<label class="eeNoClear" for="eeShowSubmitterDesc">' . __('Show Submitter\'s Comment', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeShowSubmitterDesc" value="YES" id="eeShowSubmitterDesc"'; 
-					if(@$eeSFL_Config['ShowSubmitterDesc'] == 'YES') { $eeOutput .= ' checked'; }
-					$eeOutput .= ' />
-					
-					<div class="eeNote">' . __('Show who uploaded the file, add a link to their email address, and show their comments.', 'ee-simple-file-list') . '</div>';
-				}
 				
 				$eeOutput .= '
 					
 				<br class="eeClearFix" />
 				
-				<h2>' . __('File Sorting and Order', 'ee-simple-file-list') . '</h2>	
+				<h3>' . __('File Sorting and Order', 'ee-simple-file-list') . '</h3>	
 				
 				<label for="eeSortList">' . __('Sort By', 'ee-simple-file-list') . ':</label>
 				
@@ -191,7 +336,9 @@ $eeOutput .= '
 						if($eeSFL_Config['SortBy'] == 'Random') { $eeOutput .=  ' selected'; }
 						
 						$eeOutput .= '>' . __('Random', 'ee-simple-file-list') . '</option>
+					
 					</select> 
+				
 				<div class="eeNote">' . __('Sort the list by name, date, file size, or randomly.', 'ee-simple-file-list') . '</div>
 					
 				<br class="eeClearFix" />
@@ -213,12 +360,14 @@ $eeOutput .= '
 				<label for="eeExpireTime">' . __('Re-Scan Interval', 'ee-simple-file-list') . ':</label>
 				<input type="range" id="eeExpireTime" name="eeExpireTime" min="0" max="24" step="1" value="' . $eeSFL_Config['ExpireTime'] . '" /> 
 					<p><span id="eeExpireTimeValue">' . $eeSFL_Config['ExpireTime'] . '</span> ' . __('Hours', 'ee-simple-file-list') . '</p>
-					<div class="eeNote">' . __('Choose how often the file list on your disc drive is re-scanned. Set to zero to re-scan on each list page load.', 'ee-simple-file-list') . '<br />
-					<em>' . __('If you use FTP or another method to upload files to your list, set the interval low.', 'ee-simple-file-list') . '</em></div>';	
-					
+					<div class="eeNote">' . __('Choose how often the file list on your disc drive is re-scanned.', 'ee-simple-file-list') . ' ' .  
+						__('Set to zero to re-scan on each list page load.', 'ee-simple-file-list') . '<br />
+					<em>' . __('If you use FTP or another method to upload files to your list, set the interval to zero.', 'ee-simple-file-list') . '</em></div>';	
 			}
 			
-		$eeOutput .= '<input type="submit" name="submit" id="submit2" value="' . __('SAVE', 'ee-simple-file-list') . '" class="eeAlignRight" />
+		$eeOutput .= '<br class="eeClearFix" />
+		
+		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" />
 		
 		</fieldset>
 		

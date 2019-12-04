@@ -10,6 +10,10 @@
 	padding: 0;
 }
 
+.eeSFL_Admin #eeSFL .eeFiles { /* File List table */
+	background-color: #fcfcfc;
+}
+
 .wrap h2.nav-tab-wrapper {
 	clear: both;
 	margin-top: 20px;
@@ -21,6 +25,11 @@
 	width: 75%;
 }
 
+p.eeTitle {
+	font-size: 200%;
+	font-weight: bold;
+}
+
 .tabList {
 	font-size: 90%;
 }
@@ -29,10 +38,62 @@
 	float: right;
 }
 
+
+
+#eeAdminActions {
+	background-color: #E5E5E5;
+	padding: 10px;
+	border: 1px solid #d6d6d6;
+	border-bottom: none;
+}
+#eeSFL #eeAdminActions p {
+	margin-top: 0;
+}
+#eeSFL #eeAdminActions .eeButton {
+	margin: 0 0 0 5px;
+}
 .eeSFL_Admin .eeAlignRight {
 	float: right;
 	margin: 0 1em 1em 0;
 }
+
+
+
+
+.eeSFL_Admin #eeSFL .eeSFL_EditFileWrap {
+	display: none;
+	width: auto;
+	margin: 5px 0;
+	padding: 10px 3%;
+	border: 1px solid #6b6b6b;
+	border-radius: 6px;
+	background-color: #f6f6f6;
+}
+.eeSFL_Admin #eeSFL .eeSFL_EditFileWrap h4 {
+	margin: 0;
+}
+.eeSFL_Admin #eeSFL .eeSFL_EditFileWrap label {
+	float: none;
+	display: inline-block;
+	width: 98%;
+	margin: 0;
+	text-align: left;
+}
+.eeSFL_Admin #eeSFL .eeSFL_EditFileWrap input[type=text] {
+	float: right;
+	display: inline-block;
+	width: 80%;
+	margin: 0; 
+}
+.eeSFL_Admin #eeSFL .eeSFL_EditFileWrap .eeDeleteButton:hover {
+	background-color: #a93838;
+	color: #EEE;
+}
+
+
+
+
+
 
 .eeSFL_Admin .eeAlignLeftTwoThirds {
 	float: left;
@@ -63,41 +124,54 @@
 .eeSFL_Admin label, .eeSFL_Admin span.eeLabel {
 	float: left;
 	clear: left;
-	width: 23%;
+	width: 33%;
 	text-align: right;
 	margin-right: .5em;
 	padding: 4px;
-	margin-bottom: 1em;
-	background: #DDD;
-	border: 1px solid #CCC;
+	margin-bottom: .25em;
+	background: #e9e9e9;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #5a5a5a;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #5a5a5a;
 }
 .eeSFL_Admin .eeRadioLabel {
 	clear: none;
 	width: auto;
 	background: transparent;
 }
-
-.eeSFL_Admin select,
-.eeSFL_Admin input[type=text],
-.eeSFL_Admin input[type=range], 
-.eeSFL_Admin input[type=url], 
-.eeSFL_Admin input[type=password], 
-.eeSFL_Admin input[type=tel], 
-.eeSFL_Admin input[type=email],
-.eeSFL_Admin textarea, 
-.eeSFL_Admin span.eeValueDisplay {
-	float: left;
-	width: 65%;
-	padding: 4px;
+.eeSFL_Admin #eeSFL #eeSFL_Settings p {
+	display: inline;
 }
-.eeSFL_Admin input[type=range] {
+
+.eeSFL_Admin #eeSFL #eeSFL_Settings select,
+.eeSFL_Admin #eeSFL #eeSFL_Settings input[type=text],
+.eeSFL_Admin #eeSFL #eeSFL_Settings input[type=range], 
+.eeSFL_Admin #eeSFL #eeSFL_Settings input[type=url], 
+.eeSFL_Admin #eeSFL #eeSFL_Settings input[type=password], 
+.eeSFL_Admin #eeSFL #eeSFL_Settings input[type=tel], 
+.eeSFL_Admin #eeSFL #eeSFL_Settings input[type=email],
+.eeSFL_Admin #eeSFL #eeSFL_Settings textarea, 
+.eeSFL_Admin #eeSFL #eeSFL_Settings span.eeValueDisplay {
+	float: left;
+}
+.eeSFL_Admin #eeSFL_Settings input[type=text], 
+.eeSFL_Admin #eeSFL #eeSFL_Settings input[type=email] {
+	clear: none;
+	width: 56%;
+	margin-bottom: 0;
+}
+
+.eeSFL_Admin #eeSFL_Settings input[type=range] {
 	width: 50%;
 	margin-right: 2%;
 }
-.eeSFL_Admin textarea {
+.eeSFL_Admin #eeSFL_Settings textarea {
 	margin-bottom: 10px;
 }
-.eeSFL_Admin input[type=radio] {
+.eeSFL_Admin #eeSFL_Settings input[type=radio] {
 	float: left;
 	width: 1.2em;
 	height: 1.2em;
@@ -105,11 +179,14 @@
 	margin-top: .325em;
 	margin-right: 2em;
 }
-#eeSFL_Settings input[type=checkbox] {
-	float: left;
-	width: 1.4em;
-	height: 1.4em;
+.eeSFL_Admin #eeSFL_Settings input[type=checkbox] {
+	float: left;/*
+
+	width: 1.6em;
+	height: 1.6em;
+*/
 	display: inline-block;
+	
 	margin-top: .325em;
 	margin-right: .5em;
 }
@@ -128,6 +205,10 @@ button.eeDeleteCheckedButton {
 	margin: 0;
 	margin-top: .325em;
 /* 	margin-bottom: 2em; */
+}
+
+.eeSFL_Admin .notice p {
+	margin: .5em 0;
 }
 
 
@@ -158,10 +239,26 @@ button.eeDeleteCheckedButton {
 }
 
 
+
+
+.eeSFL_Admin #eeSFL_SendPop {
+	max-width: 600px;
+}
+#eeSFL_SendPop input[type=text],
+#eeSFL_SendPop textarea {
+	width: 100%;	
+}
+
+
+
+
+
 .eeNote {
-	float: left;
+/* 	float: left; */
 	clear: both;
 	margin-bottom: 30px;
+	margin-left: 4%;
+	font-style: italic;
 }
 
 .eeAlert {
@@ -191,6 +288,63 @@ button.eeDeleteCheckedButton {
 	font-style: italic;
 }
 
+
+/*
+#eeSFL_Settings h2 {
+	width: 50%;
+}
+*/
+
+
+#eeListSettingsTable {
+	clear: left;
+	width: 100%;
+	max-width: 66%;
+}
+#eeListSettingsTable th,
+#eeListSettingsTable td {
+	padding-right: 20px;
+	text-align: left;
+}
+#eeListSettingsTable td {
+	
+}
+#eeListSettingsTable input[type="checkbox"] {
+    float: none;
+    width: 1.4em;
+    height: 1.4em;
+    display: inline-block;
+    margin: 0;
+    text-align: center;
+}
+#eeListSettingsTable input[type="text"] {
+	margin: 0;
+}
+
+
+
+/* Top-Right Instructions Link / Save Button */
+.eeSFL_Admin #eeSFL #eeSFL_Settings {
+	position: relative;
+}
+
+.eeSFL_Admin #eeSFL #eeSFL_Settings p.eeSettingsRight {
+	display: block;
+	position: absolute;
+	right: 0;
+	top: -2em;
+}
+
+#eeSFL .eeSFL_Save {
+	font-size: 120%;
+	background-color: #daf3ff;
+	-moz-box-shadow:    1px 1px 1px 1px #dbdbdb;
+	-webkit-box-shadow: 1px 1px 1px 1px #dbdbdb;
+	box-shadow:         1px 1px 1px 1px #dbdbdb;
+}
+
+
+
 /* SUPPORT Page */
 
 #eeSFL .eeSupp {
@@ -198,8 +352,7 @@ button.eeDeleteCheckedButton {
 	clear: both;
 	border: 2px solid #DDD;
 	padding: 1em;
-	margin: 1em;
-/* 	width: 60%; */
+	margin-top: 10px;
 }
 
 .eeSupp .eeSupp {
@@ -212,7 +365,6 @@ button.eeDeleteCheckedButton {
 
 #eeSFL .eeSupp h3 {
 	font-size: 120%;
-	font-style: italic;
 }
 
 #eeSFL .eeSupp p {
@@ -296,7 +448,12 @@ button.eeDeleteCheckedButton {
 .eeButton {
 	float: left;
 	font-size: 125% !important;
-	margin: 6px !important;
+	margin: 6px;
+}
+.wp-core-ui .button,
+.wp-core-ui .button:hover {
+	color: #000000;
+	border-color: #a5a5a5;	
 }
 
 #eeSFL a.eeGet {
@@ -352,46 +509,30 @@ button.eeDeleteCheckedButton {
 
 /* Shortcode Builder */
 
-#eeShortcodeBuilder {
-	margin-bottom: 20px;
-	border: 1px solid #bababa;
-	background-color: #e0e0e0;
-	padding: 10px;
-	text-align: center;
+#eeSFL_ShortCode {
+	margin: 5px 0;
 }
 
 #eeShortcodeControls {
-    float: right;
-    width: 45%;
-	background-color: #e0e0e0;
-	padding: 6px 6px 6px 0;
-	border: 1px solid #bababa;
+    clear: both;
+    width: 100%;
 }
 
 #eeSFL #eeCreatePostwithShortcode {
 	margin: 0;
 	padding: 0;
-	border: none;
-}
-#eeSFL #eeCreatePostwithShortcode p {
 	text-align: right;
-	margin-bottom: 5px;
 }
-#eeCreatePostwithShortcode select,
-#eeCreatePostwithShortcode input[type=submit] {
-	display: inline-block;
+#eeSFL #eeCreatePostwithShortcode select,
+#eeSFL #eeCreatePostwithShortcode input[type=submit] {
 	margin: 0;
 	float: none;
 }
 #eeCreatePostwithShortcode select {
-	font-size: 100%;
-	text-align: left;
-	padding: 3px;
-	margin-bottom: 5px;
-	width: inherit;
-}
-#eeCreatePostwithShortcode input[type=submit] {
-	margin: 0;
+	width: auto;
+	font-size: 120%;
+	padding: 5px;
+	padding-right: 20px;
 }
 
 
@@ -483,9 +624,9 @@ button.eeDeleteCheckedButton {
 }
 
 .eeRight {
-	max-width: 45%;
+/* 	max-width: 45%; */
 	height: auto;
-	float: right;
+	float: right !important;
 	margin: 0 0 .5em .5em;
 }
 #eeSFL .eeCentered {
@@ -500,9 +641,64 @@ button.eeDeleteCheckedButton {
 
 
 
+/* Admin-Side File List Over-Rides */
 
+#eeSFL table.eeFiles {
+	border-color: #E5E5E5;
+	font-size: 110%;
+}
 
+#eeSFL table.eeFiles th {
+	padding: 8px;
+	background-color: #23282D;
+}
+#eeSFL table.eeFiles td {
+	padding: .5em 0;
+	border-bottom: 1px solid #999;
+	text-overflow: clip;
+	overflow: hidden;
+	vertical-align: middle;
+}
+#eeSFL table.eeFiles td p.eeSFL_FileLink {
+	font-weight: bold;
+	font-size: 105%;
+}
+#eeSFL table.eeFiles td small.eeSFL_ListFileActions {
+	color: #000;
+	background: #e4e4e4;
+	padding: .2em .4em;
+	border: 1px solid #cbcbcb;
+	border-radius: .4em;
+	display: inline-block;
+	margin-top: 6px;
+	-moz-box-shadow:    1px 1px 1px 1px #dbdbdb;
+	-webkit-box-shadow: 1px 1px 1px 1px #dbdbdb;
+	box-shadow:         1px 1px 1px 1px #dbdbdb;
+}
+#eeSFL table.eeFiles td.eeSFL_Thumbnail img {
+	border: 1px solid #646464;
+	-moz-box-shadow:    1px 1px 1px 1px #dbdbdb;
+	-webkit-box-shadow: 1px 1px 1px 1px #dbdbdb;
+	box-shadow:         1px 1px 1px 1px #dbdbdb;
+	
+}
+#eeSFL table.eeFiles td.eeSFL_Thumbnail a.eeFolderIcon img {
+	border: none;
+	-moz-box-shadow:    none;
+	-webkit-box-shadow: none;
+	box-shadow:         none;
+}
 
+#eeSFL input[type="submit"] {
+    float: none;
+    margin: 20px;
+}
 
-
+#eeSFL a.eeDimmedLink {
+	color: #6a9db4;
+}
+#eeSFL a.eeDimmedLink:hover {
+	color: #0073aa;
+	text-decoration: underline;
+}
 

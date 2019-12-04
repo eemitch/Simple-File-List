@@ -1,10 +1,7 @@
-<?php // PLUGIN EMAIL SUPPORT FORM - Mitchell Bennis | Element Engage, LLC | 
-	
-// Add to main plugin file: require(plugin_dir_path( __FILE__ ) . 'support/ee-support-functions.php');
-// Add to display function globals: $eeContact_Plugin, $eeContact_name, $eeContact_email, $eeContact_message, $eeContact_link, $eeContact_From
+<?php // Simple File List Script: ee-get-help.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
 
 defined( 'ABSPATH' ) or die( 'No direct access is allowed' );
-if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit; // Exit if nonce fails
+if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
 $eeSFL_Log[] = 'Loaded: ee-plugin-support';
 	
@@ -33,6 +30,20 @@ if(@$_POST['eeSupportForm']) {
 		
 		$eeContact_Body = eeProcessSupportPost($_POST); // Process the form
 		
+		$eeContact_Body = 'Log...' . PHP_EOL . PHP_EOL;
+		
+		// Add log file
+		$eeSFL_LogArray = get_option('eeSFL-Log');
+		foreach( $eeSFL_LogArray as $eeKey => $eeValue) {
+			if( is_array($eeValue) ) {
+				foreach( $eeSFL_LogArray as $eeKey2 => $eeValue2) {
+					$eeContact_Body .= $eeKey2 . ' ===> ' . $eeValue2 . PHP_EOL;
+				}
+			} else {
+				$eeContact_Body .= $eeKey . ' => ' . $eeValue . PHP_EOL;
+			}
+		}
+		
 		$eeContact_From = filter_var($_POST['eeContact_email'], FILTER_SANITIZE_EMAIL);
 		
 		$eeContact_Headers[] = 'From: wordpress@' . $_SERVER['HTTP_HOST'];
@@ -47,7 +58,6 @@ if(@$_POST['eeSupportForm']) {
 			// $eeContact_To = FALSE;
 			
 			$eeContact_Body = htmlspecialchars_decode($eeContact_Body);
-			// $eeContact_Body = urldecode($eeContact_Body);
 			$eeContact_Body = strip_tags($eeContact_Body);
 			$eeContact_Body = stripslashes($eeContact_Body);	// Make it all nice
 			
@@ -81,31 +91,42 @@ $eeContact_Location = $_SERVER['REQUEST_URI'];
 $eeContact_Nonce = wp_nonce_field( 'ee-support-form', 'ee-support-form-nonce', TRUE, FALSE); // Return it
 
 // The form's default link
-if(!$eeContact_link) { $eeContact_link = get_bloginfo('url'); }
+// if(!$eeContact_link) { $eeContact_link = get_bloginfo('url'); }
 
 // Build the Support Form
 $eeOutput .= '<article class="eeSupp">
 
-		<p><strong>' . __('Do you need help or have a suggestion? Send me a message and I will reply promptly.', 'ee-simple-file-list') . '</strong></p>
+		<a class="button eeRight" href="https://simplefilelist.com/docs/" target="_blank">' . __('Plugin Documentation', 'ee-simple-file-list') . '</a>
+		
+		<h2>' . __('Support Request', 'ee-simple-file-list') . '</h2>
+		
+		<p>' . __('Do you need help or have a question? Send a message and I will reply promptly.', 'ee-simple-file-list') . '</p>
 
 		<form action="' . $eeContact_Location . '" method="post" id="eeSupportForm">
 			  
 			<fieldset>
 				
-				<input type="hidden" name="eeContact_plugin" value="' . $eeSFL_PluginName . ' (' . $eeSFL_Version . ')" />
+				<input type="hidden" name="eeContact_plugin" value="' . $eeSFL->eePluginName . ' (' . eeSFL_Version . ' | ' . eeSFL_DB_Version . ' | ' . eeSFL_Cache_Version . ')" />';
 				
-				<label for="eeContact_name">' . __('Your Name', 'ee-simple-file-list') . ':</label>
-				<input type="text" name="eeContact_name" id="eeContact_name" value="' . $eeContact_name . '" required /><span class="eeContact_Required">*</span>
-				<br class="eeClearFix" />
+				if(@defined('eeSFLF_Version')) {
+					$eeOutput .= '<input type="hidden" name="eeContact_folder-ext" value="' . eeSFLF_Version . '" />';
+				}
+				if(@defined('eeSFLS_Version')) {
+					$eeOutput .= '<input type="hidden" name="eeContact_search-ext" value="' . eeSFLS_Version . '" />';
+				}
+				
+				
+				$eeOutput .= '<label for="eeContact_name">' . __('Your Name', 'ee-simple-file-list') . ':</label>
+				<input type="text" name="eeContact_name" id="eeContact_name" value="' . $eeContact_name . '" required />
 				
 				<label for="eeContact_email">' . __('Your Email', 'ee-simple-file-list') . ':</label>
-				<input type="email" name="eeContact_email" id="eeContact_email" value="' . $eeContact_email . '" required /><span class="eeContact_Required">*</span>
-				<br class="eeClearFix" />
+				<input type="email" name="eeContact_email" id="eeContact_email" value="' . $eeContact_email . '" required />
 				
-				<label for="eeContact_page">' . __('Page with Shortcode', 'ee-simple-file-list') . ':</label><input type="url" name="eeContact_Problem-Page" value="' . $eeContact_link . '" id="eeContact_page">
+				<label for="eeContact_page">' . __('Page with Shortcode', 'ee-simple-file-list') . ':</label>
+				<input type="url" name="eeContact_Problem-Page" value="' . $eeContact_link . '" id="eeContact_page">
 
 				<label for="eeContact_message">' . __('Your Message', 'ee-simple-file-list') . ':</label>
-				<textarea required name="eeContact_message" id="eeContact_message" cols="60" rows="6">' . $eeContact_message . '</textarea><span class="eeContact_Required">*</span>
+				<textarea required name="eeContact_message" id="eeContact_message" cols="60" rows="6">' . $eeContact_message . '</textarea>
 				
 				<input type="hidden" name="eeSupportForm" value="TRUE" /> 
 				' .$eeContact_Nonce . '
@@ -126,12 +147,14 @@ $eeOutput .= '<article class="eeSupp">
 				
 				<br class="eeClearFix" />
 				
-				<input type="submit" id="eeSupportFormSubmit" value="SEND">
+				<input type="submit" name="submit" value="' . __('SEND', 'ee-simple-file-list') . '" class="button eeSFL_Save eeRight" />
 				
 				<br class="eeClearFix" />
 				
-				<p><i>' . __('Plugin environment details will automatically be sent along with your message to:', 'ee-simple-file-list') . '</i><br />
-				<a href="mailto:' . $eeContact_To . '" title="Mitchell Bennis" >' . $eeContact_To . '</a></i></p>
+				<p><i>' . __('Basic plugin environment details will be sent along with your message to:', 'ee-simple-file-list') . '</i> 
+				<a href="mailto:' . $eeContact_To . '" title="Mitchell Bennis" >' . $eeContact_To . '</a>.<br /><br />' . __('To help me further, please include this information', 'ee-simple-file-list') . '...<br />
+				
+				<a target="_blank" href="/wp-admin/site-health.php?tab=debug">' . __('Click here', 'ee-simple-file-list') . '</a> &rarr; ' . __('Click the "Copy site info to clipboard button"', 'ee-simple-file-list') . ' &rarr; ' . __('Paste the result into the message above.', 'ee-simple-file-list') . '</p>
 			
 			</fieldset>
 			
@@ -147,8 +170,5 @@ $eeOutput .= '<article class="eeSupp">
 	});
 
 	</script>';
-	
-	
-	
-	
+
 ?>
