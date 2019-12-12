@@ -33,12 +33,12 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	// Extension Processing
 	if($eeSFLF) {
 		$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
-		include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-folders-2/includes/eeSFLF_ListSettingsProcess.php');
+		include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_ListSettingsProcess.php');
 	}
 	
 	if($eeSFLS) {
 		$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-		include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-search-2/includes/ee-pagination-settings-process.php');
+		include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-settings-process.php');
 	}
 	
 	// Update the array with new values
@@ -81,13 +81,13 @@ $eeOutput .= '
 		if($eeSFLF) {
 			
 			$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
-			include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-folders-2/includes/eeSFLF_ListSettings.php');
+			include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_ListSettings.php');
 		}
 		
 		if($eeSFLS) {
 			
 			$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-			include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-search-2/includes/ee-pagination-settings.php');
+			include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-settings.php');
 		}
 			
 		$eeOutput .= '<h3>' . __('Appearance', 'ee-simple-file-list') . '</h3>

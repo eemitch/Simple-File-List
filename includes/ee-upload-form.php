@@ -64,6 +64,7 @@ if(@$eeSFL_Config['FileListDir']) {
 		
 			<input type="hidden" name="MAX_FILE_SIZE" value="' .(($eeSFL_Config['UploadMaxFileSize']*1024)*1024) . '" />
 			<input type="hidden" name="eeSFL_Upload" value="TRUE" />
+			<input type="hidden" name="eeSFL_ID" value="' . $eeSFL_Config['ID'] . '" />
 			<input type="hidden" name="eeSFL_FileCount" value="" id="eeSFL_FileCount" />
 			<input type="hidden" name="eeSFL_FileList" value="" id="eeSFL_FileList" />';
 		

@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-list-display.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
+<?php // Simple File List Script: ee-list-display.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.12.2019
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
@@ -60,7 +60,7 @@ $eeAllFilesSorted = $eeSFL_Files;
 // Extension Check
 if($eeSFLF) {
 	$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
-	include(WP_PLUGIN_DIR . '/ee-simple-file-list-folders-2/eeSFLF_folderListSetup.php');
+	include(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/eeSFLF_folderListSetup.php');
 }
 
 // Only show files just uploaded
@@ -89,9 +89,9 @@ if(@$eeSFL_Env['UploadedFiles']) {
 if($eeSFLS) {
 	$eeSFL_FileTotalCount = count($eeSFL_Files); // Before search
 	$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search-2/includes/ee-search-processor.php'); // Run the Search Processor
+	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-search-processor.php'); // Run the Search Processor
 	$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search-2/includes/ee-pagination-processing.php'); // Run Pagination Processing
+	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-processing.php'); // Run Pagination Processing
 }
 
 
@@ -195,7 +195,7 @@ if($eeSFLF) {
 if($eeSFLS) {
 	if(@count($eeSFL_Files) >= $eeSFL_Config['FilesPerPage']) {
 		$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-		include(WP_PLUGIN_DIR . '/ee-simple-file-list-search-2/includes/ee-search-form.php');
+		include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-search-form.php');
 	}
 }	
 
@@ -360,7 +360,13 @@ if(@count($eeSFL_Files) >= 1) {
 					
 					// Create Thumbnail Path
 					$eeIsImage = in_array($eeFileExt,  $eeSFL->eeDynamicImageThumbFormats);
-					$eeIsVideo = in_array($eeFileExt,  $eeSFL->eeDynamicVideoThumbFormats);
+					
+					// Do we have FFmpeg ?
+					if($eeSFL_Env['supported']) {
+						$eeIsVideo = in_array($eeFileExt,  $eeSFL->eeDynamicVideoThumbFormats);
+					} else {
+						$eeIsVideo = FALSE; // Nope
+					}
 					
 					// Check Type
 					if($eeIsImage OR $eeIsVideo) { // Images use .jpg files
@@ -639,7 +645,7 @@ if(@count($eeSFL_Files) >= 1) {
 	// Pagination Controls
 	if($eeSFLS) {
 		$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-		include(WP_PLUGIN_DIR . '/ee-simple-file-list-search-2/includes/ee-pagination-display.php');
+		include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-display.php');
 	}
 	
 	

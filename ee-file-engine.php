@@ -117,8 +117,6 @@ if( strpos($eeFileAction, 'Rename') === 0 ) {
 		trigger_error($eeSFL_Error, E_USER_ERROR);
 		exit($eeSFL_Error);
 	}
-		
-	echo $eeSFL_Config['FileListDir'] . $eeListFolder . $eeFileName; exit;
 	
 	eeSFL_DetectUpwardTraversal($eeSFL_Config['FileListDir'] . $eeListFolder . $eeFileName); // Die if foolishness
 	

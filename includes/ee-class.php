@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-class.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
+<?php // Simple File List Script: ee-class.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.12.2019
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Class' ) ) exit('ERROR 98'); // Exit if nonce fails
@@ -9,7 +9,7 @@ class eeSFL_MainClass {
 			
 	// Basics
 	public $eePluginName = 'Simple File List';
-	public $eePluginNameSlug = 'simple-file-list-4'; // TO DO - Change this before release !!!
+	public $eePluginNameSlug = 'simple-file-list';
 	public $eePluginSlug = 'ee-simple-file-list';
 	public $eePluginMenuTitle = 'File List';
 	public $eePluginWebPage = 'http://simplefilelist.com';
@@ -508,6 +508,9 @@ class eeSFL_MainClass {
 				}	
 			} else {
 				$eeSFL_Log[] = 'FFmpeg Not Installed';
+				
+				
+				
 			}
 		}
 		
@@ -688,7 +691,7 @@ class eeSFL_MainClass {
 			if( is_admin() ) {
 				$eeURL = $eeSFL_Env['wpSiteURL']; // The main URL
 			} else {
-				$eeURL = get_permalink(); // The exact page
+				$eeURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; // The exact page
 			}
 			$eeFooter = 'Sent from the file list at ' . $eeURL;
 		}

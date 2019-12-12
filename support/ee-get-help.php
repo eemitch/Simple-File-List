@@ -30,23 +30,16 @@ if(@$_POST['eeSupportForm']) {
 		
 		$eeContact_Body = eeProcessSupportPost($_POST); // Process the form
 		
-		$eeContact_Body = 'Log...' . PHP_EOL . PHP_EOL;
+		$eeContact_Body .= 'Log...' . PHP_EOL . PHP_EOL;
 		
 		// Add log file
 		$eeSFL_LogArray = get_option('eeSFL-Log');
-		foreach( $eeSFL_LogArray as $eeKey => $eeValue) {
-			if( is_array($eeValue) ) {
-				foreach( $eeSFL_LogArray as $eeKey2 => $eeValue2) {
-					$eeContact_Body .= $eeKey2 . ' ===> ' . $eeValue2 . PHP_EOL;
-				}
-			} else {
-				$eeContact_Body .= $eeKey . ' => ' . $eeValue . PHP_EOL;
-			}
-		}
+		$eeContact_Body .= print_r($eeSFL_LogArray, TRUE);
 		
-		$eeContact_From = filter_var($_POST['eeContact_email'], FILTER_SANITIZE_EMAIL);
+		$eeContact_Name = filter_var($_POST['eeContact_name'], FILTER_SANITIZE_STRING);
+		$eeContact_From = filter_var($_POST['eeContact_email'], FILTER_VALIDATE_EMAIL);
 		
-		$eeContact_Headers[] = 'From: wordpress@' . $_SERVER['HTTP_HOST'];
+		$eeContact_Headers[] = 'From: ' . $eeContact_Name . ' <wordpress@' . $_SERVER['HTTP_HOST'] . ">";
 		$eeContact_Headers[] = 'Reply-To: ' . $eeContact_From;
 		
 		if($eeContact_Body) {

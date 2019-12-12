@@ -4,23 +4,23 @@
  * @package Element Engage - Simple File List
  */
 /*
-Plugin Name: Simple File List 4
+Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: Full Featured File List with Front-Side File Uploading | <a href="https://simplefilelist.com/donations/simple-file-list-project/">Donate</a> | <a href="admin.php?page=ee-simple-file-list&tab=extensions">Add Features</a>
 Author: Mitchell Bennis - Element Engage, LLC
-Version: 4.0.7
+Version: 4.0.9
 Author URI: http://elementengage.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
 Domain Path: /languages
 */
 
-$eeSFL_DevMode = TRUE; // Enables visible logging
+$eeSFL_DevMode = FALSE; // Enables visible logging
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
-define('eeSFL_Version', '4.0.7'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_Version', '4.0.9'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_DB_Version', '4.0.1'); // Database structure version - used for eeSFL_VersionCheck()
 define('eeSFL_Cache_Version', '.5'); // Cache-Buster version for static files - used when updating CSS/JS
 
@@ -40,8 +40,8 @@ $eeSFL_Log[] = 'ABSPATH: ' . ABSPATH;
 
 // Supported Extensions
 $eeSFL_Extensions = array( // Slugs
-	'ee-simple-file-list-folders-2' // Folder Support
-	,'ee-simple-file-list-search-2' // Search & Pagination
+	'ee-simple-file-list-folders' // Folder Support
+	,'ee-simple-file-list-search' // Search & Pagination
 );
 $eeSFLF = FALSE; $eeSFLS = FALSE; $eeSFLU = FALSE; // Coming Soon
 $eeSFLF_ListFolder = FALSE;
@@ -598,8 +598,8 @@ function eeSFL_UpdateThisPlugin() {
 	// Add First File
 	if($eeNewInstall) { // Copy the instructions PDF to the file list folder
 		
-		$eeCopyFrom = dirname(__FILE__) . '/Simple-File_list.pdf';
-		$eeCopyTo = ABSPATH . '/' . $eeSFL_FileListDir . 'Simple-File_list.pdf';
+		$eeCopyFrom = dirname(__FILE__) . '/Simple-File-List.pdf';
+		$eeCopyTo = ABSPATH . '/' . $eeSFL_FileListDir . 'Simple-File-List.pdf';
 		copy($eeCopyFrom, $eeCopyTo);
 	}
 	

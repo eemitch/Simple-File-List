@@ -227,7 +227,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 						$eeOutput = TRUE;
 					} else  {
 						
-						return $eeSFL->eeSFL_AjaxEmail( $eeUploadJob, $eeSFL_ID );// Send Email Notice
+						return $eeSFL->eeSFL_AjaxEmail( $eeUploadJob, $eeSFL_ID ); // Send Email Notice
 					}
 					
 				} else {
