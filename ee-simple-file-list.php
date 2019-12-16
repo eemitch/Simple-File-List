@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: Full Featured File List with Front-Side File Uploading | <a href="https://simplefilelist.com/donations/simple-file-list-project/">Donate</a> | <a href="admin.php?page=ee-simple-file-list&tab=extensions">Add Features</a>
 Author: Mitchell Bennis - Element Engage, LLC
-Version: 4.0.9
+Version: 4.0.10
 Author URI: http://elementengage.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -20,9 +20,9 @@ $eeSFL_DevMode = FALSE; // Enables visible logging
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
-define('eeSFL_Version', '4.0.9'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_Version', '4.0.10'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_DB_Version', '4.0.1'); // Database structure version - used for eeSFL_VersionCheck()
-define('eeSFL_Cache_Version', '.5'); // Cache-Buster version for static files - used when updating CSS/JS
+define('eeSFL_Cache_Version', '.7'); // Cache-Buster version for static files - used when updating CSS/JS
 
 // Our Core
 $eeSFL = FALSE; // Our main class

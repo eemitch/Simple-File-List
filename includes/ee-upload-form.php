@@ -1,4 +1,4 @@
-<?php  // Simple File List Script: ee-upload-form.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
+<?php  // Simple File List Script: ee-upload-form.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.16.2019
 
 // Security	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -11,8 +11,9 @@ $eeSFL_Log['Add Files'][] = 'Loaded: ee-uploader';
 // Extension Check
 if($eeSFLF) {
 	if(@$_REQUEST['eeSFLF_ListFolder'] AND $eeSFL_ListNumber == 1) { // Adjust the path based on REQUEST arg
-		// Uploading to a folder
 		$eeSFLF_ListFolder = filter_var(urldecode($_REQUEST['eeSFLF_ListFolder']), FILTER_SANITIZE_STRING) . '/'; 
+	} elseif( strlen(@$eeSFLF_ShortcodeFolder) ) {
+		$eeSFLF_ListFolder = $eeSFLF_ShortcodeFolder . '/';
 	} else {
 		$eeSFLF_ListFolder = FALSE;
 	}
@@ -69,7 +70,8 @@ if(@$eeSFL_Config['FileListDir']) {
 			<input type="hidden" name="eeSFL_FileList" value="" id="eeSFL_FileList" />';
 		
 		if($eeSFLF AND $eeSFLF_ListFolder) { $eeOutput .= '
-			<input type="hidden" name="eeSFLF_UploadFolder" value="' . urlencode($eeSFLF_ListFolder) . '" id="eeSFLF_UploadFolder" />';
+			<input type="hidden" name="eeSFLF_UploadFolder" value="' . urlencode($eeSFLF_ListFolder) . '" id="eeSFLF_UploadFolder" />
+			';
 		}
 		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload', 'ee-simple-file-list-upload-nonce', TRUE, FALSE);
 	

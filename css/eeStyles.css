@@ -65,7 +65,7 @@
 
 #eeSFL td.eeSFL_Thumbnail,
 #eeSFL td.eeSFL_Thumbnail img {
-/*     width: 50px; */
+	text-align: center;
 }
 
 #eeSFL td.eeSFL_FileName {

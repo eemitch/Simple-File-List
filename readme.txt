@@ -1,20 +1,24 @@
-=== Simple File List 4 ===
+=== Simple File List ===
 Contributors: eemitch
 Donate link: http://simplefilelist.com/donations/simple-file-list-project/
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
-Tested up to: 5.2.3
-Stable tag: trunk
+Tested up to: 5.4
+Stable tag: 3.2.17
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Simple File List is a basic file list with optional front-side uploader. Easily exchanges files with clients, customers, or within a group setting.
+Simple File List gives your WordPress website a list of your files which allows your users to open and download them.
 
 == Description ==
 
-Simple File List is a basic file list with optional front-side uploader. The plugin provides an easy-to-integrate basic user interface allowing visitors, clients, customers, or associates to see a listing of your files (separate from the media library) and optionally upload files if you choose.
+Upload and manage your files from the Admin List. Optionally, allow front-side users to upload too. Both the Front-side List and Uploader can be shown to users based on their role; Everyone, Only Logged-in User, Only Admins or Nobody. Restrict the files allowed to specific types, limit their size and quantity per upload job.
 
-The list and/or the uploader can be turned on and off for the front-side of the website. You can show just the list, just the uploader, or both. You can also restrict uploading and/or viewing of the file list to only Admins or logged-in users. For list management, there is a page in the administration area which always shows both. Here you can easily view, upload, rename and delete files as needed.
+The file list table has options to show; file size, modification date and thumbnail columns. Thumbnail images are generated automatically for images and videos*. Sort files by name, date, size or random. You can also collect the uploader's name, email and description of the file(s). This can then be shown in the file list.
+
+Files can also be assigned descriptions, which can be added from the Admin list or user uploads. Descriptions can be shown or hidden. Use the Send option to send emails with links to selected files.
+
+If you dare, you can give your front-side users full control over renaming, moving, sending, deleting and editing descriptions.
 
 Simple File List is also an alternative to using FTP or Dropbox for larger files. There's no need to deal with Dropbox or FTP usernames and passwords anymore! Everything is on your Wordpress website. All you need is a VPS or dedicated web server.
 
@@ -29,32 +33,30 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 
 = List Features =
 
-* Limit access to the list to only Admins or logged in users.
-* Delete unwanted files from the Admin page, and optionally allow front-side users to delete files.
-* Rename files on the Admin-side.
+* Limit list access to only Admins or logged-in users.
+* Add and manage your files from the Admin List. Optionally allow front-side users to manage files too.
 * Optionally show file date, size and a thumbnail for images and videos.
-* List can be set to sort file by name, date or file size ... ascending or descending.
-* File List Table Sorting. In addition to default sorting, click on a column heading to sort it.
-* Optionally show thumbnails for videos and image files, or file type icons for documents.
-* Show or hide columns for the thumbnail, file size or file date columns.
-* The file date format uses the format selected in your Wordpress General Settings.
+* Add descriptions to files and optionally show them in your list.
+* Sort file by name, date or file size ... ascending or descending.
+* Automatically generate thumbnails for videos and image files.
+* Send emails with links to your files to others.
+
 
 = Uploader Features =
 
 * Simple reliable uploader, works on mobile devices too.
 * Allow uploading to only Admins or logged-in users, or turn it off completely.
-* Fully customize the types of files you want users to be able to upload.
+* Limit the types of files users can upload.
 * Limit number of files uploaded per submission.
 * Limit the maximum upload file size.
 * Get an email notice each time a file is uploaded.
-* Option to gather the uploader's name, email and comments to add to the upload notification.
-* Custom Upload Folder - Specify whatever folder you like for users to upload files.
+* Option to gather the uploader's name, email and comments.
 
 = Shortcode Attributes =
 
 * Over-ride the main list's settings on a per page/post/widget basis using shortcode attributes.
 * Shortcode Builder allows you to create custom file list shortcodes.
-* Creates a new draft post/page with the shortcode in place, then redirects them to the new page.
+** Choose to create a new draft post/page with the shortcode in place.
 * List Visibility: showlist="YES / USER / ADMIN / NO"
 * Uploader Visibility: allowuploads="YES / USER / ADMIN / NO"
 * File Thumbnail Column: showthumb="YES / NO"
@@ -84,15 +86,16 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 
 = ADD-ON - Folder Support (Optional) =
 
-* Create folders and unlimited levels of sub-folders.
-* Use a shortcode attribute to display specific folders: showfolder="folderA/folderB"
+* Create unlimited levels of sub-folders.
+* Use a shortcode attribute to display specific folders.
+** [eeSFL showfolder="folderA/folderB"]
 * Display different folders in different places on your site.
 * You can even show several different folders on the same page and within widgets.
 * Front-side users cannot navigate above the folder you specify.
 * Breadcrumb navigation indicates where you are.
-* Easily move files from folder to folder.
-* Easily rename any folder.
-* Easily delete any folder, along with all contents.
+* Easily move files and folders as needed.
+* Rename folders and add descriptions, which can be shown in the file list.
+* Quickly delete any folder, along with all contents.
 * Choose to sort folders first or sort along with the files.
 * Optionally display folder sizes.
 
@@ -107,6 +110,8 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * Define the number of files per page in the settings.
 * Show or hide the search bar and/or pagination in the settings.
 * Updating to newer versions is just like other Wordpress plugins.
+* Use a shortcode to place a search form anywhere on your website.
+** [eeSFLS permalink='file-list-url']
 
 
 == Installation ==
@@ -162,13 +167,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-
-
-* ... NEED TO UPDATE
-
-
-
-3.2.13 - Improvements and new features for Folder Support
+* 4.1.0 - Major Update
 
 
 == Screenshots ==
@@ -179,6 +178,23 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Changelog ==
+
+
+= 3.2.17 =
+
+* Bug fix where email notices were failing to send to multiple addresses.
+
+= 3.2.16 =
+
+* File URL bug fix
+
+= 3.2.15 =
+
+* Improved Search & Pagination integration
+
+= 3.2.14 =
+
+* Translation updates and a minor change related to extension updating
 
 = 3.2.13 =
 
