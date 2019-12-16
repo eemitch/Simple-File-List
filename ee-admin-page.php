@@ -183,7 +183,7 @@ function eeSFL_ManageLists() {
 				<a target="_blank" class="button" href="https://wordpress.org/support/plugin/simple-file-list/reviews/">' . __('Review Plugin', 'ee-simple-file-list') . '</a></p>
 					<a href="' . $eeSFL->eePluginWebPage . '" target="_blank">' . __('Plugin Website', 'ee-simple-file-list') . '</a> | 
 							<a href="https://simplefilelist.com/give-feedback/" target="_blank">' . __('Give Feedback', 'ee-simple-file-list') . '</a> | 
-								<a href="#" id="eeFooterImportantLink">Caution</a>';
+								<a href="#" id="eeFooterImportantLink">' . __('Caution', 'ee-simple-file-list') . '</a>';
 								
 			if( !@count($eeSFL_Env['installed']) ) {
 				$eeOutput .= ' | <a href="https://simplefilelist.com/donations/simple-file-list-project/">' . __('Buy Me Lunch', 'ee-simple-file-list') . '</a>';

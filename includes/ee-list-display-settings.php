@@ -147,7 +147,7 @@ $eeOutput .= '
 		
 		if( $eeSFL_Config['ShowHeader'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 		
-		$eeOutput .= ' /> <p>Show the table header</p>
+		$eeOutput .= ' /> <p>' . __('Show the table header', 'ee-simple-file-list') . '</p>
 		
 		<div class="eeNote">' . __('Show the table header above the file list or not.', 'ee-simple-file-list') . '</div>
 		

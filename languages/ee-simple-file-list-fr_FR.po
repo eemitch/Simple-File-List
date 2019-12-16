@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2019-12-04 11:19-0600\n"
-"PO-Revision-Date: 2019-12-04 12:04-0600\n"
+"POT-Creation-Date: 2019-12-16 13:32-0600\n"
+"PO-Revision-Date: 2019-12-16 14:04-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -90,7 +90,7 @@ msgstr ""
 msgid "Open each file submitted carefully."
 msgstr "Ouvrez soigneusement chaque fichier soumis."
 
-#: ee-admin-page.php:182 support/ee-get-help.php:99
+#: ee-admin-page.php:182 support/ee-get-help.php:92
 msgid "Plugin Documentation"
 msgstr "Plugin Documentation"
 
@@ -105,6 +105,10 @@ msgstr "Site Web plugin"
 #: ee-admin-page.php:185
 msgid "Give Feedback"
 msgstr "Donnez votre avis"
+
+#: ee-admin-page.php:186
+msgid "Caution"
+msgstr "Attention"
 
 #: ee-admin-page.php:189
 msgid "Buy Me Lunch"
@@ -122,6 +126,7 @@ msgstr "Extension de dossier"
 msgid "Search Extension"
 msgstr "Extension de recherche"
 
+#. Plugin Name of the plugin/theme
 #: ee-email-engine.php:75
 msgid "Simple File List"
 msgstr "Liste de fichiers simple"
@@ -130,15 +135,15 @@ msgstr "Liste de fichiers simple"
 msgid "File Upload Notice"
 msgstr "Avis de téléchargement de fichier"
 
-#: ee-file-engine.php:131
+#: ee-file-engine.php:129
 msgid "Deleted the File"
 msgstr "Suppression du fichier"
 
-#: ee-file-engine.php:136
+#: ee-file-engine.php:134
 msgid "File Delete Failed"
 msgstr "Échec de la suppression de fichier"
 
-#: ee-file-engine.php:145
+#: ee-file-engine.php:143
 msgid "Folder Delete Failed"
 msgstr "Suppression de dossier s'est échouée"
 
@@ -146,7 +151,7 @@ msgstr "Suppression de dossier s'est échouée"
 msgid "No File List Found. Please Re-Scan"
 msgstr "Aucune liste de fichiers n'a été trouvée. S'il vous plaît re-scan"
 
-#: ee-list-display.php:145 includes/ee-upload-form.php:77
+#: ee-list-display.php:145 includes/ee-upload-form.php:80
 msgid "Upload Files"
 msgstr "Télécharger des fichiers"
 
@@ -186,12 +191,12 @@ msgstr "Dernière modification"
 msgid "Thumb"
 msgstr "Vignette"
 
-#: ee-list-display.php:227 includes/ee-class.php:846
+#: ee-list-display.php:227 includes/ee-class.php:849
 #: includes/ee-list-settings.php:278
 msgid "Name"
 msgstr "Nom"
 
-#: ee-list-display.php:237 ee-list-display.php:570
+#: ee-list-display.php:237 ee-list-display.php:576
 #: includes/ee-list-settings.php:298
 msgid "Size"
 msgstr "Taille"
@@ -200,118 +205,118 @@ msgstr "Taille"
 msgid "Date"
 msgstr "Date"
 
-#: ee-list-display.php:472
+#: ee-list-display.php:478
 msgid "Submitted by"
 msgstr "Proposé par"
 
-#: ee-list-display.php:486
+#: ee-list-display.php:492
 msgid "Open"
 msgstr "Ouvert"
 
-#: ee-list-display.php:492
+#: ee-list-display.php:498
 msgid "Download"
 msgstr "Télécharger"
 
-#: ee-list-display.php:495 ee-list-display.php:686
+#: ee-list-display.php:501 ee-list-display.php:692
 msgid "Send"
 msgstr "Envoyer"
 
-#: ee-list-display.php:504
+#: ee-list-display.php:510
 msgid "Edit"
 msgstr "Modifier"
 
-#: ee-list-display.php:511
+#: ee-list-display.php:517
 msgid "Move"
 msgstr "Déplacer"
 
-#: ee-list-display.php:525
+#: ee-list-display.php:531
 msgid "Move to Folder"
 msgstr "Passer à Folder"
 
-#: ee-list-display.php:550
+#: ee-list-display.php:556
 msgid "Edit Details"
 msgstr "Modifier les détails"
 
-#: ee-list-display.php:552 includes/ee-list-settings.php:275
+#: ee-list-display.php:558 includes/ee-list-settings.php:275
 #: includes/ee-list-settings.php:323
 msgid "File Name"
 msgstr "Nom du fichier"
 
-#: ee-list-display.php:555 includes/ee-class.php:852
+#: ee-list-display.php:561 includes/ee-class.php:855
 msgid "Description"
 msgstr "Description"
 
-#: ee-list-display.php:560
+#: ee-list-display.php:566
 msgid "Save"
 msgstr "Sauvegarder"
 
-#: ee-list-display.php:561 ee-list-display.php:685 ee-list-display.php:717
+#: ee-list-display.php:567 ee-list-display.php:691 ee-list-display.php:723
 msgid "Cancel"
 msgstr "Annuler"
 
-#: ee-list-display.php:562
+#: ee-list-display.php:568
 msgid "Delete"
 msgstr "Supprimer"
 
-#: ee-list-display.php:565
+#: ee-list-display.php:571
 msgid "Added"
 msgstr "Ajouté"
 
-#: ee-list-display.php:568
+#: ee-list-display.php:574
 msgid "Modified"
 msgstr "Modifié"
 
-#: ee-list-display.php:600
+#: ee-list-display.php:606
 msgid "Folder"
 msgstr "Dossier"
 
-#: ee-list-display.php:651
+#: ee-list-display.php:657
 msgid "Send Link"
 msgstr "Envoyer un lien"
 
-#: ee-list-display.php:653
+#: ee-list-display.php:659
 msgid "Send an email with links to the files. Add more files if needed."
 msgstr ""
 "Envoyer un e-mail avec des liens vers les fichiers. Ajoutez plus de fichiers "
 "si nécessaire."
 
-#: ee-list-display.php:655
+#: ee-list-display.php:661
 msgid "Files to be sent:"
 msgstr "Fichiers à envoyer :"
 
-#: ee-list-display.php:661
+#: ee-list-display.php:667
 msgid "Your Address"
 msgstr "Votre adresse"
 
-#: ee-list-display.php:664
+#: ee-list-display.php:670
 msgid "The TO Address"
 msgstr "L'adresse TO"
 
-#: ee-list-display.php:666
+#: ee-list-display.php:672
 msgid "Separate multiple addresses with a comma"
 msgstr "Séparer plusieurs adresses avec une virgule"
 
-#: ee-list-display.php:668
+#: ee-list-display.php:674
 msgid "The CC Address"
 msgstr "L'adresse CC"
 
-#: ee-list-display.php:671
+#: ee-list-display.php:677
 msgid "The Subject"
 msgstr "Le sujet"
 
-#: ee-list-display.php:674
+#: ee-list-display.php:680
 msgid "The Message"
 msgstr "Le message"
 
-#: ee-list-display.php:682 ee-list-display.php:716
+#: ee-list-display.php:688 ee-list-display.php:722
 msgid "Add Files"
 msgstr "Ajouter des fichiers"
 
-#: ee-list-display.php:697
+#: ee-list-display.php:703
 msgid "Add More Files"
 msgstr "Ajouter d’autres fichiers"
 
-#: ee-list-display.php:737
+#: ee-list-display.php:743
 msgid "Upload some files and they will appear here."
 msgstr "Téléchargez des fichiers et ils apparaîtront ici."
 
@@ -329,19 +334,19 @@ msgstr ""
 msgid "FFmpeg Error - File Not Created"
 msgstr "Erreur FFmpeg-fichier non créé"
 
-#: includes/ee-class.php:672
+#: includes/ee-class.php:675
 msgid "File Notification"
 msgstr "Notification de fichier"
 
-#: includes/ee-class.php:734
+#: includes/ee-class.php:737
 msgid "Uploader Information"
 msgstr "Informations sur les téléchargeur"
 
-#: includes/ee-class.php:739
+#: includes/ee-class.php:742
 msgid "Uploaded By"
 msgstr "Chargé par"
 
-#: includes/ee-class.php:849
+#: includes/ee-class.php:852
 msgid "Email"
 msgstr "Ceci n'est pas une adresse e-mail valide"
 
@@ -540,6 +545,12 @@ msgstr "Afficher ou masquer l'extension du fichier."
 #: includes/ee-list-display-settings.php:145
 msgid "Show Header"
 msgstr "Afficher l’en-tête"
+
+#: includes/ee-list-display-settings.php:150
+#, fuzzy
+#| msgid "Show or hide the table header"
+msgid "Show the table header"
+msgstr "Afficher ou masquer l’en-tête de la table"
 
 #: includes/ee-list-display-settings.php:152
 msgid "Show the table header above the file list or not."
@@ -805,40 +816,40 @@ msgstr ""
 "Si vous utilisez FTP ou une autre méthode pour télécharger des fichiers sur "
 "votre liste, définir l'intervalle à zéro."
 
-#: includes/ee-upload-form.php:110
+#: includes/ee-upload-form.php:113
 msgid "Processing the Upload"
 msgstr "Traitement du téléchargement"
 
-#: includes/ee-upload-form.php:112
+#: includes/ee-upload-form.php:115
 msgid "Upload"
 msgstr "Télécharger"
 
-#: includes/ee-upload-form.php:116
+#: includes/ee-upload-form.php:119
 msgid "File Limit"
 msgstr "Limite de fichier"
 
-#: includes/ee-upload-form.php:116
+#: includes/ee-upload-form.php:119
 msgid "files"
 msgstr "fichiers"
 
-#: includes/ee-upload-form.php:118
+#: includes/ee-upload-form.php:121
 msgid "Size Limit"
 msgstr "Limite de taille"
 
-#: includes/ee-upload-form.php:120
+#: includes/ee-upload-form.php:123
 msgid "per file"
 msgstr "par fichier"
 
-#: includes/ee-upload-form.php:122
+#: includes/ee-upload-form.php:125
 msgid "Types Allowed"
 msgstr "Types autorisés"
 
-#: includes/ee-upload-form.php:124
+#: includes/ee-upload-form.php:127
 msgid "Drag-and-drop files here or use the Browse button."
 msgstr ""
 "Faites glisser et déposer des fichiers ici ou utilisez le bouton Parcourir."
 
-#: includes/ee-upload-form.php:134
+#: includes/ee-upload-form.php:137
 msgid "No upload directory configured."
 msgstr "Aucun répertoire de téléchargement configuré."
 
@@ -1048,11 +1059,11 @@ msgstr ""
 "Utilisez un code court pour placer un formulaire de recherche n'importe où "
 "sur votre site Web."
 
-#: support/ee-get-help.php:101
+#: support/ee-get-help.php:94
 msgid "Support Request"
 msgstr "Demande de support"
 
-#: support/ee-get-help.php:103
+#: support/ee-get-help.php:96
 msgid ""
 "Do you need help or have a question? Send a message and I will reply "
 "promptly."
@@ -1060,46 +1071,46 @@ msgstr ""
 "Avez-vous besoin d'aide ou avez-vous une question? Envoyer un message et je "
 "vais répondre rapidement."
 
-#: support/ee-get-help.php:119
+#: support/ee-get-help.php:112
 msgid "Your Name"
 msgstr "Votre nom"
 
-#: support/ee-get-help.php:122
+#: support/ee-get-help.php:115
 msgid "Your Email"
 msgstr "Votre Email"
 
-#: support/ee-get-help.php:125
+#: support/ee-get-help.php:118
 msgid "Page with Shortcode"
 msgstr "Page avec shortcode"
 
-#: support/ee-get-help.php:128
+#: support/ee-get-help.php:121
 msgid "Your Message"
 msgstr "Votre message"
 
-#: support/ee-get-help.php:150
+#: support/ee-get-help.php:143
 msgid "SEND"
 msgstr "ENVOYER"
 
-#: support/ee-get-help.php:154
+#: support/ee-get-help.php:147
 msgid ""
 "Basic plugin environment details will be sent along with your message to:"
 msgstr ""
 "Les détails de base de l'environnement plugin seront envoyés avec votre "
 "message à:"
 
-#: support/ee-get-help.php:155
+#: support/ee-get-help.php:148
 msgid "To help me further, please include this information"
 msgstr "Pour m'aider davantage, veuillez inclure cette information"
 
-#: support/ee-get-help.php:157
+#: support/ee-get-help.php:150
 msgid "Click here"
 msgstr "Cliquez ici"
 
-#: support/ee-get-help.php:157
+#: support/ee-get-help.php:150
 msgid "Click the \"Copy site info to clipboard button\""
 msgstr "Cliquez sur le bouton \"Copy site info to clipboard\""
 
-#: support/ee-get-help.php:157
+#: support/ee-get-help.php:150
 msgid "Paste the result into the message above."
 msgstr "Collez le résultat dans le message ci-dessus."
 
@@ -1227,10 +1238,6 @@ msgstr "Masquer l’Uploader"
 msgid "The message failed to send."
 msgstr "Le message n'a pas pu être envoyé."
 
-#. Plugin Name of the plugin/theme
-msgid "Simple File List 4"
-msgstr "Liste de fichiers simple 4"
-
 #. Plugin URI of the plugin/theme
 msgid "http://simplefilelist.com"
 msgstr "http://simplefilelist.com"
@@ -1253,6 +1260,9 @@ msgstr "Mitchell Bennis-Element Engage, LLC"
 #. Author URI of the plugin/theme
 msgid "http://elementengage.com"
 msgstr "http://elementengage.com"
+
+#~ msgid "Simple File List 4"
+#~ msgstr "Liste de fichiers simple 4"
 
 #~ msgid "User Manager"
 #~ msgstr "Gestion des utilisateurs"
@@ -1422,9 +1432,6 @@ msgstr "http://elementengage.com"
 
 #~ msgid "Show or hide the file size column"
 #~ msgstr "Afficher ou masquer la colonne de taille de fichier"
-
-#~ msgid "Show or hide the table header"
-#~ msgstr "Afficher ou masquer l’en-tête de la table"
 
 #~ msgid "The List: ON, Logged-in, Admins Only or OFF"
 #~ msgstr "Liste: ON, connecté, admins uniquement ou désactivé"

@@ -514,7 +514,7 @@ if(@count($eeSFL_Files) >= 1) {
 								$eeSFLF_FolderOptionsDisplay = FALSE;
 								$eeSFLF_FolderOptionsDisplay = $eeSFLF->eeSFLF_MoveToFolderDisplay($eeFileArray, $eeSFLF_ListFolder);
 								
-								$eeMoveLink = '<a id="eeSFLF_moveLink_' . $eeRowID . '" href="#" onclick="eeSFLF_MoveFileDisplay(' . $eeRowID . ')">' . __('Move', 'ee-simple-file-list-folders') . '</a>';	
+								$eeMoveLink = '<a id="eeSFLF_moveLink_' . $eeRowID . '" href="#" onclick="eeSFLF_MoveFileDisplay(' . $eeRowID . ')">' . __('Move', 'ee-simple-file-list') . '</a>';	
 								
 								if($eeIsFolder) {
 									

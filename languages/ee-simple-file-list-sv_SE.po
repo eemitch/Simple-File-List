@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2019-12-04 11:19-0600\n"
-"PO-Revision-Date: 2019-12-04 13:15-0600\n"
+"POT-Creation-Date: 2019-12-16 13:32-0600\n"
+"PO-Revision-Date: 2019-12-16 14:13-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -89,7 +89,7 @@ msgstr ""
 msgid "Open each file submitted carefully."
 msgstr "Öppna varje fil som skickats in noggrant."
 
-#: ee-admin-page.php:182 support/ee-get-help.php:99
+#: ee-admin-page.php:182 support/ee-get-help.php:92
 msgid "Plugin Documentation"
 msgstr "Dokumentation"
 
@@ -104,6 +104,10 @@ msgstr "Plugin webbplats"
 #: ee-admin-page.php:185
 msgid "Give Feedback"
 msgstr "Ge respons"
+
+#: ee-admin-page.php:186
+msgid "Caution"
+msgstr "Försiktighet"
 
 #: ee-admin-page.php:189
 msgid "Buy Me Lunch"
@@ -121,6 +125,7 @@ msgstr "Mapptillägg"
 msgid "Search Extension"
 msgstr "Sök förlängning"
 
+#. Plugin Name of the plugin/theme
 #: ee-email-engine.php:75
 msgid "Simple File List"
 msgstr "Lista över enkla filer"
@@ -129,15 +134,15 @@ msgstr "Lista över enkla filer"
 msgid "File Upload Notice"
 msgstr "Meddelande om fil överföring"
 
-#: ee-file-engine.php:131
+#: ee-file-engine.php:129
 msgid "Deleted the File"
 msgstr "Raderade filen"
 
-#: ee-file-engine.php:136
+#: ee-file-engine.php:134
 msgid "File Delete Failed"
 msgstr "Det gick inte att ta bort filen"
 
-#: ee-file-engine.php:145
+#: ee-file-engine.php:143
 msgid "Folder Delete Failed"
 msgstr "Det gick inte att ta bort mappen"
 
@@ -145,7 +150,7 @@ msgstr "Det gick inte att ta bort mappen"
 msgid "No File List Found. Please Re-Scan"
 msgstr "Ingen fil lista hittades. Vänligen Omskanna"
 
-#: ee-list-display.php:145 includes/ee-upload-form.php:77
+#: ee-list-display.php:145 includes/ee-upload-form.php:80
 msgid "Upload Files"
 msgstr "Ladda upp filer"
 
@@ -185,12 +190,12 @@ msgstr "Senast ändrad"
 msgid "Thumb"
 msgstr "Tumnagel"
 
-#: ee-list-display.php:227 includes/ee-class.php:846
+#: ee-list-display.php:227 includes/ee-class.php:849
 #: includes/ee-list-settings.php:278
 msgid "Name"
 msgstr "Namn"
 
-#: ee-list-display.php:237 ee-list-display.php:570
+#: ee-list-display.php:237 ee-list-display.php:576
 #: includes/ee-list-settings.php:298
 msgid "Size"
 msgstr "Storlek"
@@ -199,118 +204,118 @@ msgstr "Storlek"
 msgid "Date"
 msgstr "Datum"
 
-#: ee-list-display.php:472
+#: ee-list-display.php:478
 msgid "Submitted by"
 msgstr "Skickad av"
 
-#: ee-list-display.php:486
+#: ee-list-display.php:492
 msgid "Open"
 msgstr "Öppen"
 
-#: ee-list-display.php:492
+#: ee-list-display.php:498
 msgid "Download"
 msgstr "Ladda ner"
 
-#: ee-list-display.php:495 ee-list-display.php:686
+#: ee-list-display.php:501 ee-list-display.php:692
 msgid "Send"
 msgstr "Skicka"
 
-#: ee-list-display.php:504
+#: ee-list-display.php:510
 msgid "Edit"
 msgstr "Redigera"
 
-#: ee-list-display.php:511
+#: ee-list-display.php:517
 msgid "Move"
 msgstr "Flytta"
 
-#: ee-list-display.php:525
+#: ee-list-display.php:531
 msgid "Move to Folder"
 msgstr "Flytta till mapp"
 
-#: ee-list-display.php:550
+#: ee-list-display.php:556
 msgid "Edit Details"
 msgstr "Redigera info"
 
-#: ee-list-display.php:552 includes/ee-list-settings.php:275
+#: ee-list-display.php:558 includes/ee-list-settings.php:275
 #: includes/ee-list-settings.php:323
 msgid "File Name"
 msgstr "Filnamn"
 
-#: ee-list-display.php:555 includes/ee-class.php:852
+#: ee-list-display.php:561 includes/ee-class.php:855
 msgid "Description"
 msgstr "Beskrivning"
 
-#: ee-list-display.php:560
+#: ee-list-display.php:566
 msgid "Save"
 msgstr "Spara"
 
-#: ee-list-display.php:561 ee-list-display.php:685 ee-list-display.php:717
+#: ee-list-display.php:567 ee-list-display.php:691 ee-list-display.php:723
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ee-list-display.php:562
+#: ee-list-display.php:568
 msgid "Delete"
 msgstr "Radera"
 
-#: ee-list-display.php:565
+#: ee-list-display.php:571
 msgid "Added"
 msgstr "Tillagd"
 
-#: ee-list-display.php:568
+#: ee-list-display.php:574
 msgid "Modified"
 msgstr "Ändrad"
 
-#: ee-list-display.php:600
+#: ee-list-display.php:606
 msgid "Folder"
 msgstr "Mapp"
 
-#: ee-list-display.php:651
+#: ee-list-display.php:657
 msgid "Send Link"
 msgstr "Skicka länk"
 
-#: ee-list-display.php:653
+#: ee-list-display.php:659
 msgid "Send an email with links to the files. Add more files if needed."
 msgstr ""
 "Skicka ett e-postmeddelande med länkar till filerna. Lägg till fler filer om "
 "det behövs."
 
-#: ee-list-display.php:655
+#: ee-list-display.php:661
 msgid "Files to be sent:"
 msgstr "Filer som ska skickas:"
 
-#: ee-list-display.php:661
+#: ee-list-display.php:667
 msgid "Your Address"
 msgstr "Adress"
 
-#: ee-list-display.php:664
+#: ee-list-display.php:670
 msgid "The TO Address"
 msgstr "Den till adress"
 
-#: ee-list-display.php:666
+#: ee-list-display.php:672
 msgid "Separate multiple addresses with a comma"
 msgstr "Avgränsa flera adresser med ett kommatecken"
 
-#: ee-list-display.php:668
+#: ee-list-display.php:674
 msgid "The CC Address"
 msgstr "CC-adressen"
 
-#: ee-list-display.php:671
+#: ee-list-display.php:677
 msgid "The Subject"
 msgstr "Ämnet"
 
-#: ee-list-display.php:674
+#: ee-list-display.php:680
 msgid "The Message"
 msgstr "Meddelandet"
 
-#: ee-list-display.php:682 ee-list-display.php:716
+#: ee-list-display.php:688 ee-list-display.php:722
 msgid "Add Files"
 msgstr "Lägg till filer"
 
-#: ee-list-display.php:697
+#: ee-list-display.php:703
 msgid "Add More Files"
 msgstr "Lägg till fler filer"
 
-#: ee-list-display.php:737
+#: ee-list-display.php:743
 msgid "Upload some files and they will appear here."
 msgstr "Ladda upp några filer och de kommer att visas här."
 
@@ -327,19 +332,19 @@ msgstr ""
 msgid "FFmpeg Error - File Not Created"
 msgstr "FFmpeg fel-filen har inte skapats"
 
-#: includes/ee-class.php:672
+#: includes/ee-class.php:675
 msgid "File Notification"
 msgstr "Fil anmälan"
 
-#: includes/ee-class.php:734
+#: includes/ee-class.php:737
 msgid "Uploader Information"
 msgstr "Överförarens information"
 
-#: includes/ee-class.php:739
+#: includes/ee-class.php:742
 msgid "Uploaded By"
 msgstr "Uppladdad av"
 
-#: includes/ee-class.php:849
+#: includes/ee-class.php:852
 msgid "Email"
 msgstr "E-post"
 
@@ -533,6 +538,10 @@ msgstr "Visa eller Dölj filnamnstillägget."
 #: includes/ee-list-display-settings.php:145
 msgid "Show Header"
 msgstr "Visa sidhuvud"
+
+#: includes/ee-list-display-settings.php:150
+msgid "Show the table header"
+msgstr "Visa tabellrubriken"
 
 #: includes/ee-list-display-settings.php:152
 msgid "Show the table header above the file list or not."
@@ -787,39 +796,39 @@ msgstr ""
 "Om du använder FTP eller någon annan metod för att överföra filer till "
 "listan anger du intervallet till noll."
 
-#: includes/ee-upload-form.php:110
+#: includes/ee-upload-form.php:113
 msgid "Processing the Upload"
 msgstr "Bearbetning av uppladdning"
 
-#: includes/ee-upload-form.php:112
+#: includes/ee-upload-form.php:115
 msgid "Upload"
 msgstr "Ladda upp"
 
-#: includes/ee-upload-form.php:116
+#: includes/ee-upload-form.php:119
 msgid "File Limit"
 msgstr "Fil gräns"
 
-#: includes/ee-upload-form.php:116
+#: includes/ee-upload-form.php:119
 msgid "files"
 msgstr "filer"
 
-#: includes/ee-upload-form.php:118
+#: includes/ee-upload-form.php:121
 msgid "Size Limit"
 msgstr "Storleksgräns"
 
-#: includes/ee-upload-form.php:120
+#: includes/ee-upload-form.php:123
 msgid "per file"
 msgstr "per fil"
 
-#: includes/ee-upload-form.php:122
+#: includes/ee-upload-form.php:125
 msgid "Types Allowed"
 msgstr "Typer som tillåts"
 
-#: includes/ee-upload-form.php:124
+#: includes/ee-upload-form.php:127
 msgid "Drag-and-drop files here or use the Browse button."
 msgstr "Dra och släpp filer här eller Använd bläddringsknappen."
 
-#: includes/ee-upload-form.php:134
+#: includes/ee-upload-form.php:137
 msgid "No upload directory configured."
 msgstr "Ingen uppladdnings katalog konfigurerad."
 
@@ -1011,11 +1020,11 @@ msgstr ""
 "Använd en kortkod för att placera ett sökformulär var som helst på din "
 "webbplats."
 
-#: support/ee-get-help.php:101
+#: support/ee-get-help.php:94
 msgid "Support Request"
 msgstr "Supportförfrågan"
 
-#: support/ee-get-help.php:103
+#: support/ee-get-help.php:96
 msgid ""
 "Do you need help or have a question? Send a message and I will reply "
 "promptly."
@@ -1023,46 +1032,46 @@ msgstr ""
 "Behöver du hjälp eller har du en fråga? Skicka ett meddelande och jag kommer "
 "att svara omgående."
 
-#: support/ee-get-help.php:119
+#: support/ee-get-help.php:112
 msgid "Your Name"
 msgstr "Ditt namn"
 
-#: support/ee-get-help.php:122
+#: support/ee-get-help.php:115
 msgid "Your Email"
 msgstr "Din e-postadress"
 
-#: support/ee-get-help.php:125
+#: support/ee-get-help.php:118
 msgid "Page with Shortcode"
 msgstr "Sida med kortkod"
 
-#: support/ee-get-help.php:128
+#: support/ee-get-help.php:121
 msgid "Your Message"
 msgstr "Ditt meddelande"
 
-#: support/ee-get-help.php:150
+#: support/ee-get-help.php:143
 msgid "SEND"
 msgstr "SKICKA"
 
-#: support/ee-get-help.php:154
+#: support/ee-get-help.php:147
 msgid ""
 "Basic plugin environment details will be sent along with your message to:"
 msgstr ""
 "Grundläggande plugin miljö detaljer kommer att skickas tillsammans med ditt "
 "meddelande till:"
 
-#: support/ee-get-help.php:155
+#: support/ee-get-help.php:148
 msgid "To help me further, please include this information"
 msgstr "För att hjälpa mig vidare, vänligen inkludera denna information"
 
-#: support/ee-get-help.php:157
+#: support/ee-get-help.php:150
 msgid "Click here"
 msgstr "Klicka här"
 
-#: support/ee-get-help.php:157
+#: support/ee-get-help.php:150
 msgid "Click the \"Copy site info to clipboard button\""
 msgstr "Klicka på knappen \"Kopiera webbplats information till Urklipp\""
 
-#: support/ee-get-help.php:157
+#: support/ee-get-help.php:150
 msgid "Paste the result into the message above."
 msgstr "Klistra in resultatet i meddelandet ovan."
 
@@ -1190,10 +1199,6 @@ msgstr "Dölj uppladdaren"
 msgid "The message failed to send."
 msgstr "Det gick inte att skicka meddelandet."
 
-#. Plugin Name of the plugin/theme
-msgid "Simple File List 4"
-msgstr "Enkel fil lista 4"
-
 #. Plugin URI of the plugin/theme
 msgid "http://simplefilelist.com"
 msgstr "http://simplefilelist.com"
@@ -1216,6 +1221,9 @@ msgstr "Mitchell Bennis-Element Engage, LLC"
 #. Author URI of the plugin/theme
 msgid "http://elementengage.com"
 msgstr "http://elementengage.com"
+
+#~ msgid "Simple File List 4"
+#~ msgstr "Enkel fil lista 4"
 
 #~ msgid "User Manager"
 #~ msgstr "Kund ansvarig"
@@ -1383,9 +1391,6 @@ msgstr "http://elementengage.com"
 
 #~ msgid "Show or hide the file size column"
 #~ msgstr "Visa eller dölja fil storleks kolumnen"
-
-#~ msgid "Show or hide the table header"
-#~ msgstr "Visa eller Dölj tabell rubriken"
 
 #~ msgid "The List: ON, Logged-in, Admins Only or OFF"
 #~ msgstr "Listan: på, inloggad, endast administratörer eller av"
