@@ -80,7 +80,7 @@ if($_POST['eeSFL_Token'] == $verifyToken) { // Security
 	}
 		
 	if($eeSFL_Config['NotifyBcc']) {
-		$eeSFL_Headers .= PHP_EOL . "BCC:" . $eeSFL_Config['NotifyCc'];
+		$eeSFL_Headers .= PHP_EOL . "BCC:" . $eeSFL_Config['NotifyBcc'];
 	}
 	
 	if($eeSFL_Config['NotifySubject']) {

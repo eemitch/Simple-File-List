@@ -693,7 +693,12 @@ class eeSFL_MainClass {
 			} else {
 				$eeURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; // The exact page
 			}
-			$eeFooter = 'Sent from the file list at ' . $eeURL;
+			if($eeURL) {
+				$eeFooter = 'Sent from the file list at ' . $eeURL;
+			} else {
+				$eeFooter = 'Powered by Simple File List';
+			}
+			
 		}
 		
 		// The Body
@@ -755,7 +760,7 @@ class eeSFL_MainClass {
 			
 			
 			// Show if no extensions installed
-			if( count($eeSFL_Env['installed']) < 1 ) {
+			if( @count($eeSFL_Env['installed']) < 1 ) {
 				
 				$eeSFL_Body .= PHP_EOL . PHP_EOL . "----------------------------------"  . 
 				PHP_EOL . "Powered by Simple File List - simplefilelist.com";

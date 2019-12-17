@@ -162,7 +162,9 @@ if($eeAdmin) {
 	$eeOutput .= '</p>';
 	
 	// If showing just-uploaded files
-	if($eeUploadedFiles) { $eeOutput .= '
+	if($eeUploadedFiles) { 
+		
+		$eeOutput .= '
 		
 		<p class="eeSFL_ListMeta"><a href="#" onclick="location.reload();" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . __('Back to the Files', 'ee-simple-file-list') . '</a></p>';
 	
@@ -181,7 +183,14 @@ if($eeAdmin) {
 		
 		</div>';
 	}
+
+} elseif(@$_POST['eeSFL_Upload']) { 
+	
+	$eeURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+	
+	$eeOutput .= '<p class="eeSFL_ListMeta"><a href="' . $eeURL . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . __('Back to the Files', 'ee-simple-file-list') . '</a></p>';
 }
+
 
 // Extension Checks	
 if($eeSFLF) {
@@ -669,7 +678,7 @@ if(@count($eeSFL_Files) >= 1) {
 						
 					<label for="eeSFL_SendTo">' . __('The TO Address', 'ee-simple-file-list'). '</label>
 						<input required type="text" name="eeSFL_SendTo" value="" size="64" id="eeSFL_SendTo" />
-					<div class="eeNote">' . __('Separate multiple addresses with a comma', 'ee-simple-file-list') . '</div>
+					<div class="eeClearFix eeNote">' . __('Separate multiple addresses with a comma', 'ee-simple-file-list') . '</div>
 						
 					<label for="eeSFL_SendCc">' . __('The CC Address', 'ee-simple-file-list'). '</label>
 						<input type="text" name="eeSFL_SendCc" value="" size="64" id="eeSFL_SendCc" />
