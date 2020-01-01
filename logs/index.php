@@ -1,24 +1,36 @@
-<?php // Simple File List Support - mitch@elementengage.com
-	
-// Rev 03.08.19 
+<?php // Simple File List Support - support@simplefilelist.com - Rev 12.29.19 
 	
 // Accessed via http://website.com/wp-content/plugins/simple-file-list/logs/index.php?eePIN=2006
 
-// The point of this script is to allow me, Mitch, and only me, to access all of the basic info and error data in one page.
+// This script emails me plugin configuration settings, errors and important environment information.
+// No file information is included.
+// The point of this script is to allow me, Simple File List Support, and no one else, to access basic info and error data.
 // I believe in good service and support.
 
 // Must have the proper PIN in order to access the page
 $eePIN = filter_var(@$_GET['eePIN'], FILTER_VALIDATE_INT);
 
-// Must come from EE
+// Must also come from Me
 $eeReferer = filter_var($_SERVER['HTTP_REFERER'], FILTER_SANITIZE_STRING);
-$eeRefererMust = 'elementengage.com/simple-file-list-wordpress-plugin/support';
+$eeRefererMust = 'simplefilelist.com/support';
+
+$eeTo = 'support@simplefilelist.com';
 
 if($eePIN == 2006 AND strpos($eeReferer, $eeRefererMust) ) { // PIN and Referer must match
 		
 	// Attempt to turn on basic PHP logging...
 	ini_set('display_errors', TRUE);
 	error_reporting(E_ALL);
+	
+	// Tie into Wordpress
+	$wordpress = getcwd() . '/../../../../wp-load.php'; // Starting at this plugin's home dir
+	$wordpress = realpath($wordpress);
+	
+	if(is_file($wordpress)) { 
+		include($wordpress); // Get all that wonderfullness
+	} else {
+		exit("No Wordpress");
+	}
 	
 	// Get what's in this address bar
 	$eeProtocol = strtolower($_SERVER['SERVER_PROTOCOL']);
@@ -29,13 +41,15 @@ if($eePIN == 2006 AND strpos($eeReferer, $eeRefererMust) ) { // PIN and Referer 
 	$eeThisWP = $eeProtocol . '://' . $eeHost;
 	$eeThisURL = $eeThisWP . '/wp-content/plugins/simple-file-list/logs/';
 	
-	// My log file names
+	// My log file names - these are for the AJAX accessed files
+	$eeFileLog = 'ee-file-error.log';
 	$eeUploadLog = 'ee-upload-error.log';
 	$eeEmailLog = 'ee-email-error.log';
 	
 	// Read My Error Log Files
-	$eeUploadLogContent = file_get_contents($eeThisURL . $eeUploadLog);
-	$eeEmailLogContent = file_get_contents($eeThisURL . $eeEmailLog);
+	$eeFileLogContent = @file_get_contents($eeThisURL . $eeFileLog);
+	$eeUploadLogContent = @file_get_contents($eeThisURL . $eeUploadLog);
+	$eeEmailLogContent = @file_get_contents($eeThisURL . $eeEmailLog);
 	
 	// Tie into Wordpress
 	define('WP_USE_THEMES', false);
@@ -44,9 +58,9 @@ if($eePIN == 2006 AND strpos($eeReferer, $eeRefererMust) ) { // PIN and Referer 
 	
 	// Get Database Log
 	$eeLogFile = get_option('eeSFL-Log'); // Used below
-
+	
 	// PHP Log
-	$eeLog = $_SERVER['DOCUMENT_ROOT'] . '/wp-content/error_log';
+	$eeLog = $_SERVER['DOCUMENT_ROOT'] . '/error_log';
 	if(@filesize($eeLog) > 10) {
 		$phpErrors = @file_get_contents($eeLog);
 	} else {
@@ -58,129 +72,50 @@ if($eePIN == 2006 AND strpos($eeReferer, $eeRefererMust) ) { // PIN and Referer 
 	if(is_readable($eeLog)) {
 		$wpErrors = @file_get_contents($eeLog);
 	} else {
-		$wpErrors = 'No Wordpress Error Log File :-(';
-	}
-	
-	// Page Setup
-	$eeTitle = 'Simple File List Support';
-		
-	?><!DOCTYPE HTML>
-<html>
-<head>
-<meta charset="UTF-8">
-<title><?php echo $eeTitle; ?></title>
-
-<style type="text/css">
-
-* {
-	margin: 1.5em;
-}
-
-body {
-	width: 75%;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-h1, h2, h3, p {
-	text-align: left;
-}
-
-p.log, iframe {
-	text-align: left;
-	padding: 1em;
-	border: 1px dashed #666;
-	margin: 1em 0 2em 0;
-}
-p.log {
-	height: 300px;
-	overflow: scroll;
-}
-
-#eeLogFile {
-	height: 500px;
-	padding: 10px;
-	overflow: scroll;
-	border: 1px dashed #666;
-}
-
-</style>
-
-</head>
-<body>
-	
-	<p><a target="_blank" style="float:right;" href="#"><?php echo $eeProtocol . '://' . $eeHost; ?></a></p>
-	
-	<h1><?php echo $eeTitle; ?></h1>
-	
-	<?php // My plugin log files...
-	
-	// The Main Log File ?>
-	
-	<h3>The Main Log File</h3>
-	
-	<?php
-		
-	echo '<div id="eeLogFile"><pre>'; print_r($eeLogFile); echo '</pre></div>';	
-		
-	// Upload Errors
-	if(!$eeUploadLogContent) {
-	
-		echo '<h3 style="color:green;">&#x2714; No Uploader Errors</h3>';
-		
-	} else { 
-		
-		echo '<h3 style="color:red;">Uploader Errors!</h4>';
-		echo '<p class="log">' . $eeUploadLogContent . '</p>';
-	}	
-	
-	// Email Errors
-	if(!$eeEmailLogContent) {
-	
-		echo '<h3 style="color:green;">&#x2714; No Email Errors</h3>';
-		
-	} else { 
-		
-		echo '<h3 style="color:red;">Email Errors!</h4>';
-		echo '<p class="log">' . $eeEmailLogContent . '</p>';
-	}
-		
-		
-	// The Server Environment
-	
-	// PHP Errors
-	if(!$phpErrors) {
-	
-		echo '<h3 style="color:green;">&#x2714; No PHP Errors</h3>';
-		
-	} else { 
-		
-		echo '<h3 style="color:red;">PHP Errors!</h3>';
-		echo '<p class="log">' . nl2br($phpErrors) . '</p>';
+		$wpErrors = FALSE;
 	}
 	
 	
-	// WP Errors
-	if(!$wpErrors) {
+	// Send Email
+	$eeFrom = 'FROM: SFL Report <wordpress@' . $eeHost . '>';
+	$eeSubject = 'Simple File List - Site Report';
 	
-		echo '<h3 style="color:green;">&#x2714; No Wordpress Errors</h3>';
-		
-	} else { 
-		
-		echo '<h3 style="color:red;">Wordpress Errors!</h3>';
-		echo '<p class="log">' . nl2br($wpErrors) . '</p>';
+	$eeBody = $eeSubject . ' - ' . $eeHost . PHP_EOL . PHP_EOL;
+	
+	if($eeFileLogContent) {
+		$eeBody .= 'FILE ERRORS' . PHP_EOL . '------------------' . PHP_EOL . $eeFileLogContent . PHP_EOL . PHP_EOL . PHP_EOL;
+	}
+	
+	if($eeUploadLogContent) {
+		$eeBody .= 'UPLOAD ERRORS' . PHP_EOL . '------------------' . PHP_EOL . $eeUploadLogContent . PHP_EOL . PHP_EOL . PHP_EOL;
+	}
+	
+	if($eeEmailLogContent) {
+		$eeBody .= 'EMAIL ERRORS' . PHP_EOL . '------------------' . PHP_EOL . $eeEmailLogContent . PHP_EOL . PHP_EOL . PHP_EOL;
+	}
+	
+	if($phpErrors) {
+		$eeBody .= 'PHP ERRORS' . PHP_EOL . '------------------' . PHP_EOL . $phpErrors . PHP_EOL . PHP_EOL . PHP_EOL;
+	}
+	
+	if($wpErrors) {
+		$eeBody .= 'WORDPRESS ERRORS' . PHP_EOL . '------------------' . PHP_EOL . $wpErrors . PHP_EOL . PHP_EOL . PHP_EOL;
+	}
+	
+	$eeBody .= 'RECENT LOG' . PHP_EOL . '------------------' . PHP_EOL . 
+	
+	$eeBody .= print_r($eeLogFile, TRUE);
+	
+	$eeBody .=  PHP_EOL . PHP_EOL;
+	
+	if( wp_mail($eeTo, $eeSubject, $eeBody, $eeFrom) ) {
+		$eeMsg = ':-)';
+	} else {
+		$eeMsg = ':-(';
 	}
 
+	exit($eeMsg);
 	
-	echo '<br /><br /><h2>PHP Environment</h2>';
+}
 		
-	// Get Environment Info
-	phpinfo(); ?>
-	
-	
-</body>
-</html><?php
-	
-} // End PIN check
-	
 ?>

@@ -680,7 +680,7 @@ class eeSFL_MainClass {
 		if( is_array($eePOST['eeSFL_SendTheseFiles']) ) { // The files array checkboxes
 			
 			foreach( $eePOST['eeSFL_SendTheseFiles'] as $eeFile) {
-				$eeFiles .= '-> ' . $eeSFL_Config['FileListURL'] . $eeFile . PHP_EOL;
+				$eeFiles .= '-> ' . $eeSFL_Config['FileListURL'] . urldecode($eeFile) . PHP_EOL;
 			}
 		}
 		
@@ -758,9 +758,10 @@ class eeSFL_MainClass {
 				}
 			}
 			
+
 			
 			// Show if no extensions installed
-			if( @count($eeSFL_Env['installed']) < 1 ) {
+			if( @count($eeSFL_Env['installed']) < 1 OR strlen($eeSFL_Body) < 3) { // Or if no content
 				
 				$eeSFL_Body .= PHP_EOL . PHP_EOL . "----------------------------------"  . 
 				PHP_EOL . "Powered by Simple File List - simplefilelist.com";

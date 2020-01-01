@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-functions.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
+<?php // Simple File List Script: ee-functions.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.23.2019
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Functions' ) ) exit('That is Noncense! (' . basename(__FILE__) . ')' ); // Exit if nonce fails
@@ -167,7 +167,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 			// Drop file extensions to lowercase
 			foreach( $eeArray as $eeFile) {  // We need to do this here and in ee-upload-engine.php
 				$eeArray = explode('.', $eeFile);
-				$eeNewArray[] = $eeArray[0] . '.' . strtolower($eeArray[1]);
+				$eeNewArray[] = $eeSFLF_UploadFolder . $eeArray[0] . '.' . strtolower($eeArray[1]);
 			}
 			$eeArray = $eeNewArray;
 			
@@ -225,9 +225,18 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 					
 					if( is_admin() ) {
 						$eeOutput = TRUE;
+					
 					} else  {
 						
-						return $eeSFL->eeSFL_AjaxEmail( $eeUploadJob, $eeSFL_ID ); // Send Email Notice
+						// Send Email Notice
+						if($eeSFL_Config['Notify'] == 'YES') {
+							
+							// Retuns the <script> output for sending the email
+							return $eeSFL->eeSFL_AjaxEmail( $eeUploadJob, $eeSFL_ID ); 
+						
+						} else {
+							return TRUE; // No notice wanted
+						}
 					}
 					
 				} else {
@@ -258,8 +267,10 @@ function eeSFL_GetFileSize($eeSFL_File) {
     
     if( is_numeric($eeSFL_File) ) {
 		$bytes = $eeSFL_File;
+	} elseif(is_file(ABSPATH . $eeSFL_File)) {
+		$bytes = filesize(ABSPATH . $eeSFL_File);	
 	} else {
-		$bytes = filesize(ABSPATH . $eeSFL_File);
+		return FALSE;
 	}
 	    
     $kilobyte = 1024;
@@ -292,6 +303,15 @@ function eeSFL_GetFileSize($eeSFL_File) {
 
 // Make sure the file name is acceptable
 function eeSFL_SanitizeFileName($eeSFL_FileName) {
+	
+	if(strpos($eeSFL_FileName, '.')) {
+		$eePathParts = pathinfo($eeSFL_FileName);
+	
+		$eeFileNameOnly = str_replace('.', '_', $eePathParts['filename']); // Get rid of dots
+	
+		// Rebuild
+		$eeSFL_FileName = $eeFileNameOnly . '.' . $eePathParts['extension'];
+	}
 	
 	$eeSFL_FileName = sanitize_file_name( $eeSFL_FileName );
     
@@ -326,7 +346,7 @@ function eeSFL_ProcessTextInput($eeTerm, $eeType = 'text') {
 	
 	} else {
 		
-		$eeValue = filter_var(@$_POST['ee' . $eeTerm], FILTER_SANITIZE_STRING);
+		$eeValue = filter_var(@$_POST['ee' . $eeTerm], FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	}
 	
 	return $eeValue;

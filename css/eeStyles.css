@@ -1,4 +1,4 @@
-/* Simple File List CSS | Mitchell Bennis | Element Engage, LLC | mitch@elementengage.com */
+/* Simple File List Script: eeStyle.css | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.12.2019 */
 
 #eeSFL h1, #eeSFL p {
 	text-align: left;
@@ -72,13 +72,20 @@
 	text-align: left;
 	padding-left: 3px;
 }
-#eeSFL p.eeSFL_FileLink {
+#eeSFL p.eeSFL_FileLink,
+#eeSFL p.eeSFL_FileDesc,
+#eeSFL p.eeSFL_FileSubmitter {
 	margin: 0;
 	padding: 0;
+}
+#eeSFL p.eeSFL_FileDesc,
+#eeSFL p.eeSFL_FileSubmitter {
+	font-size: 80%;
 }
 #eeSFL .eeFiles th.eeSFL_FileName,
 #eeSFL .eeFiles td.eeSFL_FileName {
 	text-align: left;
+	padding-left: 10px;
 }
 #eeSFL .eeFiles td a {
 	text-decoration: none;
@@ -116,7 +123,7 @@
 #eeSFL_UploadProgress {
 	
 	display: none; /* Show with javascript */
-	
+	overflow: hidden;
 	width: 1%;
 	height: 2em;
 	line-height: 2em;
@@ -124,8 +131,11 @@
 	color: #FFF;
 	font-size: 1em;
 	text-align: center;
+	vertical-align: text-top;
 }
 #eeSFL_UploadProgress em {
+	
+	
 	display: none; /* Show with javascript */
 }
 
@@ -208,7 +218,7 @@
 	margin: 3%;
 	padding-right: 2%;
 	height: 100%;
-	overflow-y: scroll;
+/* 	overflow-y: scroll; */
 }
 #eeSFL_SendPop article p {
 	
@@ -239,10 +249,11 @@
 	margin: 0;
 }
 #eeSFL_SendPop input[type=text],
+#eeSFL_SendPop input[type=email],
 #eeSFL_SendPop textarea {
 	float: left;
 	clear: none;
-	width: 68%;
+	width: 60%;
 	height: 2em;
 	margin: 15px 0 0 0;
 	background-color: #FFF;
@@ -269,10 +280,12 @@
 
 
 
-#eeSFL .sfl_instuctions {
-	font-size: 90%;
+
+#eeSFL p.sfl_instuctions {
+	font-size: 70%;
 	font-style: italic;
 	text-align: right;
+	margin-bottom: 0;
 }
 
 .eeValign {

@@ -1,4 +1,4 @@
-// Simple File List Script: ee-footer.js | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.12.2019
+// Simple File List Script: ee-footer.js | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.22.2019
 
 // Used in front-side and back-side file list display
 
@@ -92,13 +92,24 @@ function eeSFL_Delete(eeSFL_FileID) {
 
 
 
+
+
+
+
 function eeSFL_SendFile(eeSFL_FileID) {
 	
 	event.preventDefault(); // Don't follow the link
     var eeFileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' .eeSFL_RealFileName').text(); // Get the File Name
     jQuery('#eeSFL_SendTheseFilesList em').text(eeFileName); // Add it to the list view
+    
+    // if(eeSFL_ListFolder) { eeFileName = eeSFL_ListFolder + eeFileName; }
+    
+    console.log( 'Sending: ' + eeFileName + ' (ID: ' + eeSFL_FileID + ')' );
+    
 	jQuery('#eeSFL_SendMoreFiles input[type=checkbox]').prop("checked", false); // Uncheck all the boxes
+	
 	jQuery('.eeSFL_AddFileID_' + eeSFL_FileID + ' input[type=checkbox]').prop("checked", true); // Check the first file's box
+	
 	jQuery('#eeSFL_SendPop').fadeIn();
 }
 
@@ -129,19 +140,45 @@ function eeSFL_Send_AddMoreCancel() {
 function eeSFL_Send_AddTheseFiles() {
 	
 	event.preventDefault();
+	var eeArray = new Array;
+	
 	jQuery('#eeSFL_SendInfo').show();
 	jQuery('#eeSFL_SendMoreFiles').slideUp();
-	
 	
 	// Add each to the list display
 	jQuery('#eeSFL_SendTheseFilesList em').text(''); // Reset
 	
-	jQuery('#eeSFL_SendMoreFiles input[type=checkbox]').each(function () { 
+	jQuery('#eeSFL_SendMoreFiles input[type=checkbox]').each(function() { 
+		
 		if( jQuery(this).is(':checked') ) {
+			
 			var eeFileName = decodeURIComponent( jQuery(this).val() ); // Decode
-			jQuery('#eeSFL_SendTheseFilesList em').append(', ' + eeFileName);
+			
+			if(eeSFL_ListFolder.length >= 1 ) {
+				
+				if( eeFileName.indexOf(eeSFL_ListFolder) === 0 ) {
+					
+					eeFileName = eeFileName.replace(eeSFL_ListFolder, '');
+				}
+			}
+			
+			eeArray.push(eeFileName);
 		}
 	});
+	
+	var eeArrayLength = eeArray.length;
+	var eeSendingThese = '';
+	
+	for(var i = 0; i < eeArrayLength; i++) {
+		if(eeArray[i]) {
+			eeSendingThese = eeSendingThese + eeArray[i] + ', ';
+		}
+	}
+	
+	// Strip last ,	
+	eeSendingThese = eeSendingThese.substring(0, eeSendingThese.length - 2);
+	
+	jQuery('#eeSFL_SendTheseFilesList em').text(eeSendingThese);
 }
 
 
@@ -168,16 +205,37 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 		var eeSFL_OldFileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_RealFileName').text(); // Current File Name
 		var eeSFL_NewFileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeNewFileName').val();
 		
-		// Basic Sanitize for Display
-		eeSFL_NewFileName = eeSFL_NewFileName.replace(' ', '-'); // Deal with spaces
+		// Sanitize to match reality
+		eeSFL_NewFileName = eeSFL_NewFileName.replace(/ /g, '-'); // Deal with spaces
+		eeSFL_NewFileName = eeSFL_NewFileName.replace(/--/g, '-'); // Deal with double dash
 		
 		if(eeSFL_OldFileName.indexOf('.') == -1) { // It's a folder
 			
-			eeSFL_NewFileName = eeSFL_NewFileName.replace('.', '_'); // Replace dots
+			eeSFL_NewFileName = eeSFL_NewFileName.replace(/\./g, '_'); // Replace dots
 		
-		} else if(eeSFL_NewFileName.indexOf('.') == -1) { // Disallow removing extension
+		} else { 
 			
-			return false;
+			if(eeSFL_NewFileName.indexOf('.') == -1) { // Disallow removing extension
+				return false;
+			}
+			
+			// Remove dots from name-part
+			var eeArray = eeSFL_NewFileName.split('.');
+			
+			if(eeArray.length > 2) {
+				
+				console.log('Problem Filename: ' + eeSFL_NewFileName);
+				
+				var eeExt = eeArray.pop();
+				var eeNewFileName = '';
+				
+				for(i = 0; i < eeArray.length; i++) {
+					eeNewFileName += eeArray[i] + '_';
+				}
+				eeNewFileName = eeNewFileName.substring(0, eeNewFileName.length - 1); // Strip last dash
+				
+				eeSFL_NewFileName = eeNewFileName + '.' + eeExt;
+			}
 		}
 	
 		var eeFormData = {
@@ -191,7 +249,7 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 	} else if(eeSFL_Action == 'Delete') {
 		
 		// Get the File Name
-		var eeSFL_FileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileLink').text();
+		var eeSFL_FileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' .eeSFL_RealFileName').text();
 		
 		var eeFormData = {
 			'eeSFL_ID': eeSFL_ListID,
@@ -227,6 +285,8 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 			if(response == 'SUCCESS') {
 				
 				if(eeSFL_Action == 'Rename') {
+					
+					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' .eeNewFileName').val(eeSFL_NewFileName);
 					
 					jQuery('div.eeSFL_FileRenameEntry').hide();
 					

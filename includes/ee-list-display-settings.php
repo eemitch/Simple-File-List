@@ -41,6 +41,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-settings-process.php');
 	}
 	
+	
 	// Update the array with new values
 	$eeSFL_Config = $eeSettings[$eeID];
 	

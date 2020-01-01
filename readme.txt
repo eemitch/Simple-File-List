@@ -14,7 +14,7 @@ Simple File List gives your WordPress website a list of your files which allows 
 
 Upload and manage your files from the Admin List. Optionally, allow front-side users to upload too. Both the Front-side List and Uploader can be shown to users based on their role; Everyone, Only Logged-in User, Only Admins or Nobody. Restrict the files allowed to specific types, limit their size and quantity per upload job.
 
-The file list table has options to show; file size, modification date and thumbnail columns. Thumbnail images are generated automatically for images and videos*. Sort files by name, date, size or random. You can also collect the uploader's name, email and description of the file(s). This can then be shown in the file list.
+The file list table has options to show; file size, modification date and thumbnail columns. Thumbnail images are generated automatically for images and videos. Sort files by name, date, size or random. You can also collect the uploader's name, email and description of the file(s). This can then be shown in the file list.
 
 Files can also be assigned descriptions, which can be added from the Admin list or user uploads. Descriptions can be shown or hidden. Use the Send option to send emails with links to selected files.
 
@@ -31,9 +31,10 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * When you need a list of archived files, such as videos, PDF files, or music files.
 * When you need a down-and-dirty simple front-side uploader so people can send you files.
 
+
 = List Features =
 
-* Limit list access to only Admins or logged-in users.
+* Limit access to only Admins or logged-in users.
 * Add and manage your files from the Admin List. Optionally allow front-side users to manage files too.
 * Optionally show file date, size and a thumbnail for images and videos.
 * Add descriptions to files and optionally show them in your list.
@@ -45,12 +46,14 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 = Uploader Features =
 
 * Simple reliable uploader, works on mobile devices too.
+* Drag and drop zone, plus upload progress bar
 * Allow uploading to only Admins or logged-in users, or turn it off completely.
 * Limit the types of files users can upload.
 * Limit number of files uploaded per submission.
 * Limit the maximum upload file size.
 * Get an email notice each time a file is uploaded.
 * Option to gather the uploader's name, email and comments.
+
 
 = Shortcode Attributes =
 
@@ -64,6 +67,8 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * File Date Column: showdate="YES / NO"
 * File Actions (Open | Download): showactions="YES / NO"
 * File List Appearance: showheader="YES / NO"
+* Hide Files: hidename="this-file.docx, that-folder"
+* Hide File Types: hidetype="psd, zip, folder"
 
 = Internationalized =
 
@@ -170,6 +175,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 * 4.1.0 - Major Update
 
 
+
 == Screenshots ==
 
 1. Front-side display, both upload and list activated.
@@ -179,6 +185,28 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
+= 4.1.0 =
+
+* Improved the uploader with a drag-and-drop zone, plus a file upload progress bar.
+* Added Send File overlay to optionally allow sharing links to a file, or files, via email.
+* Added file descriptions with option to show on front-side or not.
+* Added saving of upload info form inputs which can optionally be displayed as the file description on the front-side.
+* Created a new after-upload view which shows only the file(s) uploaded.
+* Added ability to customize the file lists heading labels.
+* Added ability to show or hide the file extension.
+* Added ability to preserve spaces in file names, which are normally replaced with hyphens.
+* Expanded configuration options for the upload notification emails (from, from name, to, cc, bcc, subject, and body text)
+* Added ability to restrict access to the plugin’s list and upload settings by Wordpress user role
+* New Shortcode: hidename="this-file.docx, that-folder"  Hide specific file names in the list. Accepts a comma list of file names.
+* New Shortcode: hidetype="psd, zip, folder"  Hide specific file types in the list. Accepts a comma list of file extensions.
+* Implemented a database-based file lists to improve performance and allow for meta data tracking.
+* Added UploadDir status transient, instead of checking each time.
+* Added option to set list re-scan interval every 0 to 24 hours. Zero will work like old versions, accessing the file system on each load.
+* Moved settings to a single array in wp_options, instead of each separately, reducing code and database hits significantly.
+* Rewrote the single-level file directory listing method, using scandir() instead of the old opendir() method.
+* Improved styling, with much improved table display on small screens
+* Changed Rename and Delete links to use new AJAX routines. Removed the delete checkbox form and created File Edit accordion below each file.
+* Expanded settings, separating general list settings from list display options.
 
 = 3.2.17 =
 

@@ -6,9 +6,9 @@
 /*
 Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
-Description: Full Featured File List with Front-Side File Uploading | <a href="https://simplefilelist.com/donations/simple-file-list-project/">Donate</a> | <a href="admin.php?page=ee-simple-file-list&tab=extensions">Add Features</a>
+Description: A full-featured File List Manager | <a href="https://simplefilelist.com/donations/simple-file-list-project/">Donate</a> | <a href="admin.php?page=ee-simple-file-list&tab=extensions">Add Extensions</a>
 Author: Mitchell Bennis
-Version: 4.0.11
+Version: 4.1.0
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -20,9 +20,9 @@ $eeSFL_DevMode = FALSE; // Enables visible logging
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
-define('eeSFL_Version', '4.0.11'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
-define('eeSFL_DB_Version', '4.0.1'); // Database structure version - used for eeSFL_VersionCheck()
-define('eeSFL_Cache_Version', '.7'); // Cache-Buster version for static files - used when updating CSS/JS
+define('eeSFL_Version', '4.1.0'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_DB_Version', '4.1'); // Database structure version - used for eeSFL_VersionCheck()
+define('eeSFL_Cache_Version', '1'); // Cache-Buster version for static files - used when updating CSS/JS
 
 // Our Core
 $eeSFL = FALSE; // Our main class
@@ -77,7 +77,7 @@ function eeSFL_Setup() {
 	
 	// Check/Create the Upload Folder
 	if( !eeSFL_FileListDirCheck( $eeSFL_Config['FileListDir'] ) ) { 
-		wp_die('The upload directory is acting up.', 'Error');
+		$eeSFL_Log['errors'][] = 'The upload directory is acting up.';
 	}
 	
 	// Extension Checks ------------------------
@@ -361,7 +361,7 @@ add_action('admin_enqueue_scripts', 'eeSFL_AdminHead');
 function eeSFL_ActionPluginLinks( $links ) {
 	
 	$eeLinks = array(
-		'<a href="' . admin_url( 'admin.php?page=ee-simple-file-list' ) . '">' . __('File List', 'ee-simple-file-list') . '</a>',
+		'<a href="' . admin_url( 'admin.php?page=ee-simple-file-list' ) . '">' . __('Admin List', 'ee-simple-file-list') . '</a>',
 		'<a href="' . admin_url( 'admin.php?page=ee-simple-file-list&tab=settings' ) . '">' . __('Settings', 'ee-simple-file-list') . '</a>'
 	);
 	return array_merge( $links, $eeLinks );
@@ -441,6 +441,10 @@ function eeSFL_VersionCheck() {
 // Perform DB Update
 function eeSFL_UpdateThisPlugin() {
 	
+	if( get_option('eeSFL-DB-Version') ) { // Not yet
+		return;
+	}
+	
 	global $eeSFL, $eeSFL_Env, $eeSFL_Log;
 	
 	$eeNewInstall = FALSE;
@@ -470,7 +474,7 @@ function eeSFL_UpdateThisPlugin() {
 		$eeSFL_AllowFrontDelete = get_option('eeSFL-1-AllowFrontDelete');
 		
 		// Uploading
-		$eeSFL_UploadDir = get_option('eeSFL-1-UploadDir'); // Now FileListDir
+		$eeSFL_FileListDir = get_option('eeSFL-1-UploadDir'); // Now FileListDir
 		$eeSFL_AllowUploads = get_option('eeSFL-1-AllowUploads');
 		$eeSFL_FileFormats = get_option('eeSFL-1-FileFormats');
 		$eeSFL_UploadLimit = get_option('eeSFL-1-UploadLimit');
@@ -525,7 +529,7 @@ function eeSFL_UpdateThisPlugin() {
 			if(@$eeSetting[1]) { $eeSFL_SortOrder = $eeSetting[1]; }
 			
 			$eeSetting = @explode('=', $eeSettings[9]); // Show Uploader Info Form
-			if(@$eeSetting[1] != 'Yes') { $eeSFL_GetUploaderInfo = 'NO'; }
+			if(@$eeSetting[1] == 'Yes') { $eeSFL_GetUploaderInfo = 'YES'; } else { $eeSFL_GetUploaderInfo = 'NO'; }
 	
 		} else {
 			
@@ -540,7 +544,6 @@ function eeSFL_UpdateThisPlugin() {
 	
 	
 	// Name Changes
-	if(@$eeSFL_UploadDir) { $eeSFL_FileListDir = $eeSFL_UploadDir; } else { $eeSFL_FileListDir = FALSE; }
 	if(@$eeSFL_AllowFrontDelete == 'YES') { $eeSFL_AllowFrontManage = 'YES'; } else { $eeSFL_AllowFrontManage = FALSE; }
 
 
@@ -550,16 +553,19 @@ function eeSFL_UpdateThisPlugin() {
 	$eeNotifyNew = get_option('eeSFL-1-Notify'); // New way, with ID
 	
 	if( strpos($eeNotifyOld, '@') ) {
-		$eeSFL_Notify = $eeNotifyOld;
-		delete_option('eeSFL-Notify'); // Out with the old.
-	} elseif( strpos($eeNotifyNew, '@') ) {
+		$eeSFL_NotifyTo = $eeNotifyOld;
 		$eeSFL_Notify = 'YES';
+		// delete_option('eeSFL-Notify'); // Out with the old.
+	} elseif( strpos($eeNotifyNew, '@') ) {
 		$eeSFL_NotifyTo = $eeNotifyNew; // In with the new.
+		$eeSFL_Notify = 'YES';
+	} elseif(@$eeSFL_Notify) { // V2
+		$eeSFL_NotifyTo = $eeSFL_Notify;
+		$eeSFL_Notify = 'YES';
 	} else {
 		$eeSFL_Notify = $eeConfigDefault['Notify'];
 		$eeSFL_NotifyTo = get_option('admin_email');
 	}
-	
 	
 	
 	// Assign Default if No Value
@@ -582,18 +588,22 @@ function eeSFL_UpdateThisPlugin() {
 	// The File List Directory ----------------
 	
 	// Create the File List Dir if Needed
-	if(!$eeSFL_FileListDir) {
+	if(!@$eeSFL_FileListDir) {
+		
 		$eeSFL_FileListDir = $eeSFL_Env['FileListDefaultDir'];
+		eeSFL_FileListDirCheck( $eeSFL_FileListDir ); // Create the File List Folder
+	
+	} else {
+	
+		// Check if FileListDir has a trailing slash...
+		$eeLastChar = substr($eeSFL_FileListDir, -1);
+		if($eeLastChar != '/') {  $eeSFL_FileListDir .= '/'; } // Add the slash, required for 3.1 +
+		
+		// Check if FileListDir has a leading slash
+		if($eeSFL_FileListDir[0] == '/') {  $eeSFL_FileListDir = substr($eeSFL_FileListDir, 1); } // Omit the slash, required for 4 +
+		
+		eeSFL_FileListDirCheck( $eeSFL_FileListDir ); // Check the File List Folder
 	}
-	
-	// Check if FileListDir has a trailing slash...
-	$eeLastChar = substr($eeSFL_FileListDir, -1);
-	if($eeLastChar != '/') {  $eeSFL_FileListDir .= '/'; } // Add the slash, required for 3.1 +
-	
-	// Check if FileListDir has a leading slash
-	if($eeSFL_FileListDir[0] == '/') {  $eeSFL_FileListDir = substr($eeSFL_FileListDir, 1); } // Omit the slash, required for 4 +
-	
-	eeSFL_FileListDirCheck( $eeSFL_FileListDir ); // Check / Create the File List Folder
 	
 	// Add First File
 	if($eeNewInstall) { // Copy the instructions PDF to the file list folder

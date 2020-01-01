@@ -77,7 +77,7 @@ if($eeSFL_FileSize > $eeSFL_UploadMaxFileSize) {
 }
 
 // Go...
-if(is_dir(ABSPATH . $eeSFL_FileUploadDir)) {
+if($eeSFL_FileUploadDir AND is_dir(ABSPATH . $eeSFL_FileUploadDir)) {
 		
 	// More Security
 	$verifyToken = md5('unique_salt' . $_POST['eeSFL_Timestamp']);
@@ -128,7 +128,7 @@ if(is_dir(ABSPATH . $eeSFL_FileUploadDir)) {
 	}
 	
 } else {
-	$eeSFL_Error = 'Upload Path Not Found: ' . $eeSFL_Path;
+	$eeSFL_Error = 'Upload Path Not Found: ' . $eeSFL_FileUploadDir;
 }
 
 // Timer

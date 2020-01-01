@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-email-settings.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
+<?php // Simple File List Script: ee-email-settings.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.23.2019
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
@@ -150,19 +150,19 @@ $eeOutput .= '
 	
 	
 	<label for="eeNotifyFromName">' . __('Sender Name', 'ee-simple-file-list') . ':</label>
-	<input type="text" name="eeNotifyFromName" value="' . @$eeSFL_Config['NotifyFromName'] . '" class="eeAdminInput" id="eeNotifyFromName" size="64" />
+	<input type="text" name="eeNotifyFromName" value="' . stripslashes(@$eeSFL_Config['NotifyFromName']) . '" class="eeAdminInput" id="eeNotifyFromName" size="64" />
 		<div class="eeNote">' . __('The visible name in the From field.', 'ee-simple-file-list') . '</div>
 	
 	
 	<label for="eeNotifySubject">' . __('Notification Subject', 'ee-simple-file-list') . ':</label>
-	<input type="text" name="eeNotifySubject" value="' . @$eeSFL_Config['NotifySubject'] . '" class="eeAdminInput" id="eeNotifySubject" size="64" />
+	<input type="text" name="eeNotifySubject" value="' . stripslashes(@$eeSFL_Config['NotifySubject']) . '" class="eeAdminInput" id="eeNotifySubject" size="64" />
 		<div class="eeNote">' . __('The notification email subject line.', 'ee-simple-file-list') . '</div>';
 		
 	
 	if(!@$eeSFL_Config['NotifyMessage']) { $eeSFL_Config['NotifyMessage'] = $eeSFL->eeNotifyMessageDefault; }
 	
 	$eeOutput .= '<label for="eeNotifyMessage">' . __('Message Text', 'ee-simple-file-list') . ':</label>
-	<textarea name="eeNotifyMessage" class="eeAdminInput" id="eeNotifyMessage" cols="64" rows="12" >' . $eeSFL_Config['NotifyMessage'] . '</textarea>
+	<textarea name="eeNotifyMessage" class="eeAdminInput" id="eeNotifyMessage" cols="64" rows="12" >' . stripslashes($eeSFL_Config['NotifyMessage']) . '</textarea>
 		<div class="eeNote">' . __('This will be the text for the file upload notification messages.', 'ee-simple-file-list') . '<br />
 			' . __('To insert file information and link, use this shortcode:', 'ee-simple-file-list') . ' [file-list]<br />
 			' . __('To insert a link pointing to the file list, use this shortcode:', 'ee-simple-file-list') . ' [web-page]</div>

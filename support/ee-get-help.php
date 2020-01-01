@@ -30,13 +30,17 @@ if(@$_POST['eeSupportForm']) {
 		
 		$eeContact_Body = eeProcessSupportPost($_POST); // Process the form
 		
-		$eeContact_Body .= 'Log...' . PHP_EOL . PHP_EOL;
+		$eeContact_Body .= PHP_EOL . PHP_EOL;
 		
 		// Add log file
-		$eeSFL_LogArray = get_option('eeSFL-Log');
-		$eeContact_Body .= print_r($eeSFL_LogArray, TRUE);
+		// $eeSFL_LogArray = get_option('eeSFL-Log');
+		// $eeContact_Body .= print_r($eeSFL_LogArray, TRUE);
 		
-		$eeContact_Name = filter_var($_POST['eeContact_name'], FILTER_SANITIZE_STRING);
+		$eeContact_Body .= 'Plugin Settings: ' . print_r($eeSFL_Config, TRUE) . PHP_EOL . PHP_EOL;
+		unset($eeSFL_Env['FileLists']); // Don't want this
+		$eeContact_Body .= 'Plugin Environment: ' . print_r($eeSFL_Env, TRUE);
+		
+		$eeContact_Name = stripslashes( filter_var($_POST['eeContact_name'], FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES) );
 		$eeContact_From = filter_var($_POST['eeContact_email'], FILTER_VALIDATE_EMAIL);
 		
 		$eeContact_Headers[] = 'From: ' . $eeContact_Name . ' <wordpress@' . $_SERVER['HTTP_HOST'] . ">";
@@ -50,7 +54,7 @@ if(@$_POST['eeSupportForm']) {
 			// Uncomment to test email error
 			// $eeContact_To = FALSE;
 			
-			$eeContact_Body = htmlspecialchars_decode($eeContact_Body);
+			$eeContact_Body = html_entity_decode($eeContact_Body);
 			$eeContact_Body = strip_tags($eeContact_Body);
 			$eeContact_Body = stripslashes($eeContact_Body);	// Make it all nice
 			

@@ -1,4 +1,4 @@
-// Simple File List - Multi-File Uploader - mitch@elementengage.com
+// Simple File List Script: ee-uploader.js | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.22.2019
 
 
 
@@ -56,7 +56,7 @@ function eeSFL_ProcessFileInput(eeSFL_Files) { // The files object
 	    eeSFL_Error = false;
 	    eeSFL_File = false;
 	    jQuery("#eeSFL_FileInput").val("");
-	    alert(this.files.length + " files selected. The maximum allowed is " + eeSFL_FileLimit);
+	    alert("Upload Limit: " + eeSFL_FileLimit);
 	    return false;   
 	}
     

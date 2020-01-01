@@ -1,4 +1,4 @@
-<?php  // Simple File List Script: ee-upload-form.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.16.2019
+<?php  // Simple File List Script: ee-upload-form.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.23.2019
 
 // Security	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -13,7 +13,7 @@ if($eeSFLF) {
 	if(@$_REQUEST['eeSFLF_ListFolder'] AND $eeSFL_ListNumber == 1) { // Adjust the path based on REQUEST arg
 		$eeSFLF_ListFolder = filter_var(urldecode($_REQUEST['eeSFLF_ListFolder']), FILTER_SANITIZE_STRING) . '/'; 
 	} elseif( strlen(@$eeSFLF_ShortcodeFolder) ) {
-		$eeSFLF_ListFolder = $eeSFLF_ShortcodeFolder . '/';
+		$eeSFLF_ListFolder = str_replace('&#34;', '', $eeSFLF_ShortcodeFolder) . '/'; // Fix for uploading to draft status page
 	} else {
 		$eeSFLF_ListFolder = FALSE;
 	}
@@ -126,9 +126,16 @@ if(@$eeSFL_Config['FileListDir']) {
 			
 			' . __('Drag-and-drop files here or use the Browse button.', 'ee-simple-file-list') . '</p>';
 		
+		} else {
+			
+			$eeOutput .= '
+		
+			<br class="eeClearFix" />';
 		}
 		
-		$eeOutput .= '</div>
+		$eeOutput .= '
+		
+		</div>
 	
 	</form>';
 	

@@ -20,7 +20,7 @@ if(!function_exists('eeProcessSupportPost')) {
 		        
 		        if(!in_array($eeKey, $eeIgnore) AND $eeValue) {
 						
-					$eeValue = filter_var($eeValue, FILTER_SANITIZE_STRING);
+					$eeValue = filter_var($eeValue, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 					
 					$eeKey = str_replace('eeContact_', '', $eeKey);
 					

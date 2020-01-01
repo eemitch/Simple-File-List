@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-email-engine.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
+<?php // Simple File List Script: ee-email-engine.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.23.2019
 	
 // This script is accessed via AJAX from eeSFL_AjaxEmail() on ee-class.php
 	
@@ -72,7 +72,7 @@ if($_POST['eeSFL_Token'] == $verifyToken) { // Security
 	
 	$eeTo = $eeSFL_Config['NotifyTo'];
 	
-	$eeSFL_Headers = "From: " . __('Simple File List', 'ee-simple-file-list') . " <$eeSFL_NotifyFrom>" . PHP_EOL . 
+	$eeSFL_Headers = "From: " . stripslashes( $eeSFL_Config['NotifyFromName'] ) . " <$eeSFL_NotifyFrom>" . PHP_EOL . 
 		"Return-Path: $eeSFL_NotifyFrom" . PHP_EOL . "Reply-To: $eeSFL_NotifyFrom";
 	
 	if($eeSFL_Config['NotifyCc']) {
@@ -84,7 +84,8 @@ if($_POST['eeSFL_Token'] == $verifyToken) { // Security
 	}
 	
 	if($eeSFL_Config['NotifySubject']) {
-		$eeSFL_Subject = $eeSFL_Config['NotifySubject'];
+		
+		$eeSFL_Subject = stripslashes( $eeSFL_Config['NotifySubject'] );
 	} else {
 		$eeSFL_Subject = __('File Upload Notice', 'ee-simple-file-list');
 	}
