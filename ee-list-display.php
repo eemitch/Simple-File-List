@@ -62,10 +62,15 @@ $eeSFL_FolderTotalCount = 0;
 $eeSFL_ItemTotalCount = $eeSFL_FileTotalCount + $eeSFL_FolderTotalCount;
 
 // Total in whole list
-foreach( $eeSFL_Files as $eeKey => $eeFileArray ) {
-	if($eeFileArray['FileExt'] == 'folder') { $eeSFL_FolderTotalCount++; } 
-		else { $eeSFL_FileTotalCount++; }
-} 
+if( !empty($eeSFL_Files) ) {
+	foreach( $eeSFL_Files as $eeKey => $eeFileArray ) {
+		if($eeFileArray['FileExt'] == 'folder') { $eeSFL_FolderTotalCount++; } 
+			else { $eeSFL_FileTotalCount++; }
+	}
+} else {
+	$eeSFL_Files = array();
+}
+ 
 
 // Extension Check
 if($eeSFLF) {
@@ -406,7 +411,9 @@ if(@count($eeSFL_Files) >= 1) {
 						$eePathParts = pathinfo($eeSFL_Config['FileListDir'] . $eeFilePath);
 						$eeFileNameOnly = $eePathParts['filename'];
 						
-						$eeFileThumbURL = $eeSFL_Config['FileListURL'] . '.thumbnails/thumb_' . $eeFileNameOnly . '.jpg';
+						$eeFileThumbURL = $eeSFL_Config['FileListURL'];
+						if($eeSFLF_ListFolder) { $eeFileThumbURL .= $eeSFLF_ListFolder . '/'; } // Adjust to path if needed
+						$eeFileThumbURL .= '.thumbnails/thumb_' . $eeFileNameOnly . '.jpg';
 					
 					} else { // Others use our own .svg files
 						

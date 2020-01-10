@@ -9,14 +9,23 @@ $eeSFL_Log[] = 'Loaded: ee-functions';
 // Detect upward path traversal
 function eeSFL_DetectUpwardTraversal($eeFilePath) {
 
-	global $eeSFL_Log;
+	global $eeSFL_Log, $eeSFL_Env;
 	
-	$eeUserPath = ABSPATH . dirname($eeFilePath);  // This could be problematic with things like ../
-	$eeRealPath = realpath( ABSPATH . dirname($eeFilePath) ); // Expunge the badness and then compare...
+	if($eeSFL_Env['eeOS'] == 'WINDOWS') {
+		
+		return TRUE; // For now
 	
-	if ($eeUserPath != $eeRealPath) { // They must match
-	    $eeSFL_Log['errors'] = 'Error 99'; // The infamous Error 99
-	    wp_die('Error 99 :-('); // Bad guy found, bail out :-(
+	} elseif($eeSFL_Env['eeOS'] == 'LINUX') {
+	
+		$eeUserPath = ABSPATH . dirname($eeFilePath);  // This could be problematic with things like ../
+		$eeRealPath = realpath( ABSPATH . dirname($eeFilePath) ); // Expunge the badness and then compare...
+		
+		if ($eeUserPath != $eeRealPath) { // They must match
+		    $eeSFL_Log['errors'] = 'Error 99'; // The infamous Error 99
+		    wp_die('Error 99 :-('); // Bad guy found, bail out :-(
+		}
+		
+		return TRUE;
 	}
 }
 
@@ -78,15 +87,22 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 			$eeSFL_Log['DirCheck'][] = 'No Directory Found';
 			$eeSFL_Log['DirCheck'][] = 'Creating new file list directory ...';
 			
-			// Environment Detection
-			if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-			    $eeSFL_Log['DirCheck'][] = 'Windows detected.';
-			    mkdir( ABSPATH . $eeFileListDir ); // Windows
-			} else {
-			    $eeSFL_Log['DirCheck'][] = 'Linux detected.';
-			    if(!mkdir( ABSPATH . $eeFileListDir , 0755)) { // Linux - Need to set permissions
-				    $eeSFL_Log['errors'][] = 'Cannot Create: ' . $eeFileListDir;
+			if ($eeSFL_Env['eeOS'] == 'WINDOWS') {
+			    
+			    if( !mkdir(ABSPATH . $eeFileListDir) ) { // Linux - Need to set permissions
+				    
+				    $eeSFL_Log['errors'][] = 'Cannot Create Windows Folder: ' . $eeFileListDir;
 				}
+			
+			} elseif($eeSFL_Env['eeOS'] == 'LINUX') {
+			    
+			    if( !mkdir(ABSPATH . $eeFileListDir , 0755) ) { // Linux - Need to set permissions
+				    
+				    $eeSFL_Log['errors'][] = 'Cannot Create Linux Folder: ' . $eeFileListDir;
+				}
+			} else {
+				$eeSFL_Log['errors'][] = 'ERROR: Could not detect operating system';
+				return FALSE;
 			}
 			
 			if(!is_writable( ABSPATH . $eeFileListDir )) {

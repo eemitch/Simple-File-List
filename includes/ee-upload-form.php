@@ -36,8 +36,10 @@ if(@$_POST['eeSFL_Upload']) {
 		$eeOutput .= eeSFL_ProcessUpload($eeSFL_ID);
 	}
 	
-	if(!$eeAdmin) {
-		eeSFL_UploadCompleted(); // Action Hook: eeSFL_UploadCompleted
+	if($eeAdmin) {
+		eeSFL_UploadCompletedAdmin(); // Action Hook: eeSFL_UploadCompletedAdmin  <-- Admin side
+	} else {
+		eeSFL_UploadCompleted(); // Action Hook: eeSFL_UploadCompleted <-- Front side
 	}	
 }
 

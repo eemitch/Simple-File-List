@@ -74,7 +74,7 @@ class eeSFL_MainClass {
 			'ShowUploadLimits' => 'YES', // Show the upload limitations text.
 			'GetUploaderInfo' => 'NO', // Show the Info Form
 			'ShowSubmitterInfo' => 'NO', // Show who uploaded the file (name linked to their email)
-			'AllowFrontSend' => 'YES', // Allow users to email file links (YES or NO)
+			'AllowFrontSend' => 'NO', // Allow users to email file links (YES or NO)
 			'AllowFrontManage' => 'NO', // Allow front-side users to manage files (YES or NO)
 			
 			// Notifications
@@ -96,6 +96,13 @@ class eeSFL_MainClass {
     public function eeSFL_GetEnv() {
 	    
 	    $eeSFL_Env = array();
+	    
+	    // Detect OS
+		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+		    $eeSFL_Env['eeOS'] = 'WINDOWS';
+		} else {
+		    $eeSFL_Env['eeOS'] = 'LINUX';
+		}
 	    
 		$eeSFL_Env['wpSiteURL'] = get_site_url() . '/'; // This Wordpress Website
 		$eeSFL_Env['wpPluginsURL'] = plugins_url() . '/'; // The Wordpress Plugins Location
@@ -458,32 +465,34 @@ class eeSFL_MainClass {
 		
 		global $eeSFL_Log, $eeSFL_Config, $eeSFL_Env;
 		
-		$eeFileFullPath = ABSPATH . $eeSFL_Config['FileListDir'] . $eeFilePath;
-		$eeFileFullPath = str_replace('//', '/', $eeFileFullPath);
-		
-		// Config
 		$eeExt = FALSE;
 		$eeScreenshot = FALSE;
 		$eeThumbURL = FALSE;
 		
-		// Get File Info
-		$eePathParts = pathinfo($eeFileFullPath);
-		$eeFileName = basename($eeFileFullPath);
-		$eeDirName = $eePathParts['dirname'];
+		$eePathParts = pathinfo($eeFilePath);
+		$eeDir = $eePathParts['dirname'] . '/';
 		$eeBaseName = $eePathParts['basename'];
-		$eeExt = strtolower(@$eePathParts['extension']);
 		$eeFileNameOnly = $eePathParts['filename'];
+		$eeExt = strtolower(@$eePathParts['extension']);
+		
+		
+		
+		$eeFileFullPath = ABSPATH . $eeSFL_Config['FileListDir'] . $eeFilePath;
+		$eeFileFullPath = str_replace('//', '/', $eeFileFullPath);
+		
+		$eeThumbsPATH = ABSPATH . $eeSFL_Config['FileListDir'] . $eeDir . '.thumbnails/';
 		
 		// Is there already a thumb?
-		if(is_file(ABSPATH . '/' . $eeSFL_Config['FileListDir'] . '/.thumbnails/thumb_' . $eeFileNameOnly . '.jpg')) {
-			
-			return TRUE;
-		}
+		if(is_file($eeThumbsPATH . 'thumb_' . $eeFileNameOnly . '.jpg')) { return TRUE; } // Checked Okay
 		
-		// FFmpeg Support
+		// Else...
+		
+		// Video Files
 		if(in_array($eeExt, $this->eeDynamicVideoThumbFormats)) { // Check for FFMPEG
 			
 			if($eeSFL_Env['supported']) {
+				
+				if(!is_dir($eeThumbsPATH)) { mkdir($eeThumbsPATH); } // FFmpeg won't create the thumbs dir, so we need to do it here
 				
 				$eeExt = 'png'; // Set the extension
 				$eeScreenshot = $eeThumbsPATH . 'eeScreenshot_' . $eeFileNameOnly . '.' . $eeExt; // Create a temporary file
@@ -492,20 +501,24 @@ class eeSFL_MainClass {
 				$eeCommand = 'ffmpeg -i ' . $eeFileFullPath . ' -ss 00:00:01.000 -vframes 1 ' . $eeScreenshot;
 				
 				$eeFFmpeg = trim(shell_exec($eeCommand));
-					
+				
+				$eeSFL_Log['FFmpeg'][] = $eeCommand;
+				
 				if(is_file($eeScreenshot)) { // <<<------------------------ TO DO - Resize down to $this->eeFileThumbSize
 					
-					$this->eeSFL_CreateThumbnailImage($eeFileFullPath);
+					$this->eeSFL_CreateThumbnailImage($eeScreenshot);
 					
-					// unlink($eeScreenshot); // Delete the screeshot file
+					unlink($eeScreenshot); // Delete the screeshot file
 					
 					return TRUE;
 				
 				} else {
-					$eeSFL_Log['errors'][] = __('FFmpeg Error - File Not Created', 'ee-simple-file-list');
-					$eeSFL_Log['errors'][] = $eeFileName;
-					$eeSFL_Log['errors'][] = $eeVideoThumb;
-				}	
+					
+					$eeSFL_Log['errors'][] = 'FFmpeg Error - Screenshot Not Created';
+					
+					return FALSE;
+				}
+					
 			} else {
 				$eeSFL_Log[] = 'FFmpeg Not Installed';
 				
@@ -514,7 +527,7 @@ class eeSFL_MainClass {
 			}
 		}
 		
-		
+		// Image Files
 		if(in_array($eeExt, $this->eeDynamicImageThumbFormats)) { // Just for known image files... 
 		
 			// Generate an Image Thumbnail
@@ -524,7 +537,7 @@ class eeSFL_MainClass {
 			
 			} else {
 		
-				$this->eeSFL_CreateThumbnailImage($eeFilePath);
+				$this->eeSFL_CreateThumbnailImage($eeFileFullPath);
 				
 				return TRUE;
 			}
@@ -535,17 +548,21 @@ class eeSFL_MainClass {
 	
 	
 	// Create thumbnail image
-	private function eeSFL_CreateThumbnailImage($eeFilePath) {
+	private function eeSFL_CreateThumbnailImage($eeFileFullPath) { // Requires full path 
 		
 		global $eeSFL_Log, $eeSFL_Config, $eeSFL_Env;
 		
-		$eeFileFullPath = ABSPATH . $eeSFL_Config['FileListDir'] . $eeFilePath;
+		$eeFilePath = str_replace(ABSPATH . $eeSFL_Config['FileListDir'], '', $eeFileFullPath); // Strip path thru FileListDir
 		
+		$eePathParts = pathinfo($eeFilePath);
+		$eeFileNameOnly = $eePathParts['filename'];
+		$eeDir = $eePathParts['dirname']; // Get this folder location
+		if($eeDir) { $eeDir .= '/'; } // Add the slash
+		$eeDir = str_replace('.thumbnails/', '', $eeDir); // Remove if .thumbnails/ is part of the path (video thumbs)
+
 		// Dynamicly created thumbnails are here
-		$eeThumbsURL = $eeSFL_Env['wpSiteURL'] . '/' . $eeSFL_Config['FileListURL'] . '.thumbnails/'; 
-		$eeThumbsPATH = ABSPATH . $eeSFL_Config['FileListDir'] . '.thumbnails/'; // Path to them
-        
-        $eePathParts = pathinfo($eeFileFullPath);
+		$eeThumbsURL = $eeSFL_Env['wpSiteURL'] . '/' . $eeSFL_Config['FileListURL'] . $eeDir . '.thumbnails/'; 
+		$eeThumbsPATH = ABSPATH . $eeSFL_Config['FileListDir'] . $eeDir . '.thumbnails/'; // Path to them
         
         if( !is_array($eePathParts) ) { 
 	        $eeSFL_Log['errors'][] = 'No Path Parts';
@@ -553,9 +570,8 @@ class eeSFL_MainClass {
 	        return FALSE;
 	    }
         
-		$eeFileNameOnly = $eePathParts['filename'];
 		
-        // Thank Wordpress for this easyness.
+		// Thank Wordpress for this easyness.
 		$eeFileImage = wp_get_image_editor($eeFileFullPath); // Try to open the file
     
         if (!is_wp_error($eeFileImage)) { // Image File Opened
@@ -570,7 +586,7 @@ class eeSFL_MainClass {
         
         } else { // Cannot open
 	     
-	        $eeSFL_Log['File List'][] = 'Not an Image: ' . $eeFileFullPath;   
+	        $eeSFL_Log['errors'][] = 'Could not create thumb for image: ' . $eeFileFullPath;   
         }
 	}
 	
