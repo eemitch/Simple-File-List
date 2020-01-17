@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-upload-engine.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
+<?php // Simple File List Script: ee-upload-engine.php | Author: Mitchell Bennis | support@simplefilelist.com
 	
 // This script is accessed via AJAX by js/ee-uploader.js
 

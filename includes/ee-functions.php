@@ -1,7 +1,7 @@
 <?php // Simple File List Script: ee-functions.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.23.2019
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Functions' ) ) exit('That is Noncense! (' . basename(__FILE__) . ')' ); // Exit if nonce fails
+if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Functions' ) ) exit('ERROR 98'); // Exit if nonce fails
 
 $eeSFL_Log[] = 'Loaded: ee-functions';
 
