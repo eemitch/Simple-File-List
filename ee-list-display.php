@@ -344,6 +344,20 @@ if(@count($eeSFL_Files) >= 1) {
 					$eeFileURL = str_replace('//', '/', $eeFileURL); // Remove double slashes
 					$eeFileURL = str_replace('\\:', '://', $eeFileURL); // Restore that
 					
+					if($eeSFLA) {
+						$eeFileURL = $eeSFL_Env['pluginURL'] . 'view/?file=' . $eeFileArray['FilePath'];
+					}
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
 					$eeFileExt = $eeFileArray['FileExt']; // Get Extension
 				
 				} elseif($eeSFLF) {
@@ -542,7 +556,13 @@ if(@count($eeSFL_Files) >= 1) {
 						
 						
 						if($eeIsFile) {
-							$eeFileActions .= '<a class="eeSFL_FileDownload" href="' . $eeFileURL . '" download="' . $eeFileName  . '">' . __('Download', 'ee-simple-file-list') . '</a> | ';
+							$eeFileActions .= '<a class="eeSFL_FileDownload" href="' . $eeFileURL;
+							
+							// Extension Check
+							if($eeSFLA) { $eeFileActions .= '&mode=download"'; // File access manager
+								} else { $eeFileActions .= '" download="' . $eeFileName . '"'; } // Basic Download link
+							
+							$eeFileActions .= '>' . __('Download', 'ee-simple-file-list') . '</a> | ';
 							
 							if($eeAdmin OR $eeSFL_Config['AllowFrontSend'] == 'YES') {
 								$eeFileActions .= '<a href="" onclick="eeSFL_SendFile(' . $eeRowID . ')">' . __('Send', 'ee-simple-file-list') . '</a> | ';
@@ -793,7 +813,7 @@ if(@count($eeSFL_Files) >= 1) {
 		
 		</article>
 
-	</div>'; // End Overlay
+	</div>'; // End Send Overlay
 	
 } else {
 	

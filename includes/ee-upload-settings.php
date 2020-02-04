@@ -1,7 +1,7 @@
-<?php // Simple File List Script: ee-upload-settings.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.22.2019
+<?php // Simple File List Script: ee-upload-settings.php | Author: Mitchell Bennis | support@simplefilelist.com
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
+if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98' ); // Exit if nonce fails
 
 $eeSFL_Log[] = 'Loading Uploader Settings Page ...';
 	
@@ -93,7 +93,7 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePlug
 		<h2>' . __('Upload Settings', 'ee-simple-file-list') . '</h2>
 
 		<input type="hidden" name="eePost" value="TRUE" />
-		<input type="hidden" name="eeListID" value="' . $eeSFL->eeListID . '" />';	
+		<input type="hidden" name="eeListID" value="' . $eeSFL_ID . '" />';	
 		
 		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce', TRUE, FALSE);
 		

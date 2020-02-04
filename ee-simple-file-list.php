@@ -8,24 +8,25 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A full-featured File List Manager | <a href="https://simplefilelist.com/donations/simple-file-list-project/">Donate</a> | <a href="admin.php?page=ee-simple-file-list&tab=extensions">Add Extensions</a>
 Author: Mitchell Bennis
-Version: 4.1.1
+Version: 4.2.1
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
 Domain Path: /languages
 */
 
-$eeSFL_DevMode = FALSE; // Enables visible logging
+$eeSFL_DevMode = TRUE; // Enables visible logging
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
-define('eeSFL_Version', '4.1.2'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_Version', '4.2.1'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_DB_Version', '4.1'); // Database structure version - used for eeSFL_VersionCheck()
-define('eeSFL_Cache_Version', '3'); // Cache-Buster version for static files - used when updating CSS/JS
+define('eeSFL_Cache_Version', '2'); // Cache-Buster version for static files - used when updating CSS/JS
 
 // Our Core
 $eeSFL = FALSE; // Our main class
+$eeSFL_ID = 1;
 $eeSFL_Config = array(); // Database Info
 $eeSFL_Env = array(); // Environment
 $eeSFL_ListNumber = 1; // Count of lists per page
@@ -42,15 +43,16 @@ $eeSFL_Log[] = 'ABSPATH: ' . ABSPATH;
 $eeSFL_Extensions = array( // Slugs
 	'ee-simple-file-list-folders' // Folder Support
 	,'ee-simple-file-list-search' // Search & Pagination
+	,'ee-simple-file-list-access' // File Access Manager
 );
-$eeSFLF = FALSE; $eeSFLS = FALSE; $eeSFLU = FALSE; // Coming Soon
+$eeSFLF = FALSE; $eeSFLS = FALSE; $eeSFLA = FALSE; // Coming Soon
 $eeSFLF_ListFolder = FALSE;
 
 
 // Plugin Setup
 function eeSFL_Setup() {
 	
-	global $eeSFL, $eeSFL_Extensions, $eeSFL_Log, $eeSFL_Config, $eeSFL_Env;
+	global $eeSFL, $eeSFL_ID, $eeSFL_Extensions, $eeSFL_Log, $eeSFL_Config, $eeSFL_Env;
 	
 	$eeSFL_Log[] = 'Running Setup...';
 
@@ -67,9 +69,7 @@ function eeSFL_Setup() {
 		
 		eeSFL_VersionCheck(); // Update database if needed.
 		
-		$eeID = 1; // Multiple lists. Coming some day!
-		
-		$eeSFL_Config = $eeSFL->eeSFL_Config($eeID); // Get the Configuration Array	
+		$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID); // Get the Configuration Array	
 	}	
 	
 	// If Sending Files
@@ -199,8 +199,8 @@ function eeSFL_Shortcode($atts, $content = null) {
 	
 	// Basic Usage: [eeSFL]
     
-    global $eeSFL, $eeSFL_DevMode, $eeSFL_Log, $eeSFL_Env, $eeSFL_Config, $eeSFL_ListNumber; // Number of the list on same page
-    global $eeSFLF, $eeSFLS; // Extensions
+    global $eeSFL, $eeSFL_ID, $eeSFL_DevMode, $eeSFL_Log, $eeSFL_Env, $eeSFL_Config, $eeSFL_ListNumber; // Number of the list on same page
+    global $eeSFLF, $eeSFLS, $eeSFLA; // Extensions
 	
 	$eeAdmin = is_admin(); // Will be FALSE here
 	
@@ -241,11 +241,18 @@ function eeSFL_Shortcode($atts, $content = null) {
 		$eeSFL_HideName = strtolower($hidename);
 		
 		$eeSFLF_ShortcodeFolder = $showfolder;
+		$eeSFL_ID = $id;
 		
 	} else {
 		$eeSFL_Log['L' . $eeSFL_ListNumber][] = 'No Shortcode Attributes';
 	}
 	
+	// Extension Check
+	if($eeSFLA) { 
+	    $eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
+		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_FrontSetup.php');
+		if($eeSFLA_Proceed === FALSE) { return; } // We cannot go on.
+	}
 	
 	// Begin Front-Side List Display ==================================================================
 	
@@ -335,11 +342,14 @@ add_action( 'wp_enqueue_scripts', 'eeSFL_Enqueue' );
 function eeSFL_AdminHead($eeHook) {
 
 	$deps = array('jquery');
+	
+	// wp_die($eeHook);
     
     $eeHooks = array(
-    	'toplevel_page_ee-simple-file-list',
-    	'simple-file-list_page_ee-simple-file-list',
-    	'simple-file-list_page_ee-simple-file-list-settings'
+    	'toplevel_page_ee-simple-file-list', // toplevel_page_ee-simple-file-list
+    	// 'simple-file-list_page_ee-simple-file-list',
+    	// 'simple-file-list_page_ee-simple-file-list-settings',
+    	'file-list_page_ee-simple-file-list-access'
     );
     
     if(in_array($eeHook, $eeHooks)) {
@@ -418,6 +428,23 @@ function eeSFL_AdminMenu() {
 		'eeSFL_ManageLists', // Function that displays the menu page
 		'dashicons-index-card' // Icon used
 	);
+	
+	// User Manager
+    if( is_plugin_active('ee-simple-file-list-access/ee-simple-file-list-access.php') ) {
+        
+        $eeNonce = wp_create_nonce('eeSFLA'); // Security
+        include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-access/eeSFLA_Admin.php');
+        
+        add_submenu_page(
+	        'ee-simple-file-list', 
+	        __('File Access', 'ee-simple-file-list-access'), 
+	        __('File Access Manager', 'ee-simple-file-list-access'),  
+	        $eeCapability, 
+	        'ee-simple-file-list-access', 
+	        'eeSFLA_Manager'
+        );
+    }
+	
 }
 add_action( 'admin_menu', 'eeSFL_AdminMenu' );
 

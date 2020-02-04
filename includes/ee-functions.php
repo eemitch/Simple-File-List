@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-functions.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.23.2019
+<?php // Simple File List Script: ee-functions.php | Author: Mitchell Bennis | support@simplefilelist.com
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Functions' ) ) exit('ERROR 98'); // Exit if nonce fails
@@ -63,7 +63,7 @@ function eeSFL_AppendProperUrlOp($eeURL) {
 // Check for the Upload Folder, Create if Needed
 function eeSFL_FileListDirCheck($eeFileListDir) {
 	
-	global $eeSFL_Log, $eeSFL, $eeSFL_Env;
+	global $eeSFL_Log, $eeSFL, $eeSFL_ID, $eeSFL_Env;
 	
 	// Set some standards
 	if(strpos($eeFileListDir, '.') === 0 OR strpos($eeFileListDir, 'p-admin') OR strpos($eeFileListDir, 'p-includes') ) {
@@ -71,7 +71,7 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 		return FALSE;
 	}
 	
-	$eeSFL_FileListDirCheck = get_transient('eeSFL-' . $eeSFL->eeListID . '-FileListDirCheck');
+	$eeSFL_FileListDirCheck = get_transient('eeSFL-' . $eeSFL_ID . '-FileListDirCheck');
 	
 	// Check Transient First
 	if( $eeFileListDir == $eeSFL_FileListDirCheck AND is_dir(ABSPATH . $eeFileListDir) ) {
@@ -141,7 +141,7 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 		}
 	
 		// Set Transient
-		set_transient('eeSFL-' . $eeSFL->eeListID . '-FileListDirCheck', $eeFileListDir, 86400); // 1 Expires in Day
+		set_transient('eeSFL-' . $eeSFL_ID . '-FileListDirCheck', $eeFileListDir, 86400); // 1 Expires in Day
 
 		return TRUE;
 		

@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-class.php | Author: Mitchell Bennis | support@simplefilelist.com
+<?php // Simple File List Script: ee-class.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.12.2019
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Class' ) ) exit('ERROR 98'); // Exit if nonce fails
@@ -14,7 +14,7 @@ class eeSFL_MainClass {
 	public $eePluginMenuTitle = 'File List';
 	public $eePluginWebPage = 'http://simplefilelist.com';
 	public $eeAddOnsURL = 'https://get.simplefilelist.com/index.php';
-	public $eeListID = 1;
+	// public $eeListID = 1;
 	public $eeAllFilesSorted = array();
 	public $eeDefaultUploadLimit = 99;
 	public $eeFileThumbSize = 64;
@@ -103,7 +103,14 @@ class eeSFL_MainClass {
 		} else {
 		    $eeSFL_Env['eeOS'] = 'LINUX';
 		}
-	    
+		
+		// Detect Web Server
+		if(!function_exists('apache_get_version')) {
+		    $eeSFL_Env['eeWebServer'] = $_SERVER["SERVER_SOFTWARE"];
+		} else {
+			$eeSFL_Env['eeWebServer'] = 'Apache';
+		}
+		
 		$eeSFL_Env['wpSiteURL'] = get_site_url() . '/'; // This Wordpress Website
 		$eeSFL_Env['wpPluginsURL'] = plugins_url() . '/'; // The Wordpress Plugins Location
 		
@@ -342,7 +349,7 @@ class eeSFL_MainClass {
 						$eeFileArrayNew[$eeKey]['FileSize'] = @filesize(ABSPATH . $eeSFL_Config['FileListDir'] . $eeFile);
 					}
 					
-					$eeFileArrayNew[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Config['FileListDir'] . $eeFile));
+					$eeFileArrayNew[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s", @filemtime(ABSPATH . $eeSFL_Config['FileListDir'] . $eeFile));
 					$eeFileArrayNew[$eeKey]['FileDateChanged'] = $eeFileArrayNew[$eeKey]['FileDateAdded'];
 				}
 			}

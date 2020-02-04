@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-upload-engine.php | Author: Mitchell Bennis | support@simplefilelist.com
+<?php // Simple File List Script: ee-upload-engine.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
 	
 // This script is accessed via AJAX by js/ee-uploader.js
 
@@ -124,7 +124,7 @@ if($eeSFL_FileUploadDir AND is_dir(ABSPATH . $eeSFL_FileUploadDir)) {
 	
 	} else {
 		
-		$eeSFL_Error = 'ERROR 99';
+		$eeSFL_Error = 'ERROR 97';
 	}
 	
 } else {

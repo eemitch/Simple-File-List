@@ -38,6 +38,11 @@ p.eeTitle {
 	float: right;
 }
 
+.eeSFL_Admin .eeActiveTab {
+    background-color: #daf3ff;
+    border-width: 2px;
+    border-bottom-width: 0;
+}
 
 
 #eeAdminActions {
