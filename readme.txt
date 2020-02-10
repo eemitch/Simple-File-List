@@ -4,7 +4,7 @@ Donate link: http://simplefilelist.com/donations/simple-file-list-project/
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
 Tested up to: 5.4
-Stable tag: trunk
+Stable tag: 4.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -185,13 +185,9 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 == Changelog ==
 
 = 4.1.2 =
-Bug fixes and improvements
+* Bug fixes and improvements
 
-
-
-
-
-= 4.1.1  =
+= 4.1.1 =
 
 * Added new admin-side action hook: eeSFL_UploadCompletedAdmin
 * Video thumbnails were not being created via FFmpeg
