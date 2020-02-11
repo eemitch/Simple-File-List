@@ -172,7 +172,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.1.2 - Bug fixes and improvements
+* 4.1.2 - Fixed missing thumbnails when FFmpeg is installed, but fails to read the source video format.
 
 
 == Screenshots ==
@@ -185,7 +185,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 == Changelog ==
 
 = 4.1.2 =
-* Bug fixes and improvements
+* Fixed missing thumbnails when FFmpeg is installed, but fails to read the source video format.
 
 = 4.1.1 =
 
