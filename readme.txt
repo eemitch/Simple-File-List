@@ -172,7 +172,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.1.2 - Fixed missing thumbnails when FFmpeg is installed, but fails to read the source video format.
+* 4.1.3 - Added shortcodes for Search & Pagination customization
 
 
 
@@ -184,6 +184,10 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Changelog ==
+
+= 4.1.3 =
+* Added shortcodes for Search & Pagination customization
+** [eeSFL paged="(YES/NO)" filecount="25" search="(YES/NO)"]
 
 = 4.1.2 =
 * Fixed missing thumbnails when FFmpeg is installed, but fails to read the source video format.

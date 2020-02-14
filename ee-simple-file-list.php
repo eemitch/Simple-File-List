@@ -20,6 +20,7 @@ $eeSFL_DevMode = TRUE; // Enables visible logging
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
+
 define('eeSFL_Version', '4.2.1'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_DB_Version', '4.1'); // Database structure version - used for eeSFL_VersionCheck()
 define('eeSFL_Cache_Version', '2'); // Cache-Buster version for static files - used when updating CSS/JS
@@ -220,6 +221,9 @@ function eeSFL_Shortcode($atts, $content = null) {
 			'showheader' => $eeSFL_Config['ShowHeader'],
 			'showactions' => $eeSFL_Config['ShowFileActions'],
 			'showfolder' => '',
+			'paged' => 'YES', // eeSFLS
+			'filecount' => '25', // eeSFLS
+			'search' => 'YES', // eeSFLS
 			'hidetype' => '', // Hide file types
 			'hidename' => '', // Hide the name matches
 			'id' => ''
@@ -240,8 +244,14 @@ function eeSFL_Shortcode($atts, $content = null) {
 		$eeSFL_HideType = strtolower($hidetype);
 		$eeSFL_HideName = strtolower($hidename);
 		
+		// Useless without eeSFLF
 		$eeSFLF_ShortcodeFolder = $showfolder;
 		$eeSFL_ID = $id;
+		
+		// Useless without eeSFLS
+		$eeSFL_Config['EnablePagination'] = $paged;
+		$eeSFL_Config['FilesPerPage'] = $filecount;
+		$eeSFL_Config['EnableSearch'] = $search;
 		
 	} else {
 		$eeSFL_Log['L' . $eeSFL_ListNumber][] = 'No Shortcode Attributes';
