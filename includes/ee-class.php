@@ -477,12 +477,12 @@ class eeSFL_MainClass {
 		$eeThumbURL = FALSE;
 		
 		$eePathParts = pathinfo($eeFilePath);
-		$eeDir = $eePathParts['dirname'] . '/';
+		$eeDir = $eePathParts['dirname']; // In a folder ?
+		if($eeDir == '.') { $eeDir = FALSE; } else { $eeDir .= '/'; } // For home folder
+		
 		$eeBaseName = $eePathParts['basename'];
 		$eeFileNameOnly = $eePathParts['filename'];
 		$eeExt = strtolower(@$eePathParts['extension']);
-		
-		
 		
 		$eeFileFullPath = ABSPATH . $eeSFL_Config['FileListDir'] . $eeFilePath;
 		$eeFileFullPath = str_replace('//', '/', $eeFileFullPath);
@@ -499,7 +499,8 @@ class eeSFL_MainClass {
 			
 			if($eeSFL_Env['supported']) {
 				
-				if(!is_dir($eeThumbsPATH)) { mkdir($eeThumbsPATH); } // FFmpeg won't create the thumbs dir, so we need to do it here
+				// FFmpeg won't create the thumbs dir, so we need to do it here if needed.
+				if(!is_dir($eeThumbsPATH)) { mkdir($eeThumbsPATH); }
 				
 				$eeExt = 'png'; // Set the extension
 				$eeScreenshot = $eeThumbsPATH . 'eeScreenshot_' . $eeFileNameOnly . '.' . $eeExt; // Create a temporary file
@@ -521,16 +522,23 @@ class eeSFL_MainClass {
 				
 				} else {
 					
-					$eeSFL_Log['errors'][] = 'FFmpeg Error - Screenshot Not Created';
+					// FFmpeg FAILED !!!
+					$eeSFL_Log[] = 'FFmpeg could not read ' . $eeFileNameOnly . '. Using the default thumbnail.';
 					
-					return FALSE;
+					// Create a default thumb, as if there was no FFmpeg <<<--------- TO DO - Try to improve the command above / How can we do this on the fly in the list?
+					$eeFrom = $eeSFL_Env['pluginDir'] . 'images/thumbnails/!default_video.jpg';
+					$eeTo = $eeThumbsPATH . 'thumb_' . $eeFileNameOnly . '.jpg';
+					
+					if(!copy($eeFrom, $eeTo)) {
+						$eeSFL_Log[] = 'FFmpeg could create the default thumbnail.';
+						return FALSE;
+					}
+					
+					return TRUE;
 				}
 					
 			} else {
 				$eeSFL_Log[] = 'FFmpeg Not Installed';
-				
-				
-				
 			}
 		}
 		
