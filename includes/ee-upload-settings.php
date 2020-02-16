@@ -11,33 +11,31 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	// Get all the settings
 	$eeSettings = get_option('eeSFL-Settings');
 	
-	$eeID = $eeSFL_Config['ID'];
-	
 	if($_POST['eeAllowUploads'] == 'YES') { 
 		
-		$eeSettings[$eeID]['AllowUploads'] = 'YES';
+		$eeSettings[$eeSFL_ID]['AllowUploads'] = 'YES';
 	
 	} elseif($_POST['eeAllowUploads'] == 'USER') { // Only logged in users
 		 
-		 $eeSettings[$eeID]['AllowUploads'] = 'USER';
+		 $eeSettings[$eeSFL_ID]['AllowUploads'] = 'USER';
 		 
 	} elseif($_POST['eeAllowUploads'] == 'ADMIN') { // Only logged in users
 		 
-		 $eeSettings[$eeID]['AllowUploads'] = 'ADMIN';
+		 $eeSettings[$eeSFL_ID]['AllowUploads'] = 'ADMIN';
 		 
 	} else { 
-		$eeSettings[$eeID]['AllowUploads'] = 'NO';
+		$eeSettings[$eeSFL_ID]['AllowUploads'] = 'NO';
 	}
 	
 	// Get Uploader Info
-	if($eeSettings[$eeID]['AllowUploads'] != 'NO') { // Only update if showing these
+	if($eeSettings[$eeSFL_ID]['AllowUploads'] != 'NO') { // Only update if showing these
 		
 		// YES/NO Checkboxes
-		$eeSettings[$eeID]['GetUploaderInfo'] = eeSFL_ProcessCheckboxInput('GetUploaderInfo');
+		$eeSettings[$eeSFL_ID]['GetUploaderInfo'] = eeSFL_ProcessCheckboxInput('GetUploaderInfo');
 		
 		// File Number Limit
-		$eeSettings[$eeID]['UploadLimit'] = filter_var(@$_POST['eeUploadLimit'], FILTER_VALIDATE_INT);
-		if(!$eeSettings[$eeID]['UploadLimit'] ) { $eeSettings[$eeID]['UploadLimit'] = $eeSFL->eeDefaultUploadLimit; }
+		$eeSettings[$eeSFL_ID]['UploadLimit'] = filter_var(@$_POST['eeUploadLimit'], FILTER_VALIDATE_INT);
+		if(!$eeSettings[$eeSFL_ID]['UploadLimit'] ) { $eeSettings[$eeSFL_ID]['UploadLimit'] = $eeSFL->eeDefaultUploadLimit; }
 		
 		// Maximum File Size
 		if(@$_POST['eeUploadMaxFileSize']) {
@@ -46,9 +44,9 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 			
 			// Can't be more than the system allows.
 			if(!$eeSFL_Config['UploadMaxFileSize'] OR $eeSFL_Config['UploadMaxFileSize'] > $eeSFL_Env['the_max_upload_size']) { 
-				$eeSettings[$eeID]['UploadMaxFileSize'] = $eeSFL_Env['the_max_upload_size'];
+				$eeSettings[$eeSFL_ID]['UploadMaxFileSize'] = $eeSFL_Env['the_max_upload_size'];
 			} else {
-				$eeSettings[$eeID]['UploadMaxFileSize'] = $eeSFL_UploadMaxFileSize;
+				$eeSettings[$eeSFL_ID]['UploadMaxFileSize'] = $eeSFL_UploadMaxFileSize;
 			}
 			
 		} else {
@@ -57,7 +55,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 		
 		// File Formats
 		if(@$_POST['eeFileFormats']) { // Strip all but what we need for the comma list of file extensions
-			$eeSettings[$eeID]['FileFormats'] = preg_replace("/[^a-z0-9,]/i", "", $_POST['eeFileFormats']);
+			$eeSettings[$eeSFL_ID]['FileFormats'] = preg_replace("/[^a-z0-9,]/i", "", $_POST['eeFileFormats']);
 		}
 	}
 	
@@ -65,7 +63,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	update_option('eeSFL-Settings', $eeSettings );
 	
 	// Update the array with new values
-	$eeSFL_Config = $eeSettings[$eeID];
+	$eeSFL_Config = $eeSettings[$eeSFL_ID];
 	
 	$eeSFL_Confirm = __('Uploader Settings Saved', 'ee-simple-file-list');
 	$eeSFL_Log[] = $eeSFL_Confirm;
@@ -93,7 +91,7 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePlug
 		<h2>' . __('Upload Settings', 'ee-simple-file-list') . '</h2>
 
 		<input type="hidden" name="eePost" value="TRUE" />
-		<input type="hidden" name="eeListID" value="' . $eeSFL_ID . '" />';	
+		<input type="hidden" name="listID" value="' . $eeSFL_ID . '" />';	
 		
 		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce', TRUE, FALSE);
 		

@@ -67,7 +67,7 @@ if(@$eeSFL_Config['FileListDir']) {
 		
 			<input type="hidden" name="MAX_FILE_SIZE" value="' .(($eeSFL_Config['UploadMaxFileSize']*1024)*1024) . '" />
 			<input type="hidden" name="eeSFL_Upload" value="TRUE" />
-			<input type="hidden" name="eeSFL_ID" value="' . $eeSFL_Config['ID'] . '" />
+			<input type="hidden" name="eeSFL_ID" value="' . $eeSFL_ID . '" />
 			<input type="hidden" name="eeSFL_FileCount" value="" id="eeSFL_FileCount" />
 			<input type="hidden" name="eeSFL_FileList" value="" id="eeSFL_FileList" />';
 		
@@ -99,7 +99,7 @@ if(@$eeSFL_Config['FileListDir']) {
 		
 		<script>
 		
-			var eeSFL_ListID = ' . $eeSFL_Config['ID'] . ';
+			var eeSFL_ListID = ' . $eeSFL_ID . ';
 			var eeSFL_FileUploadDir = "' . urlencode($eeSFL_Config['FileListDir'] . $eeSFLF_ListFolder) . '";
 			var eeSFL_FileLimit = ' . $eeSFL_Config['UploadLimit'] . '; // Maximum number of files allowed
 			var eeSFL_UploadMaxFileSize = ' . (($eeSFL_Config['UploadMaxFileSize']*1024)*1024) . ';

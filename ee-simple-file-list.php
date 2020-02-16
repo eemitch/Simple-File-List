@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A full-featured File List Manager | <a href="https://simplefilelist.com/donations/simple-file-list-project/">Donate</a> | <a href="admin.php?page=ee-simple-file-list&tab=extensions">Add Extensions</a>
 Author: Mitchell Bennis
-Version: 4.2.1
+Version: 4.2.2
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
 
-define('eeSFL_Version', '4.2.1'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_Version', '4.2.2'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_DB_Version', '4.1'); // Database structure version - used for eeSFL_VersionCheck()
 define('eeSFL_Cache_Version', '2'); // Cache-Buster version for static files - used when updating CSS/JS
 
@@ -69,6 +69,11 @@ function eeSFL_Setup() {
 		$eeSFL_Env = $eeSFL->eeSFL_GetEnv(); // Get the Environment Array
 		
 		eeSFL_VersionCheck(); // Update database if needed.
+		
+		if( @$_REQUEST['listID'] ) {
+			$eeSFL_ID = filter_var($_REQUEST['listID'], FILTER_VALIDATE_INT);
+			if( !$eeSFL_ID ) { $eeSFL_ID = 1; } // Default to main list
+		}
 		
 		$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID); // Get the Configuration Array	
 	}	
@@ -396,9 +401,9 @@ add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'eeSFL_ActionPlu
 // Admin Pages
 function eeSFL_AdminMenu() {
 	
-	global $eeSFL, $eeSFL_Config, $eeSFL_Env, $eeSFL_Log;
+	global $eeSFL, $eeSFL_ID, $eeSFLA, $eeSFL_Config, $eeSFL_Env, $eeSFL_Log;
 	
-	// Only include when accessing the plugin admen pages
+	// Only include when accessing the plugin admin pages
 	if(@$_GET['page'] == $eeSFL->eePluginSlug) {
 		
 		$eeOutput = '<!-- Simple File List Admin -->';
@@ -442,8 +447,11 @@ function eeSFL_AdminMenu() {
 	// User Manager
     if( is_plugin_active('ee-simple-file-list-access/ee-simple-file-list-access.php') ) {
         
-        $eeNonce = wp_create_nonce('eeSFLA'); // Security
-        include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-access/eeSFLA_Admin.php');
+        // Only include when accessing this plugin's admin pages
+		if(@$_GET['page'] == $eeSFLA->eeSFLA_Slug) {
+        	$eeNonce = wp_create_nonce('eeSFLA'); // Security
+			include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-access/eeSFLA_Admin.php');
+        }
         
         add_submenu_page(
 	        'ee-simple-file-list', 

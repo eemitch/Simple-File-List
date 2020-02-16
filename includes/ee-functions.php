@@ -65,6 +65,10 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 	
 	global $eeSFL_Log, $eeSFL, $eeSFL_ID, $eeSFL_Env;
 	
+	// Check if FileListDir has a trailing slash...
+	$eeLastChar = substr($eeFileListDir, -1);
+	if($eeLastChar != '/') {  $eeFileListDir .= '/'; } // Trailing slash required
+	
 	// Set some standards
 	if(strpos($eeFileListDir, '.') === 0 OR strpos($eeFileListDir, 'p-admin') OR strpos($eeFileListDir, 'p-includes') ) {
 		$eeSFL_Log['errors'][] = 'This File List Location is Not Allowed: ' . $eeFileListDir;
@@ -374,7 +378,7 @@ function eeSFL_ProcessTextInput($eeTerm, $eeType = 'text') {
 // Check if a file already exists, then number it so file will not be over-written.
 function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path from WP root
 	
-	global $eeSFL_Config, $eeSFL_Log;
+	global $eeSFL_ID, $eeSFL_Config, $eeSFL_Log;
 	
 	$eeCopyLimit = 1000; // File copies limit
 	$eeDir = dirname($eeSFL_FilePathAdded) . '/';
@@ -383,7 +387,7 @@ function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path from W
 	$eeNameOnly = $eePathParts['filename'];
 	$eeExtension = strtolower($eePathParts['extension']);
 	
-	$eeSFL_Files = get_option('eeSFL-FileList-' . $eeSFL_Config['ID']); // Our array of file info
+	$eeSFL_Files = get_option('eeSFL-FileList-' . $eeSFL_ID); // Our array of file info
 	
 	foreach($eeSFL_Files as $eeArray) { // Loop through file array and look for a match.
 		

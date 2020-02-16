@@ -25,24 +25,24 @@ global $eeSFLF_ListFolder;
 // Get the File List
 if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR @$eeSFL_Config['ExpireTime'] === 0) { // Only admins can force a rescan
 	
-	$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_Config['ID']);
+	$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID);
 	
 } else {
 	
 	$eeSFL_Log['File List'][] = 'Checking List Freshness...';
-	$eeCheckFreshness = get_transient('eeSFL_FileList-' . $eeSFL_Config['ID']); // Get the File List Transient
+	$eeCheckFreshness = get_transient('eeSFL_FileList-' . $eeSFL_ID); // Get the File List Transient
 	
 	if($eeCheckFreshness == 'Good') { // Get the list
 		
 		$eeSFL_Log['File List'][] = 'Fresh :-)';
 		
-		$eeSFL_Files = get_option('eeSFL-FileList-' . $eeSFL_Config['ID']); // Get the File List
+		$eeSFL_Files = get_option('eeSFL-FileList-' . $eeSFL_ID); // Get the File List
 		
 	} else { // Update the list
 		
 		$eeSFL_Log['File List'][] = 'Expired :-(';
 		
-		$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_Config['ID']); // Stale, so Re-Scan
+		$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID); // Stale, so Re-Scan
 	}
 	
 	// If not found, rescan
@@ -134,10 +134,10 @@ if(@$eeSFL_Log['errors']) {
 $eeOutput .= '
 
 <!-- File List -->
-<span class="eeSFL_Hide" id="eeSFL_ID">' . $eeSFL_Config['ID'] . '</span>
+<span class="eeSFL_Hide" id="eeSFL_ID">' . $eeSFL_ID . '</span>
 <span class="eeSFL_Hide" id="eeSFL_ActionNonce">' . $eeSFL_ActionNonce . '</span>
 <script>
-	var eeSFL_ListID = 1;
+	var eeSFL_ListID = ' . $eeSFL_ID . ';
 	var eeSFL_PluginURL = "' . $eeSFL_Env['pluginURL'] . '";
 	var eeSFL_FileListDir = "' . $eeSFL_Config['FileListDir'] . '";
 	var eeSFL_ListFolder = "' . $eeSFLF_ListFolder . '/' . '";
@@ -162,12 +162,12 @@ if($eeAdmin) {
 	// If No Extension
 	if(!@defined('eeSFLF_Version')) { $eeOutput .= '
 		
-		<a href="/wp-admin/admin.php?page=ee-simple-file-list&tab=extensions" class="button eeButton" >' . __('Create Folder', 'ee-simple-file-list') . '</a>'; // Add Folder Support
+		<a href="/wp-admin/admin.php?page=ee-simple-file-list&tab=extensions&listID=' . $eeSFL_ID . '" class="button eeButton" >' . __('Create Folder', 'ee-simple-file-list') . '</a>'; // Add Folder Support
 	}
 	
 	if(!@defined('eeSFLS_Version') AND $eeSFL_ItemTotalCount > 11) { $eeOutput .= '
 		
-		<a href="/wp-admin/admin.php?page=ee-simple-file-list&tab=extensions" class="button eeButton" >' . __('Search Files', 'ee-simple-file-list') . '</a>'; // Add Search & Pagination, if 25+
+		<a href="/wp-admin/admin.php?page=ee-simple-file-list&tab=extensions&listID=' . $eeSFL_ID . '" class="button eeButton" >' . __('Search Files', 'ee-simple-file-list') . '</a>'; // Add Search & Pagination, if 12+
 	}
 	
 	$eeOutput .= '</p>';

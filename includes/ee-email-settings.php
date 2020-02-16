@@ -10,15 +10,13 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	
 	// Get all the settings
 	$eeSettings = get_option('eeSFL-Settings');
-	
-	$eeID = $eeSFL_Config['ID'];
 
 	// YES/NO Checkboxes
 	$eeCheckboxes = array(
 		'Notify'
 	);
 	foreach( $eeCheckboxes as $eeTerm){
-		$eeSettings[$eeID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
+		$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
 	}
 	
 	// Notifications
@@ -46,7 +44,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 				}
 			}
 			
-			$eeSettings[$eeID]['Notify' . $eeValue] = substr($eeSFL_AddressesString, 0, -1); // Remove last comma
+			$eeSettings[$eeSFL_ID]['Notify' . $eeValue] = substr($eeSFL_AddressesString, 0, -1); // Remove last comma
 			
 		
 		} elseif(filter_var(@$_POST['eeNotify' . $eeValue], FILTER_SANITIZE_EMAIL)) { // Only one address
@@ -54,14 +52,14 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 			$add = @$_POST['eeNotify' . $eeValue];
 			
 			if(filter_var($add, FILTER_VALIDATE_EMAIL)) {
-				$eeSettings[$eeID]['Notify' . $eeValue] = $add;
+				$eeSettings[$eeSFL_ID]['Notify' . $eeValue] = $add;
 			} else {
 				$eeSFL_Log['errors'][] = $add . ' - ' . __('This is not a valid email address.', 'ee-simple-file-list');
 			}
 			
 		} else {
 			
-			$eeSettings[$eeID]['Notify' . $eeValue] = ''; // Anything but a good email gets null.
+			$eeSettings[$eeSFL_ID]['Notify' . $eeValue] = ''; // Anything but a good email gets null.
 		}
 	}
 	
@@ -73,14 +71,14 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		,'NotifyMessage'
 	);
 	foreach( $eeTextInputs as $eeTerm){
-		$eeSettings[$eeID][$eeTerm] = eeSFL_ProcessTextInput($eeTerm);
+		$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessTextInput($eeTerm);
 	}
 	
 	// Update DB
 	update_option('eeSFL-Settings', $eeSettings );
 	
 	// Update the array with new values
-	$eeSFL_Config = $eeSettings[$eeID];
+	$eeSFL_Config = $eeSettings[$eeSFL_ID];
 	
 	$eeSFL_Confirm = __('Notification Settings Saved', 'ee-simple-file-list');
 }
@@ -106,6 +104,7 @@ $eeOutput .= '
 		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" /></p>
 		
 	<input type="hidden" name="eePost" value="TRUE" />
+	<input type="hidden" name="listID" value="' . $eeSFL_ID . '" />
 	
 	<h2>' . __('Notifications', 'ee-simple-file-list') . '</h2>';	
 	

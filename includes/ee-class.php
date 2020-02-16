@@ -142,7 +142,7 @@ class eeSFL_MainClass {
     
 
     // Get Settings for Specified List
-    public function eeSFL_Config($eeSFL_ID = 1) {
+    public function eeSFL_Config($eeSFL_ID) {
 	    
 	    global $eeSFL_Log, $eeSFL_Env;
 	    
@@ -157,7 +157,6 @@ class eeSFL_MainClass {
 	    
 			// Get sub-array for this list ID
 			$eeSFL_Config = $eeArray[$eeSFL_ID];
-			$eeSFL_Config['ID'] = $eeSFL_ID;  // The List ID
 			
 			// Check Environment
 			if($eeSFL_Env['the_max_upload_size'] < $eeSFL_Config['UploadMaxFileSize']) {
@@ -181,8 +180,8 @@ class eeSFL_MainClass {
 	    
 		0 => array( // The File ID (We copy this to the array on-the-fly when sorting)
 			'FileList' => 1, // The ID of the File List, contained in the above array.
-		    'FilePath' => '/Example-File.jpg', // Path to file, relative to the list root
-		    'FileExt' => 'jpg', // The file extension
+		    'FilePath' => '', // Path to file, relative to the list root
+		    'FileExt' => '', // The file extension
 			'FileSize' => '', // The size of the file
 			'FileDateAdded' => '', // Date the file was added to the list
 			'FileDateChanged' => '', // Last date the file was renamed or otherwise changed
@@ -227,7 +226,7 @@ class eeSFL_MainClass {
     
     
     // Scan the real files and create or update array as needed.
-    public function eeSFL_UpdateFileListArray($eeSFL_ID = 1) {
+    public function eeSFL_UpdateFileListArray($eeSFL_ID) {
 	    
 	    global $eeSFL_Log, $eeSFL_Config, $eeSFL_Env, $eeSFLF;
 	    
@@ -237,7 +236,7 @@ class eeSFL_MainClass {
 	    
 	    $eeFilePathsArray = $this->eeSFL_IndexFileListDir($eeSFL_Config['FileListDir']); // Get the real files
 	    
-	    if ( !@count($eeFilesArray) ) { // Creating New
+	    if ( !is_array($eeFilesArray) ) { // Creating New
 			
 			$eeSFL_Log['File List'][] = 'No List Found! Creating from scratch...';
 			
@@ -270,6 +269,8 @@ class eeSFL_MainClass {
 		} else { // Update file info
 			
 			$eeSFL_Log['File List'][] = 'Updating existing list...';
+			
+			if(!$eeFilesArray) { return FALSE; } // No files found
 			
 			$eeFileArrayNew = $eeFilesArray;
 			
@@ -381,7 +382,7 @@ class eeSFL_MainClass {
 				
 				$eeSFL_Log[] = 'Setting transient to expire in ' . $eeSFL_Config['ExpireTime'] . ' hours.';
 				
-				set_transient('eeSFL_FileList-' . $eeSFL_Config['ID'], 'Good', $eeExpiresIn);
+				set_transient('eeSFL_FileList-' . $eeSFL_ID, 'Good', $eeExpiresIn);
 			}
 		
 
@@ -458,7 +459,7 @@ class eeSFL_MainClass {
 	    
 	    
 	    if(!count($eeFilesArray)) {
-		    $eeSFL_Log['errors'][] = 'No Files Found';
+		    // $eeSFL_Log['errors'][] = 'No Files Found';
 		    $eeSFL_Log['File List'][] = 'No Files Found';
 	    }
 

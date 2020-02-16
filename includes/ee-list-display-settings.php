@@ -10,8 +10,6 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	
 	// Get all the settings
 	$eeSettings = get_option('eeSFL-Settings');
-	
-	$eeID = $eeSFL_Config['ID'];
 
 	// YES/NO Checkboxes
 	$eeCheckboxes = array(
@@ -27,7 +25,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		,'AllowFrontSend'
 	);
 	foreach( $eeCheckboxes as $eeTerm){
-		$eeSettings[$eeID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
+		$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
 	}
 	
 	// Extension Processing
@@ -43,7 +41,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	
 	
 	// Update the array with new values
-	$eeSFL_Config = $eeSettings[$eeID];
+	$eeSFL_Config = $eeSettings[$eeSFL_ID];
 	
 	// Update DB
 	update_option('eeSFL-Settings', $eeSettings );
@@ -71,7 +69,8 @@ $eeOutput .= '
 		
 		<h2>' . __('Front-Side Settings', 'ee-simple-file-list') . '</h2>
 		
-		<input type="hidden" name="eePost" value="TRUE" />';	
+		<input type="hidden" name="eePost" value="TRUE" />
+		<input type="hidden" name="listID" value="' . $eeSFL_ID . '" />';	
 		
 		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce', TRUE, FALSE);
 		

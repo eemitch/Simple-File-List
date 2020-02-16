@@ -46,46 +46,44 @@ function eeSFL_ManageLists() {
 	// Main Tabs -------
 	
 	// File List
-	$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=file_list" class="nav-tab tabList ';  
+	$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=file_list&listID=' . $eeSFL_ID . '" class="nav-tab tabList ';  
 	if($active_tab == 'file_list') {$eeOutput .= '  eeActiveTab ';}    
     $active_tab == 'file_list' ? 'nav-tab-active' : '';
+    $eeOutput .= $active_tab . '">' . __('File List', 'ee-simple-file-list') . '</a>';
     
     // Extension Check
     if($eeSFLA) {
-	    $eeOutput .= $active_tab . '">' . __('Main File List', 'ee-simple-file-list') . '</a>';
-	    $eeOutput .= $eeSFLA->eeSFLA_FileAccessTab($active_tab);
-    } else {
-	    $eeOutput .= $active_tab . '">' . __('File List', 'ee-simple-file-list') . '</a>';
+	    $eeOutput .= $eeSFLA->eeSFLA_FileAccessTab($active_tab, $eeSFL_ID);
     }
     
     // Author
-    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=author" class="nav-tab tabSupport ';   
+    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=author&listID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
 	if($active_tab == 'author') {$eeOutput .= '  eeActiveTab '; }  
     $active_tab == 'author' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Author', 'ee-simple-file-list') . '</a>';
     
 	// The Help / Email Form Page
-    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=help" class="nav-tab tabSupport ';   
+    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=help&listID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
 	if($active_tab == 'help') {$eeOutput .= '  eeActiveTab '; }  
     $active_tab == 'help' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Get Help', 'ee-simple-file-list') . '</a>';
     
     // Settings
-    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings" class="nav-tab tabSettings ';   
+    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&listID=' . $eeSFL_ID . '" class="nav-tab tabSettings ';   
 	if($active_tab == 'settings') {$eeOutput .= '  eeActiveTab '; }  
     $active_tab == 'settings' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Settings', 'ee-simple-file-list') . '</a>';
     
     // Get Extensions
     if(!$eeSFLF OR !$eeSFLS) {
-	    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=extensions" class="nav-tab tabSupport ';   
+	    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=extensions&listID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
 		if($active_tab == 'extensions') {$eeOutput .= '  eeActiveTab '; }  
 	    $active_tab == 'extensions' ? 'nav-tab-active' : ''; 
 	    $eeOutput .= $active_tab . '">' . __('Add Features', 'ee-simple-file-list') . '</a>';
     }
     
     // Shortcode Builder
-    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=shortcode" class="nav-tab tabSupport ';  
+    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=shortcode&listID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';  
 	if($active_tab == 'shortcode') {$eeOutput .= '  eeActiveTab '; }   
     $active_tab == 'support' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Create Shortcode', 'ee-simple-file-list') . '</a>';
@@ -129,7 +127,7 @@ function eeSFL_ManageLists() {
 		if($eeSFLA) {
 			
 			// List Settings
-			$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=list_access" class="nav-tab ';  
+			$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=list_access&listID=' . $eeSFL_ID . '" class="nav-tab ';  
 			if($active_subtab == 'list_access') {$eeOutput .= '  eeActiveTab ';}    
 		    $active_subtab == 'list_access' ? 'nav-tab-active' : '';    
 		    $eeOutput .= $active_subtab . '">' . __('List Access Settings', 'ee-simple-file-list') . '</a>';
@@ -137,25 +135,25 @@ function eeSFL_ManageLists() {
 		
 		
 		// List Settings
-		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=list_settings" class="nav-tab ';  
+		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=list_settings&listID=' . $eeSFL_ID . '" class="nav-tab ';  
 		if($active_subtab == 'list_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'list_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('File List Settings', 'ee-simple-file-list') . '</a>';
 	    
 	    // Uploader Settings
-		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=uploader_settings" class="nav-tab ';  
+		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=uploader_settings&listID=' . $eeSFL_ID . '" class="nav-tab ';  
 		if($active_subtab == 'uploader_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'uploader_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('File Upload Settings', 'ee-simple-file-list') . '</a>';
 	    
 	    // Display Settings
-		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=display_settings" class="nav-tab ';  
+		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=display_settings&listID=' . $eeSFL_ID . '" class="nav-tab ';  
 		if($active_subtab == 'display_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'display_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('Display Settings', 'ee-simple-file-list') . '</a>';
 	    
 	    // Notifications Settings
-		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=email_settings" class="nav-tab ';  
+		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=email_settings&listID=' . $eeSFL_ID . '" class="nav-tab ';  
 		if($active_subtab == 'email_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'email_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('Notification Settings', 'ee-simple-file-list') . '</a>';

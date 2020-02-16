@@ -65,6 +65,9 @@ function eeSFL_CheckNonce() {
 add_action( 'plugins_loaded', 'eeSFL_CheckNonce' );
 
 
+// Get the Configuration Array
+$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID); 
+
 
 // Check size
 $eeSFL_FileSize = $_FILES['file']['size'];
