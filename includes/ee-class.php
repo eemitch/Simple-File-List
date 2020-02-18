@@ -142,7 +142,7 @@ class eeSFL_MainClass {
     
 
     // Get Settings for Specified List
-    public function eeSFL_Config($eeSFL_ID) {
+    public function eeSFL_Config($eeSFL_ID = 1) {
 	    
 	    global $eeSFL_Log, $eeSFL_Env;
 	    
@@ -236,7 +236,7 @@ class eeSFL_MainClass {
 	    
 	    $eeFilePathsArray = $this->eeSFL_IndexFileListDir($eeSFL_Config['FileListDir']); // Get the real files
 	    
-	    if ( !is_array($eeFilesArray) ) { // Creating New
+	    if ( !is_array($eeFilesArray) OR !@count($eeFilesArray) ) { // Creating New
 			
 			$eeSFL_Log['File List'][] = 'No List Found! Creating from scratch...';
 			

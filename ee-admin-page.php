@@ -23,8 +23,8 @@ function eeSFL_ManageLists() {
 	
 	// Extension Check
     if($eeSFLA) { 
-	    $eeSFLA_Config = $eeSFLA->eeSFLA_Config();
-	    if($eeSFLA_Config['FirstRun'] == 'YES') { // Check for first plugin run
+	    $eeSFLA_Settings = $eeSFLA->eeSFLA_Config();
+	    if($eeSFLA_Settings['FirstRun'] == 'YES') { // Check for first plugin run
 		    $eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
 		    include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_Installing.php');
 		}
@@ -38,6 +38,11 @@ function eeSFL_ManageLists() {
 	
 	if($eeSFL_DevMode) { $eeOutput .= '<p class="eeAlert">' . __('DEVELOPMENT MODE ON', 'ee-simple-file-list') . '</p>'; }
 	
+	// Extension Check
+	if($eeSFLA) {
+		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_ListNavigation.php'); // List Navigator
+	}
+	
 	// Get the new tab's query string value
 	if( isset( $_GET[ 'tab' ] ) ) { $active_tab = $_GET[ 'tab' ]; } else { $active_tab = 'file_list'; }
 	
@@ -50,11 +55,7 @@ function eeSFL_ManageLists() {
 	if($active_tab == 'file_list') {$eeOutput .= '  eeActiveTab ';}    
     $active_tab == 'file_list' ? 'nav-tab-active' : '';
     $eeOutput .= $active_tab . '">' . __('File List', 'ee-simple-file-list') . '</a>';
-    
-    // Extension Check
-    if($eeSFLA) {
-	    $eeOutput .= $eeSFLA->eeSFLA_FileAccessTab($active_tab, $eeSFL_ID);
-    }
+
     
     // Author
     $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=author&listID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
@@ -88,6 +89,11 @@ function eeSFL_ManageLists() {
     $active_tab == 'support' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Create Shortcode', 'ee-simple-file-list') . '</a>';
     
+    // Extension Check
+    if($eeSFLA) {
+	    $eeOutput .= $eeSFLA->eeSFLA_FileAccessTab($active_tab, $eeSFL_ID);
+    }
+    
     $eeOutput .= '</h2>'; // END Main Tabs    
     
     
@@ -113,8 +119,6 @@ function eeSFL_ManageLists() {
 	    	$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
 	    	if(@$_POST['eeCreateEditList'] AND $_GET['tab'] == 'settings') {
 	    		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_CreateEditListProcess.php'); // Form processor
-	    	} else {
-		    	include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_ListNavigation.php'); // List Navigator
 	    	}
 	    	
     	} else {
