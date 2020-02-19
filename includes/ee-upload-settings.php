@@ -11,20 +11,23 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	// Get all the settings
 	$eeSettings = get_option('eeSFL-Settings');
 	
-	if($_POST['eeAllowUploads'] == 'YES') { 
+	if(!$eeSFLA) {
 		
-		$eeSettings[$eeSFL_ID]['AllowUploads'] = 'YES';
-	
-	} elseif($_POST['eeAllowUploads'] == 'USER') { // Only logged in users
-		 
-		 $eeSettings[$eeSFL_ID]['AllowUploads'] = 'USER';
-		 
-	} elseif($_POST['eeAllowUploads'] == 'ADMIN') { // Only logged in users
-		 
-		 $eeSettings[$eeSFL_ID]['AllowUploads'] = 'ADMIN';
-		 
-	} else { 
-		$eeSettings[$eeSFL_ID]['AllowUploads'] = 'NO';
+		if($_POST['eeAllowUploads'] == 'YES') { 
+			
+			$eeSettings[$eeSFL_ID]['AllowUploads'] = 'YES';
+		
+		} elseif($_POST['eeAllowUploads'] == 'USER') { // Only logged in users
+			 
+			 $eeSettings[$eeSFL_ID]['AllowUploads'] = 'USER';
+			 
+		} elseif($_POST['eeAllowUploads'] == 'ADMIN') { // Only logged in users
+			 
+			 $eeSettings[$eeSFL_ID]['AllowUploads'] = 'ADMIN';
+			 
+		} else { 
+			$eeSettings[$eeSFL_ID]['AllowUploads'] = 'NO';
+		}
 	}
 	
 	// Get Uploader Info
@@ -95,43 +98,45 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePlug
 		
 		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce', TRUE, FALSE);
 		
-		$eeOutput .= '<fieldset>
+		$eeOutput .= '<fieldset>';
 			
-			<label for="eeAllowUploads">' . __('Allow File Upload', 'ee-simple-file-list') . '</label>
+			if(!$eeSFLA) {
 			
-			<select name="eeAllowUploads" id="eeAllowUploads">
-			
-				<option value="YES"';
-
-				if($eeSFL_Config['AllowUploads'] == 'YES') { $eeOutput .= ' selected'; }
+				$eeOutput .= '<label for="eeAllowUploads">' . __('Allow File Upload', 'ee-simple-file-list') . '</label>
 				
-				$eeOutput .= '>' . __('Anyone Can Upload', 'ee-simple-file-list') . '</option>
+				<select name="eeAllowUploads" id="eeAllowUploads">
 				
-				<option value="USER"';
-
-				if($eeSFL_Config['AllowUploads'] == 'USER') { $eeOutput .= ' selected'; }
-				
-				$eeOutput .= '>' . __('Only Logged in Users Can Upload', 'ee-simple-file-list') . '</option>
-				
-				<option value="ADMIN"';
-
-				if($eeSFL_Config['AllowUploads'] == 'ADMIN') { $eeOutput .= ' selected'; }
-				
-				$eeOutput .= '>' . __('Only Logged in Admins Can Upload', 'ee-simple-file-list') . '</option>
-				
-				<option value="NO"';
-
-				if($eeSFL_Config['AllowUploads'] == 'NO') { $eeOutput .= ' selected'; }
-				
-				$eeOutput .= '>' . __('Hide the Front Side Uploader Completely', 'ee-simple-file-list') . '</option>
-			
-			</select>';
-			
-			
-			$eeOutput .= '<div class="eeNote">' . 
-				__('Allow anyone to upload, only logged-in users, administrators or nobody.', 'ee-simple-file-list') . '</div>
+					<option value="YES"';
+	
+					if($eeSFL_Config['AllowUploads'] == 'YES') { $eeOutput .= ' selected'; }
 					
-			<br class="eeClearFix" />';
+					$eeOutput .= '>' . __('Anyone Can Upload', 'ee-simple-file-list') . '</option>
+					
+					<option value="USER"';
+	
+					if($eeSFL_Config['AllowUploads'] == 'USER') { $eeOutput .= ' selected'; }
+					
+					$eeOutput .= '>' . __('Only Logged in Users Can Upload', 'ee-simple-file-list') . '</option>
+					
+					<option value="ADMIN"';
+	
+					if($eeSFL_Config['AllowUploads'] == 'ADMIN') { $eeOutput .= ' selected'; }
+					
+					$eeOutput .= '>' . __('Only Logged in Admins Can Upload', 'ee-simple-file-list') . '</option>
+					
+					<option value="NO"';
+	
+					if($eeSFL_Config['AllowUploads'] == 'NO') { $eeOutput .= ' selected'; }
+					
+					$eeOutput .= '>' . __('Hide the Front Side Uploader Completely', 'ee-simple-file-list') . '</option>
+				
+				</select>
+				<div class="eeNote">' . __('Allow anyone to upload, only logged-in users, administrators or nobody.', 'ee-simple-file-list') . '</div>';
+			
+			}
+			
+			
+			$eeOutput .= '<br class="eeClearFix" />';
 			
 			
 			if($eeSFL_Config['AllowUploads'] != 'NO') {

@@ -202,21 +202,24 @@ $eeOutput .= '
 		
 		<div class="eeNote">' . __('Allow front-side users to email links to files.', 'ee-simple-file-list') . '</div>
 		
-		<br class="eeClearFix" />		
+		<br class="eeClearFix" />';
 		
+		if(!$eeSFLA) {
 		
-		<label for="eeAllowFrontManage">' . __('Front-Side Manage', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeAllowFrontManage" value="YES" id="eeAllowFrontManage"';
+			$eeOutput .= '<label for="eeAllowFrontManage">' . __('Front-Side Manage', 'ee-simple-file-list') . ':</label>
+			<input type="checkbox" name="eeAllowFrontManage" value="YES" id="eeAllowFrontManage"';
+			
+			if( $eeSFL_Config['AllowFrontManage'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+			
+			$eeOutput .= ' /> <p>' . __('Use with Caution', 'ee-simple-file-list') . '</p>
+							
+			<div class="eeNote">' . __('Allow file editing and deletion on the front side of the site.', 'ee-simple-file-list') . '</div>
+			
+			<br class="eeClearFix" />';
 		
-		if( $eeSFL_Config['AllowFrontManage'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		}
 		
-		$eeOutput .= ' /> <p>' . __('Use with Caution', 'ee-simple-file-list') . '</p>
-						
-		<div class="eeNote">' . __('Allow file editing and deletion on the front side of the site.', 'ee-simple-file-list') . '</div>
-		
-		<br class="eeClearFix" />
-		
-		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" />
+		$eeOutput .= '<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" />
 		
 		</fieldset>
 		

@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A full-featured File List Manager | <a href="https://simplefilelist.com/donations/simple-file-list-project/">Donate</a> | <a href="admin.php?page=ee-simple-file-list&tab=extensions">Add Extensions</a>
 Author: Mitchell Bennis
-Version: 4.2.2
+Version: 4.2.3
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
 
-define('eeSFL_Version', '4.2.2'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_Version', '4.2.3'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_DB_Version', '4.1'); // Database structure version - used for eeSFL_VersionCheck()
 define('eeSFL_Cache_Version', '2'); // Cache-Buster version for static files - used when updating CSS/JS
 
@@ -53,7 +53,7 @@ $eeSFLF_ListFolder = FALSE;
 // Plugin Setup
 function eeSFL_Setup() {
 	
-	global $eeSFL, $eeSFL_ID, $eeSFL_Extensions, $eeSFL_Log, $eeSFL_Config, $eeSFL_Env;
+	global $eeSFL, $eeSFL_ID, $eeSFL_Extensions, $eeSFL_Log, $eeSFL_Config, $eeSFLA_Settings, $eeSFL_Env;
 	
 	$eeSFL_Log[] = 'Running Setup...';
 
@@ -218,45 +218,50 @@ function eeSFL_Shortcode($atts, $content = null) {
 	if($atts) {
 	
 		$atts = shortcode_atts( array( // Use lowercase att names only
-			'showlist' => $eeSFL_Config['ShowList'], // defaults to DB settings
-			'allowuploads' => $eeSFL_Config['AllowUploads'],
-			'showthumb' => $eeSFL_Config['ShowFileThumb'],
-			'showdate' => $eeSFL_Config['ShowFileDate'],
-			'showsize' => $eeSFL_Config['ShowFileSize'],
-			'showheader' => $eeSFL_Config['ShowHeader'],
-			'showactions' => $eeSFL_Config['ShowFileActions'],
+			'list' => '1',
+			'showlist' => '',
+			'allowuploads' => '',
+			'showthumb' => '',
+			'showdate' => '',
+			'showsize' => '',
+			'showheader' => '',
+			'showactions' => '',
 			'showfolder' => '',
-			'paged' => 'YES', // eeSFLS
-			'filecount' => '25', // eeSFLS
-			'search' => 'YES', // eeSFLS
+			'paged' => '', // eeSFLS
+			'filecount' => '', // eeSFLS
+			'search' => '', // eeSFLS
 			'hidetype' => '', // Hide file types
-			'hidename' => '', // Hide the name matches
-			'id' => ''
+			'hidename' => '' // Hide the name matches
 		), $atts );
 		
 		extract($atts);
 	
 		$eeSFL_Log['L' . $eeSFL_ListNumber][] = 'Shortcode Attributes...';
 		
-		$eeSFL_Config['ShowList'] = $showlist;
-		$eeSFL_Config['AllowUploads'] = $allowuploads;
-		$eeSFL_Config['ShowFileThumb'] = $showthumb;
-		$eeSFL_Config['ShowFileDate'] = $showdate;
-		$eeSFL_Config['ShowFileSize'] = $showsize;
-		$eeSFL_Config['ShowHeader'] = $showheader;
-		$eeSFL_Config['ShowFileActions'] = $showactions;
+		// Get the correct file list config if not main list
+		if($eeSFLA AND $list != $eeSFL_ID) {
+			$eeSFL_Config = $eeSFL->eeSFL_Config($list);
+			$eeSFL_ID = $list;
+		}
 		
-		$eeSFL_HideType = strtolower($hidetype);
-		$eeSFL_HideName = strtolower($hidename);
+		if($showlist) { $eeSFL_Config['ShowList'] = $showlist; }
+		if($allowuploads) { $eeSFL_Config['AllowUploads'] = $allowuploads; }
+		if($showthumb) { $eeSFL_Config['ShowFileThumb'] = $showthumb; }
+		if($showdate) { $eeSFL_Config['ShowFileDate'] = $showdate; }
+		if($showsize) { $eeSFL_Config['ShowFileSize'] = $showsize; }
+		if($showheader) { $eeSFL_Config['ShowHeader'] = $showheader; }
+		if($showactions) { $eeSFL_Config['ShowFileActions'] = $showactions; }
+		
+		if($hidetype) { $eeSFL_HideType = strtolower($hidetype); } else { $eeSFL_HideType = FALSE; }
+		if($hidename) { $eeSFL_HideName = strtolower($hidename); } else { $eeSFL_HideName = FALSE; }
 		
 		// Useless without eeSFLF
 		$eeSFLF_ShortcodeFolder = $showfolder;
-		$eeSFL_ID = $id;
 		
 		// Useless without eeSFLS
-		$eeSFL_Config['EnablePagination'] = $paged;
-		$eeSFL_Config['FilesPerPage'] = $filecount;
-		$eeSFL_Config['EnableSearch'] = $search;
+		if($paged) { $eeSFL_Config['EnablePagination'] = $paged; }
+		if($filecount) { $eeSFL_Config['FilesPerPage'] = $filecount; }
+		if($search) { $eeSFL_Config['EnableSearch'] = $search; }
 		
 	} else {
 		$eeSFL_Log['L' . $eeSFL_ListNumber][] = 'No Shortcode Attributes';

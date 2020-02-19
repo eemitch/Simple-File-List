@@ -172,7 +172,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.2 - User Manager (coming soon) Integration
+* 4.2.3 - User Manager (coming soon) Integration
 
 
 == Screenshots ==
@@ -184,7 +184,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
-= 4.2.2 =
+= 4.2.3 =
 * Made multi-list aware
 * Added User Manager integration
 * Various bug fixes and minor improvements

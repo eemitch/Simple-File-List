@@ -153,7 +153,8 @@ if($eeAdmin) {
 	
 	<p class="eeRight">
 	
-		<a href="#" class="button eeButton" id="eeSFL_UploadFilesButton">' . __('Upload Files', 'ee-simple-file-list') . '</a>'; 
+		<a href="#" class="button eeButton" id="eeSFL_UploadFilesButton">' . __('Upload Files', 'ee-simple-file-list') . '</a>';
+	 
 						
 	if($eeSFL_Config['ExpireTime']) {
 		$eeOutput .= '<a href="#" class="button eeButton" id="eeSFL_ReScanButton">' . __('Re-Scan Files', 'ee-simple-file-list') . '</a>';
@@ -165,7 +166,7 @@ if($eeAdmin) {
 		<a href="/wp-admin/admin.php?page=ee-simple-file-list&tab=extensions&listID=' . $eeSFL_ID . '" class="button eeButton" >' . __('Create Folder', 'ee-simple-file-list') . '</a>'; // Add Folder Support
 	}
 	
-	if(!@defined('eeSFLS_Version') AND $eeSFL_ItemTotalCount > 11) { $eeOutput .= '
+	if(!@defined('eeSFLS_Version') AND $eeSFL_FileTotalCount > 11) { $eeOutput .= '
 		
 		<a href="/wp-admin/admin.php?page=ee-simple-file-list&tab=extensions&listID=' . $eeSFL_ID . '" class="button eeButton" >' . __('Search Files', 'ee-simple-file-list') . '</a>'; // Add Search & Pagination, if 12+
 	}
@@ -177,7 +178,7 @@ if($eeAdmin) {
 		
 		$eeOutput .= '
 		
-		<p class="eeSFL_ListMeta"><a href="' . $eeURL . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . __('Back to the Files', 'ee-simple-file-list') . '</a></p>';
+		<p class="eeSFL_ListMeta"><a href="' . eeSFL_AppendProperUrlOp($eeURL) . 'listID=' . $eeSFL_ID . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . __('Back to the Files', 'ee-simple-file-list') . '</a></p>';
 		
 		$eeSendFilesArray = $eeSFL_Files; // Restrict to just what was uploaded
 	

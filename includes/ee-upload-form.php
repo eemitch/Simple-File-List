@@ -27,7 +27,7 @@ $eeSFL_Log['Add Files'][] = $eeSFL_Config['FileListDir'] . $eeSFLF_ListFolder;
 // Check for an upload job, then run notification routine.
 if(@$_POST['eeSFL_Upload']) {
 	
-	$eeSFL_ID = filter_var(@$_POST['eeSFL_ID'], FILTER_VALIDATE_INT);
+	$eeSFL_ID = filter_var(@$_POST['listID'], FILTER_VALIDATE_INT);
 	
 	if($eeSFL_ID OR $eeSFL_ID === 0) {
 		
@@ -67,7 +67,7 @@ if(@$eeSFL_Config['FileListDir']) {
 		
 			<input type="hidden" name="MAX_FILE_SIZE" value="' .(($eeSFL_Config['UploadMaxFileSize']*1024)*1024) . '" />
 			<input type="hidden" name="eeSFL_Upload" value="TRUE" />
-			<input type="hidden" name="eeSFL_ID" value="' . $eeSFL_ID . '" />
+			<input type="hidden" name="listID" value="' . $eeSFL_ID . '" />
 			<input type="hidden" name="eeSFL_FileCount" value="" id="eeSFL_FileCount" />
 			<input type="hidden" name="eeSFL_FileList" value="" id="eeSFL_FileList" />';
 		
