@@ -139,7 +139,7 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePlug
 			$eeOutput .= '<br class="eeClearFix" />';
 			
 			
-			if($eeSFL_Config['AllowUploads'] != 'NO') {
+			if($eeSFL_Config['AllowUploads'] != 'NO' OR $eeSFLA) {
 				
 				// The File List Folder
 				$eeOutput .= '

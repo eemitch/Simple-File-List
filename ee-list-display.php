@@ -198,7 +198,11 @@ if($eeAdmin) {
 		<p class="eeSFL_ListMeta">' . __('Files', 'ee-simple-file-list') . ': ' . $eeSFL_FileTotalCount . ' | '  . 
 		__('Folders', 'ee-simple-file-list') . ': ' . $eeSFL_FolderTotalCount . ' | ' . 
 		__('Sorted by', 'ee-simple-file-list') . ': ' . ucwords($eeSFL_Config['SortBy']) . ' (' . $eeSFL_Config['SortOrder'] . ')<br />
-		' . __('Last Changed', 'ee-simple-file-list') . ': ' . date_i18n( $eeDateFormat, strtotime( $eeArray[0] ) ) . '</p>';
+		' . __('Last Changed', 'ee-simple-file-list') . ': ' . date_i18n( $eeDateFormat, strtotime( $eeArray[0] ) );
+		
+		if($eeSFLA) { $eeOutput .= '<br />' . $eeSFLA->eeSFLA_GetListModeInfo($eeSFL_Config); }
+		
+		$eeOutput .= '</p>';
 	}
 	
 	$eeOutput .= '
