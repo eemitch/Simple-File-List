@@ -349,23 +349,16 @@ if(@count($eeSFL_Files) >= 1) {
 					$eeFileURL = str_replace('//', '/', $eeFileURL); // Remove double slashes
 					$eeFileURL = str_replace('\\:', '://', $eeFileURL); // Restore that
 					
+					// Extension Check
 					if($eeSFLA) {
-						$eeFileURL = $eeSFL_Env['pluginURL'] . 'view/?file=' . $eeFileArray['FilePath'];
+						if($eeSFL_Config['Mode'] != 'Open') { // In-direct link
+							$eeFileURL = $eeSFL_Env['pluginURL'] . 'view/?file=' . $eeFileArray['FilePath'];
+						}
 					}
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
 					
 					$eeFileExt = $eeFileArray['FileExt']; // Get Extension
 				
-				} elseif($eeSFLF) {
+				} elseif($eeSFLF) { // Extension Check
 					
 					$eeIsFolder = TRUE;
 					$eeFileExt = 'folder';
@@ -581,7 +574,7 @@ if(@count($eeSFL_Files) >= 1) {
 							
 							$eeFileActions .= '<a href="" id="eeSFL_EditFile_' . $eeRowID . '" onclick="eeSFL_EditFile(' . $eeRowID . ')">' . __('Edit', 'ee-simple-file-list') . '</a> | ';
 							
-							if($eeSFLF AND $eeSFL_FolderTotalCount) { // If there's at least one folder to move to
+							if($eeSFLF AND $eeSFL_FolderTotalCount) { // Extension Check
 								
 								$eeSFLF_FolderOptionsDisplay = FALSE;
 								$eeSFLF_FolderOptionsDisplay = $eeSFLF->eeSFLF_MoveToFolderDisplay($eeFileArray, $eeSFLF_ListFolder);
@@ -598,10 +591,23 @@ if(@count($eeSFL_Files) >= 1) {
 								} else {
 									$eeFileActions .= $eeMoveLink;
 								}
-							} elseif(!$eeSFLF) {
-								
-								$eeFileActions .= '<a class="eeDimmedLink" href="/wp-admin/admin.php?page=ee-simple-file-list&tab=extensions" >' . __('Move to Folder', 'ee-simple-file-list') . '</a>';
+							} 
+							
+							
+						}
+						
+						// Extension Check
+						if(!$eeSFLF) {
+							$eeFileActions .= '<a class="eeDimmedLink" href="/wp-admin/admin.php?page=ee-simple-file-list&tab=extensions" >' . __('Move', 'ee-simple-file-list') . '</a>';
+						}
+						
+						// Extension Check
+						if($eeSFLA AND $eeAdmin) {
+							$eeFileActions .= '<br />';
+							if(@count($eeSFL_Settings) > 1) {
+								$eeFileActions .= '<a id="eeSFLA_CopyTo_' . $eeRowID . '" onclick="eeSFLA_CopyTo(' . $eeRowID . ');" href="#" >' . __('Copy to List', 'ee-simple-file-list') . '</a> | ';
 							}
+							$eeFileActions .= '<a id="eeSFLA_FileAccess_' . $eeRowID . '" onclick="eeSFLA_Access(' . $eeRowID . ');" href="#" >' . __('Grant Access', 'ee-simple-file-list') . '</a>';
 						}
 						
 						// Strip trailing pipe if needed
@@ -648,6 +654,13 @@ if(@count($eeSFL_Files) >= 1) {
 							$eeFileActions .= __('Size', 'ee-simple-file-list') . ': ' . $eeFileSize . '</small></p>
 								
 							</div>';
+							
+							
+							// Extension Check
+							if($eeSFLA AND $eeAdmin) {
+								$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
+								include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_FileListActions.php');
+							}
 						}
 							
 						$eeOutput .= $eeFileActions;
