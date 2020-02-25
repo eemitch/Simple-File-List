@@ -605,9 +605,12 @@ if(@count($eeSFL_Files) >= 1) {
 						if($eeSFLA AND $eeAdmin) {
 							$eeFileActions .= '<br />';
 							if(@count($eeSFL_Settings) > 1) {
-								$eeFileActions .= '<a id="eeSFLA_CopyTo_' . $eeRowID . '" onclick="eeSFLA_CopyTo(' . $eeRowID . ');" href="#" >' . __('Copy to List', 'ee-simple-file-list') . '</a> | ';
+								$eeFileActions .= '<a id="eeSFLA_CopyTo_' . $eeRowID . '" onclick="eeSFLA_CopyTo(' . $eeRowID . ');" href="#" >' . __('Copy to List', 'ee-simple-file-list') . '</a>';
 							}
-							$eeFileActions .= '<a id="eeSFLA_FileAccess_' . $eeRowID . '" onclick="eeSFLA_Access(' . $eeRowID . ');" href="#" >' . __('Grant Access', 'ee-simple-file-list') . '</a>';
+							if($eeSFL_Config['Mode'] == 'LockDown') {
+								$eeFileActions .= ' | <a id="eeSFLA_FileAccess_' . $eeRowID . '" onclick="eeSFLA_Access(' . $eeRowID . ');" href="#" >' . __('Grant Access', 'ee-simple-file-list') . '</a>';
+							}
+							
 						}
 						
 						// Strip trailing pipe if needed

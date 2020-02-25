@@ -232,6 +232,7 @@ function eeSFL_ManageLists() {
 	// Logging
 	$eeSFL_Log['Admin'][] = 'Displaying Tab: ' . $active_tab . ' ' . @$active_subtab;
 	$eeSFL_Log['Config'][] = $eeSFL_Config;
+	$eeSFL_Log['Files'][] = $eeSFL_Files;
 	if(@$_POST) { array_unshift($eeSFL_Log, $_POST); } // Add POST to the beginning of the log
 	
 	// Timer

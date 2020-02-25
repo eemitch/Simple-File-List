@@ -12,35 +12,39 @@ Simple File List gives your WordPress website a list of your files which allows 
 
 == Description ==
 
-Upload and manage your files from the Admin List. Optionally, allow front-side users to upload too. Both the Front-side List and Uploader can be shown to users based on their role; Everyone, Only Logged-in User, Only Admins or Nobody. Restrict the files allowed to specific types, limit their size and quantity per upload job.
+Simple File List is a free plugin that gives your WordPress website a list of your files allowing your users to open and download them. Users can also upload files if you choose.
 
-The file list table has options to show; file size, modification date and thumbnail columns. Thumbnail images are generated automatically for images and videos. Sort files by name, date, size or random. You can also collect the uploader's name, email and description of the file(s). This can then be shown in the file list.
+Simple File List is also an alternative to using FTP or Dropbox for larger files. There's no need to deal with Dropbox or FTP usernames and passwords anymore! Everything is on your Wordpress website.
 
-Files can also be assigned descriptions, which can be added from the Admin list or user uploads. Descriptions can be shown or hidden. Use the Send option to send emails with links to selected files.
-
-If you dare, you can give your front-side users full control over renaming, moving, sending, deleting and editing descriptions.
-
-Simple File List is also an alternative to using FTP or Dropbox for larger files. There's no need to deal with Dropbox or FTP usernames and passwords anymore! Everything is on your Wordpress website. All you need is a VPS or dedicated web server.
+* Manage your files and the list settings from the Admin List.
+* Complete settings for: list display and performance, file uploading restrictions, upload notifications and additional functionality options. 
+* Both the Front-side List and Uploader can be shown to users based on their role; Everyone, Only Logged-in User, Only Admins or Nobody.
+* Optionally collect the uploader's name, email and description of the file(s). This can then be shown in the file list.
+* Files can also be assigned descriptions, which can be added from the Admin list or user uploads. Descriptions can be shown or hidden.
+* Use the Send option to send someone an email with a link to your file.
+* Optionally allow your front-side users full control over renaming, moving, sending, deleting and editing descriptions.
 
 
 = This Plugin is Great For =
 
-* Exchanging files when the sizes get too large for email attachments
-* Sharing files with a community of others
-* When you need a list of files, separate from the media library
+* Exchanging files when the sizes get too large for email attachments.
+* Posting official documents.
+* Sharing files within an organization.
+* Sharing files with business clients or a community.
 * When you need a list of archived files, such as videos, PDF files, or music files.
-* When you need a down-and-dirty simple front-side uploader so people can send you files.
+* When you need a simple front-side uploader so people can send you files.
 
 
 = List Features =
 
-* Limit access to only Admins or logged-in users.
-* Add and manage your files from the Admin List. Optionally allow front-side users to manage files too.
-* Optionally show file date, size and a thumbnail for images and videos.
+* Limit access to only Admins or logged-in users, or hide the list and only show the uploader.
+* Add and manage your files from the Admin List.
+* Show columns for file date, size and a thumbnail for images and videos.
 * Add descriptions to files and optionally show them in your list.
 * Sort file by name, date or file size ... ascending or descending.
-* Automatically generate thumbnails for videos and image files.
+* Thumbnail images are generated automatically for images and videos (ffMpeg required).
 * Send emails with links to your files to others.
+* Files are kept separate from the media library
 
 
 = Uploader Features =
