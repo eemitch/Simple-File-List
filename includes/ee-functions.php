@@ -376,9 +376,11 @@ function eeSFL_ProcessTextInput($eeTerm, $eeType = 'text') {
 
 
 // Check if a file already exists, then number it so file will not be over-written.
-function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path from WP root
+function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded, $eeSFL_ID = 1) { // Full path from WP root
 	
-	global $eeSFL_ID, $eeSFL_Config, $eeSFL_Log;
+	global $eeSFL, $eeSFL_Log;
+	
+	$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID);
 	
 	$eeCopyLimit = 1000; // File copies limit
 	$eeDir = dirname($eeSFL_FilePathAdded) . '/';
@@ -389,25 +391,29 @@ function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path from W
 	
 	$eeSFL_Files = get_option('eeSFL-FileList-' . $eeSFL_ID); // Our array of file info
 	
-	foreach($eeSFL_Files as $eeArray) { // Loop through file array and look for a match.
-		
-		$eeFilePath = $eeArray['FilePath']; // Get the /folder/name.ext
-		
-		// Check if duplicate
-		if( $eeSFL_FilePathAdded == $eeSFL_Config['FileListDir'] . $eeFilePath ) { // Duplicate found
-		
-			$eeSFL_Log['Add Files'][] = 'Duplicate Item Found: ' . $eeSFL_FilePathAdded;
+	if($eeSFL_Files) {
+	
+		foreach($eeSFL_Files as $eeArray) { // Loop through file array and look for a match.
 			
-			if( is_file(ABSPATH . $eeSFL_FilePathAdded) ) { // Confirm the file is really there
+			$eeFilePath = $eeArray['FilePath']; // Get the /folder/name.ext
+			
+			// Check if duplicate
+			if( $eeSFL_FilePathAdded == $eeSFL_Config['FileListDir'] . $eeFilePath ) { // Duplicate found
+			
+				$eeSFL_Log['Add Files'][] = 'Duplicate Item Found: ' . $eeSFL_FilePathAdded;
 				
-				for ($i = 1; $i <= $eeCopyLimit; $i++) { // Look for existing copies
+				if( is_file(ABSPATH . $eeSFL_FilePathAdded) ) { // Confirm the file is really there
 					
-					$eeSFL_FilePathAdded = $eeDir . $eeNameOnly . '_(' . $i . ').' . $eeExtension; // Indicate the copy number
-					
-					if(!is_file(ABSPATH . $eeSFL_FilePathAdded)) { break; } // If no copy is there, we're done.
-				}							
+					for ($i = 1; $i <= $eeCopyLimit; $i++) { // Look for existing copies
+						
+						$eeSFL_FilePathAdded = $eeDir . $eeNameOnly . '_(' . $i . ').' . $eeExtension; // Indicate the copy number
+						
+						if(!is_file(ABSPATH . $eeSFL_FilePathAdded)) { break; } // If no copy is there, we're done.
+					}							
+				}
 			}
 		}
+	
 	}
 		
 	return 	$eeSFL_FilePathAdded; // Return the new file name and path
