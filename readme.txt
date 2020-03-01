@@ -4,7 +4,7 @@ Donate link: http://simplefilelist.com/donations/simple-file-list-project/
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
 Tested up to: 5.4
-Stable tag: 4.1.2
+Stable tag: 4.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -176,7 +176,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.3 - User Manager (coming soon) Integration
+* 4.1.3 - Added shortcodes for Search & Pagination customization
 
 
 == Screenshots ==
@@ -188,9 +188,15 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
-= 4.2.3 =
+= 4.2.4 BETA =
+* Added option to allow uploaded files to over-write existing files, rather than numbering new files with the same name.
+* Further File Access Manager integration
+* CSS Improvements
+
+= 4.2.3 BETA =
+
 * Made multi-list aware
-* Added User Manager integration
+* Added File Access Manager integration
 * Various bug fixes and minor improvements
 
 = 4.1.3 =

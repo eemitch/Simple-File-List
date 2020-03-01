@@ -64,6 +64,7 @@ class eeSFL_MainClass {
 			'UploadLimit' => 10, // Limit Files Per Upload Job (Quantity)
 			'UploadMaxFileSize' => 1, // Maximum Size per File (MB)
 			'FileFormats' => 'gif, jpg, jpeg, png, tif, pdf, wav, wmv, wma, avi, mov, mp4, m4v, mp3, zip', // Allowed Formats
+			'AllowOverwrite' => 'NO', // Number new files with same name, or just overwrite.
 			
 			// Display Settings
 			'PreserveSpaces' => 'NO', // Replace ugly hyphens with spaces
@@ -226,7 +227,7 @@ class eeSFL_MainClass {
     
     
     // Scan the real files and create or update array as needed.
-    public function eeSFL_UpdateFileListArray($eeSFL_ID) {
+    public function eeSFL_UpdateFileListArray($eeSFL_ID = 1) {
 	    
 	    global $eeSFL_Log, $eeSFL_Config, $eeSFL_Env, $eeSFLF;
 	    

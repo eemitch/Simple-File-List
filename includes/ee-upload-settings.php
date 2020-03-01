@@ -62,6 +62,16 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 		}
 	}
 	
+	
+	// YES/NO Checkboxes
+	$eeCheckboxes = array(
+		'AllowOverwrite'
+	);
+	foreach( $eeCheckboxes as $eeTerm ) {
+		$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
+	}
+	
+	
 	// Update DB
 	update_option('eeSFL-Settings', $eeSettings );
 	
@@ -168,7 +178,21 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePlug
 					
 			}
 			
+			// Overwrite or not
 			$eeOutput .= '<br class="eeClearFix" />
+			
+			<label for="eeAllowOverwrite">' . __('Allow Overwriting', 'ee-simple-file-list') . ':</label>
+		<input type="checkbox" name="eeAllowOverwrite" value="YES" id="eeAllowOverwrite"';
+		
+		if( $eeSFL_Config['AllowOverwrite'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /> <p>' . __('Do not number files, overwrite instead.', 'ee-simple-file-list') . '</p>
+		
+		<div class="eeNote">' . __('Existing files with the same name will be overwritten.', 'ee-simple-file-list') . ' ' .  
+			__('Use with caution!', 'ee-simple-file-list') . '</div>
+		
+		
+		<br class="eeClearFix" />
 			
 			<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" />
 			

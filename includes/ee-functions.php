@@ -382,6 +382,10 @@ function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded, $eeSFL_ID = 1) { // F
 	
 	$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID);
 	
+	if(@$eeSFL_Config['AllowOverwrite'] == 'YES') { // Overwriting files allowed
+		return $eeSFL_FilePathAdded;
+	}
+	
 	$eeCopyLimit = 1000; // File copies limit
 	$eeDir = dirname($eeSFL_FilePathAdded) . '/';
 		

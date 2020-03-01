@@ -11,6 +11,8 @@ function eeSFL_ManageLists() {
 	global $eeSFL, $eeSFL_Log, $eeSFL_DevMode, $eeSFL_ID, $eeSFL_Config, $eeSFL_Env, $eeSFL_ListNumber;
 	global $eeSFLF, $eeSFLS, $eeSFLA, $eeSFLA_Settings; // Extensions
 	
+	$eeSFL_Files = FALSE;
+	
 	$eeAdmin = is_admin(); // Will be TRUE here
 	
 	$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security (Only one file included per load)

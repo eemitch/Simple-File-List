@@ -61,11 +61,14 @@
 #eeSFL th,
 #eeSFL td {
 	word-break: normal;
+	width: auto;
 }
-
-#eeSFL td.eeSFL_Thumbnail,
+#eeSFL td.eeSFL_Thumbnail {
+	width: 64px;
+}
 #eeSFL td.eeSFL_Thumbnail img {
-	text-align: center;
+	display: block;
+	margin: 0 auto;
 }
 
 #eeSFL td.eeSFL_FileName {

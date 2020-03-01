@@ -320,6 +320,15 @@ if(@count($eeSFL_Files) >= 1) {
 				$eeListPosition = $eeFileKey; // Get the first key
 			}
 			
+			// Extension Check
+			if($eeSFLA AND !$eeAdmin) { // Front-side only
+				if($eeSFL_Config['Mode'] == 'LockDown' AND !current_user_can( 'activate_plugins' ) ) { // Admins can always see
+					if(!is_array(@$eeFileArray['FileUsers']) OR !in_array(get_current_user_id(), @$eeFileArray['FileUsers']) ) {
+						continue; // Don't show this file
+					}
+				}
+			}
+			
 			// Ready, set...
 			$eeIsFile = FALSE;
 			$eeIsFolder = FALSE;
@@ -357,6 +366,14 @@ if(@count($eeSFL_Files) >= 1) {
 					}
 					
 					$eeFileExt = $eeFileArray['FileExt']; // Get Extension
+					
+					// Extension Check
+					if($eeSFLS AND $eeSFLF) { // Get List Folder from path to ensure the thumb displays in search result
+						if($eeSFLS_FileSearchArray) {
+							$eeFile = basename($eeFileArray['FilePath']);
+							$eeSFLF_ListFolder = str_replace($eeFile, '', $eeFileArray['FilePath']);
+						}
+					}
 				
 				} elseif($eeSFLF) { // Extension Check
 					
@@ -364,7 +381,7 @@ if(@count($eeSFL_Files) >= 1) {
 					$eeFileExt = 'folder';
 					if(!$eeAdmin AND $eeSFL_ListNumber > 1) { continue; } // Disable folder support for additional lists
 					$eeFileURL = $eeSFLF->eeSFLF_GetFolderURL($eeFilePath, $eeSFLF_ShortcodeFolder); // Extension required
-					
+				
 				} else {
 					
 					$eeFilePath = FALSE;
@@ -401,7 +418,16 @@ if(@count($eeSFL_Files) >= 1) {
 			
 				$eeOutput .= '
 				
-				<tr id="eeSFL_RowID-' . $eeRowID . '">'; // Add an ID to use in javascript
+				<tr id="eeSFL_RowID-' . $eeRowID . '"';
+				
+				// Extension Check
+				if($eeSFLA) {
+					if(@$eeFileArray['FileUsers']) {
+						$eeOutput .= ' class="eeSFLA_FileHasUsers"';
+					}
+				}
+				
+				$eeOutput .= '>'; // Add an ID to use in javascript
 				
 				
 				// Thumbnail
@@ -597,7 +623,7 @@ if(@count($eeSFL_Files) >= 1) {
 						}
 						
 						// Extension Check
-						if(!$eeSFLF) {
+						if(!$eeSFLF AND $eeAdmin) {
 							$eeFileActions .= '<a class="eeDimmedLink" href="/wp-admin/admin.php?page=ee-simple-file-list&tab=extensions" >' . __('Move', 'ee-simple-file-list') . '</a>';
 						}
 						
