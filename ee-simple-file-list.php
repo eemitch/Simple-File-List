@@ -228,11 +228,12 @@ function eeSFL_Shortcode($atts, $content = null) {
 			'showheader' => '',
 			'showactions' => '',
 			'showfolder' => '',
+			'hidetype' => '', // Hide file types
+			'hidename' => '', // Hide the name matches
 			'paged' => '', // eeSFLS
 			'filecount' => '', // eeSFLS
 			'search' => '', // eeSFLS
-			'hidetype' => '', // Hide file types
-			'hidename' => '' // Hide the name matches
+			'matchrole' => '' // eeSFLA
 		), $atts );
 		
 		extract($atts);
@@ -263,6 +264,9 @@ function eeSFL_Shortcode($atts, $content = null) {
 		if($paged) { $eeSFL_Config['EnablePagination'] = $paged; }
 		if($filecount) { $eeSFL_Config['FilesPerPage'] = $filecount; }
 		if($search) { $eeSFL_Config['EnableSearch'] = $search; }
+		
+		// Useless without eeSFLA
+		if($matchrole) { $eeSFL_Config['MatchRole'] = $matchrole; }
 		
 	} else {
 		$eeSFL_Log['L' . $eeSFL_ListNumber][] = 'No Shortcode Attributes';
