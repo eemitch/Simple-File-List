@@ -908,7 +908,7 @@ class eeSFL_MainClass {
 		
 		// Log Size Management
 		$eeSizeCheck = serialize($eeLogNow);
-		if(strlen($eeSizeCheck) > 16777215) { // Using MEDIUMTEXT Limit, even tho options are LONGTEXT.
+		if(strlen($eeSizeCheck) > 65535) { // Using TEXT Limit, even tho options are LONGTEXT.
 			$eeLogNow = array(); // Clear
 		}
 		
