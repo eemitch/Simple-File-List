@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 define('eeSFL_Version', '4.2.4'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_DB_Version', '4.1'); // Database structure version - used for eeSFL_VersionCheck()
-define('eeSFL_Cache_Version', '2'); // Cache-Buster version for static files - used when updating CSS/JS
+define('eeSFL_Cache_Version', '3'); // Cache-Buster version for static files - used when updating CSS/JS
 
 // Our Core
 $eeSFL = FALSE; // Our main class
@@ -165,35 +165,57 @@ function eeSFL_Textdomain() {
 // Createing a New Post with Shortcode
 function eeSFL_CreatePostwithShortcode() { 
 	
-	global $eeSFL_Log;
-	
-	$eeShortcode = FALSE;
-	$eeCreatePostType = FALSE;
-	$eeCreatePostType = filter_var(@$_POST['eeCreatePostType'], FILTER_SANITIZE_STRING);
-	$eeShortcode = filter_var(@$_POST['eeShortcode'], FILTER_SANITIZE_STRING);
+	if(@$_POST['eeCreatePostType']) {
 		
-	if(($eeCreatePostType == "Post" OR $eeCreatePostType == "Page") AND $eeShortcode) {
+		global $eeSFL_Log;
 		
-		// Create Post Object
-		$eeNewPost = array(
-			'post_type'		=> $eeCreatePostType,
-			'post_title'    => 'My Simple File List ' . $eeCreatePostType,
-			'post_content'  => '<p style="color:red;"><em>Note that this ' . $eeCreatePostType . ' is in draft status</em></p><div>' . $eeShortcode . '</div>',
-			'post_status'   => 'draft'
-		);
- 
-		// Create Post
-		$eeNewPostID = wp_insert_post( $eeNewPost );
+		$eeSFL_ID = FALSE;
+		$eeShortcode = FALSE;
+		$eeCreatePostType = FALSE;
+		$eePostTitle = FALSE;
 		
-		if($eeNewPostID) {
-			
-			$eeSFL_Log['p=' . $eeNewPostID][] = 'Creating new ' . $eeCreatePostType . ' with shortcode...';
-			$eeSFL_Log['p=' . $eeNewPostID][] = $eeShortcode;
-			
-			header('Location: /?p=' . $eeNewPostID);
+		// eeSFLA
+		$eeSFL_ID = filter_var( @$_REQUEST['listID'], FILTER_VALIDATE_INT);
+		if(!$eeSFL_ID) {  $eeSFL_ID = filter_var( @$_REQUEST['eeNewListID'], FILTER_VALIDATE_INT); } 
+		if(!$eeSFL_ID) {  $eeSFL_ID = 1; }
+		
+		$eeCreatePostType = filter_var(@$_POST['eeCreatePostType'], FILTER_SANITIZE_STRING);
+		$eeShortcode = filter_var(@$_POST['eeShortcode'], FILTER_SANITIZE_STRING);
+		$eePostTitle = filter_var(@$_POST['eePostTitle'], FILTER_SANITIZE_STRING);
+		
+		if(!$eeShortcode) {
+			$eeShortcode = '[eeSFL list="' . $eeSFL_ID . '"]';
 		}
 		
-		return TRUE;
+		if(!$eePostTitle) {
+			$eePostTitle = 'My Simple File List ' . $eeCreatePostType;
+		}
+			
+		if(($eeCreatePostType == "Post" OR $eeCreatePostType == "Page") AND $eeShortcode) {
+			
+			// Create Post Object
+			$eeNewPost = array(
+				'post_type'		=> $eeCreatePostType,
+				'post_title'    => $eePostTitle,
+				'post_content'  => '<div>' . $eeShortcode . '</div>',
+				'post_status'   => 'draft'
+			);
+			
+			$eeSFL_Log['Creating Post'] = $eeNewPost;
+	 
+			// Create Post
+			$eeNewPostID = wp_insert_post( $eeNewPost );
+			
+			if($eeNewPostID) {
+				
+				$eeSFL_Log['p=' . $eeNewPostID][] = 'Creating new ' . $eeCreatePostType . ' with shortcode...';
+				$eeSFL_Log['p=' . $eeNewPostID][] = $eeShortcode;
+				
+				header('Location: /?p=' . $eeNewPostID);
+			}
+			
+			return TRUE;
+		}
 	}
 }
 add_action( 'wp_loaded', 'eeSFL_CreatePostwithShortcode' );

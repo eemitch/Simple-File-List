@@ -96,7 +96,7 @@ function eeSFL_ManageLists() {
     $active_tab == 'support' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Create Shortcode', 'ee-simple-file-list') . '</a>';
     
-    $eeOutput .= '</h2>'; // END Main Tabs    
+    $eeOutput .= '</h2>'; // END Main Tabs   
     
     
     // Tab Content =============================================================
@@ -114,7 +114,7 @@ function eeSFL_ManageLists() {
 	} elseif($active_tab == 'settings') {
 	
 		// Sub Tabs
-		if( isset( $_GET[ 'subtab' ] ) ) { $active_subtab = $_GET[ 'subtab' ]; } else { $active_subtab = 'list_settings'; }
+		if( isset( $_GET[ 'subtab' ] ) ) { $active_subtab = $_GET[ 'subtab' ]; } else { $active_subtab = 'list_settings'; } 
 		
 		// Extension Check
     	if($eeSFLA) { // Creating or Editing a File List
@@ -171,9 +171,7 @@ function eeSFL_ManageLists() {
 		if($eeSFLA AND $active_subtab == 'list_access') { // Extension Check
 			
 			$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-			// $eeOutput .= '<div id="eeSFLA_CreateListInner">';
-			include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_ListEditInputs.php');
-			// $eeOutput .= '</div>';
+			include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_ListAccessSettingsDisplay.php');
 		
 		} elseif($active_subtab == 'uploader_settings') {
 			

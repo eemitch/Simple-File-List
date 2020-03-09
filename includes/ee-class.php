@@ -880,18 +880,89 @@ class eeSFL_MainClass {
 	}
 	
 	
+	
+	
+	// Sanitize Email Addresses
+	public function eeSFL_SanitizeEmailString($eeAddresses) { // Can be one or more addresses, comma deliniated
+		
+		global $eeSFL_Log;
+		$eeAddressSanitized = '';
+		
+		if(strpos($eeAddresses, ',')) { // Multiple Addresses
+		
+			$eeSFL_Addresses = explode(',', $eeAddresses);
+			
+			$eeSFL_AddressesString = '';
+			
+			foreach($eeSFL_Addresses as $add){
+				
+				$add = trim($add);
+				
+				if(filter_var($add, FILTER_VALIDATE_EMAIL)) {
+			
+					$eeSFL_AddressesString .= $add . ',';
+					
+				} else {
+					$eeSFL_Log['errors'][] = $add . ' - ' . __('This is not a valid email address.', 'ee-simple-file-list');
+				}
+			}
+			
+			$eeAddressSanitized = substr($eeSFL_AddressesString, 0, -1); // Remove last comma
+			
+		
+		} elseif(filter_var($eeAddresses, FILTER_SANITIZE_EMAIL)) { // Only one address
+			
+			$add = $eeAddresses;
+			
+			if(filter_var($add, FILTER_VALIDATE_EMAIL)) {
+				
+				$eeAddressSanitized = $add;
+				
+			} else {
+				
+				$eeSFL_Log['errors'][] = $add . ' - ' . __('This is not a valid email address.', 'ee-simple-file-list');
+			}
+			
+		} else {
+			
+			$eeAddressSanitized = ''; // Anything but a good email gets null.
+		}
+		
+		return $eeAddressSanitized;
+	}
+	
+	
+	
+	
+	
+	
 	// Upload Info Form Display
 	public function eeSFL_UploadInfoForm() {
 		
-		$eeOutput = '<div id="eeUploadInfoForm">
+		$eeName = '';
+		$eeEmail = '';
+		
+		$wpUserObj = wp_get_current_user();
+		
+		if($wpUserObj) {
+			$eeName = $wpUserObj->first_name . ' ' . $wpUserObj->last_name;
+			$eeEmail = $wpUserObj->user_email;
+		}
+		
+		$eeOutput = '<div id="eeUploadInfoForm">';
+		
+			if(!$eeEmail) {
+				
+				$eeOutput .= '<label for="eeSFL_Name">' . __('Name', 'ee-simple-file-list') . ':</label>
 			
-			<label for="eeSFL_Name">' . __('Name', 'ee-simple-file-list') . ':</label>
-			<input required="required" type="text" name="eeSFL_Name" value="" id="eeSFL_Name" size="64" maxlength="64" /> 
+				<input required="required" type="text" name="eeSFL_Name" value="' . $eeName . '" id="eeSFL_Name" size="64" maxlength="64" /> 
 			
-			<label for="eeSFL_Email">' . __('Email', 'ee-simple-file-list') . ':</label>
-			<input required="required" type="email" name="eeSFL_Email" value="" id="eeSFL_Email" size="64" maxlength="128" />
+				<label for="eeSFL_Email">' . __('Email', 'ee-simple-file-list') . ':</label>
+				<input required="required" type="email" name="eeSFL_Email" value="' . $eeEmail . '" id="eeSFL_Email" size="64" maxlength="128" />';
 			
-			<label for="eeSFL_Comments">' . __('Description', 'ee-simple-file-list') . ':</label>
+			}
+			
+			$eeOutput .= '<label for="eeSFL_Comments">' . __('Description', 'ee-simple-file-list') . ':</label>
 			<textarea required="required" name="eeSFL_Comments" id="eeSFL_Comments" rows="5" cols="64" maxlength="5012"></textarea></div>';
 			
 		return $eeOutput;

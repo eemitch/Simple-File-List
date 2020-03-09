@@ -422,7 +422,7 @@ if(@count($eeSFL_Files) >= 1) {
 				
 				// Extension Check
 				if($eeSFLA) {
-					if(@$eeFileArray['FileUsers']) {
+					if(@is_array($eeFileArray['FileUsers'])) {
 						$eeOutput .= ' class="eeSFLA_FileHasUsers"';
 					}
 				}

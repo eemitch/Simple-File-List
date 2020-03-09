@@ -188,16 +188,13 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
-= 4.2.4 BETA =
+= 4.2.X =
+* File Access Manager integration
+* Now auto-detecting a logged-in user and auto-populating the name and email fields on the upload form.
 * Added option to allow uploaded files to over-write existing files, rather than numbering new files with the same name.
-* Further File Access Manager integration
+* No longer hiding upload settings if the uploader is set to not display.
 * CSS Improvements
-
-= 4.2.3 BETA =
-
-* Made multi-list aware
-* Added File Access Manager integration
-* Various bug fixes and minor improvements
+* Various bug fixes and improvements
 
 = 4.1.3 =
 * Added shortcodes for Search & Pagination customization

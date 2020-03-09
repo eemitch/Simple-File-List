@@ -142,7 +142,9 @@
 	display: none; /* Show with javascript */
 }
 
-
+#eeUploadInfoForm {
+	margin-bottom: 20px;
+}
 
 
 .eeSFL_UploadingImg,
@@ -298,7 +300,6 @@
 	-ms-transform: translateY(-50%);
 	transform: translateY(-50%);
 }
-
 
 .eeCenter {
 	text-align: center !important;
