@@ -71,6 +71,8 @@ if(@$eeSFL_Config['FileListDir']) {
 			<input type="hidden" name="eeSFL_FileCount" value="" id="eeSFL_FileCount" />
 			<input type="hidden" name="eeSFL_FileList" value="" id="eeSFL_FileList" />';
 		
+		if($eeSFL_Env['wpUserID'] > 0) { $eeOutput .= '<input type="hidden" name="eeSFL_FileOwner" value="' . $eeSFL_Env['wpUserID'] . '" id="eeSFL_FileOwner" />'; }
+			
 		if($eeSFLF AND $eeSFLF_ListFolder) { $eeOutput .= '
 			<input type="hidden" name="eeSFLF_UploadFolder" value="' . urlencode($eeSFLF_ListFolder) . '" id="eeSFLF_UploadFolder" />
 			';

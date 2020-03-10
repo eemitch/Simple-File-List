@@ -28,7 +28,8 @@ define('eeSFL_Cache_Version', '3'); // Cache-Buster version for static files - u
 // Our Core
 $eeSFL = FALSE; // Our main class
 $eeSFL_ID = 1;
-$eeSFL_Config = array(); // Database Info
+$eeSFL_Settings = array(); // All List Info
+$eeSFL_Config = array(); // This List Info
 $eeSFL_Env = array(); // Environment
 $eeSFL_ListNumber = 1; // Count of lists per page
 
@@ -53,7 +54,7 @@ $eeSFLF_ListFolder = FALSE;
 // Plugin Setup
 function eeSFL_Setup() {
 	
-	global $eeSFL, $eeSFL_ID, $eeSFL_Extensions, $eeSFL_Log, $eeSFL_Config, $eeSFLA_Settings, $eeSFL_Env;
+	global $eeSFL, $eeSFL_ID, $eeSFL_Extensions, $eeSFL_Log, $eeSFL_Config, $eeSFL_Settings, $eeSFLA_Settings, $eeSFL_Env;
 	
 	$eeSFL_Log[] = 'Running Setup...';
 
@@ -75,7 +76,9 @@ function eeSFL_Setup() {
 			if( !$eeSFL_ID ) { $eeSFL_ID = 1; } // Default to main list
 		}
 		
-		$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID); // Get the Configuration Array	
+		// Get the lists
+		$eeSFL_Settings = get_option('eeSFL-Settings');
+		$eeSFL_Config = $eeSFL_Settings[$eeSFL_ID]; // Get this list
 	}	
 	
 	// If Sending Files
@@ -116,7 +119,7 @@ function eeSFL_Setup() {
 			
 			if(is_plugin_active( $eeSFL_Extension . '/' . $eeSFL_Extension . '.php' )) { // Is the plugin active?
 			
-				$eeSFL_Log['extensions'][] = $eeSFL_Extension;
+				$eeSFL_Log['active'][] = $eeSFL_Extension;
 				
 				$eeSFL_Nonce = wp_create_nonce('eeSFL_Include'); // Used in all extension INI files
 				
@@ -227,10 +230,12 @@ function eeSFL_Shortcode($atts, $content = null) {
 	
 	// Basic Usage: [eeSFL]
     
-    global $eeSFL, $eeSFL_ID, $eeSFL_DevMode, $eeSFL_Log, $eeSFL_Env, $eeSFL_Config, $eeSFL_ListNumber; // Number of the list on same page
+    global $eeSFL, $eeSFL_ID, $eeSFL_DevMode, $eeSFL_Log, $eeSFL_Env, $eeSFL_Settings, $eeSFL_Config, $eeSFL_ListNumber; // Number of the list on same page
     global $eeSFLF, $eeSFLS, $eeSFLA; // Extensions
 	
 	$eeAdmin = is_admin(); // Will be FALSE here
+	if($eeAdmin) { return FALSE; } // Don't execute on page editor
+	
 	$eeOutput = '';
 	
 	$eeSFL_Log['L' . $eeSFL_ListNumber][] = 'Shortcode Loading: ' . get_permalink();
@@ -296,6 +301,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 	
 	// Extension Check
 	if($eeSFLA) { 
+	    $eeSFL_Log['SFLA'][] = 'User ID: ' . $eeSFL_Env['wpUserID'];
 	    $eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
 		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_FrontsideFirewall.php');
 		if($eeSFLA_Proceed === FALSE) {  // We cannot go on.
@@ -342,7 +348,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 			$eeSFL_Config['ShowList'] = 'NO'; // Show Nothing
 	}
 	
-	if($eeSFL_Config['ShowList'] != 'NO') {
+	if($eeSFLA OR $eeSFL_Config['ShowList'] != 'NO') {
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
 		include(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/ee-list-display.php');
 	}

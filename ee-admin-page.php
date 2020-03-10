@@ -112,7 +112,7 @@ function eeSFL_ManageLists() {
 		include($eeSFL_Env['pluginDir'] . 'ee-list-display.php'); // The File List		
 	
 	} elseif($active_tab == 'settings') {
-	
+		
 		// Sub Tabs
 		if( isset( $_GET[ 'subtab' ] ) ) { $active_subtab = $_GET[ 'subtab' ]; } else { $active_subtab = 'list_settings'; } 
 		

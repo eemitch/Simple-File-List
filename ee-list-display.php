@@ -323,7 +323,9 @@ if(@count($eeSFL_Files) >= 1) {
 			// Extension Check
 			if($eeSFLA AND !$eeAdmin) { // Front-side only
 				if($eeSFL_Config['Mode'] == 'LockDown' AND !current_user_can( 'activate_plugins' ) ) { // Admins can always see
-					if(!is_array(@$eeFileArray['FileUsers']) OR !in_array(get_current_user_id(), @$eeFileArray['FileUsers']) ) {
+					if(@in_array($eeSFL_Env['wpUserID'], @$eeFileArray['FileUsers']) OR @$eeFileArray['FileOwner'] == $eeSFL_Env['wpUserID'] ) { // !is_array(@$eeFileArray['FileUsers']) OR  <<<-----  ???
+						// Proceed
+					} else {
 						continue; // Don't show this file
 					}
 				}
@@ -628,12 +630,18 @@ if(@count($eeSFL_Files) >= 1) {
 						}
 						
 						// Extension Check
-						if($eeSFLA AND $eeAdmin) {
+						if($eeSFLA) {
+							
 							$eeFileActions .= '<br />';
-							if(@count($eeSFL_Settings) > 1) {
-								$eeFileActions .= '<a id="eeSFLA_CopyTo_' . $eeRowID . '" onclick="eeSFLA_CopyTo(' . $eeRowID . ');" href="#" >' . __('Copy to List', 'ee-simple-file-list') . '</a>';
+							
+							if( $eeAdmin OR ($eeSFL_Config['Mode'] == 'User' AND $eeSFL_Config['AllowCopyToList'] == 'YES') ) {
+								
+								if(@count($eeSFL_Settings) > 1) {
+									$eeFileActions .= '<a id="eeSFLA_CopyTo_' . $eeRowID . '" onclick="eeSFLA_CopyTo(' . $eeRowID . ');" href="#" >' . __('Copy to List', 'ee-simple-file-list') . '</a>';
+								}	
 							}
-							if($eeSFL_Config['Mode'] == 'LockDown') {
+							
+							if( ($eeAdmin AND $eeSFL_Config['Mode'] == 'LockDown') OR $eeSFL_Config['Mode'] == 'User' ) {
 								$eeFileActions .= ' | <a id="eeSFLA_FileAccess_' . $eeRowID . '" onclick="eeSFLA_Access(' . $eeRowID . ');" href="#" >' . __('Grant Access', 'ee-simple-file-list') . '</a>';
 							}
 							

@@ -219,6 +219,10 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 							$eeSFL_Config['FileListURL'] . $eeSFLF_UploadFolder . $eeFile . PHP_EOL . 
 								"(" . eeSFL_GetFileSize( $eeSFL_Config['FileListDir'] . $eeSFLF_UploadFolder . $eeFile ) . ")" . PHP_EOL . PHP_EOL;
 					
+						// Is uploader person logged-in?
+						if( is_numeric(@$_POST['eeSFL_FileOwner']) ) {
+							$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'FileOwner', $_POST['eeSFL_FileOwner']);
+						}
 								
 						// Add submitter data to file list array
 						if($eeSFL_Config['GetUploaderInfo'] == 'YES') {

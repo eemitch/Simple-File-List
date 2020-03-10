@@ -137,6 +137,8 @@ class eeSFL_MainClass {
 		
 		$eeSFL_Env['supported'] = get_option('eeSFL_Supported'); // Server technologies available (i.e. FFMPEG)
 		
+		$eeSFL_Env['wpUserID'] = get_current_user_id();
+		
 		return $eeSFL_Env;
     }
     
@@ -209,7 +211,7 @@ class eeSFL_MainClass {
 			foreach( $eeFileArray as $eeKey => $eeThisFileArray ) {
 		
 				if($eeFile == $eeThisFileArray['FilePath']) { // Look for this file
-						
+					
 					$eeFileArray[$eeKey][$eeDetail] = $eeValue;
 				}
 			}
