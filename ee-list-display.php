@@ -637,7 +637,7 @@ if(@count($eeSFL_Files) >= 1) {
 							if( $eeAdmin OR ($eeSFL_Config['Mode'] == 'User' AND $eeSFL_Config['AllowCopyToList'] == 'YES') ) {
 								
 								if(@count($eeSFL_Settings) > 1) {
-									$eeFileActions .= '<a id="eeSFLA_CopyTo_' . $eeRowID . '" onclick="eeSFLA_CopyTo(' . $eeRowID . ');" href="#" >' . __('Copy to List', 'ee-simple-file-list') . '</a>';
+									$eeFileActions .= '<a id="eeSFLA_CopyTo_' . $eeRowID . '" onclick="eeSFLA_CopyToLink(' . $eeRowID . ');" href="#" >' . __('Copy to List', 'ee-simple-file-list') . '</a>';
 								}	
 							}
 							
