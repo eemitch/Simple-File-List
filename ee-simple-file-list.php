@@ -78,7 +78,7 @@ function eeSFL_Setup() {
 		
 		// Get the lists
 		$eeSFL_Settings = get_option('eeSFL-Settings');
-		$eeSFL_Config = $eeSFL_Settings[$eeSFL_ID]; // Get this list
+		$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID); // Get this list
 	}	
 	
 	// If Sending Files

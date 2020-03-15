@@ -221,10 +221,11 @@ function eeSFL_ManageLists() {
 	include('includes/ee-admin-footer.php');
 	
 	// Extension Check
-	if($eeSFLA) {
-		// Create/Edit List Overlay
-		$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_CreateList.php');
+	if($eeSFLA) { // Create/Edit List Overlay
+		if(@$_GET['subtab'] != 'list_access') {
+			$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
+			include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_CreateList.php');	
+		}
 	}
 	
 	$eeOutput .= '</div></div>';
