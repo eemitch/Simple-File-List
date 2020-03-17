@@ -110,7 +110,8 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 			}
 			
 			if(!is_writable( ABSPATH . $eeFileListDir )) {
-				$eeSFL_Log['errors'][] = 'ERROR: I could not create the upload directory: ' . $eeFileListDir;
+				$eeSFL_Log['errors'][] = 'Cannot create the upload directory: ' . $eeFileListDir;
+				$eeSFL_Log['errors'][] = 'Please check directory permissions';
 				
 				return FALSE;
 			

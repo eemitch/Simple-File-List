@@ -58,7 +58,7 @@ function eeSFL_ManageLists() {
     $active_tab == 'file_list' ? 'nav-tab-active' : '';
     $eeOutput .= $active_tab . '">';
     
-    if($eeSFLA) { $eeOutput .= $eeSFL_Config['ListTitle']; } 
+    if($eeSFLA) { $eeOutput .= stripslashes($eeSFL_Config['ListTitle']); } 
     	else { $eeOutput .= __('File List', 'ee-simple-file-list'); }
     
     $eeOutput .= '</a>';

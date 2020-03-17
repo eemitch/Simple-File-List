@@ -51,6 +51,8 @@ if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR @$eeSFL_Config['ExpireTime
 	}
 }
 
+// echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
+
 
 // Sort Files Array
 $eeSFL_Files = $eeSFL->eeSFL_SortFiles($eeSFL_Files, $eeSFL_Config['SortBy'], $eeSFL_Config['SortOrder']);
@@ -632,17 +634,21 @@ if(@count($eeSFL_Files) >= 1) {
 						// Extension Check
 						if($eeSFLA) {
 							
-							$eeFileActions .= '<br />';
+							if($eeSFLA_IsListOwner) {
 							
-							if( $eeAdmin OR ($eeSFL_Config['Mode'] == 'User' AND $eeSFL_Config['AllowCopyToList'] == 'YES') ) {
+								$eeFileActions .= '<br />';
 								
-								if(@count($eeSFL_Settings) > 1) {
-									$eeFileActions .= '<a id="eeSFLA_CopyTo_' . $eeRowID . '" onclick="eeSFLA_CopyToLink(' . $eeRowID . ');" href="#" >' . __('Copy to List', 'ee-simple-file-list') . '</a>';
-								}	
-							}
+								if( $eeAdmin OR ($eeSFL_Config['Mode'] == 'User' AND $eeSFL_Config['AllowCopyToList'] == 'YES') ) {
+									
+									if(@count($eeSFL_Settings) > 1) {
+										$eeFileActions .= '<a id="eeSFLA_CopyTo_' . $eeRowID . '" onclick="eeSFLA_CopyToLink(' . $eeRowID . ');" href="#" >' . __('Copy to List', 'ee-simple-file-list') . '</a>';
+									}	
+								}
+								
+								if( ($eeAdmin AND $eeSFL_Config['Mode'] == 'LockDown') OR $eeSFL_Config['Mode'] == 'User' ) {
+									$eeFileActions .= ' | <a id="eeSFLA_FileAccess_' . $eeRowID . '" onclick="eeSFLA_Access(' . $eeRowID . ');" href="#" >' . __('Grant Access', 'ee-simple-file-list') . '</a>';
+								}
 							
-							if( ($eeAdmin AND $eeSFL_Config['Mode'] == 'LockDown') OR $eeSFL_Config['Mode'] == 'User' ) {
-								$eeFileActions .= ' | <a id="eeSFLA_FileAccess_' . $eeRowID . '" onclick="eeSFLA_Access(' . $eeRowID . ');" href="#" >' . __('Grant Access', 'ee-simple-file-list') . '</a>';
 							}
 							
 						}
