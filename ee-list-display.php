@@ -51,9 +51,6 @@ if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR @$eeSFL_Config['ExpireTime
 	}
 }
 
-// echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
-
-
 // Sort Files Array
 $eeSFL_Files = $eeSFL->eeSFL_SortFiles($eeSFL_Files, $eeSFL_Config['SortBy'], $eeSFL_Config['SortOrder']);
 
