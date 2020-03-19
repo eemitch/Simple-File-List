@@ -362,7 +362,7 @@ if(@count($eeSFL_Files) >= 1) {
 					// Extension Check
 					if($eeSFLA) {
 						if($eeSFL_Config['Mode'] != 'Open') { // In-direct link
-							$eeFileURL = $eeSFL_Env['pluginURL'] . 'view/?file=' . $eeFileArray['FilePath'];
+							$eeFileURL = $eeSFL_Env['pluginURL'] . 'view/?listID=' . $eeSFL_ID . '&file=' . $eeFileArray['FilePath'];
 						}
 					}
 					
@@ -631,8 +631,10 @@ if(@count($eeSFL_Files) >= 1) {
 						// Extension Check
 						if($eeSFLA) {
 							
-							if($eeSFLA_IsListOwner) {
-							
+							if($eeAdmin OR $eeSFL_Config['AllowCopyToList']) {
+								
+								$eeSFLA_Show = TRUE;
+								
 								$eeFileActions .= '<br />';
 								
 								if( $eeAdmin OR ($eeSFL_Config['Mode'] == 'User' AND $eeSFL_Config['AllowCopyToList'] == 'YES') ) {
@@ -642,10 +644,13 @@ if(@count($eeSFL_Files) >= 1) {
 									}	
 								}
 								
-								if( ($eeAdmin AND $eeSFL_Config['Mode'] == 'LockDown') OR $eeSFL_Config['Mode'] == 'User' ) {
+								if( ($eeAdmin AND $eeSFL_Config['Mode'] == 'LockDown') OR $eeSFLA_IsListOwner ) {
 									$eeFileActions .= ' | <a id="eeSFLA_FileAccess_' . $eeRowID . '" onclick="eeSFLA_Access(' . $eeRowID . ');" href="#" >' . __('Grant Access', 'ee-simple-file-list') . '</a>';
 								}
 							
+							} else {
+								
+								$eeSFLA_Show = FALSE;
 							}
 							
 						}
@@ -697,9 +702,11 @@ if(@count($eeSFL_Files) >= 1) {
 							
 							
 							// Extension Check
-							if($eeSFLA AND $eeAdmin) {
-								$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-								include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_FileListActions.php');
+							if($eeSFLA) {
+								if($eeSFLA_Show) {
+									$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
+									include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_FileListActions.php');
+								}
 							}
 						}
 							
