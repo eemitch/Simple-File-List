@@ -33,7 +33,7 @@ $eeOutput .= '<div id="eeAdminFooter">
 	
 	if( @defined('eeSFLA_Version') ) { $eeOutput .= '<br />
 		
-		' . __('User Extension', 'ee-simple-file-list') . ': ' . eeSFLA_Version;
+		' . __('Access Extension', 'ee-simple-file-list') . ': ' . eeSFLA_Version;
 	}
 	
 	$eeOutput .= '

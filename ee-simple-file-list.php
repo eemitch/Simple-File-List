@@ -311,8 +311,9 @@ function eeSFL_Shortcode($atts, $content = null) {
 		if( $eeSFLA->eeSFLA_CheckListSize($eeSFL_ID) != 'OK' ) {
 			$eeSFL_Config['AllowUploads'] = 'NO';
 		}
-		
 	}
+	
+	
 	
 	// Begin Front-Side List Display ==================================================================
 	

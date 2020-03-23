@@ -1,6 +1,8 @@
 /* Simple File List Javascript | Mitchell Bennis | Element Engage, LLC | mitch@elementengage.com */
 
-console.log('eeSFL Admin JS Loaded')
+console.log('eeSFL Admin JS Loaded');
+
+var eeBaseShortcode = 'eeSFL';
 
 var eeSFL_FileID = 0;
 
@@ -44,7 +46,7 @@ function eeShortcodeBuilder(eeNewOption, eeInputType) {
 	console.log('Shortcode Before: ' + eeShortcode);
 	
 	// Get Current Atts
-	var eeShortcode = eeShortcode.replace('[eeSFL', ''); // Trim down to just the atts
+	var eeShortcode = eeShortcode.replace('[' + eeBaseShortcode, ''); // Trim down to just the atts
 	var eeShortcodeAtts = eeShortcode.replace(']', '').trim();
 	
 	// Are there any?
@@ -156,7 +158,7 @@ function eeShortcodeBuilder(eeNewOption, eeInputType) {
 	
 	
 	// Build the new shortcode
-	var eeNewShortcode = '[eeSFL';
+	var eeNewShortcode = '[' + eeBaseShortcode;
 	
 	// Build Atts String
 	for (var eeProperty in eeAttsObject) {
@@ -244,8 +246,12 @@ jQuery(document).ready(function() {
 	// Admin side uploader view control
 	jQuery('#uploadFilesDiv').hide();
 	
-	jQuery('#eeSFL_ShortCode').val('[eeSFL]');
-	jQuery('input[name="eeShortcode"]').val('[eeSFL]');
+	if(eeSFL_ID > 1) {
+		eeBaseShortcode = eeBaseShortcode + ' list="' + eeSFL_ID + '"';
+	}
+	
+	jQuery('#eeSFL_ShortCode').val('[' + eeBaseShortcode + ']');
+	jQuery('input[name="eeShortcode"]').val('[' + eeBaseShortcode + ']');
 	
 	jQuery('#eeSFL_UploadFilesButton').click(function( event ) { 
 		

@@ -25,7 +25,15 @@ if($eeSFLF) {
 $eeChecked = '';
 $eeCheckmark = ' (' . __('Default', 'ee-simple-file-list') . ')';
 
-$eeOutput .= '<article class="eeSupp">
+// Extension Check
+if($eeSFLA) {
+	$eeOutput .= '
+	<script>var eeSFL_ID = ' . $eeSFL_ID . '</script>';
+}
+
+$eeOutput .= '
+
+<article class="eeSupp">
 
 <article class="eeSupp">
 

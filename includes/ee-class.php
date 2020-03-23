@@ -571,10 +571,20 @@ class eeSFL_MainClass {
 		
 		global $eeSFL_Log, $eeSFL_Config, $eeSFL_Env;
 		
+		$eeFileSize = filesize($eeFileFullPath);
+		
 		$eeFilePath = str_replace(ABSPATH . $eeSFL_Config['FileListDir'], '', $eeFileFullPath); // Strip path thru FileListDir
 		
 		$eePathParts = pathinfo($eeFilePath);
+		
+		if( !is_array($eePathParts) ) { 
+	        $eeSFL_Log['errors'][] = 'No Path Parts';
+	        $eeSFL_Log['errors'][] = $eeFileFullPath;
+	        return FALSE;
+	    }
+		
 		$eeFileNameOnly = $eePathParts['filename'];
+		$eeFileExt = $eePathParts['extension'];
 		$eeDir = $eePathParts['dirname']; // Get this folder location
 		if($eeDir) { $eeDir .= '/'; } // Add the slash
 		$eeDir = str_replace('.thumbnails/', '', $eeDir); // Remove if .thumbnails/ is part of the path (video thumbs)
@@ -583,30 +593,52 @@ class eeSFL_MainClass {
 		$eeThumbsURL = $eeSFL_Env['wpSiteURL'] . '/' . $eeSFL_Config['FileListURL'] . $eeDir . '.thumbnails/'; 
 		$eeThumbsPATH = ABSPATH . $eeSFL_Config['FileListDir'] . $eeDir . '.thumbnails/'; // Path to them
         
-        if( !is_array($eePathParts) ) { 
-	        $eeSFL_Log['errors'][] = 'No Path Parts';
-	        $eeSFL_Log['errors'][] = $eeFileFullPath;
-	        return FALSE;
-	    }
+        $eeSizeCheck = @getimagesize($eeFileFullPath);
         
-		
-		// Thank Wordpress for this easyness.
-		$eeFileImage = wp_get_image_editor($eeFileFullPath); // Try to open the file
-    
-        if (!is_wp_error($eeFileImage)) { // Image File Opened
-            
-            $eeFileImage->resize($this->eeFileThumbSize, $this->eeFileThumbSize, TRUE); // Create the thumbnail
-            
-            $eeFileNameOnly = str_replace('eeScreenshot_', '', $eeFileNameOnly); // Strip the temp term from video screenshots
-		
-			$eeSFL_Log['creating thumb'][] = $eeThumbsPATH . 'thumb_' . $eeFileNameOnly . '.jpg'; 
-            
-            $eeFileImage->save($eeThumbsPATH . 'thumb_' . $eeFileNameOnly . '.jpg'); // Save the file
+        // $eeSizeCheck['filesize'] = eeSFL_FormatFileSize($eeFileSize);
+        // $eeSizeCheck['pixels'] = $eeSizeCheck[0] * $eeSizeCheck[1];
+        // $eeSizeCheck['pixels-per-byte'] = $eeSizeCheck['pixels'] / $eeFileSize;
         
-        } else { // Cannot open
-	     
-	        $eeSFL_Log['errors'][] = 'Could not create thumb for image: ' . $eeFileFullPath;   
-        }
+        $eeSizeCheck['memory-limit'] = preg_replace("/[^0-9]/", "", ini_get('memory_limit') ) * 1048576;
+        $eeSizeCheck['memory-usage'] = memory_get_usage();
+        
+        $eeImageMemoryNeeded = ($eeSizeCheck[0] * $eeSizeCheck[1] * $eeSizeCheck['bits']) / 8;
+        
+        // $eeSizeCheck['image-memory'] = eeSFL_FormatFileSize($eeImageMemoryNeeded);
+        
+        $eeImageSizeLimit = ( $eeSizeCheck['memory-limit'] - $eeSizeCheck['memory-usage'] ) * .2;
+        
+        // $eeSizeCheck['image-size-limit'] = eeSFL_FormatFileSize($eeImageSizeLimit);
+        
+        // echo '<pre>' . $eeFileNameOnly; print_r($eeSizeCheck); echo '</pre>'; exit;
+        
+        if($eeImageMemoryNeeded >  $eeImageSizeLimit) { // It's too big for Wordpress
+			
+			$eeDefaultThumbIcon = $eeSFL_Env['pluginDir'] . 'images/thumbnails/!default_image.jpg';
+			$eeNewThumb = $eeThumbsPATH . 'thumb_' . $eeFileNameOnly . '.jpg';
+		
+			copy($eeDefaultThumbIcon, $eeNewThumb); // Use our default image file icon
+		
+		} else { // Create thumbnail
+			
+			// Thank Wordpress for this easyness.
+			$eeFileImage = wp_get_image_editor($eeFileFullPath); // Try to open the file
+	        
+	        if (!is_wp_error($eeFileImage)) { // Image File Opened
+	            
+	            $eeFileImage->resize($this->eeFileThumbSize, $this->eeFileThumbSize, TRUE); // Create the thumbnail
+	            
+	            $eeFileNameOnly = str_replace('eeScreenshot_', '', $eeFileNameOnly); // Strip the temp term from video screenshots
+			
+				$eeSFL_Log['creating thumb'][] = $eeThumbsPATH . 'thumb_' . $eeFileNameOnly . '.jpg'; 
+	            
+	            $eeFileImage->save($eeThumbsPATH . 'thumb_' . $eeFileNameOnly . '.jpg'); // Save the file
+	        
+	        } else { // Cannot open
+		        
+		        $eeSFL_Log['errors'][] = 'File Not Compatible: ' . basename($eeFileFullPath);   
+	        }
+		}
 	}
 	
 	

@@ -82,6 +82,12 @@ function eeSFL_ManageLists() {
     $active_tab == 'settings' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Settings', 'ee-simple-file-list') . '</a>';
     
+    // Shortcode Builder
+    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=shortcode&listID=' . $eeSFL_ID . '" class="nav-tab tabSettings ';  
+	if($active_tab == 'shortcode') {$eeOutput .= '  eeActiveTab '; }   
+    $active_tab == 'support' ? 'nav-tab-active' : ''; 
+    $eeOutput .= $active_tab . '">' . __('Create Shortcode', 'ee-simple-file-list') . '</a>';
+    
     // Get Extensions
     if(!$eeSFLF OR !$eeSFLS) {
 	    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=extensions&listID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
@@ -89,12 +95,6 @@ function eeSFL_ManageLists() {
 	    $active_tab == 'extensions' ? 'nav-tab-active' : ''; 
 	    $eeOutput .= $active_tab . '">' . __('Add Features', 'ee-simple-file-list') . '</a>';
     }
-    
-    // Shortcode Builder
-    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=shortcode&listID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';  
-	if($active_tab == 'shortcode') {$eeOutput .= '  eeActiveTab '; }   
-    $active_tab == 'support' ? 'nav-tab-active' : ''; 
-    $eeOutput .= $active_tab . '">' . __('Create Shortcode', 'ee-simple-file-list') . '</a>';
     
     $eeOutput .= '</h2>'; // END Main Tabs   
     
@@ -190,16 +190,16 @@ function eeSFL_ManageLists() {
 			include($eeSFL_Env['pluginDir'] . 'includes/ee-list-settings.php'); // The File List Settings
 		}
 		
+	} elseif($active_tab == 'shortcode') { // Shortcode Builder Tab Display...
+			
+		// Get the instructions page
+		include($eeSFL_Env['pluginDir'] . 'includes/ee-shortcode-builder.php');
+	
+	
 	} elseif($active_tab == 'extensions') { // Instructions Tab Display...
 			
 		// Get the sales page
 		include($eeSFL_Env['pluginDir'] . 'support/ee-get-extensions.php');
-	
-	
-	} elseif($active_tab == 'shortcode') { // Shortcode Builder Tab Display...
-			
-		// Get the instructions page
-		include($eeSFL_Env['pluginDir'] . 'support/ee-shortcode-builder.php');
 	
 	
 	} elseif($active_tab == 'help') { // Email Support Tab Display...
