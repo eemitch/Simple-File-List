@@ -183,16 +183,19 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 		if(check_admin_referer( 'ee-simple-file-list-upload', 'ee-simple-file-list-upload-nonce')) {
 			
 			$eeArray = json_decode($eeFileList);
+			$eeArray = array_map('eeSFL_SanitizeFileName', $eeArray);
+			
 			$eeNewArray = array(); // For our lowered-case extensions
 			
 			// Drop file extensions to lowercase
 			foreach( $eeArray as $eeFile) {  // We need to do this here and in ee-upload-engine.php
+				
 				$eeArray = explode('.', $eeFile);
 				$eeNewArray[] = $eeSFLF_UploadFolder . $eeArray[0] . '.' . strtolower($eeArray[1]);
 			}
 			$eeArray = $eeNewArray;
 			
-			$eeSFL_Env['UploadedFiles'] = $eeNewArray;
+			$eeSFL_Env['UploadedFiles'] = $eeArray;
 			
 			
 			// Notification
@@ -329,16 +332,11 @@ function eeSFL_GetFileSize($eeSFL_File) {
 // Make sure the file name is acceptable
 function eeSFL_SanitizeFileName($eeSFL_FileName) {
 	
-	if(strpos($eeSFL_FileName, '.')) {
-		$eePathParts = pathinfo($eeSFL_FileName);
-	
-		$eeFileNameOnly = str_replace('.', '_', $eePathParts['filename']); // Get rid of dots
-	
-		// Rebuild
-		$eeSFL_FileName = $eeFileNameOnly . '.' . $eePathParts['extension'];
-	}
-	
-	$eeSFL_FileName = sanitize_file_name( $eeSFL_FileName );
+	// Make sure file has an extension
+	$eeSFL_PathParts = pathinfo($eeSFL_FileName);
+	$eeSFL_FileNameAlone = str_replace('.', '_', $eeSFL_PathParts['filename']); // Get rid of dots
+	$eeSFL_Extension = strtolower($eeSFL_PathParts['extension']);
+	$eeSFL_FileName = sanitize_file_name( $eeSFL_FileNameAlone . '.' . $eeSFL_Extension );
     
     return $eeSFL_FileName;
 }

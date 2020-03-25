@@ -71,8 +71,8 @@ function eeSFL_Setup() {
 		
 		eeSFL_VersionCheck(); // Update database if needed.
 		
-		if( @$_REQUEST['listID'] ) {
-			$eeSFL_ID = filter_var($_REQUEST['listID'], FILTER_VALIDATE_INT);
+		if( @$_REQUEST['eeListID'] ) {
+			$eeSFL_ID = filter_var($_REQUEST['eeListID'], FILTER_VALIDATE_INT);
 			if( !$eeSFL_ID ) { $eeSFL_ID = 1; } // Default to main list
 		}
 		
@@ -178,7 +178,7 @@ function eeSFL_CreatePostwithShortcode() {
 		$eePostTitle = FALSE;
 		
 		// eeSFLA
-		$eeSFL_ID = filter_var( @$_REQUEST['listID'], FILTER_VALIDATE_INT);
+		$eeSFL_ID = filter_var( @$_REQUEST['eeListID'], FILTER_VALIDATE_INT);
 		if(!$eeSFL_ID) {  $eeSFL_ID = filter_var( @$_REQUEST['eeNewListID'], FILTER_VALIDATE_INT); } 
 		if(!$eeSFL_ID) {  $eeSFL_ID = 1; }
 		
@@ -254,9 +254,9 @@ function eeSFL_Shortcode($atts, $content = null) {
 			'showsize' => '',
 			'showheader' => '',
 			'showactions' => '',
-			'showfolder' => '',
 			'hidetype' => '', // Hide file types
 			'hidename' => '', // Hide the name matches
+			'showfolder' => '', // eeSFLF
 			'paged' => '', // eeSFLS
 			'filecount' => '', // eeSFLS
 			'search' => '', // eeSFLS
@@ -317,7 +317,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 	
 	// Begin Front-Side List Display ==================================================================
 	
-	$eeOutput .= '<div id="eeSFL">';
+	$eeOutput .= '<div id="eeSFL">Folder: ' . $eeSFLF_ShortcodeFolder;
 	
 	// Who Can Upload?
 	switch ($eeSFL_Config['AllowUploads']) {
@@ -363,6 +363,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 	
 	$eeSFL_ListNumber++;
 	
+	
 	if(@$_REQUEST) {
 		array_unshift($eeSFL_Log, $_REQUEST); // Add POST or GET to the beginning of the log
 	}
@@ -374,7 +375,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 	// Logging
 	$eeSFL->eeSFL_WriteLogData($eeSFL_Log);
 	if($eeSFL_DevMode) {
-		$eeOutput .= '<pre id="eeSFL_DevMode">Log File ' . print_r($eeSFL_Log, TRUE) . '</pre>';
+		// $eeOutput .= '<pre id="eeSFL_DevMode">Log File ' . print_r($eeSFL_Log, TRUE) . '</pre>';
 	}
 	
 	return $eeOutput; // Output the page

@@ -102,7 +102,7 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePlug
 	<h2>' . __('Upload Settings', 'ee-simple-file-list') . '</h2>
 
 	<input type="hidden" name="eePost" value="TRUE" />
-	<input type="hidden" name="listID" value="' . $eeSFL_ID . '" />';	
+	<input type="hidden" name="eeListID" value="' . $eeSFL_ID . '" />';	
 	
 	$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce', TRUE, FALSE);
 	

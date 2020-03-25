@@ -53,7 +53,7 @@ function eeSFL_ManageLists() {
 	// Main Tabs -------
 	
 	// File List
-	$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=file_list&listID=' . $eeSFL_ID . '" class="nav-tab tabList ';  
+	$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=file_list&eeListID=' . $eeSFL_ID . '" class="nav-tab tabList ';  
 	if($active_tab == 'file_list') {$eeOutput .= '  eeActiveTab ';}    
     $active_tab == 'file_list' ? 'nav-tab-active' : '';
     $eeOutput .= $active_tab . '">';
@@ -65,32 +65,32 @@ function eeSFL_ManageLists() {
 
     
     // Author
-    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=author&listID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
+    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=author&eeListID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
 	if($active_tab == 'author') {$eeOutput .= '  eeActiveTab '; }  
     $active_tab == 'author' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Author', 'ee-simple-file-list') . '</a>';
     
 	// The Help / Email Form Page
-    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=help&listID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
+    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=help&eeListID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
 	if($active_tab == 'help') {$eeOutput .= '  eeActiveTab '; }  
     $active_tab == 'help' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Get Help', 'ee-simple-file-list') . '</a>';
     
     // Settings
-    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&listID=' . $eeSFL_ID . '" class="nav-tab tabSettings ';   
+    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&eeListID=' . $eeSFL_ID . '" class="nav-tab tabSettings ';   
 	if($active_tab == 'settings') {$eeOutput .= '  eeActiveTab '; }  
     $active_tab == 'settings' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Settings', 'ee-simple-file-list') . '</a>';
     
     // Shortcode Builder
-    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=shortcode&listID=' . $eeSFL_ID . '" class="nav-tab tabSettings ';  
+    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=shortcode&eeListID=' . $eeSFL_ID . '" class="nav-tab tabSettings ';  
 	if($active_tab == 'shortcode') {$eeOutput .= '  eeActiveTab '; }   
     $active_tab == 'support' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Create Shortcode', 'ee-simple-file-list') . '</a>';
     
     // Get Extensions
     if(!$eeSFLF OR !$eeSFLS) {
-	    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=extensions&listID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
+	    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=extensions&eeListID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
 		if($active_tab == 'extensions') {$eeOutput .= '  eeActiveTab '; }  
 	    $active_tab == 'extensions' ? 'nav-tab-active' : ''; 
 	    $eeOutput .= $active_tab . '">' . __('Add Features', 'ee-simple-file-list') . '</a>';
@@ -131,7 +131,7 @@ function eeSFL_ManageLists() {
     	$eeOutput .= '<h2 class="nav-tab-wrapper">';
 		
 		// List Settings
-		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=list_settings&listID=' . $eeSFL_ID . '" class="nav-tab ';  
+		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=list_settings&eeListID=' . $eeSFL_ID . '" class="nav-tab ';  
 		if($active_subtab == 'list_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'list_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('File List Settings', 'ee-simple-file-list') . '</a>';
@@ -139,7 +139,7 @@ function eeSFL_ManageLists() {
 		// Extension Check
 		if($eeSFLA) {
 			if($eeSFLA_Settings['FirstRun'] == 'NO') {
-				$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=list_access&listID=' . $eeSFL_ID . '" class="nav-tab ';  
+				$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=list_access&eeListID=' . $eeSFL_ID . '" class="nav-tab ';  
 				if($active_subtab == 'list_access') {$eeOutput .= '  eeActiveTab ';}    
 			    $active_subtab == 'list_access' ? 'nav-tab-active' : '';    
 			    $eeOutput .= $active_subtab . '">' . __('List Access Settings', 'ee-simple-file-list') . '</a>';
@@ -149,19 +149,19 @@ function eeSFL_ManageLists() {
 		}
 	    
 	    // Uploader Settings
-		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=uploader_settings&listID=' . $eeSFL_ID . '" class="nav-tab ';  
+		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=uploader_settings&eeListID=' . $eeSFL_ID . '" class="nav-tab ';  
 		if($active_subtab == 'uploader_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'uploader_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('File Upload Settings', 'ee-simple-file-list') . '</a>';
 	    
 	    // Display Settings
-		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=display_settings&listID=' . $eeSFL_ID . '" class="nav-tab ';  
+		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=display_settings&eeListID=' . $eeSFL_ID . '" class="nav-tab ';  
 		if($active_subtab == 'display_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'display_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('Display Settings', 'ee-simple-file-list') . '</a>';
 	    
 	    // Notifications Settings
-		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=email_settings&listID=' . $eeSFL_ID . '" class="nav-tab ';  
+		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=email_settings&eeListID=' . $eeSFL_ID . '" class="nav-tab ';  
 		if($active_subtab == 'email_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'email_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('Notification Settings', 'ee-simple-file-list') . '</a>';

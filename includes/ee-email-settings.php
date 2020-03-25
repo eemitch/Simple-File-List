@@ -82,7 +82,7 @@ $eeOutput .= '
 		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" /></p>
 		
 	<input type="hidden" name="eePost" value="TRUE" />
-	<input type="hidden" name="listID" value="' . $eeSFL_ID . '" />
+	<input type="hidden" name="eeListID" value="' . $eeSFL_ID . '" />
 	
 	<h2>' . __('Notifications', 'ee-simple-file-list') . '</h2>';	
 	

@@ -70,7 +70,7 @@ $eeOutput .= '
 		<h2>' . __('Front-Side Settings', 'ee-simple-file-list') . '</h2>
 		
 		<input type="hidden" name="eePost" value="TRUE" />
-		<input type="hidden" name="listID" value="' . $eeSFL_ID . '" />';	
+		<input type="hidden" name="eeListID" value="' . $eeSFL_ID . '" />';	
 		
 		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce', TRUE, FALSE);
 		

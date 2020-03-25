@@ -22,6 +22,8 @@ $eeSFLF_FolderOptionsDisplay = FALSE;
 $eeSFLF_FolderDepth = 1;
 global $eeSFLF_ListFolder;
 
+// echo '<pre>'; print_r($_POST); echo '</pre>';
+
 // Get the File List
 if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR @$eeSFL_Config['ExpireTime'] === 0) { // Only admins can force a rescan
 	
@@ -162,22 +164,22 @@ if($eeAdmin) {
 	// If No Extension
 	if(!@defined('eeSFLF_Version')) { $eeOutput .= '
 		
-		<a href="/wp-admin/admin.php?page=ee-simple-file-list&tab=extensions&listID=' . $eeSFL_ID . '" class="button eeButton" >' . __('Create Folder', 'ee-simple-file-list') . '</a>'; // Add Folder Support
+		<a href="/wp-admin/admin.php?page=ee-simple-file-list&tab=extensions&eeListID=' . $eeSFL_ID . '" class="button eeButton" >' . __('Create Folder', 'ee-simple-file-list') . '</a>'; // Add Folder Support
 	}
 	
 	if(!@defined('eeSFLS_Version') AND $eeSFL_FileTotalCount > 11) { $eeOutput .= '
 		
-		<a href="/wp-admin/admin.php?page=ee-simple-file-list&tab=extensions&listID=' . $eeSFL_ID . '" class="button eeButton" >' . __('Search Files', 'ee-simple-file-list') . '</a>'; // Add Search & Pagination, if 12+
+		<a href="/wp-admin/admin.php?page=ee-simple-file-list&tab=extensions&eeListID=' . $eeSFL_ID . '" class="button eeButton" >' . __('Search Files', 'ee-simple-file-list') . '</a>'; // Add Search & Pagination, if 12+
 	}
 	
 	$eeOutput .= '</p>';
 	
 	// If showing just-uploaded files
-	if(@$_POST['eeSFL_Upload']) { 
+	if(@$_POST['eeSFL_Upload'] ) { 
 		
 		$eeOutput .= '
 		
-		<p class="eeSFL_ListMeta"><a href="' . eeSFL_AppendProperUrlOp($eeURL) . 'listID=' . $eeSFL_ID . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . __('Back to the Files', 'ee-simple-file-list') . '</a></p>';
+		<p class="eeSFL_ListMeta"><a href="' . eeSFL_AppendProperUrlOp($eeURL) . 'eeListID=' . $eeSFL_ID . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . __('Back to the Files', 'ee-simple-file-list') . '</a></p>';
 		
 		$eeSendFilesArray = $eeSFL_Files; // Restrict to just what was uploaded
 	
@@ -210,10 +212,10 @@ if($eeAdmin) {
 	
 	</div>';
 
-} elseif(@$_POST['eeSFL_Upload']) { 
+} elseif(@$_POST['eeSFL_Upload'] AND strpos(!@$_POST['eeSFLF_UploadFolder'], $eeSFLF_ShortcodeFolder) === 0) { 
 	
 	$eeOutput .= '<p class="eeSFL_ListMeta"><a href="' . $eeURL . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . 
-		__('Back to the Files', 'ee-simple-file-list') . '</a></p>';
+		__('Back to the Files in ', 'ee-simple-file-list') . $eeSFLF_ShortcodeFolder . '</a></p>';
 		
 	$eeSendFilesArray = $eeSFL_Files; // Restrict to just what was uploaded
 }
@@ -221,7 +223,7 @@ if($eeAdmin) {
 
 // Extension Checks	
 if($eeSFLF) {
-	if($eeSFL_ListNumber == 1) { 
+	if( $eeAdmin OR ($eeSFL_Config['AllowFrontManage'] == 'YES' AND !@$_POST['eeSFLS_Searching']) ) { 
 		$eeOutput .= $eeSFLF_FunctionBar; 
 		$eeOutput .= '<span class="eeSFL_Hide" id="eeSFLF_ListFolder">' . $eeSFLF_ListFolder . '</span>
 		<span class="eeSFL_Hide" id="eeSFLF_MoveNonce">' . $eeSFLF_MoveNonce . '</span>';
@@ -298,468 +300,472 @@ if(@count($eeSFL_Files) >= 1) {
 	$eeListPosition = FALSE; // eeSFLS
 	
 	$eeSFL_Log['File List'][] = 'Listing Files...';
+	
+	if(is_array($eeSFL_Files)) {
 							
-	// Loop through array
-	foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<---------------------------- BEGIN FILE LIST LOOP ----------------<<<
-		
-		$eeRowID = @$eeFileArray['FileID']; // Set in sorting method, but not sorted if only one file
-		if(!$eeRowID) { $eeRowID = 0; } // Only one file, set ID to zero
-		
-		// Go
-		if( is_array($eeFileArray)) {
-
-			$eeFilePath = $eeFileArray['FilePath']; // Path relative to FileListDir
-			$eeFileName = basename($eeFilePath); // Just the name
-			$eeFileDate = date_i18n( $eeDateFormat, strtotime( $eeFileArray['FileDateChanged'] ) ); // The mod date, make nice per WP config
-			$eeFileDateAdded = date_i18n( $eeDateFormat, strtotime( $eeFileArray['FileDateAdded'] ) );
-			$eeFileSize = eeSFL_FormatFileSize($eeFileArray['FileSize']); // The file size made nice too
+		// Loop through array
+		foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<---------------------------- BEGIN FILE LIST LOOP ----------------<<<
 			
-			// Extension Check
-			if(!$eeListPosition AND $eeListPosition !== 0) { // eeSFLS
-				$eeListPosition = $eeFileKey; // Get the first key
-			}
-			
-			// Extension Check
-			if($eeSFLA AND !$eeAdmin) { // Front-side only
-				if($eeSFL_Config['Mode'] == 'LockDown' AND !current_user_can( 'activate_plugins' ) ) { // Admins can always see
-					if(@in_array($eeSFL_Env['wpUserID'], @$eeFileArray['FileUsers']) OR @$eeFileArray['FileOwner'] == $eeSFL_Env['wpUserID'] ) { // !is_array(@$eeFileArray['FileUsers']) OR  <<<-----  ???
-						// Proceed
-					} else {
-						continue; // Don't show this file
-					}
-				}
-			}
-			
-			// Ready, set...
-			$eeIsFile = FALSE;
-			$eeIsFolder = FALSE;
-			$eeFileURL = FALSE;
-			$eeFileExt = FALSE;
-			$eeFileThumbURL = FALSE;
-			
-			// Fix display if Folder Extension is turned off
-			if(!$eeSFLF AND strpos($eeFileArray['FilePath'], '/')) {
-				$eeFileName = FALSE; // Will not show
-			}
+			$eeRowID = @$eeFileArray['FileID']; // Set in sorting method, but not sorted if only one file
+			if(!$eeRowID) { $eeRowID = 0; } // Only one file, set ID to zero
 			
 			// Go
-			if($eeFileName) {
-			
-				$eeFileCount++; // Bump the file count
-				
-				if( strpos($eeFilePath, '.') ) { // This is a file
-					
-					$eeIsFile = TRUE;
-					
-					$eeSFL_SendFile_AddFileArray[$eeFileCount] = $eeFilePath; // Used for Send -> Add Files
-					
-					$eeFileURL = $eeSFL_Config['FileListURL'] . $eeFileArray['FilePath']; // Clickable URL
-					
-					$eeFileURL = str_replace('://', '\\:', $eeFileURL); // Save this
-					$eeFileURL = str_replace('//', '/', $eeFileURL); // Remove double slashes
-					$eeFileURL = str_replace('\\:', '://', $eeFileURL); // Restore that
-					
-					// Extension Check
-					if($eeSFLA) {
-						if($eeSFL_Config['Mode'] != 'Open') { // In-direct link
-							$eeFileURL = $eeSFL_Env['pluginURL'] . 'view/?listID=' . $eeSFL_ID . '&file=' . $eeFileArray['FilePath'];
-						}
-					}
-					
-					$eeFileExt = $eeFileArray['FileExt']; // Get Extension
-					
-					// Extension Check
-					if($eeSFLS AND $eeSFLF) { // Get List Folder from path to ensure the thumb displays in search result
-						if($eeSFLS_FileSearchArray) {
-							$eeFile = basename($eeFileArray['FilePath']);
-							$eeSFLF_ListFolder = str_replace($eeFile, '', $eeFileArray['FilePath']);
-						}
-					}
-				
-				} elseif($eeSFLF) { // Extension Check
-					
-					$eeIsFolder = TRUE;
-					$eeFileExt = 'folder';
-					if(!$eeAdmin AND $eeSFL_ListNumber > 1) { continue; } // Disable folder support for additional lists
-					$eeFileURL = $eeSFLF->eeSFLF_GetFolderURL($eeFilePath, $eeSFLF_ShortcodeFolder); // Extension required
-				
-				} else {
-					
-					$eeFilePath = FALSE;
-				}
-				
-				
-				// Skip names hidden via shortcode
-				if(@$eeSFL_HideName) {
-					
-					$eeArray = explode(',', $eeSFL_HideName);
-					
-					foreach( $eeArray as $eeKey => $eeValue ) {
-						
-						if( strtolower($eeFileName) ==  $eeValue . '.' . $eeFileExt ) { // Without extension
-							continue(2); // Go to next file
-						}
-						
-						if($eeValue == strtolower($eeFileName)) { // With extension, or folder name
-							continue(2); // Go to next file
-						}
-					}
-				}
-				
-				
-				// Skip types hidden via shortcode
-				if(@$eeSFL_HideType) {
-					if(strpos($eeSFL_HideType, $eeFileExt) OR strpos($eeSFL_HideType, $eeFileExt) === 0 ) { 
-						continue; // Go to next file
-					}
-				}
-				
-				
-				// Start The List --------------------------------------------------------------
-			
-				$eeOutput .= '
-				
-				<tr id="eeSFL_RowID-' . $eeRowID . '"';
+			if( is_array($eeFileArray)) {
+	
+				$eeFilePath = $eeFileArray['FilePath']; // Path relative to FileListDir
+				$eeFileName = basename($eeFilePath); // Just the name
+				$eeFileDate = date_i18n( $eeDateFormat, strtotime( $eeFileArray['FileDateChanged'] ) ); // The mod date, make nice per WP config
+				$eeFileDateAdded = date_i18n( $eeDateFormat, strtotime( $eeFileArray['FileDateAdded'] ) );
+				$eeFileSize = eeSFL_FormatFileSize($eeFileArray['FileSize']); // The file size made nice too
 				
 				// Extension Check
-				if($eeSFLA) {
-					if(@is_array($eeFileArray['FileUsers'])) {
-						$eeOutput .= ' class="eeSFLA_FileHasUsers"';
-					}
+				if(!$eeListPosition AND $eeListPosition !== 0) { // eeSFLS
+					$eeListPosition = $eeFileKey; // Get the first key
 				}
 				
-				$eeOutput .= '>'; // Add an ID to use in javascript
-				
-				
-				// Thumbnail
-				if($eeSFL_Config['ShowFileThumb'] == 'YES') {
-					
-					// Create Thumbnail Path
-					$eeIsImage = in_array($eeFileExt,  $eeSFL->eeDynamicImageThumbFormats);
-					
-					// Do we have FFmpeg ?
-					if($eeSFL_Env['supported']) {
-						$eeIsVideo = in_array($eeFileExt,  $eeSFL->eeDynamicVideoThumbFormats);
-					} else {
-						$eeIsVideo = FALSE; // Nope
-					}
-					
-					// Check Type
-					if($eeIsImage OR $eeIsVideo) { // Images use .jpg files
-						
-						$eePathParts = pathinfo($eeSFL_Config['FileListDir'] . $eeFilePath);
-						$eeFileNameOnly = $eePathParts['filename'];
-						
-						$eeFileThumbURL = $eeSFL_Config['FileListURL'];
-						if($eeSFLF_ListFolder) { $eeFileThumbURL .= $eeSFLF_ListFolder . '/'; } // Adjust to path if needed
-						$eeFileThumbURL .= '.thumbnails/thumb_' . $eeFileNameOnly . '.jpg';
-					
-					} else { // Others use our own .svg files
-						
-						if( !in_array($eeFileExt, $eeSFL->eeDefaultThumbFormats) ) {
-							$eeDefaultThumb = '!default.svg'; // What the heck is this?
+				// Extension Check
+				if($eeSFLA AND !$eeAdmin) { // Front-side only
+					if($eeSFL_Config['Mode'] == 'LockDown' AND !current_user_can( 'activate_plugins' ) ) { // Admins can always see
+						if(@in_array($eeSFL_Env['wpUserID'], @$eeFileArray['FileUsers']) OR @$eeFileArray['FileOwner'] == $eeSFL_Env['wpUserID'] ) { // !is_array(@$eeFileArray['FileUsers']) OR  <<<-----  ???
+							// Proceed
 						} else {
-							$eeDefaultThumb = $eeFileExt . '.svg';
+							continue; // Don't show this file
 						}
-						
-						$eeFileThumbURL = $eeSFL_Env['wpPluginsURL'] . $eeSFL->eePluginNameSlug . '/images/thumbnails/' . $eeDefaultThumb;
 					}
-				
-					$eeOutput .= '<td class="eeSFL_Thumbnail">';
-					
-					if($eeFileThumbURL) { $eeOutput .= '<a href="' . $eeFileURL .  '"';
-						
-						if($eeIsFolder) { $eeOutput .= ' class="eeFolderIcon"'; } else { $eeOutput .= ' target="_blank"'; }
-							
-						$eeOutput .= '><img src="' . $eeFileThumbURL . '" width="64" height="64" alt="Thumbnail for ' . $eeFileName . '" /></a>'; }
-					
-					$eeOutput .= '</td>';
 				}
 				
+				// Ready, set...
+				$eeIsFile = FALSE;
+				$eeIsFolder = FALSE;
+				$eeFileURL = FALSE;
+				$eeFileExt = FALSE;
+				$eeFileThumbURL = FALSE;
 				
+				// Fix display if Folder Extension is turned off
+				if(!$eeSFLF AND strpos($eeFileArray['FilePath'], '/')) {
+					$eeFileName = FALSE; // Will not show
+				}
 				
+				// Go
+				if($eeFileName) {
 				
-				
-				
-				// NAME
-				$eeOutput .= '<td class="eeSFL_FileName">';
-				
-				if($eeFileURL) {
+					$eeFileCount++; // Bump the file count
 					
-					$eeRealFileName = $eeFileName; // Save for editing
-					
-					$eeOutput .= '<span class="eeSFL_RealFileName eeSFL_Hide">' . $eeRealFileName . '</span>
-					
-					<p class="eeSFL_FileLink"><a class="eeSFL_FileName" href="' . $eeFileURL .  '"';
-					if(!$eeIsFolder) {
-						$eeOutput .= ' target="_blank"';
-					}
-					$eeOutput .= '>';
-					
-					
-					// Extension Check
-					if($eeSFLF) { // Show a small folder icon before the name if thumbs are not used.
+					if( strpos($eeFilePath, '.') ) { // This is a file
 						
-						if($eeIsFolder AND $eeSFL_Config['ShowFileThumb'] != 'YES') {
-							$eeOutput .= '<b class="eeSFL_FolderIconSmall">' . $eeSFLF_FolderIcon . '</b> '; // <<<--------- MOVE TO INCLUDE
-						}
-					
-						// Path display for searching in folders
-						if(@$_POST['eeSFLS_Searching']) {
-							
-							$eeArray = explode('/', $eeFilePath);
-							if( count($eeArray) > 1 ) { 
-								unset($eeArray[0]); // Remove this folder
-							}
-							$eeFileName = implode('/', $eeArray);
-							
-							
-							// $eeFileName = trim( str_replace('/', ' / ', $eeFilePath) );
-						}
-					}
-					
-					// Strip the extension?
-					if(!$eeAdmin AND $eeSFL_Config['ShowFileExtension'] == 'NO') {
-						$eeSFL_PathParts = pathinfo($eeFileName);
-						$eeFileName = $eeSFL_PathParts['filename'];
-					}
-					
-					// Replace hyphens with spaces?
-					if(!$eeAdmin AND $eeSFL_Config['PreserveSpaces'] == 'YES') {
-						$eeFileName = eeSFL_PreserveSpaces($eeFileName); 
-					}
-					
-					$eeOutput .= $eeFileName . '</a></p>';
-					
-					// Show File Description, or not.
-					if(@$eeFileArray['FileDescription'] OR @$eeFileArray['SubmitterComments']) { // @$eeSFL_Config['showFileDesc'] != 'YES' OR 
+						$eeIsFile = TRUE;
 						
-						$eeClass = ''; // Show
-						if(!@$eeFileArray['FileDescription']) {
-							$eeFileArray['FileDescription'] = $eeFileArray['SubmitterComments']; // Show the submitter comment if no desc
-						}
+						$eeSFL_SendFile_AddFileArray[$eeFileCount] = $eeFilePath; // Used for Send -> Add Files
 						
-					} else {
-						$eeClass = 'eeSFL_Hide';
-					}
-					
-					
-					// This is always here because for js access
-					$eeOutput .= '<p class="eeSFL_FileDesc ' . $eeClass . '">';
-					
-					if($eeSFL_Config['ShowFileDescription'] == 'YES') {
-						$eeOutput .= stripslashes(@$eeFileArray['FileDescription']);
-					}
-					 
-					$eeOutput .= '</p>';
-					
-					
-					// Submitter Info
-					if(@$eeFileArray['SubmitterName']) {
-							
-						if($eeAdmin OR $eeSFL_Config['ShowSubmitterInfo'] == 'YES') {
-							
-							$eeOutput .= '<p class="eeSFL_FileSubmitter">
-							
-							' . __('Submitted by', 'ee-simple-file-list') . ': <a href="mailto:' . $eeFileArray['SubmitterEmail'] . '">' . $eeFileArray['SubmitterName'] . '</a></p>';
-						}
-					}
-					
-					// File Actions   ------------------------------------------------------------------------------------
-					
-					if($eeAdmin OR $eeSFL_Config['ShowFileActions'] == 'YES') { // Always show to Admin
+						$eeFileURL = $eeSFL_Config['FileListURL'] . $eeFileArray['FilePath']; // Clickable URL
 						
-						// Construct
-						$eeFileActions = '
-						
-							<small class="eeSFL_ListFileActions">';
-							
-						if(in_array($eeFileExt, $eeSFL->eeOpenableFileFormats)) {
-							$eeFileActions .= '<a class="eeSFL_FileOpen" href="' . $eeFileURL . '" target="_blank">' . __('Open', 'ee-simple-file-list') . '</a> | ';
-						}
-						
-						
-						
-						if($eeIsFile) {
-							$eeFileActions .= '<a class="eeSFL_FileDownload" href="' . $eeFileURL;
-							
-							// Extension Check
-							if($eeSFLA) { $eeFileActions .= '&mode=download"'; // File access manager
-								} else { $eeFileActions .= '" download="' . $eeFileName . '"'; } // Basic Download link
-							
-							$eeFileActions .= '>' . __('Download', 'ee-simple-file-list') . '</a> | ';
-							
-							if($eeAdmin OR $eeSFL_Config['AllowFrontSend'] == 'YES') {
-								$eeFileActions .= '<a href="" onclick="eeSFL_SendFile(' . $eeRowID . ')">' . __('Send', 'ee-simple-file-list') . '</a> | ';
-							}
-							
-						}
-													
-						
-						// Append Addition (admin or authorized) Actions
-						if($eeAdmin OR $eeSFL_Config['AllowFrontManage'] == 'YES') {
-							
-							$eeFileActions .= '<a href="" id="eeSFL_EditFile_' . $eeRowID . '" onclick="eeSFL_EditFile(' . $eeRowID . ')">' . __('Edit', 'ee-simple-file-list') . '</a> | ';
-							
-							if($eeSFLF AND $eeSFL_FolderTotalCount) { // Extension Check
-								
-								$eeSFLF_FolderOptionsDisplay = FALSE;
-								$eeSFLF_FolderOptionsDisplay = $eeSFLF->eeSFLF_MoveToFolderDisplay($eeFileArray, $eeSFLF_ListFolder);
-								
-								$eeMoveLink = '<a id="eeSFLF_moveLink_' . $eeRowID . '" href="#" onclick="eeSFLF_MoveFileDisplay(' . $eeRowID . ')">' . __('Move', 'ee-simple-file-list') . '</a>';	
-								
-								if($eeIsFolder) {
-									
-									if($eeSFLF_ListFolder OR $eeSFL_FolderTotalCount > 1) { // Don't show in main folder if only one folder
-										
-										if($eeSFLF_FolderOptionsDisplay) { $eeFileActions .= $eeMoveLink; }
-									}
-									
-								} else {
-									$eeFileActions .= $eeMoveLink;
-								}
-							} 
-							
-							
-						}
-						
-						// Extension Check
-						if(!$eeSFLF AND $eeAdmin) {
-							$eeFileActions .= '<a class="eeDimmedLink" href="/wp-admin/admin.php?page=ee-simple-file-list&tab=extensions" >' . __('Move', 'ee-simple-file-list') . '</a>';
-						}
+						$eeFileURL = str_replace('://', '\\:', $eeFileURL); // Save this
+						$eeFileURL = str_replace('//', '/', $eeFileURL); // Remove double slashes
+						$eeFileURL = str_replace('\\:', '://', $eeFileURL); // Restore that
 						
 						// Extension Check
 						if($eeSFLA) {
+							if($eeSFL_Config['Mode'] != 'Open') { // In-direct link
+								$eeFileURL = $eeSFL_Env['pluginURL'] . 'view/?eeListID=' . $eeSFL_ID . '&file=' . $eeFileArray['FilePath'];
+							}
+						}
+						
+						$eeFileExt = $eeFileArray['FileExt']; // Get Extension
+						
+						// Extension Check
+						if($eeSFLS AND $eeSFLF) { // Get List Folder from path to ensure the thumb displays in search result
+							if($eeSFLS_FileSearchArray) {
+								$eeFile = basename($eeFileArray['FilePath']);
+								$eeSFLF_ListFolder = str_replace($eeFile, '', $eeFileArray['FilePath']);
+							}
+						}
+					
+					} elseif($eeSFLF) { // Extension Check
+						
+						$eeIsFolder = TRUE;
+						$eeFileExt = 'folder';
+						if(!$eeAdmin AND $eeSFL_ListNumber > 1) { continue; } // Disable folder support for additional lists
+						$eeFileURL = $eeSFLF->eeSFLF_GetFolderURL($eeFilePath, $eeSFLF_ShortcodeFolder); // Extension required
+					
+					} else {
+						
+						$eeFilePath = FALSE;
+					}
+					
+					
+					// Skip names hidden via shortcode
+					if(@$eeSFL_HideName) {
+						
+						$eeArray = explode(',', $eeSFL_HideName);
+						
+						foreach( $eeArray as $eeKey => $eeValue ) {
 							
-							if($eeAdmin OR $eeSFL_Config['AllowCopyToList']) {
-								
-								$eeSFLA_Show = TRUE;
-								
-								$eeFileActions .= '<br />';
-								
-								if( $eeAdmin OR ($eeSFL_Config['Mode'] == 'User' AND $eeSFL_Config['AllowCopyToList'] == 'YES') ) {
-									
-									if(@count($eeSFL_Settings) > 1) {
-										$eeFileActions .= '<a id="eeSFLA_CopyTo_' . $eeRowID . '" onclick="eeSFLA_CopyToLink(' . $eeRowID . ');" href="#" >' . __('Copy to List', 'ee-simple-file-list') . '</a>';
-									}	
-								}
-								
-								if( ($eeAdmin AND $eeSFL_Config['Mode'] == 'LockDown') OR $eeSFLA_IsListOwner ) {
-									$eeFileActions .= ' | <a id="eeSFLA_FileAccess_' . $eeRowID . '" onclick="eeSFLA_Access(' . $eeRowID . ');" href="#" >' . __('Grant Access', 'ee-simple-file-list') . '</a>';
-								}
+							if( strtolower($eeFileName) ==  $eeValue . '.' . $eeFileExt ) { // Without extension
+								continue(2); // Go to next file
+							}
 							
+							if($eeValue == strtolower($eeFileName)) { // With extension, or folder name
+								continue(2); // Go to next file
+							}
+						}
+					}
+					
+					
+					// Skip types hidden via shortcode
+					if(@$eeSFL_HideType) {
+						if(strpos($eeSFL_HideType, $eeFileExt) OR strpos($eeSFL_HideType, $eeFileExt) === 0 ) { 
+							continue; // Go to next file
+						}
+					}
+					
+					
+					// Start The List --------------------------------------------------------------
+				
+					$eeOutput .= '
+					
+					<tr id="eeSFL_RowID-' . $eeRowID . '"';
+					
+					// Extension Check
+					if($eeSFLA) {
+						if(@is_array($eeFileArray['FileUsers'])) {
+							$eeOutput .= ' class="eeSFLA_FileHasUsers"';
+						}
+					}
+					
+					$eeOutput .= '>'; // Add an ID to use in javascript
+					
+					
+					// Thumbnail
+					if($eeSFL_Config['ShowFileThumb'] == 'YES') {
+						
+						// Create Thumbnail Path
+						$eeIsImage = in_array($eeFileExt,  $eeSFL->eeDynamicImageThumbFormats);
+						
+						// Do we have FFmpeg ?
+						if($eeSFL_Env['supported']) {
+							$eeIsVideo = in_array($eeFileExt,  $eeSFL->eeDynamicVideoThumbFormats);
+						} else {
+							$eeIsVideo = FALSE; // Nope
+						}
+						
+						// Check Type
+						if($eeIsImage OR $eeIsVideo) { // Images use .jpg files
+							
+							$eePathParts = pathinfo($eeSFL_Config['FileListDir'] . $eeFilePath);
+							$eeFileNameOnly = $eePathParts['filename'];
+							
+							$eeFileThumbURL = $eeSFL_Config['FileListURL'];
+							if($eeSFLF_ListFolder) { $eeFileThumbURL .= $eeSFLF_ListFolder . '/'; } // Adjust to path if needed
+							$eeFileThumbURL .= '.thumbnails/thumb_' . $eeFileNameOnly . '.jpg';
+						
+						} else { // Others use our own .svg files
+							
+							if( !in_array($eeFileExt, $eeSFL->eeDefaultThumbFormats) ) {
+								$eeDefaultThumb = '!default.svg'; // What the heck is this?
 							} else {
-								
-								$eeSFLA_Show = FALSE;
+								$eeDefaultThumb = $eeFileExt . '.svg';
 							}
 							
+							$eeFileThumbURL = $eeSFL_Env['wpPluginsURL'] . $eeSFL->eePluginNameSlug . '/images/thumbnails/' . $eeDefaultThumb;
+						}
+					
+						$eeOutput .= '<td class="eeSFL_Thumbnail">';
+						
+						if($eeFileThumbURL) { $eeOutput .= '<a href="' . $eeFileURL .  '"';
+							
+							if($eeIsFolder) { $eeOutput .= ' class="eeFolderIcon"'; } else { $eeOutput .= ' target="_blank"'; }
+								
+							$eeOutput .= '><img src="' . $eeFileThumbURL . '" width="64" height="64" alt="Thumbnail for ' . $eeFileName . '" /></a>'; }
+						
+						$eeOutput .= '</td>';
+					}
+					
+					
+					
+					
+					
+					
+					// NAME
+					$eeOutput .= '<td class="eeSFL_FileName">';
+					
+					if($eeFileURL) {
+						
+						$eeRealFileName = $eeFileName; // Save for editing
+						
+						$eeOutput .= '<span class="eeSFL_RealFileName eeSFL_Hide">' . $eeRealFileName . '</span>
+						
+						<p class="eeSFL_FileLink"><a class="eeSFL_FileName" href="' . $eeFileURL .  '"';
+						if(!$eeIsFolder) {
+							$eeOutput .= ' target="_blank"';
+						}
+						$eeOutput .= '>';
+						
+						
+						// Extension Check
+						if($eeSFLF) { // Show a small folder icon before the name if thumbs are not used.
+							
+							if($eeIsFolder AND $eeSFL_Config['ShowFileThumb'] != 'YES') {
+								$eeOutput .= '<b class="eeSFL_FolderIconSmall">' . $eeSFLF_FolderIcon . '</b> '; // <<<--------- MOVE TO INCLUDE
+							}
+						
+							// Path display for searching in folders
+							if(@$_POST['eeSFLS_Searching']) {
+								
+								$eeArray = explode('/', $eeFilePath);
+								if( count($eeArray) > 1 ) { 
+									unset($eeArray[0]); // Remove this folder
+								}
+								$eeFileName = implode('/', $eeArray);
+								
+								
+								// $eeFileName = trim( str_replace('/', ' / ', $eeFilePath) );
+							}
 						}
 						
-						// Strip trailing pipe if needed
-						if(substr($eeFileActions, -2) == '| ') {
-							$eeFileActions = substr($eeFileActions, 0, -3);
+						// Strip the extension?
+						if(!$eeAdmin AND $eeSFL_Config['ShowFileExtension'] == 'NO') {
+							$eeSFL_PathParts = pathinfo($eeFileName);
+							$eeFileName = $eeSFL_PathParts['filename'];
 						}
-							
-						$eeFileActions .= '</small>'; // Close action links
 						
-							
+						// Replace hyphens with spaces?
+						if(!$eeAdmin AND $eeSFL_Config['PreserveSpaces'] == 'YES') {
+							$eeFileName = eeSFL_PreserveSpaces($eeFileName); 
+						}
 						
-						// Expanding Inputs
-						if($eeAdmin OR $eeSFL_Config['AllowFrontManage'] == 'YES') {	
+						$eeOutput .= $eeFileName . '</a></p>';
+						
+						// Show File Description, or not.
+						if(@$eeFileArray['FileDescription'] OR @$eeFileArray['SubmitterComments']) { // @$eeSFL_Config['showFileDesc'] != 'YES' OR 
 							
-							// Move-to-folder select box
-							if($eeSFLF) {
-								if( ($eeAdmin OR $eeSFL_Config['AllowFrontManage'] == 'YES') ) { $eeFileActions .= $eeSFLF_FolderOptionsDisplay; }
+							$eeClass = ''; // Show
+							if(!@$eeFileArray['FileDescription']) {
+								$eeFileArray['FileDescription'] = $eeFileArray['SubmitterComments']; // Show the submitter comment if no desc
+							}
+							
+						} else {
+							$eeClass = 'eeSFL_Hide';
+						}
+						
+						
+						// This is always here because for js access
+						$eeOutput .= '<p class="eeSFL_FileDesc ' . $eeClass . '">';
+						
+						if($eeSFL_Config['ShowFileDescription'] == 'YES') {
+							$eeOutput .= stripslashes(@$eeFileArray['FileDescription']);
+						}
+						 
+						$eeOutput .= '</p>';
+						
+						
+						// Submitter Info
+						if(@$eeFileArray['SubmitterName']) {
+								
+							if($eeAdmin OR $eeSFL_Config['ShowSubmitterInfo'] == 'YES') {
+								
+								$eeOutput .= '<p class="eeSFL_FileSubmitter">
+								
+								' . __('Submitted by', 'ee-simple-file-list') . ': <a href="mailto:' . $eeFileArray['SubmitterEmail'] . '">' . $eeFileArray['SubmitterName'] . '</a></p>';
+							}
+						}
+						
+						// File Actions   ------------------------------------------------------------------------------------
+						
+						if($eeAdmin OR $eeSFL_Config['ShowFileActions'] == 'YES') { // Always show to Admin
+							
+							// Construct
+							$eeFileActions = '
+							
+								<small class="eeSFL_ListFileActions">';
+								
+							if(in_array($eeFileExt, $eeSFL->eeOpenableFileFormats)) {
+								$eeFileActions .= '<a class="eeSFL_FileOpen" href="' . $eeFileURL . '" target="_blank">' . __('Open', 'ee-simple-file-list') . '</a> | ';
 							}
 							
 							
-							// Javascript-powered Drop-Down Box
-							$eeFileActions .= '<div class="eeSFL_EditFileWrap" id="eeSFL_EditFileWrap_' . $eeRowID . '">
 							
-							<h4>' . __('Edit Details', 'ee-simple-file-list') . '</h4>';
-							
-							$eeFileActions .= '<p><label>' . __('File Name', 'ee-simple-file-list') . '
-							<input required="required" type="text" class="eeNewFileName" name="eeNewFileName" value="' . $eeRealFileName . '" size="32" /></label></p>
+							if($eeIsFile) {
+								$eeFileActions .= '<a class="eeSFL_FileDownload" href="' . $eeFileURL;
 								
-							<p class="eeSFL_FileDesc_in"><label>' . __('Description', 'ee-simple-file-list') . '
-								<span class="eeSFL_SavedDesc">' . @$eeFileArray['FileDescription'] . '</span>
-								<input type="text" class="eeSFL_NewFileDesc" name="eeSFL_FileID_' . $eeFileKey . '" value="' . @$eeFileArray['FileDescription'] . '" size="32" /></label></p> 
+								// Extension Check
+								if($eeSFLA) { $eeFileActions .= '&mode=download"'; // File access manager
+									} else { $eeFileActions .= '" download="' . $eeFileName . '"'; } // Basic Download link
 								
-							<p class="eeCenter">
-								<a class="button" href="#" onclick="eeSFL_EditSave(' . $eeRowID . ')">' . __('Save', 'ee-simple-file-list') . '</a> 
-								<a class="button" href="#" onclick="eeSFL_EditFile(' . $eeRowID . ')">' . __('Cancel', 'ee-simple-file-list') . '</a> 
-								<a class="button eeDeleteButton" href="#" onclick="eeSFL_Delete(' . $eeRowID . ')">' . __('Delete', 'ee-simple-file-list') . '</a>
-							</p>
-							
-							<p class="eeCenter"><small>' . __('Added', 'ee-simple-file-list') . ': ' . $eeFileDateAdded . ' — ';
-							
-							// Show Mod Date if different
-							if($eeFileArray['FileDateAdded'] != $eeFileArray['FileDateChanged'] ) { $eeFileActions .= __('Modified', 'ee-simple-file-list') . ': ' . $eeFileDate . ' — '; }
-							
-							$eeFileActions .= __('Size', 'ee-simple-file-list') . ': ' . $eeFileSize . '</small></p>
+								$eeFileActions .= '>' . __('Download', 'ee-simple-file-list') . '</a> | ';
 								
-							</div>';
+								if($eeAdmin OR $eeSFL_Config['AllowFrontSend'] == 'YES') {
+									$eeFileActions .= '<a href="" onclick="eeSFL_SendFile(' . $eeRowID . ')">' . __('Send', 'ee-simple-file-list') . '</a> | ';
+								}
+								
+							}
+														
 							
+							// Append Addition (admin or authorized) Actions
+							if($eeAdmin OR $eeSFL_Config['AllowFrontManage'] == 'YES') {
+								
+								$eeFileActions .= '<a href="" id="eeSFL_EditFile_' . $eeRowID . '" onclick="eeSFL_EditFile(' . $eeRowID . ')">' . __('Edit', 'ee-simple-file-list') . '</a> | ';
+								
+								if($eeSFLF AND $eeSFL_FolderTotalCount) { // Extension Check
+									
+									$eeSFLF_FolderOptionsDisplay = FALSE;
+									$eeSFLF_FolderOptionsDisplay = $eeSFLF->eeSFLF_MoveToFolderDisplay($eeFileArray, $eeSFLF_ListFolder);
+									
+									$eeMoveLink = '<a id="eeSFLF_moveLink_' . $eeRowID . '" href="#" onclick="eeSFLF_MoveFileDisplay(' . $eeRowID . ')">' . __('Move', 'ee-simple-file-list') . '</a>';	
+									
+									if($eeIsFolder) {
+										
+										if($eeSFLF_ListFolder OR $eeSFL_FolderTotalCount > 1) { // Don't show in main folder if only one folder
+											
+											if($eeSFLF_FolderOptionsDisplay) { $eeFileActions .= $eeMoveLink; }
+										}
+										
+									} else {
+										$eeFileActions .= $eeMoveLink;
+									}
+								} 
+								
+								
+							}
+							
+							// Extension Check
+							if(!$eeSFLF AND $eeAdmin) {
+								$eeFileActions .= '<a class="eeDimmedLink" href="/wp-admin/admin.php?page=ee-simple-file-list&tab=extensions" >' . __('Move', 'ee-simple-file-list') . '</a>';
+							}
 							
 							// Extension Check
 							if($eeSFLA) {
-								if($eeSFLA_Show) {
-									$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-									include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_FileListActions.php');
+								
+								if($eeAdmin OR $eeSFL_Config['AllowCopyToList']) {
+									
+									$eeSFLA_Show = TRUE;
+									
+									$eeFileActions .= '<br />';
+									
+									if( $eeAdmin OR ($eeSFL_Config['Mode'] == 'User' AND $eeSFL_Config['AllowCopyToList'] == 'YES') ) {
+										
+										if(@count($eeSFL_Settings) > 1) {
+											$eeFileActions .= '<a id="eeSFLA_CopyTo_' . $eeRowID . '" onclick="eeSFLA_CopyToLink(' . $eeRowID . ');" href="#" >' . __('Copy to List', 'ee-simple-file-list') . '</a>';
+										}	
+									}
+									
+									if( ($eeAdmin AND $eeSFL_Config['Mode'] == 'LockDown') OR $eeSFLA_IsListOwner ) {
+										$eeFileActions .= ' | <a id="eeSFLA_FileAccess_' . $eeRowID . '" onclick="eeSFLA_Access(' . $eeRowID . ');" href="#" >' . __('Grant Access', 'ee-simple-file-list') . '</a>';
+									}
+								
+								} else {
+									
+									$eeSFLA_Show = FALSE;
+								}
+								
+							}
+							
+							// Strip trailing pipe if needed
+							if(substr($eeFileActions, -2) == '| ') {
+								$eeFileActions = substr($eeFileActions, 0, -3);
+							}
+								
+							$eeFileActions .= '</small>'; // Close action links
+							
+								
+							
+							// Expanding Inputs
+							if($eeAdmin OR $eeSFL_Config['AllowFrontManage'] == 'YES') {	
+								
+								// Move-to-folder select box
+								if($eeSFLF) {
+									if( ($eeAdmin OR $eeSFL_Config['AllowFrontManage'] == 'YES') ) { $eeFileActions .= $eeSFLF_FolderOptionsDisplay; }
+								}
+								
+								
+								// Javascript-powered Drop-Down Box
+								$eeFileActions .= '<div class="eeSFL_EditFileWrap" id="eeSFL_EditFileWrap_' . $eeRowID . '">
+								
+								<h4>' . __('Edit Details', 'ee-simple-file-list') . '</h4>';
+								
+								$eeFileActions .= '<p><label>' . __('File Name', 'ee-simple-file-list') . '
+								<input required="required" type="text" class="eeNewFileName" name="eeNewFileName" value="' . $eeRealFileName . '" size="32" /></label></p>
+									
+								<p class="eeSFL_FileDesc_in"><label>' . __('Description', 'ee-simple-file-list') . '
+									<span class="eeSFL_SavedDesc">' . @$eeFileArray['FileDescription'] . '</span>
+									<input type="text" class="eeSFL_NewFileDesc" name="eeSFL_FileID_' . $eeFileKey . '" value="' . @$eeFileArray['FileDescription'] . '" size="32" /></label></p> 
+									
+								<p class="eeCenter">
+									<a class="button" href="#" onclick="eeSFL_EditSave(' . $eeRowID . ')">' . __('Save', 'ee-simple-file-list') . '</a> 
+									<a class="button" href="#" onclick="eeSFL_EditFile(' . $eeRowID . ')">' . __('Cancel', 'ee-simple-file-list') . '</a> 
+									<a class="button eeDeleteButton" href="#" onclick="eeSFL_Delete(' . $eeRowID . ')">' . __('Delete', 'ee-simple-file-list') . '</a>
+								</p>
+								
+								<p class="eeCenter"><small>' . __('Added', 'ee-simple-file-list') . ': ' . $eeFileDateAdded . ' — ';
+								
+								// Show Mod Date if different
+								if($eeFileArray['FileDateAdded'] != $eeFileArray['FileDateChanged'] ) { $eeFileActions .= __('Modified', 'ee-simple-file-list') . ': ' . $eeFileDate . ' — '; }
+								
+								$eeFileActions .= __('Size', 'ee-simple-file-list') . ': ' . $eeFileSize . '</small></p>
+									
+								</div>';
+								
+								
+								// Extension Check
+								if($eeSFLA) {
+									if($eeSFLA_Show) {
+										$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
+										include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_FileListActions.php');
+									}
 								}
 							}
-						}
-							
-						$eeOutput .= $eeFileActions;
-					}
-				}
-				
-				$eeOutput .= '</td>';
-				
-				
-				
-				
-				
-				// File Size
-				if($eeSFL_Config['ShowFileSize'] == 'YES') {
-				
-					$eeOutput .= '<td class="eeSFL_FileSize">';
-					
-					if($eeIsFile) {
-						
-						$eeOutput .= $eeFileSize;
-						
-					} else {
-						
-						if($eeSFLF) {
-							if($eeSFL_Config['ShowFolderSize'] == 'YES') {
-								$eeOutput .= eeSFL_GetFileSize($eeSFLF->eeSFLF_GetFolderSize($eeSFL_Config['FileListDir'] . $eeFilePath));
-							} else {
-								$eeOutput .= __('Folder', 'ee-simple-file-list');
-							} 
+								
+							$eeOutput .= $eeFileActions;
 						}
 					}
 					
 					$eeOutput .= '</td>';
-				}
-				
-				
-				
-				
-				
-				// File Modification Date
-				if($eeSFL_Config['ShowFileDate'] == 'YES') {
 					
-					$eeOutput .= '<td class="eeSFL_FileDate">' . $eeFileDate . '</td>';
+					
+					
+					
+					
+					// File Size
+					if($eeSFL_Config['ShowFileSize'] == 'YES') {
+					
+						$eeOutput .= '<td class="eeSFL_FileSize">';
+						
+						if($eeIsFile) {
+							
+							$eeOutput .= $eeFileSize;
+							
+						} else {
+							
+							if($eeSFLF) {
+								if($eeSFL_Config['ShowFolderSize'] == 'YES') {
+									$eeOutput .= eeSFL_GetFileSize($eeSFLF->eeSFLF_GetFolderSize($eeSFL_Config['FileListDir'] . $eeFilePath));
+								} else {
+									$eeOutput .= __('Folder', 'ee-simple-file-list');
+								} 
+							}
+						}
+						
+						$eeOutput .= '</td>';
+					}
+					
+					
+					
+					
+					
+					// File Modification Date
+					if($eeSFL_Config['ShowFileDate'] == 'YES') {
+						
+						$eeOutput .= '<td class="eeSFL_FileDate">' . $eeFileDate . '</td>';
+					}
+					
+					
+					$eeOutput .= '</tr>';
 				}
 				
-				
-				$eeOutput .= '</tr>';
+				$eeRowID++; // Bump the ID
 			}
-			
-			$eeRowID++; // Bump the ID
-		}
-	} // END loop
+		} // END loop
+	
+	}
 	
 	
 	$eeOutput .= '
