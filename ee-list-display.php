@@ -12,7 +12,7 @@ $eeSFL_SendFile_AddFileArray = array(); // We use this for the Send File functio
 $eeUploadedFiles = FALSE;
 $eeDateFormat = get_option('date_format');
 $eeSFL_ActionNonce = wp_create_nonce('eeSFL_ActionNonce'); // Security for Ajax
-global $eeSFL_ListNumber;
+global $eeSFL_ListRun;
 
 $eeSFL_Log['File List'][] = 'Loaded: ee-list-display';
 $eeSFL_Log['File List'][] = 'Listing Files in: ' . $eeSFL_Config['FileListDir'];
@@ -384,7 +384,7 @@ if(@count($eeSFL_Files) >= 1) {
 						
 						$eeIsFolder = TRUE;
 						$eeFileExt = 'folder';
-						if(!$eeAdmin AND $eeSFL_ListNumber > 1) { continue; } // Disable folder support for additional lists
+						if(!$eeAdmin AND $eeSFL_ListRun > 1) { continue; } // Disable folder support for additional lists
 						$eeFileURL = $eeSFLF->eeSFLF_GetFolderURL($eeFilePath, $eeSFLF_ShortcodeFolder); // Extension required
 					
 					} else {
@@ -786,105 +786,108 @@ if(@count($eeSFL_Files) >= 1) {
 		include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-display.php');
 	}
 	
-	
-	// Send Files Overlay - Hidden until the Send link is clicked
-	$eeOutput .= '<div id="eeSFL_SendPop" class="eeActive">
-	
-		<article>
-			
-			<h2>' . __('Send Link', 'ee-simple-file-list') . '</h2>
-			
-			<p>' . __('Send an email with links to the files. Add more files if needed.', 'ee-simple-file-list') . '</p>
-			
-			<p id="eeSFL_SendTheseFilesList">' . __('Files to be sent:', 'ee-simple-file-list') . ' <em></em></p>
-			
-			<form id="eeSFL_SendFileForm" action="' . eeSFL_GetThisURL() . '" method="POST">
+	if($eeAdmin OR ($eeSFL_ListRun == 1 AND $eeSFL_Config['AllowFrontSend']) ) {
+		
+		// Send Files Overlay - Hidden until the Send link is clicked
+		$eeOutput .= '<div id="eeSFL_SendPop" class="eeActive">
+		
+			<article>
 				
-				<fieldset id="eeSFL_SendInfo">
-						
-					<label for="eeSFL_SendFrom">' . __('Your Address', 'ee-simple-file-list'). '</label>
-						<input required type="email" name="eeSFL_SendFrom" value="" size="64" id="eeSFL_SendFrom" />
-						
-					<label for="eeSFL_SendTo">' . __('The TO Address', 'ee-simple-file-list'). '</label>
-						<input required type="email" name="eeSFL_SendTo" value="" size="64" id="eeSFL_SendTo" />
-						
-					<label for="eeSFL_SendCc">' . __('The CC Address', 'ee-simple-file-list'). '</label>
-						<input type="text" name="eeSFL_SendCc" value="" size="64" id="eeSFL_SendCc" />
-					<div class="eeClearFix eeNote">' . __('Separate multiple addresses with a comma', 'ee-simple-file-list') . '</div>
-						
-					<label for="eeSFL_SendSubject">' . __('The Subject', 'ee-simple-file-list'). '</label>
-						<input type="text" name="eeSFL_SendSubject" value="" size="64" id="eeSFL_SendSubject" />
-						
-					<label for="eeSFL_SendMessage">' . __('The Message', 'ee-simple-file-list'). '</label>
-						<textarea name="eeSFL_SendMessage" id="eeSFL_SendMessage" cols="64" rows="5"></textarea>
-						
-					<br class="eeClearFix" />
+				<h2>' . __('Send Link', 'ee-simple-file-list') . '</h2>
 				
-					<p class="eeSFL_SendButtons">';
-						
-					$eeCount = @count($eeSendFilesArray);
+				<p>' . __('Send an email with links to the files. Add more files if needed.', 'ee-simple-file-list') . '</p>
+				
+				<p id="eeSFL_SendTheseFilesList">' . __('Files to be sent:', 'ee-simple-file-list') . ' <em></em></p>
+				
+				<form id="eeSFL_SendFileForm" action="' . eeSFL_GetThisURL() . '" method="POST">
 					
-					if($eeCount > 1) {
-						$eeOutput .= '<button onclick="eeSFL_Send_AddMoreFiles();">' . __('Add Files', 'ee-simple-file-list') . '</button> ';
-					}	
-						
-					$eeOutput .='<button onclick="eeSFL_Send_Cancel();">' . __('Cancel', 'ee-simple-file-list') . '</button>
-						<input type="submit" name="eeSFL_Send" value="' . __('Send', 'ee-simple-file-list') . ' &rarr;" />
-					</p>
-				
-				</fieldset>';
-				
-				if( $eeCount > 1) {
-				
-					$eeOutput .= '
+					<fieldset id="eeSFL_SendInfo">
+							
+						<label for="eeSFL_SendFrom">' . __('Your Address', 'ee-simple-file-list'). '</label>
+							<input required type="email" name="eeSFL_SendFrom" value="" size="64" id="eeSFL_SendFrom" />
+							
+						<label for="eeSFL_SendTo">' . __('The TO Address', 'ee-simple-file-list'). '</label>
+							<input required type="email" name="eeSFL_SendTo" value="" size="64" id="eeSFL_SendTo" />
+							
+						<label for="eeSFL_SendCc">' . __('The CC Address', 'ee-simple-file-list'). '</label>
+							<input type="text" name="eeSFL_SendCc" value="" size="64" id="eeSFL_SendCc" />
+						<div class="eeClearFix eeNote">' . __('Separate multiple addresses with a comma', 'ee-simple-file-list') . '</div>
+							
+						<label for="eeSFL_SendSubject">' . __('The Subject', 'ee-simple-file-list'). '</label>
+							<input type="text" name="eeSFL_SendSubject" value="" size="64" id="eeSFL_SendSubject" />
+							
+						<label for="eeSFL_SendMessage">' . __('The Message', 'ee-simple-file-list'). '</label>
+							<textarea name="eeSFL_SendMessage" id="eeSFL_SendMessage" cols="64" rows="5"></textarea>
+							
+						<br class="eeClearFix" />
 					
-					<fieldset id="eeSFL_SendMoreFiles">
-				
-					<h3>' . __('Add More Files', 'ee-simple-file-list') . '</h3>
-					
-					<table>
-					 <tbody>';
-					 
-					foreach( $eeSendFilesArray as $eeKey => $eeFileArray) {
+						<p class="eeSFL_SendButtons">';
+							
+						$eeCount = @count($eeSendFilesArray);
 						
-						$eeFileNameDisplay = $eeFileArray['FilePath'];
-						
-						if($eeSFLF_ListFolder) {
-							if( strpos($eeFileArray['FilePath'], $eeSFLF_ListFolder) === 0 ) {
-								$eeFileNameDisplay = str_replace($eeSFLF_ListFolder, '', $eeFileArray['FilePath']); // Remove this folder's name from the display
-							}
-						}
-						
-						if($eeFileArray['FileExt'] != 'folder') { // We can't send folders, yet.
-						
-							$eeOutput .= '
-						
-							<tr>
-							    <td class="eeAlignRight eeSFL_AddFileID_' . $eeFileArray['FileID'] . '"><input type="checkbox" name="eeSFL_SendTheseFiles[]" value="' . urlencode($eeFileArray['FilePath']) . '"/></td>
-							    <td>' . $eeFileNameDisplay . '</td>
-							</tr>';
-						}
-					}		 
-					 
-					$eeOutput .= '</tbody>
-						</table>
-					
-						<p class="eeSFL_SendButtons">
-							<button onclick="eeSFL_Send_AddTheseFiles();">' . __('Add Files', 'ee-simple-file-list') . '</button>
-								<button onclick="eeSFL_Send_AddMoreCancel();">' . __('Cancel', 'ee-simple-file-list') . '</button>
+						if($eeCount > 1) {
+							$eeOutput .= '<button onclick="eeSFL_Send_AddMoreFiles();">' . __('Add Files', 'ee-simple-file-list') . '</button> ';
+						}	
+							
+						$eeOutput .='<button onclick="eeSFL_Send_Cancel();">' . __('Cancel', 'ee-simple-file-list') . '</button>
+							<input type="submit" name="eeSFL_Send" value="' . __('Send', 'ee-simple-file-list') . ' &rarr;" />
 						</p>
 					
 					</fieldset>';
+					
+					if( $eeCount > 1) {
+					
+						$eeOutput .= '
+						
+						<fieldset id="eeSFL_SendMoreFiles">
+					
+						<h3>' . __('Add More Files', 'ee-simple-file-list') . '</h3>
+						
+						<table>
+						 <tbody>';
+						 
+						foreach( $eeSendFilesArray as $eeKey => $eeFileArray) {
+							
+							$eeFileNameDisplay = $eeFileArray['FilePath'];
+							
+							if($eeSFLF_ListFolder) {
+								if( strpos($eeFileArray['FilePath'], $eeSFLF_ListFolder) === 0 ) {
+									$eeFileNameDisplay = str_replace($eeSFLF_ListFolder, '', $eeFileArray['FilePath']); // Remove this folder's name from the display
+								}
+							}
+							
+							if($eeFileArray['FileExt'] != 'folder') { // We can't send folders, yet.
+							
+								$eeOutput .= '
+							
+								<tr>
+								    <td class="eeAlignRight eeSFL_AddFileID_' . $eeFileArray['FileID'] . '"><input type="checkbox" name="eeSFL_SendTheseFiles[]" value="' . urlencode($eeFileArray['FilePath']) . '"/></td>
+								    <td>' . $eeFileNameDisplay . '</td>
+								</tr>';
+							}
+						}		 
+						 
+						$eeOutput .= '</tbody>
+							</table>
+						
+							<p class="eeSFL_SendButtons">
+								<button onclick="eeSFL_Send_AddTheseFiles();">' . __('Add Files', 'ee-simple-file-list') . '</button>
+									<button onclick="eeSFL_Send_AddMoreCancel();">' . __('Cancel', 'ee-simple-file-list') . '</button>
+							</p>
+						
+						</fieldset>';
+					
+					}
+					
+				$eeOutput .= '
 				
-				}
-				
-			$eeOutput .= '
+				</form>
 			
-			</form>
-		
-		</article>
-
-	</div>'; // End Send Overlay
+			</article>
+	
+		</div>'; // End Send Overlay
+	
+	}
 	
 } else {
 	

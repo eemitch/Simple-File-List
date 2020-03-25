@@ -5,12 +5,12 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
 $eeSFL_UploadNonce = wp_create_nonce('ee-simple-file-list-upload'); // Checked in the upload engine.
-global $eeSFL_ListNumber;
+global $eeSFL_ListRun;
 $eeSFL_Log['Add Files'][] = 'Loaded: ee-uploader';
 
 // Extension Check
 if($eeSFLF) {
-	if(@$_REQUEST['eeSFLF_ListFolder'] AND $eeSFL_ListNumber == 1) { // Adjust the path based on REQUEST arg
+	if(@$_REQUEST['eeSFLF_ListFolder'] AND $eeSFL_ListRun == 1) { // Adjust the path based on REQUEST arg
 		$eeSFLF_ListFolder = filter_var(urldecode($_REQUEST['eeSFLF_ListFolder']), FILTER_SANITIZE_STRING) . '/'; 
 	} elseif( strlen(@$eeSFLF_ShortcodeFolder) ) {
 		$eeSFLF_ListFolder = str_replace('&#34;', '', $eeSFLF_ShortcodeFolder) . '/'; // Fix for uploading to draft status page

@@ -31,7 +31,8 @@ $eeSFL_ID = 1;
 $eeSFL_Settings = array(); // All List Info
 $eeSFL_Config = array(); // This List Info
 $eeSFL_Env = array(); // Environment
-$eeSFL_ListNumber = 1; // Count of lists per page
+$eeSFL_ListRun = 1; // Count of lists per page
+$eeSFL_UploadFormRun = FALSE; // Check if uploader form has run
 
 // The Log - Written to wp_option -> eeSFL-Log
 $eeSFL_Log = array('Simple File List is Loading...');
@@ -230,15 +231,17 @@ function eeSFL_Shortcode($atts, $content = null) {
 	
 	// Basic Usage: [eeSFL]
     
-    global $eeSFL, $eeSFL_ID, $eeSFL_DevMode, $eeSFL_Log, $eeSFL_Env, $eeSFL_Settings, $eeSFL_Config, $eeSFL_ListNumber; // Number of the list on same page
+    global $eeSFL, $eeSFL_ID, $eeSFL_DevMode, $eeSFL_Log, $eeSFL_Env, $eeSFL_Settings, $eeSFL_Config, $eeSFL_ListRun, $eeSFL_UploadFormRun;
     global $eeSFLF, $eeSFLS, $eeSFLA; // Extensions
 	
-	$eeAdmin = is_admin(); // Will be FALSE here
-	if($eeAdmin) { return FALSE; } // Don't execute on page editor
+	$eeAdmin = is_admin();
+	if($eeAdmin) { return FALSE; } // Don't execute shortcode on page editor
+    
+    $eeSFL_ListNumber = $eeSFL_ListRun; // Legacy 03/20
 	
 	$eeOutput = '';
 	
-	$eeSFL_Log['L' . $eeSFL_ListNumber][] = 'Shortcode Loading: ' . get_permalink();
+	$eeSFL_Log['L' . $eeSFL_ListRun][] = 'Shortcode Loading: ' . get_permalink();
 
 	if(!is_array($eeSFL_Config)) { return FALSE; }
 
@@ -265,7 +268,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 		
 		extract($atts);
 	
-		$eeSFL_Log['L' . $eeSFL_ListNumber][] = 'Shortcode Attributes...';
+		$eeSFL_Log['L' . $eeSFL_ListRun][] = 'Shortcode Attributes...';
 		
 		// Get the correct file list config if not main list
 		if($eeSFLA AND $list != $eeSFL_ID) {
@@ -297,7 +300,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 
 		
 	} else {
-		$eeSFL_Log['L' . $eeSFL_ListNumber][] = 'No Shortcode Attributes';
+		$eeSFL_Log['L' . $eeSFL_ListRun][] = 'No Shortcode Attributes';
 	}
 	
 	// Extension Check
@@ -317,7 +320,11 @@ function eeSFL_Shortcode($atts, $content = null) {
 	
 	// Begin Front-Side List Display ==================================================================
 	
-	$eeOutput .= '<div id="eeSFL">Folder: ' . $eeSFLF_ShortcodeFolder;
+	$eeOutput .= '<div class="eeSFL"';
+	
+	if($eeSFL_ListRun == 1) {$eeOutput .= ' id="eeSFL"'; } // 3/20 - Legacy for user CSS
+	
+	$eeOutput .= '>Folder: ' . $eeSFLF_ShortcodeFolder;
 	
 	// Who Can Upload?
 	switch ($eeSFL_Config['AllowUploads']) {
@@ -334,9 +341,10 @@ function eeSFL_Shortcode($atts, $content = null) {
 			$eeSFL_Config['AllowUploads'] = 'NO'; // Show Nothing
 	}
 	
-	if($eeSFL_Config['AllowUploads'] != 'NO' AND $eeSFL_ListNumber == 1 AND !@$_POST['eeSFLS_Searching']) {
+	if($eeSFL_Config['AllowUploads'] != 'NO' AND !$eeSFL_UploadFormRun AND !@$_POST['eeSFLS_Searching']) {
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
 		include(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/includes/ee-upload-form.php');
+		$eeSFL_UploadFormRun = TRUE;
 	}
 	
 	// Who Can View the List?
@@ -359,9 +367,9 @@ function eeSFL_Shortcode($atts, $content = null) {
 		include(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/ee-list-display.php');
 	}
 	
-	$eeOutput .= '</div>'; // Ends #eeSFL block
+	$eeOutput .= '</div>'; // Ends .eeSFL block
 	
-	$eeSFL_ListNumber++;
+	$eeSFL_ListRun++;
 	
 	
 	if(@$_REQUEST) {

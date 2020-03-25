@@ -1019,7 +1019,7 @@ class eeSFL_MainClass {
 		
 		$eeLogNow[$eeDate][] = $eeSFL_ThisLog;
 		
-		update_option('eeSFL-Log', $eeLogNow);
+		update_option('eeSFL-Log', $eeLogNow, FALSE);
 		
 		return TRUE;
 	}

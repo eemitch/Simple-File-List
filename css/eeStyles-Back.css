@@ -6,11 +6,11 @@
 /* 	font-size: 120%; */	
 }
 
-.eeSFL_Admin #eeSFL {
+.eeSFL_Admin .eeSFL {
 	padding: 0;
 }
 
-.eeSFL_Admin #eeSFL .eeFiles { /* File List table */
+.eeSFL_Admin .eeSFL .eeFiles { /* File List table */
 	background-color: #fcfcfc;
 }
 
@@ -51,10 +51,10 @@ p.eeTitle {
 	border: 1px solid #d6d6d6;
 	border-bottom: none;
 }
-#eeSFL #eeAdminActions p {
+.eeSFL #eeAdminActions p {
 	margin-top: 0;
 }
-#eeSFL #eeAdminActions .eeButton {
+.eeSFL #eeAdminActions .eeButton {
 	margin: 0 0 0 5px;
 }
 .eeSFL_Admin .eeAlignRight {
@@ -65,7 +65,7 @@ p.eeTitle {
 
 
 
-.eeSFL_Admin #eeSFL .eeSFL_EditFileWrap {
+.eeSFL_Admin .eeSFL .eeSFL_EditFileWrap {
 	display: none;
 	width: auto;
 	margin: 5px 0;
@@ -74,23 +74,23 @@ p.eeTitle {
 	border-radius: 6px;
 	background-color: #f6f6f6;
 }
-.eeSFL_Admin #eeSFL .eeSFL_EditFileWrap h4 {
+.eeSFL_Admin .eeSFL .eeSFL_EditFileWrap h4 {
 	margin: 0;
 }
-.eeSFL_Admin #eeSFL .eeSFL_EditFileWrap label {
+.eeSFL_Admin .eeSFL .eeSFL_EditFileWrap label {
 	float: none;
 	display: inline-block;
 	width: 98%;
 	margin: 0;
 	text-align: left;
 }
-.eeSFL_Admin #eeSFL .eeSFL_EditFileWrap input[type=text] {
+.eeSFL_Admin .eeSFL .eeSFL_EditFileWrap input[type=text] {
 	float: right;
 	display: inline-block;
 	width: 80%;
 	margin: 0; 
 }
-.eeSFL_Admin #eeSFL .eeSFL_EditFileWrap .eeDeleteButton:hover {
+.eeSFL_Admin .eeSFL .eeSFL_EditFileWrap .eeDeleteButton:hover {
 	background-color: #a93838;
 	color: #EEE;
 }
@@ -105,7 +105,7 @@ p.eeTitle {
 	width: 66%;
 }
 
-#eeSFL form {
+.eeSFL form {
 	border: none;
 	padding: 0;
 }
@@ -147,23 +147,23 @@ p.eeTitle {
 	width: auto;
 	background: transparent;
 }
-.eeSFL_Admin #eeSFL #eeSFL_Settings p {
+.eeSFL_Admin .eeSFL #eeSFL_Settings p {
 	display: inline;
 }
 
-.eeSFL_Admin #eeSFL #eeSFL_Settings select,
-.eeSFL_Admin #eeSFL #eeSFL_Settings input[type=text],
-.eeSFL_Admin #eeSFL #eeSFL_Settings input[type=range], 
-.eeSFL_Admin #eeSFL #eeSFL_Settings input[type=url], 
-.eeSFL_Admin #eeSFL #eeSFL_Settings input[type=password], 
-.eeSFL_Admin #eeSFL #eeSFL_Settings input[type=tel], 
-.eeSFL_Admin #eeSFL #eeSFL_Settings input[type=email],
-.eeSFL_Admin #eeSFL #eeSFL_Settings textarea, 
-.eeSFL_Admin #eeSFL #eeSFL_Settings span.eeValueDisplay {
+.eeSFL_Admin .eeSFL #eeSFL_Settings select,
+.eeSFL_Admin .eeSFL #eeSFL_Settings input[type=text],
+.eeSFL_Admin .eeSFL #eeSFL_Settings input[type=range], 
+.eeSFL_Admin .eeSFL #eeSFL_Settings input[type=url], 
+.eeSFL_Admin .eeSFL #eeSFL_Settings input[type=password], 
+.eeSFL_Admin .eeSFL #eeSFL_Settings input[type=tel], 
+.eeSFL_Admin .eeSFL #eeSFL_Settings input[type=email],
+.eeSFL_Admin .eeSFL #eeSFL_Settings textarea, 
+.eeSFL_Admin .eeSFL #eeSFL_Settings span.eeValueDisplay {
 	float: left;
 }
 .eeSFL_Admin #eeSFL_Settings input[type=text], 
-.eeSFL_Admin #eeSFL #eeSFL_Settings input[type=email] {
+.eeSFL_Admin .eeSFL #eeSFL_Settings input[type=email] {
 	clear: none;
 	width: 56%;
 	margin-bottom: 0;
@@ -228,14 +228,14 @@ button.eeDeleteCheckedButton {
 	border: none;
 	text-align: left;
 }
-#eeSFL .eeSFL_FileRenameEntry input[type=text] {
+.eeSFL .eeSFL_FileRenameEntry input[type=text] {
 	width: 60%;
 	margin: 0;
 	float: none;
 	clear: none;
 }
-#eeSFL .eeSFL_FileRenameEntry input[type=submit],
-#eeSFL .eeSFL_FileRenameEntry a.button {
+.eeSFL .eeSFL_FileRenameEntry input[type=submit],
+.eeSFL .eeSFL_FileRenameEntry a.button {
 	float: none;
 	clear: none;
 	margin: 0;
@@ -328,18 +328,18 @@ button.eeDeleteCheckedButton {
 
 
 /* Top-Right Instructions Link / Save Button */
-.eeSFL_Admin #eeSFL #eeSFL_Settings {
+.eeSFL_Admin .eeSFL #eeSFL_Settings {
 	position: relative;
 }
 
-.eeSFL_Admin #eeSFL #eeSFL_Settings p.eeSettingsRight {
+.eeSFL_Admin .eeSFL #eeSFL_Settings p.eeSettingsRight {
 	display: block;
 	position: absolute;
 	right: 0;
 	top: -2em;
 }
 
-#eeSFL .eeSFL_Save {
+.eeSFL .eeSFL_Save {
 	font-size: 120%;
 	background-color: #daf3ff;
 	-moz-box-shadow:    1px 1px 1px 1px #dbdbdb;
@@ -351,7 +351,7 @@ button.eeDeleteCheckedButton {
 
 /* SUPPORT Page */
 
-#eeSFL .eeSupp {
+.eeSFL .eeSupp {
 	display: block;
 	clear: both;
 	border: 2px solid #DDD;
@@ -363,34 +363,34 @@ button.eeDeleteCheckedButton {
 	width: auto;
 }
 
-#eeSFL .eeSupp h2 {
+.eeSFL .eeSupp h2 {
 	font-size: 150%;
 }
 
-#eeSFL .eeSupp h3 {
+.eeSFL .eeSupp h3 {
 	font-size: 120%;
 }
 
-#eeSFL .eeSupp p {
+.eeSFL .eeSupp p {
 	font-size: 100%;
 	margin-bottom: 2em;
 }
 
-#eeSFL .eeSupp input[type=text],
-#eeSFL .eeSupp input[type=email],
-#eeSFL .eeSupp input[type=url],
-#eeSFL .eeSupp textarea {
+.eeSFL .eeSupp input[type=text],
+.eeSFL .eeSupp input[type=email],
+.eeSFL .eeSupp input[type=url],
+.eeSFL .eeSupp textarea {
 	float: left;
 	clear: none;
 	width: 60%;
 	font-size: 120%;
 }
 
-#eeSFL .eeSupp textarea {
+.eeSFL .eeSupp textarea {
 	height: 300px;
 }
 
-#eeSFL .eeSupp label {
+.eeSFL .eeSupp label {
 	float: left;
 	clear: left;
 	width: 25%;
@@ -402,7 +402,7 @@ button.eeDeleteCheckedButton {
 	font-size: 110%;
 }
 
-#eeSFL .eeSupp #eeSupportFormSubmit {
+.eeSFL .eeSupp #eeSupportFormSubmit {
 	font-size: 200%;
 	display: block;
 	margin: 0 auto;
@@ -411,7 +411,7 @@ button.eeDeleteCheckedButton {
 	clear: both;
 }
 
-#eeSFL .eeSupp strong {
+.eeSFL .eeSupp strong {
 	font-size: 120%;
 }
 
@@ -460,7 +460,7 @@ button.eeDeleteCheckedButton {
 	border-color: #a5a5a5;	
 }
 
-#eeSFL a.eeGet {
+.eeSFL a.eeGet {
 	font-size: 120%;
 }
 
@@ -531,13 +531,13 @@ button.eeDeleteCheckedButton {
     width: 100%;
 }
 
-#eeSFL #eeCreatePostwithShortcode {
+.eeSFL #eeCreatePostwithShortcode {
 	margin: 0;
 	padding: 0;
 	text-align: right;
 }
-#eeSFL #eeCreatePostwithShortcode select,
-#eeSFL #eeCreatePostwithShortcode input[type=submit] {
+.eeSFL #eeCreatePostwithShortcode select,
+.eeSFL #eeCreatePostwithShortcode input[type=submit] {
 	margin: 0;
 	float: none;
 }
@@ -555,7 +555,7 @@ button.eeDeleteCheckedButton {
 
 
 
-#eeSFL form.eeShortcodeBuilderTop {
+.eeSFL form.eeShortcodeBuilderTop {
 	float: none;
 	width: 100%;
 	margin: 0;
@@ -579,7 +579,7 @@ button.eeDeleteCheckedButton {
 	margin: 10px;
 	cursor: pointer;
 }
-#eeSFL .eeOn {
+.eeSFL .eeOn {
 	background-color: #b2b2b2;
 }
 .eeShortcodeBuilderBottom p:hover {
@@ -599,13 +599,13 @@ button.eeDeleteCheckedButton {
 
 
 
-#eeSFL .eeSupp #eeSFL_ShortCode {
+.eeSFL .eeSupp #eeSFL_ShortCode {
 	width: 100%;
 	font-size: 120%;
 	height: auto;
 }
 
-#eeSFL .eeSupp #eeShortcodeBuilder label {
+.eeSFL .eeSupp #eeShortcodeBuilder label {
 	display: inline-block;
 	clear: none;
 	text-align: left;
@@ -614,7 +614,7 @@ button.eeDeleteCheckedButton {
 	width: 40%;
 	margin: 10px;
 }
-#eeSFL .eeSupp #eeShortcodeBuilder select {
+.eeSFL .eeSupp #eeShortcodeBuilder select {
 	display: inline-block;
 	width: 100%;
 }
@@ -642,12 +642,12 @@ button.eeDeleteCheckedButton {
 	float: right !important;
 	margin: 0 0 .5em .5em;
 }
-#eeSFL .eeCentered {
+.eeSFL .eeCentered {
 	width: 100%;
 	text-align: center;
 }
 
-#eeSFL hr {
+.eeSFL hr {
 	clear: both;
 	margin: 2em auto;
 }
@@ -656,27 +656,27 @@ button.eeDeleteCheckedButton {
 
 /* Admin-Side File List Over-Rides */
 
-#eeSFL table.eeFiles {
+.eeSFL table.eeFiles {
 	border-color: #E5E5E5;
 	font-size: 110%;
 }
 
-#eeSFL table.eeFiles th {
+.eeSFL table.eeFiles th {
 	padding: 8px;
 	background-color: #23282D;
 }
-#eeSFL table.eeFiles td {
+.eeSFL table.eeFiles td {
 	padding: .5em 0;
 	border-bottom: 1px solid #999;
 	text-overflow: clip;
 	overflow: hidden;
 	vertical-align: middle;
 }
-#eeSFL table.eeFiles td p.eeSFL_FileLink {
+.eeSFL table.eeFiles td p.eeSFL_FileLink {
 	font-weight: bold;
 	font-size: 105%;
 }
-#eeSFL table.eeFiles td small.eeSFL_ListFileActions {
+.eeSFL table.eeFiles td small.eeSFL_ListFileActions {
 	color: #000;
 	background: #e4e4e4;
 	padding: .2em .4em;
@@ -688,29 +688,29 @@ button.eeDeleteCheckedButton {
 	-webkit-box-shadow: 1px 1px 1px 1px #dbdbdb;
 	box-shadow:         1px 1px 1px 1px #dbdbdb;
 }
-#eeSFL table.eeFiles td.eeSFL_Thumbnail img {
+.eeSFL table.eeFiles td.eeSFL_Thumbnail img {
 	border: 1px solid #646464;
 	-moz-box-shadow:    1px 1px 1px 1px #dbdbdb;
 	-webkit-box-shadow: 1px 1px 1px 1px #dbdbdb;
 	box-shadow:         1px 1px 1px 1px #dbdbdb;
 	
 }
-#eeSFL table.eeFiles td.eeSFL_Thumbnail a.eeFolderIcon img {
+.eeSFL table.eeFiles td.eeSFL_Thumbnail a.eeFolderIcon img {
 	border: none;
 	-moz-box-shadow:    none;
 	-webkit-box-shadow: none;
 	box-shadow:         none;
 }
 
-#eeSFL input[type="submit"] {
+.eeSFL input[type="submit"] {
     float: none;
     margin: 20px;
 }
 
-#eeSFL a.eeDimmedLink {
+.eeSFL a.eeDimmedLink {
 	color: #6a9db4;
 }
-#eeSFL a.eeDimmedLink:hover {
+.eeSFL a.eeDimmedLink:hover {
 	color: #0073aa;
 	text-decoration: underline;
 }

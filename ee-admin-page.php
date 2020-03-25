@@ -8,7 +8,7 @@ $eeSFL_Log['Admin'][] = 'Loaded: ee-admin-page';
 // Admin-Side Display
 function eeSFL_ManageLists() {
 	
-	global $eeSFL, $eeSFL_Log, $eeSFL_DevMode, $eeSFL_ID, $eeSFL_Config, $eeSFL_Env, $eeSFL_ListNumber;
+	global $eeSFL, $eeSFL_Log, $eeSFL_DevMode, $eeSFL_ID, $eeSFL_Config, $eeSFL_Env, $eeSFL_ListRun;
 	global $eeSFLF, $eeSFLS, $eeSFLA, $eeSFLA_Settings; // Extensions
 	
 	$eeSFL_Files = FALSE;
@@ -35,7 +35,7 @@ function eeSFL_ManageLists() {
 	$eeOutput = '
 	
 	<div class="eeSFL_Admin wrap">
-	<div id="eeSFL">'; 
+	<div class="eeSFL" id="eeSFL">'; 
 	
 	if($eeSFL_DevMode) { $eeOutput .= '<p class="eeAlert">' . __('DEVELOPMENT MODE ON', 'ee-simple-file-list') . '</p>'; }
 	
