@@ -105,6 +105,10 @@ function eeSFL_ManageLists() {
 	
 		$eeOutput .= '<div id="uploadFilesDiv">';
 		
+		// Upload Check
+		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
+		include(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/includes/ee-upload-check.php');
+		
 		include($eeSFL_Env['pluginDir'] . 'includes/ee-upload-form.php'); // The Uploader
 		
 		$eeOutput .= '</div>';

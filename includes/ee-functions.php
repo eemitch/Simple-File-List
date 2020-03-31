@@ -335,7 +335,7 @@ function eeSFL_SanitizeFileName($eeSFL_FileName) {
 	// Make sure file has an extension
 	$eeSFL_PathParts = pathinfo($eeSFL_FileName);
 	$eeSFL_FileNameAlone = str_replace('.', '_', $eeSFL_PathParts['filename']); // Get rid of dots
-	$eeSFL_Extension = strtolower($eeSFL_PathParts['extension']);
+	$eeSFL_Extension = @strtolower($eeSFL_PathParts['extension']);
 	$eeSFL_FileName = sanitize_file_name( $eeSFL_FileNameAlone . '.' . $eeSFL_Extension );
     
     return $eeSFL_FileName;

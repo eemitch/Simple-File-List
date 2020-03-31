@@ -243,7 +243,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 	
 	$eeSFL_Log['L' . $eeSFL_ListRun][] = 'Shortcode Loading: ' . get_permalink();
 
-	if(!is_array($eeSFL_Config)) { return FALSE; }
+	if( $eeSFL_ListRun > 1 AND @$_GET['eeFront'] ) { return; }
 
     // Over-Riding Shortcode Attributes
 	if($atts) {
@@ -274,6 +274,8 @@ function eeSFL_Shortcode($atts, $content = null) {
 		if($eeSFLA AND $list != $eeSFL_ID) {
 			$eeSFL_Config = $eeSFL->eeSFL_Config($list);
 			$eeSFL_ID = $list;
+		} elseif($list > 1) {
+			return;
 		}
 		
 		if($showlist) { $eeSFL_Config['ShowList'] = $showlist; }
@@ -324,7 +326,13 @@ function eeSFL_Shortcode($atts, $content = null) {
 	
 	if($eeSFL_ListRun == 1) {$eeOutput .= ' id="eeSFL"'; } // 3/20 - Legacy for user CSS
 	
-	$eeOutput .= '>Folder: ' . $eeSFLF_ShortcodeFolder;
+	$eeOutput .= '>';
+	
+	if($eeSFLF AND $eeSFL_DevMode) { $eeOutput .= 'Folder: ' . $eeSFLF_ShortcodeFolder; }
+	
+	// Upload Check
+	$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
+	include(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/includes/ee-upload-check.php');
 	
 	// Who Can Upload?
 	switch ($eeSFL_Config['AllowUploads']) {

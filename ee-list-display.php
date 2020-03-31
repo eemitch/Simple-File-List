@@ -175,7 +175,7 @@ if($eeAdmin) {
 	$eeOutput .= '</p>';
 	
 	// If showing just-uploaded files
-	if(@$_POST['eeSFL_Upload'] ) { 
+	if($eeSFL_Uploaded) { 
 		
 		$eeOutput .= '
 		
@@ -212,10 +212,10 @@ if($eeAdmin) {
 	
 	</div>';
 
-} elseif(@$_POST['eeSFL_Upload'] AND strpos(!@$_POST['eeSFLF_UploadFolder'], $eeSFLF_ShortcodeFolder) === 0) { 
+} elseif($eeSFL_Uploaded) { //  AND strpos(!@$_POST['eeSFLF_UploadFolder'], $eeSFLF_ShortcodeFolder) === 0
 	
 	$eeOutput .= '<p class="eeSFL_ListMeta"><a href="' . $eeURL . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . 
-		__('Back to the Files in ', 'ee-simple-file-list') . $eeSFLF_ShortcodeFolder . '</a></p>';
+		__('Back to the Files', 'ee-simple-file-list') . '</a></p>';
 		
 	$eeSendFilesArray = $eeSFL_Files; // Restrict to just what was uploaded
 }
@@ -223,14 +223,12 @@ if($eeAdmin) {
 
 // Extension Checks	
 if($eeSFLF) {
-	if( $eeAdmin OR ($eeSFL_Config['AllowFrontManage'] == 'YES' AND !@$_POST['eeSFLS_Searching']) ) { 
-		$eeOutput .= $eeSFLF_FunctionBar; 
-		$eeOutput .= '<span class="eeSFL_Hide" id="eeSFLF_ListFolder">' . $eeSFLF_ListFolder . '</span>
-		<span class="eeSFL_Hide" id="eeSFLF_MoveNonce">' . $eeSFLF_MoveNonce . '</span>';
-	}
+	$eeOutput .= $eeSFLF_FunctionBar;
+	$eeOutput .= '<span class="eeSFL_Hide" id="eeSFLF_ListFolder">' . $eeSFLF_ListFolder . '</span>
+	<span class="eeSFL_Hide" id="eeSFLF_MoveNonce">' . $eeSFLF_MoveNonce . '</span>';
 }
 
-if($eeSFLS) {
+if($eeSFLS AND !$eeSFL_Uploaded) {
 	$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
 	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-search-form.php');
 }
@@ -384,7 +382,7 @@ if(@count($eeSFL_Files) >= 1) {
 						
 						$eeIsFolder = TRUE;
 						$eeFileExt = 'folder';
-						if(!$eeAdmin AND $eeSFL_ListRun > 1) { continue; } // Disable folder support for additional lists
+						// if(!$eeAdmin AND $eeSFL_ListRun > 1) { continue; } // Disable folder support for additional lists
 						$eeFileURL = $eeSFLF->eeSFLF_GetFolderURL($eeFilePath, $eeSFLF_ShortcodeFolder); // Extension required
 					
 					} else {

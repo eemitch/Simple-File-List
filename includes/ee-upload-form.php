@@ -10,8 +10,8 @@ $eeSFL_Log['Add Files'][] = 'Loaded: ee-uploader';
 
 // Extension Check
 if($eeSFLF) {
-	if(@$_REQUEST['eeSFLF_ListFolder'] AND $eeSFL_ListRun == 1) { // Adjust the path based on REQUEST arg
-		$eeSFLF_ListFolder = filter_var(urldecode($_REQUEST['eeSFLF_ListFolder']), FILTER_SANITIZE_STRING) . '/'; 
+	if(@$_REQUEST['eeFolder'] AND $eeSFL_ListRun == 1) { // Adjust the path based on REQUEST arg
+		$eeSFLF_ListFolder = filter_var(urldecode($_REQUEST['eeFolder']), FILTER_SANITIZE_STRING) . '/'; 
 	} elseif( strlen(@$eeSFLF_ShortcodeFolder) ) {
 		$eeSFLF_ListFolder = str_replace('&#34;', '', $eeSFLF_ShortcodeFolder) . '/'; // Fix for uploading to draft status page
 	} else {
@@ -23,25 +23,6 @@ if($eeSFLF) {
 
 $eeSFL_Log['Add Files'][] = 'Uploading to...';
 $eeSFL_Log['Add Files'][] = $eeSFL_Config['FileListDir'] . $eeSFLF_ListFolder;
-
-// Check for an upload job, then run notification routine.
-if(@$_POST['eeSFL_Upload']) {
-	
-	$eeSFL_ID = filter_var(@$_POST['eeListID'], FILTER_VALIDATE_INT);
-	
-	if($eeSFL_ID OR $eeSFL_ID === 0) {
-		
-		$eeOutput .= '<!-- Processing Upload -->';
-		
-		$eeOutput .= eeSFL_ProcessUpload($eeSFL_ID);
-	}
-	
-	if($eeAdmin) {
-		eeSFL_UploadCompletedAdmin(); // Action Hook: eeSFL_UploadCompletedAdmin  <-- Admin side
-	} else {
-		eeSFL_UploadCompleted(); // Action Hook: eeSFL_UploadCompleted <-- Front side
-	}	
-}
 
 // File limit fallback
 if(!$eeSFL_Config['UploadLimit']) { $eeSFL_Config['UploadLimit'] = $eeSFL->eeDefaultUploadLimit; }
