@@ -28,7 +28,7 @@ $eeSFL_Log['Add Files'][] = $eeSFL_Config['FileListDir'] . $eeSFLF_ListFolder;
 if(!$eeSFL_Config['UploadLimit']) { $eeSFL_Config['UploadLimit'] = $eeSFL->eeDefaultUploadLimit; }
 
 // User Messaging	
-if(@$eeSFL_Log['messages']) { 
+if(@$eeSFL_Log['messages'] AND $eeSFL_ListRun == 1) { 
 	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_Log['messages'], 'notice-success');
 	$eeSFL_Log['messages'] = ''; // Clear
 }	

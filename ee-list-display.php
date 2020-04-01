@@ -119,8 +119,9 @@ if($eeSFLS) {
 	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-processing.php'); // Run Pagination Processing
 }
 
+
 // User Messaging	
-if(@$eeSFL_Log['messages']) { 
+if(@$eeSFL_Log['messages'] AND $eeSFL_ListRun == 1) { 
 	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_Log['messages'], 'notice-success');
 	$eeSFL_Log['messages'] = array(); // Clear
 }	
@@ -212,7 +213,7 @@ if($eeAdmin) {
 	
 	</div>';
 
-} elseif($eeSFL_Uploaded) { //  AND strpos(!@$_POST['eeSFLF_UploadFolder'], $eeSFLF_ShortcodeFolder) === 0
+} elseif($eeSFL_Uploaded AND $eeSFL_ListRun == 1) { //  AND strpos(!@$_POST['eeSFLF_UploadFolder'], $eeSFLF_ShortcodeFolder) === 0
 	
 	$eeOutput .= '<p class="eeSFL_ListMeta"><a href="' . $eeURL . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . 
 		__('Back to the Files', 'ee-simple-file-list') . '</a></p>';
@@ -240,7 +241,9 @@ if($eeSFLS AND !$eeSFL_Uploaded) {
 
 // TABLE HEAD ==================================================================================================
 
-if(@count($eeSFL_Files) >= 1) {
+if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
+	
+	// if(!$eeSFL_Files[0]['FilePath']) { return; }
 	
 	$eeRowID = '0'; // Assign an ID number to each row
 	
@@ -599,7 +602,7 @@ if(@count($eeSFL_Files) >= 1) {
 														
 							
 							// Append Addition (admin or authorized) Actions
-							if($eeAdmin OR $eeSFL_Config['AllowFrontManage'] == 'YES') {
+							if( ($eeAdmin OR $eeSFL_Config['AllowFrontManage'] == 'YES') AND $eeSFL_ListRun == 1) {
 								
 								$eeFileActions .= '<a href="" id="eeSFL_EditFile_' . $eeRowID . '" onclick="eeSFL_EditFile(' . $eeRowID . ')">' . __('Edit', 'ee-simple-file-list') . '</a> | ';
 								
@@ -887,11 +890,11 @@ if(@count($eeSFL_Files) >= 1) {
 	
 	}
 	
-} else {
+} elseif( !@$_POST['eeSFLS_Searching'] ) {
 	
 	$eeSFL_Log['File List'][] = 'There are no files here :-(';
 	
-	if($eeAdmin OR $eeSFL_Config['AllowUploads']) {
+	if($eeAdmin) {
 		$eeOutput .= '<div id="eeSFL_noFiles"><p>&#8593; ' . __('Upload some files and they will appear here.', 'ee-simple-file-list') . '</p></div>';
 	}
 }
