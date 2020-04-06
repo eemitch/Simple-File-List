@@ -71,7 +71,9 @@ if( !empty($eeSFL_Files) ) {
 } else {
 	$eeSFL_Files = array();
 }
- 
+
+
+$eeSFL_ListNumber = $eeSFL_ListRun; // Legacy 04/20
 
 // Extension Check
 if($eeSFLF) {
@@ -375,7 +377,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 						
 						// Extension Check
 						if($eeSFLS AND $eeSFLF) { // Get List Folder from path to ensure the thumb displays in search result
-							if($eeSFLS_FileSearchArray) {
+							if(@$eeSFLS_FileSearchArray) {
 								$eeFile = basename($eeFileArray['FilePath']);
 								$eeSFLF_ListFolder = str_replace($eeFile, '', $eeFileArray['FilePath']);
 							}
