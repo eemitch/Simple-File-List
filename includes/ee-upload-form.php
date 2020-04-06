@@ -5,13 +5,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
 $eeSFL_UploadNonce = wp_create_nonce('ee-simple-file-list-upload'); // Checked in the upload engine.
-global $eeSFL_ListNumber;
+global $eeSFL_ListRun;
 $eeSFL_Log['Add Files'][] = 'Loaded: ee-uploader';
 
 // Extension Check
 if($eeSFLF) {
-	if(@$_REQUEST['eeSFLF_ListFolder'] AND $eeSFL_ListNumber == 1) { // Adjust the path based on REQUEST arg
-		$eeSFLF_ListFolder = filter_var(urldecode($_REQUEST['eeSFLF_ListFolder']), FILTER_SANITIZE_STRING) . '/'; 
+	if(@$_REQUEST['eeFolder'] AND $eeSFL_ListRun == 1) { // Adjust the path based on REQUEST arg
+		$eeSFLF_ListFolder = filter_var(urldecode($_REQUEST['eeFolder']), FILTER_SANITIZE_STRING) . '/'; 
 	} elseif( strlen(@$eeSFLF_ShortcodeFolder) ) {
 		$eeSFLF_ListFolder = str_replace('&#34;', '', $eeSFLF_ShortcodeFolder) . '/'; // Fix for uploading to draft status page
 	} else {
@@ -24,30 +24,11 @@ if($eeSFLF) {
 $eeSFL_Log['Add Files'][] = 'Uploading to...';
 $eeSFL_Log['Add Files'][] = $eeSFL_Config['FileListDir'] . $eeSFLF_ListFolder;
 
-// Check for an upload job, then run notification routine.
-if(@$_POST['eeSFL_Upload']) {
-	
-	$eeSFL_ID = filter_var(@$_POST['eeSFL_ID'], FILTER_VALIDATE_INT);
-	
-	if($eeSFL_ID OR $eeSFL_ID === 0) {
-		
-		$eeOutput .= '<!-- Processing Upload -->';
-		
-		$eeOutput .= eeSFL_ProcessUpload($eeSFL_ID);
-	}
-	
-	if($eeAdmin) {
-		eeSFL_UploadCompletedAdmin(); // Action Hook: eeSFL_UploadCompletedAdmin  <-- Admin side
-	} else {
-		eeSFL_UploadCompleted(); // Action Hook: eeSFL_UploadCompleted <-- Front side
-	}	
-}
-
 // File limit fallback
 if(!$eeSFL_Config['UploadLimit']) { $eeSFL_Config['UploadLimit'] = $eeSFL->eeDefaultUploadLimit; }
 
 // User Messaging	
-if(@$eeSFL_Log['messages']) { 
+if(@$eeSFL_Log['messages'] AND $eeSFL_ListRun == 1) { 
 	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_Log['messages'], 'notice-success');
 	$eeSFL_Log['messages'] = ''; // Clear
 }	
@@ -67,10 +48,12 @@ if(@$eeSFL_Config['FileListDir']) {
 		
 			<input type="hidden" name="MAX_FILE_SIZE" value="' .(($eeSFL_Config['UploadMaxFileSize']*1024)*1024) . '" />
 			<input type="hidden" name="eeSFL_Upload" value="TRUE" />
-			<input type="hidden" name="eeSFL_ID" value="' . $eeSFL_Config['ID'] . '" />
+			<input type="hidden" name="eeListID" value="' . $eeSFL_ID . '" />
 			<input type="hidden" name="eeSFL_FileCount" value="" id="eeSFL_FileCount" />
 			<input type="hidden" name="eeSFL_FileList" value="" id="eeSFL_FileList" />';
 		
+		if($eeSFL_Env['wpUserID'] > 0) { $eeOutput .= '<input type="hidden" name="eeSFL_FileOwner" value="' . $eeSFL_Env['wpUserID'] . '" id="eeSFL_FileOwner" />'; }
+			
 		if($eeSFLF AND $eeSFLF_ListFolder) { $eeOutput .= '
 			<input type="hidden" name="eeSFLF_UploadFolder" value="' . urlencode($eeSFLF_ListFolder) . '" id="eeSFLF_UploadFolder" />
 			';
@@ -99,7 +82,7 @@ if(@$eeSFL_Config['FileListDir']) {
 		
 		<script>
 		
-			var eeSFL_ListID = ' . $eeSFL_Config['ID'] . ';
+			var eeSFL_ListID = ' . $eeSFL_ID . ';
 			var eeSFL_FileUploadDir = "' . urlencode($eeSFL_Config['FileListDir'] . $eeSFLF_ListFolder) . '";
 			var eeSFL_FileLimit = ' . $eeSFL_Config['UploadLimit'] . '; // Maximum number of files allowed
 			var eeSFL_UploadMaxFileSize = ' . (($eeSFL_Config['UploadMaxFileSize']*1024)*1024) . ';

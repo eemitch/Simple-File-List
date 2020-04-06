@@ -10,8 +10,6 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	
 	// Get all the settings
 	$eeSettings = get_option('eeSFL-Settings');
-	
-	$eeID = $eeSFL_Config['ID'];
 
 	// YES/NO Checkboxes
 	$eeCheckboxes = array(
@@ -27,7 +25,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		,'AllowFrontSend'
 	);
 	foreach( $eeCheckboxes as $eeTerm){
-		$eeSettings[$eeID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
+		$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
 	}
 	
 	// Extension Processing
@@ -43,7 +41,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	
 	
 	// Update the array with new values
-	$eeSFL_Config = $eeSettings[$eeID];
+	$eeSFL_Config = $eeSettings[$eeSFL_ID];
 	
 	// Update DB
 	update_option('eeSFL-Settings', $eeSettings );
@@ -71,7 +69,8 @@ $eeOutput .= '
 		
 		<h2>' . __('Front-Side Settings', 'ee-simple-file-list') . '</h2>
 		
-		<input type="hidden" name="eePost" value="TRUE" />';	
+		<input type="hidden" name="eePost" value="TRUE" />
+		<input type="hidden" name="eeListID" value="' . $eeSFL_ID . '" />';	
 		
 		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce', TRUE, FALSE);
 		
@@ -203,21 +202,24 @@ $eeOutput .= '
 		
 		<div class="eeNote">' . __('Allow front-side users to email links to files.', 'ee-simple-file-list') . '</div>
 		
-		<br class="eeClearFix" />		
+		<br class="eeClearFix" />';
 		
+		if(!$eeSFLA) {
 		
-		<label for="eeAllowFrontManage">' . __('Front-Side Manage', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeAllowFrontManage" value="YES" id="eeAllowFrontManage"';
+			$eeOutput .= '<label for="eeAllowFrontManage">' . __('Front-Side Manage', 'ee-simple-file-list') . ':</label>
+			<input type="checkbox" name="eeAllowFrontManage" value="YES" id="eeAllowFrontManage"';
+			
+			if( $eeSFL_Config['AllowFrontManage'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+			
+			$eeOutput .= ' /> <p>' . __('Use with Caution', 'ee-simple-file-list') . '</p>
+							
+			<div class="eeNote">' . __('Allow file editing and deletion on the front side of the site.', 'ee-simple-file-list') . '</div>
+			
+			<br class="eeClearFix" />';
 		
-		if( $eeSFL_Config['AllowFrontManage'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		}
 		
-		$eeOutput .= ' /> <p>' . __('Use with Caution', 'ee-simple-file-list') . '</p>
-						
-		<div class="eeNote">' . __('Allow file editing and deletion on the front side of the site.', 'ee-simple-file-list') . '</div>
-		
-		<br class="eeClearFix" />
-		
-		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" />
+		$eeOutput .= '<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" />
 		
 		</fieldset>
 		

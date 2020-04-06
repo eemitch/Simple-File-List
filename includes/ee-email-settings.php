@@ -8,60 +8,36 @@ $eeSFL_Log[] = 'Loading Email Settings Page ...';
 // Check for POST and Nonce
 if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {
 	
+	// echo '<pre>'; print_r($_POST); echo '</pre>'; exit;
+	
 	// Get all the settings
 	$eeSettings = get_option('eeSFL-Settings');
-	
-	$eeID = $eeSFL_Config['ID'];
 
 	// YES/NO Checkboxes
 	$eeCheckboxes = array(
 		'Notify'
 	);
 	foreach( $eeCheckboxes as $eeTerm){
-		$eeSettings[$eeID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
+		$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
 	}
 	
-	// Notifications
-	$eeDelivery = array('To', 'Cc', 'Bcc');
-	
-	foreach( $eeDelivery as $eeKey => $eeValue) {
-	
-		$eeSFL_To = @$_POST['eeNotify' . $eeValue];
-			
-		if(strpos($eeSFL_To, ',')) { // Multiple Addresses
-		
-			$eeSFL_Addresses = explode(',', $eeSFL_To); // Make array
-			
-			$eeSFL_AddressesString = '';
-			
-			foreach($eeSFL_Addresses as $add){
+	// Extension Check
+	if($eeSFLA) {
 				
-				$add = trim($add);
-				
-				if(filter_var($add, FILTER_VALIDATE_EMAIL)) {
-			
-					$eeSFL_AddressesString .= $add . ',';
-				} else {
-					$eeSFL_Log['errors'][] = $add . ' - ' . __('This is not a valid email address.', 'ee-simple-file-list');
-				}
-			}
-			
-			$eeSettings[$eeID]['Notify' . $eeValue] = substr($eeSFL_AddressesString, 0, -1); // Remove last comma
-			
+		$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
+		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_NoticeSettingsProcess.php');
+	
+	} else {
 		
-		} elseif(filter_var(@$_POST['eeNotify' . $eeValue], FILTER_SANITIZE_EMAIL)) { // Only one address
+		$eeDelivery = array('To', 'Cc', 'Bcc');
+	}
+	
+	foreach( $eeDelivery as $eeField ) {
+		
+		if( strpos($_POST['eeNotify' . $eeField], '@') ) {
 			
-			$add = @$_POST['eeNotify' . $eeValue];
-			
-			if(filter_var($add, FILTER_VALIDATE_EMAIL)) {
-				$eeSettings[$eeID]['Notify' . $eeValue] = $add;
-			} else {
-				$eeSFL_Log['errors'][] = $add . ' - ' . __('This is not a valid email address.', 'ee-simple-file-list');
-			}
-			
-		} else {
-			
-			$eeSettings[$eeID]['Notify' . $eeValue] = ''; // Anything but a good email gets null.
+			$eeAddresses = $eeSFL->eeSFL_SanitizeEmailString($_POST['eeNotify' . $eeField]);
+			$eeSettings[$eeSFL_ID]['Notify' . $eeField] = $eeAddresses;
 		}
 	}
 	
@@ -73,14 +49,14 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		,'NotifyMessage'
 	);
 	foreach( $eeTextInputs as $eeTerm){
-		$eeSettings[$eeID][$eeTerm] = eeSFL_ProcessTextInput($eeTerm);
+		$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessTextInput($eeTerm);
 	}
 	
 	// Update DB
 	update_option('eeSFL-Settings', $eeSettings );
 	
 	// Update the array with new values
-	$eeSFL_Config = $eeSettings[$eeID];
+	$eeSFL_Config = $eeSettings[$eeSFL_ID];
 	
 	$eeSFL_Confirm = __('Notification Settings Saved', 'ee-simple-file-list');
 }
@@ -106,6 +82,7 @@ $eeOutput .= '
 		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" /></p>
 		
 	<input type="hidden" name="eePost" value="TRUE" />
+	<input type="hidden" name="eeListID" value="' . $eeSFL_ID . '" />
 	
 	<h2>' . __('Notifications', 'ee-simple-file-list') . '</h2>';	
 	
@@ -120,16 +97,27 @@ $eeOutput .= '
 	
 	$eeOutput .= '<fieldset>
 	
-	<label for="eeNotify">' . __('Send Notification', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeNotify" value="YES" id="eeNotify"'; 
+	<label for="eeNotify">' . __('Enable Notifications', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeNotify" value="YES" id="eeNotify"'; 
 	if(@$eeSFL_Config['Notify'] == 'YES') { $eeOutput .= ' checked'; }
 	$eeOutput .= ' /> <div class="eeNote">' . __('Send an email notification when a file is uploaded on the front-side of the website.', 'ee-simple-file-list') . '</div>
 	
-	<hr />
+	';
 	
-	<label for="eeNotifyTo">' . __('Notice Email', 'ee-simple-file-list') . ':</label>
-	<input type="text" name="eeNotifyTo" value="' . @$eeSFL_Config['NotifyTo'] . '" class="eeAdminInput" id="eeNotifyTo" size="64" />
-		<div class="eeNote">' . __('Send an email whenever a file is uploaded or changed.', 'ee-simple-file-list') . ' ' .  __('Separate multiple addresses with a comma.', 'ee-simple-file-list') . '</div>
+	if($eeSFLA) {
+		
+		$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
+		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_NoticeSettingsDisplay.php');
 	
+	} else {
+		
+		$eeOutput .= '<label for="eeNotifyTo">' . __('Notice Email', 'ee-simple-file-list') . ':</label>
+			<input type="text" name="eeNotifyTo" value="' . @$eeSFL_Config['NotifyTo'] . '" class="eeAdminInput" id="eeNotifyTo" size="64" />
+				<div class="eeNote">' . __('Send an email whenever a file is uploaded.', 'ee-simple-file-list') . ' ' .  __('Separate multiple addresses with a comma.', 'ee-simple-file-list') . '</div>';
+	}
+	
+	
+	// For All List Types
+	$eeOutput .= '<hr />
 	
 	<label for="eeNotifyCc">' . __('Copy to Email', 'ee-simple-file-list') . ':</label>
 	<input type="text" name="eeNotifyCc" value="' . @$eeSFL_Config['NotifyCc'] . '" class="eeAdminInput" id="eeNotifyCc" size="64" />

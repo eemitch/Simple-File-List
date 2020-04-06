@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-functions.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.23.2019
+<?php // Simple File List Script: ee-functions.php | Author: Mitchell Bennis | support@simplefilelist.com
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Functions' ) ) exit('ERROR 98'); // Exit if nonce fails
@@ -63,7 +63,11 @@ function eeSFL_AppendProperUrlOp($eeURL) {
 // Check for the Upload Folder, Create if Needed
 function eeSFL_FileListDirCheck($eeFileListDir) {
 	
-	global $eeSFL_Log, $eeSFL, $eeSFL_Env;
+	global $eeSFL_Log, $eeSFL, $eeSFL_ID, $eeSFL_Env;
+	
+	// Check if FileListDir has a trailing slash...
+	$eeLastChar = substr($eeFileListDir, -1);
+	if($eeLastChar != '/') {  $eeFileListDir .= '/'; } // Trailing slash required
 	
 	// Set some standards
 	if(strpos($eeFileListDir, '.') === 0 OR strpos($eeFileListDir, 'p-admin') OR strpos($eeFileListDir, 'p-includes') ) {
@@ -71,7 +75,7 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 		return FALSE;
 	}
 	
-	$eeSFL_FileListDirCheck = get_transient('eeSFL-' . $eeSFL->eeListID . '-FileListDirCheck');
+	$eeSFL_FileListDirCheck = get_transient('eeSFL-' . $eeSFL_ID . '-FileListDirCheck');
 	
 	// Check Transient First
 	if( $eeFileListDir == $eeSFL_FileListDirCheck AND is_dir(ABSPATH . $eeFileListDir) ) {
@@ -106,7 +110,8 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 			}
 			
 			if(!is_writable( ABSPATH . $eeFileListDir )) {
-				$eeSFL_Log['errors'][] = 'ERROR: I could not create the upload directory: ' . $eeFileListDir;
+				$eeSFL_Log['errors'][] = 'Cannot create the upload directory: ' . $eeFileListDir;
+				$eeSFL_Log['errors'][] = 'Please check directory permissions';
 				
 				return FALSE;
 			
@@ -141,7 +146,7 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 		}
 	
 		// Set Transient
-		set_transient('eeSFL-' . $eeSFL->eeListID . '-FileListDirCheck', $eeFileListDir, 86400); // 1 Expires in Day
+		set_transient('eeSFL-' . $eeSFL_ID . '-FileListDirCheck', $eeFileListDir, 86400); // 1 Expires in Day
 
 		return TRUE;
 		
@@ -178,16 +183,19 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 		if(check_admin_referer( 'ee-simple-file-list-upload', 'ee-simple-file-list-upload-nonce')) {
 			
 			$eeArray = json_decode($eeFileList);
+			$eeArray = array_map('eeSFL_SanitizeFileName', $eeArray);
+			
 			$eeNewArray = array(); // For our lowered-case extensions
 			
 			// Drop file extensions to lowercase
 			foreach( $eeArray as $eeFile) {  // We need to do this here and in ee-upload-engine.php
+				
 				$eeArray = explode('.', $eeFile);
 				$eeNewArray[] = $eeSFLF_UploadFolder . $eeArray[0] . '.' . strtolower($eeArray[1]);
 			}
 			$eeArray = $eeNewArray;
 			
-			$eeSFL_Env['UploadedFiles'] = $eeNewArray;
+			$eeSFL_Env['UploadedFiles'] = $eeArray;
 			
 			
 			// Notification
@@ -215,6 +223,10 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 							$eeSFL_Config['FileListURL'] . $eeSFLF_UploadFolder . $eeFile . PHP_EOL . 
 								"(" . eeSFL_GetFileSize( $eeSFL_Config['FileListDir'] . $eeSFLF_UploadFolder . $eeFile ) . ")" . PHP_EOL . PHP_EOL;
 					
+						// Is uploader person logged-in?
+						if( is_numeric(@$_POST['eeSFL_FileOwner']) ) {
+							$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'FileOwner', $_POST['eeSFL_FileOwner']);
+						}
 								
 						// Add submitter data to file list array
 						if($eeSFL_Config['GetUploaderInfo'] == 'YES') {
@@ -320,16 +332,11 @@ function eeSFL_GetFileSize($eeSFL_File) {
 // Make sure the file name is acceptable
 function eeSFL_SanitizeFileName($eeSFL_FileName) {
 	
-	if(strpos($eeSFL_FileName, '.')) {
-		$eePathParts = pathinfo($eeSFL_FileName);
-	
-		$eeFileNameOnly = str_replace('.', '_', $eePathParts['filename']); // Get rid of dots
-	
-		// Rebuild
-		$eeSFL_FileName = $eeFileNameOnly . '.' . $eePathParts['extension'];
-	}
-	
-	$eeSFL_FileName = sanitize_file_name( $eeSFL_FileName );
+	// Make sure file has an extension
+	$eeSFL_PathParts = pathinfo($eeSFL_FileName);
+	$eeSFL_FileNameAlone = str_replace('.', '_', $eeSFL_PathParts['filename']); // Get rid of dots
+	$eeSFL_Extension = @strtolower($eeSFL_PathParts['extension']);
+	$eeSFL_FileName = sanitize_file_name( $eeSFL_FileNameAlone . '.' . $eeSFL_Extension );
     
     return $eeSFL_FileName;
 }
@@ -372,9 +379,15 @@ function eeSFL_ProcessTextInput($eeTerm, $eeType = 'text') {
 
 
 // Check if a file already exists, then number it so file will not be over-written.
-function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path from WP root
+function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded, $eeSFL_ID = 1) { // Full path from WP root
 	
-	global $eeSFL_Config, $eeSFL_Log;
+	global $eeSFL, $eeSFL_Log;
+	
+	$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID);
+	
+	if(@$eeSFL_Config['AllowOverwrite'] == 'YES') { // Overwriting files allowed
+		return $eeSFL_FilePathAdded;
+	}
 	
 	$eeCopyLimit = 1000; // File copies limit
 	$eeDir = dirname($eeSFL_FilePathAdded) . '/';
@@ -383,27 +396,31 @@ function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path from W
 	$eeNameOnly = $eePathParts['filename'];
 	$eeExtension = strtolower($eePathParts['extension']);
 	
-	$eeSFL_Files = get_option('eeSFL-FileList-' . $eeSFL_Config['ID']); // Our array of file info
+	$eeSFL_Files = get_option('eeSFL-FileList-' . $eeSFL_ID); // Our array of file info
 	
-	foreach($eeSFL_Files as $eeArray) { // Loop through file array and look for a match.
-		
-		$eeFilePath = $eeArray['FilePath']; // Get the /folder/name.ext
-		
-		// Check if duplicate
-		if( $eeSFL_FilePathAdded == $eeSFL_Config['FileListDir'] . $eeFilePath ) { // Duplicate found
-		
-			$eeSFL_Log['Add Files'][] = 'Duplicate Item Found: ' . $eeSFL_FilePathAdded;
+	if($eeSFL_Files) {
+	
+		foreach($eeSFL_Files as $eeArray) { // Loop through file array and look for a match.
 			
-			if( is_file(ABSPATH . $eeSFL_FilePathAdded) ) { // Confirm the file is really there
+			$eeFilePath = $eeArray['FilePath']; // Get the /folder/name.ext
+			
+			// Check if duplicate
+			if( $eeSFL_FilePathAdded == $eeSFL_Config['FileListDir'] . $eeFilePath ) { // Duplicate found
+			
+				$eeSFL_Log['Add Files'][] = 'Duplicate Item Found: ' . $eeSFL_FilePathAdded;
 				
-				for ($i = 1; $i <= $eeCopyLimit; $i++) { // Look for existing copies
+				if( is_file(ABSPATH . $eeSFL_FilePathAdded) ) { // Confirm the file is really there
 					
-					$eeSFL_FilePathAdded = $eeDir . $eeNameOnly . '_(' . $i . ').' . $eeExtension; // Indicate the copy number
-					
-					if(!is_file(ABSPATH . $eeSFL_FilePathAdded)) { break; } // If no copy is there, we're done.
-				}							
+					for ($i = 1; $i <= $eeCopyLimit; $i++) { // Look for existing copies
+						
+						$eeSFL_FilePathAdded = $eeDir . $eeNameOnly . '_(' . $i . ').' . $eeExtension; // Indicate the copy number
+						
+						if(!is_file(ABSPATH . $eeSFL_FilePathAdded)) { break; } // If no copy is there, we're done.
+					}							
+				}
 			}
 		}
+	
 	}
 		
 	return 	$eeSFL_FilePathAdded; // Return the new file name and path

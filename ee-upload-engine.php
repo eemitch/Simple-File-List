@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-upload-engine.php | Author: Mitchell Bennis | support@simplefilelist.com
+<?php // Simple File List Script: ee-upload-engine.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
 	
 // This script is accessed via AJAX by js/ee-uploader.js
 
@@ -65,6 +65,9 @@ function eeSFL_CheckNonce() {
 add_action( 'plugins_loaded', 'eeSFL_CheckNonce' );
 
 
+// Get the Configuration Array
+$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID); 
+
 
 // Check size
 $eeSFL_FileSize = $_FILES['file']['size'];
@@ -124,7 +127,7 @@ if($eeSFL_FileUploadDir AND is_dir(ABSPATH . $eeSFL_FileUploadDir)) {
 	
 	} else {
 		
-		$eeSFL_Error = 'ERROR 99';
+		$eeSFL_Error = 'ERROR 97';
 	}
 	
 } else {

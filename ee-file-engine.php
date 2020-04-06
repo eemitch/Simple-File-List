@@ -9,9 +9,9 @@ ini_set ('display_errors', FALSE);
 ini_set("error_log", "logs/ee-file-error.log");
 
 // The List ID
-if(@$_POST['eeSFL_ID']) { $eeSFL_ID = filter_var($_POST['eeSFL_ID'], FILTER_VALIDATE_INT); } else { $eeSFL_ID = FALSE; }
+if(@$_POST['eeSFL_ID']) { $eeThisListID = filter_var($_POST['eeSFL_ID'], FILTER_VALIDATE_INT); } else { $eeThisListID = FALSE; }
 
-if(!$eeSFL_ID) { 
+if(!$eeThisListID) { 
 	$eeSFL_Error = "Missing ID";
 	trigger_error($eeSFL_Error, E_USER_ERROR);
 	exit($eeSFL_Error);
@@ -56,6 +56,11 @@ function eeSFL_CheckNonce() {
 }
 add_action( 'plugins_loaded', 'eeSFL_CheckNonce' );
 
+
+// Get the correct file list config if not main list
+if($eeSFL_ID != $eeThisListID) {
+	$eeSFL_Config = $eeSFL->eeSFL_Config($eeThisListID);
+}
 
 
 if( strpos($eeFileAction, 'Rename') === 0 ) {
@@ -163,10 +168,10 @@ if( strpos($eeFileAction, 'Rename') === 0 ) {
 		$eeFileDesc = '';
 	}
 	
-	$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, 'FileDescription', $eeFileDesc);
+	$eeSFL->eeSFL_UpdateFileDetail($eeThisListID, 'FileDescription', $eeFileDesc);
 	
 	// Get the file array
-	$eeFileArray = get_option('eeSFL-FileList-' . $eeSFL_ID);
+	$eeFileArray = get_option('eeSFL-FileList-' . $eeThisListID);
 	
 	foreach( $eeFileArray as $eeKey => $eeThisFileArray ) {
 		
@@ -177,7 +182,7 @@ if( strpos($eeFileAction, 'Rename') === 0 ) {
 	}
 		
 	// Save the updated array
-	$eeFileArray = update_option('eeSFL-FileList-' . $eeSFL_ID, $eeFileArray);
+	$eeFileArray = update_option('eeSFL-FileList-' . $eeThisListID, $eeFileArray);
 	
 	
 } else {
@@ -191,7 +196,7 @@ $eeSFL_Time = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
 $eeSFL_Log[] = 'Execution Time: ' . round($eeSFL_Time,3);
 
 // Re-index the File List
-$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID);
+$eeSFL_Files = $eeSFL->eeSFL_UpdateFileListArray($eeThisListID);
 
 // Write to the log file to the Database
 $eeSFL->eeSFL_WriteLogData($eeSFL_Log); 

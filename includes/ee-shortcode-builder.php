@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-shortcode-builder.php | Author: Mitchell Bennis | support@simplefilelist.com
+<?php // Simple File List Script: ee-shortcode-builder.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.25.2019
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
@@ -25,7 +25,15 @@ if($eeSFLF) {
 $eeChecked = '';
 $eeCheckmark = ' (' . __('Default', 'ee-simple-file-list') . ')';
 
-$eeOutput .= '<article class="eeSupp">
+// Extension Check
+if($eeSFLA) {
+	$eeOutput .= '
+	<script>var eeSFL_ID = ' . $eeSFL_ID . '</script>';
+}
+
+$eeOutput .= '
+
+<article class="eeSupp">
 
 <article class="eeSupp">
 
@@ -91,10 +99,10 @@ $eeOutput .= '<article class="eeSupp">
 	
 		';
 		
-		if(function_exists('eeSFLF_FolderSelect')) { $eeOutput .= eeSFLF_FolderSelect($eeSFL_Config['ID']); }
+		if(function_exists('eeSFLF_FolderSelect')) { $eeOutput .= eeSFLF_FolderSelect($eeSFL_ID); }
 		
 		$eeOutput .= '<label class="eeClearfix">' . __('Show File List', 'ee-simple-file-list') . '<br />
-			<select name="eeSFL_' . $eeSFL->eeListID . '_ShowList" id="eeShortcodeBuilder_showlist" onchange="eeShortcodeBuilder(\'showlist\', \'select\')">
+			<select name="eeSFL_' . $eeSFL_ID . '_ShowList" id="eeShortcodeBuilder_showlist" onchange="eeShortcodeBuilder(\'showlist\', \'select\')">
 				<option value="YES" ';
 				if($eeSFL_Config['ShowList'] == 'YES') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
 				$eeOutput .= '>' . __('Show to Everyone', 'ee-simple-file-list') . $eeChecked . '</option>
@@ -115,7 +123,7 @@ $eeOutput .= '<article class="eeSupp">
 		
 		
 		<label class="eeClearfix">' . __('Show Uploader', 'ee-simple-file-list') . '<br />
-			<select name="eeSFL_' . $eeSFL->eeListID . '_AllowUploads" id="eeShortcodeBuilder_allowuploads" onchange="eeShortcodeBuilder(\'allowuploads\', \'select\')">
+			<select name="eeSFL_' . $eeSFL_ID . '_AllowUploads" id="eeShortcodeBuilder_allowuploads" onchange="eeShortcodeBuilder(\'allowuploads\', \'select\')">
 				<option value="YES" ';
 				if($eeSFL_Config['AllowUploads'] == 'YES') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
 				$eeOutput .= '>' . __('Show to Everyone', 'ee-simple-file-list') . $eeChecked . '</option>

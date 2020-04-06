@@ -22,7 +22,7 @@ $eeOutput .= '<article class="eeSupp">
 
 	<h2>' . __('Thank You', 'ee-simple-file-list') . '</h2>
 	
-	<p>' . __('Thank you for using my plugin. I am proud of this work and am committed to supporting it.') . ' ' . __('The goal is to keep it simple, yet make it do what you need it to do.') . ' ' . __('Tell me about the features that you want.', 'ee-simple-file-list') . ' </p>
+	<p>' . __('Thank you for using my plugin. I am proud of this work and am committed to supporting it.', 'ee-simple-file-list') . ' ' . __('The goal is to keep it simple, yet make it do what you need it to do.', 'ee-simple-file-list') . ' ' . __('Tell me about the features that you want.', 'ee-simple-file-list') . ' </p>
 
 	
 	<p><a href="http://mitchellbennis.com/" target="_blank">Mitchell Bennis</a><br />

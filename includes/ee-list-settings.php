@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-list-settings.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
+<?php // Simple File List Script: ee-list-settings.php | Author: Mitchell Bennis | support@simplefilelist.com
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
@@ -10,8 +10,6 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	
 	// Get all the settings
 	$eeSettings = get_option('eeSFL-Settings');
-	
-	$eeID = $eeSFL_Config['ID'];
 	
 	// File List Folder
 	$eeSFL_LastFileListDir = $eeSFL_Config['FileListDir'];
@@ -49,28 +47,36 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 			if(!$eeSFL_DirCheck) {
 				$eeSFL_Log['errors'][] = $eeSFL_DirCheck;
 				$eeSFL_Log['errors'][] = __('Cannot create the file directory. Reverting to default.', 'ee-simple-file-list');
-				$eeSettings[$eeID]['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
+				$eeSettings[$eeSFL_ID]['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
 			
 			} else {
-				$eeSettings[$eeID]['FileListDir'] = $eeSFL_FileListDir;
+				$eeSettings[$eeSFL_ID]['FileListDir'] = $eeSFL_FileListDir;
 			}
 		} else {
-			$eeSettings[$eeID]['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
+			$eeSettings[$eeSFL_ID]['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
 		}
 	}
 	
 	
-	if($_POST['eeShowList'] == 'YES') { $eeSettings[$eeID]['ShowList'] = 'YES'; } 
-		elseif($_POST['eeShowList'] == 'USER') { $eeSettings[$eeID]['ShowList'] = 'USER'; } // Show only to logged in users
-		 elseif($_POST['eeShowList'] == 'ADMIN') { $eeSettings[$eeID]['ShowList'] = 'ADMIN'; } // Show only to logged in Admins
-			else { $eeSettings[$eeID]['ShowList'] = 'NO'; }
-			
+	if($eeSFLA) {
+		
+		$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
+		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_ListSettingsProcess.php');
 	
-	if($_POST['eeAdminRole'] == '1') { $eeSettings[$eeID]['AdminRole'] = '1'; } 
-		elseif($_POST['eeAdminRole'] == '3') { $eeSettings[$eeID]['AdminRole'] = '3'; } 
-			elseif($_POST['eeAdminRole'] == '4') { $eeSettings[$eeID]['AdminRole'] = '4'; } 
-				elseif($_POST['eeAdminRole'] == '5') { $eeSettings[$eeID]['AdminRole'] = '5'; }
-						else { $eeSettings[$eeID]['AdminRole'] = '2'; } // Default to Contributors
+	} else {
+	
+		if($_POST['eeShowList'] == 'YES') { $eeSettings[$eeSFL_ID]['ShowList'] = 'YES'; } 
+			elseif($_POST['eeShowList'] == 'USER') { $eeSettings[$eeSFL_ID]['ShowList'] = 'USER'; } // Show only to logged in users
+			 elseif($_POST['eeShowList'] == 'ADMIN') { $eeSettings[$eeSFL_ID]['ShowList'] = 'ADMIN'; } // Show only to logged in Admins
+				else { $eeSettings[$eeSFL_ID]['ShowList'] = 'NO'; }
+				
+		
+		if($_POST['eeAdminRole'] == '1') { $eeSettings[$eeSFL_ID]['AdminRole'] = '1'; } 
+			elseif($_POST['eeAdminRole'] == '3') { $eeSettings[$eeSFL_ID]['AdminRole'] = '3'; } 
+				elseif($_POST['eeAdminRole'] == '4') { $eeSettings[$eeSFL_ID]['AdminRole'] = '4'; } 
+					elseif($_POST['eeAdminRole'] == '5') { $eeSettings[$eeSFL_ID]['AdminRole'] = '5'; }
+							else { $eeSettings[$eeSFL_ID]['AdminRole'] = '2'; } // Default to Contributors	
+	}
 			
 			
 	if($eeSFL_Config['ShowList'] != 'NO') { // Only update if showing the list
@@ -84,7 +90,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		
 		foreach( $eeCheckboxes as $eeTerm){ // "ee" is added in the function
 			
-			$eeSettings[$eeID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
+			$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
 		}
 		
 		$eeTextInputs = array(
@@ -94,26 +100,24 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 			,'LabelSize'
 		);
 		foreach( $eeTextInputs as $eeTerm){
-			$eeSettings[$eeID][$eeTerm] = eeSFL_ProcessTextInput($eeTerm);
+			$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessTextInput($eeTerm);
 		}
 		
 		// Sort by Select Box	
-		if(@$_POST['eeSortBy']) { $eeSettings[$eeID]['SortBy'] = filter_var($_POST['eeSortBy'], FILTER_SANITIZE_STRING); }
-			elseif(@$_POST['eeSortBy'] == 'NO') { $eeSettings[$eeID]['SortBy'] = 'Name'; }
+		if(@$_POST['eeSortBy']) { $eeSettings[$eeSFL_ID]['SortBy'] = filter_var($_POST['eeSortBy'], FILTER_SANITIZE_STRING); }
+			elseif(@$_POST['eeSortBy'] == 'NO') { $eeSettings[$eeSFL_ID]['SortBy'] = 'Name'; }
 		
 		// Asc/Desc Checkbox
-		if(@$_POST['eeSortOrder'] == 'Descending') { $eeSettings[$eeID]['SortOrder'] = 'Descending'; }
-			elseif($_POST['eeSortBy'] AND !@$_POST['eeSortOrder']) { $eeSettings[$eeID]['SortOrder'] = 'Ascending'; }
+		if(@$_POST['eeSortOrder'] == 'Descending') { $eeSettings[$eeSFL_ID]['SortOrder'] = 'Descending'; }
+			elseif($_POST['eeSortBy'] AND !@$_POST['eeSortOrder']) { $eeSettings[$eeSFL_ID]['SortOrder'] = 'Ascending'; }
 		
 		// Expiration
 		if( is_numeric($_POST['eeExpireTime']) AND $_POST['eeExpireTime'] <= 24 ) { 
 			
-			if($eeSFL_Config['ID'] != $_POST['eeExpireTime']) {
-				$eeSFL->eeSFL_UpdateFileListArray($eeID); // Re-scan if changed
-			}
-			
-			$eeSettings[$eeID]['ExpireTime'] = $_POST['eeExpireTime'];
-			
+			if($eeSFL_Config['ExpireTime'] != $_POST['eeExpireTime']) {
+				$eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID); // Rescan only if setting changed
+				$eeSettings[$eeSFL_ID]['ExpireTime'] = $_POST['eeExpireTime'];
+			}	
 		}
 	}
 	
@@ -121,7 +125,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	update_option('eeSFL-Settings', $eeSettings );
 	
 	// Update the array with new values
-	$eeSFL_Config = $eeSettings[$eeID];
+	$eeSFL_Config = $eeSettings[$eeSFL_ID];
 	
 	$eeSFL_Confirm = __('List Settings Saved', 'ee-simple-file-list');
 }
@@ -146,101 +150,110 @@ $eeOutput .= '
 		
 		<h2>' . __('List Settings', 'ee-simple-file-list') . '</h2>
 		
-		<input type="hidden" name="eePost" value="TRUE" />';	
+		<input type="hidden" name="eePost" value="TRUE" />
+		<input type="hidden" name="eeListID" value="' . $eeSFL_ID . '" />';	
 		
 		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce', TRUE, FALSE);
 		
-		$eeOutput .= '<fieldset>
+		$eeOutput .= '<fieldset>';
+		
+			if($eeSFLA) {
+				
+				$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
+				include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_ListSettingsDisplay.php');
+			}
 			
-			
-			<label for="eeFileListDir">' . __('File List Directory', 'ee-simple-file-list') . ':</label>
+			$eeOutput .= '<label for="eeFileListDir">' . __('File List Directory', 'ee-simple-file-list') . ':</label>
 					<input type="text" name="eeFileListDir" value="' . $eeSFL_Config['FileListDir'] . '" class="eeAdminInput" id="eeFileListDir" size="64" />
 					<div class="eeNote">' . __('This must be relative to your Wordpress home folder.', 'ee-simple-file-list') . ' (ABSPATH)<br />
 					* ' . __('Default Location', 'ee-simple-file-list') . ': <em>wp-content/uploads/simple-file-list/</em><br />
 					* ' . __('The directory you enter will be created if it does not exist.', 'ee-simple-file-list') . '
 					</div>
 				
-			<br class="eeClearFix" />
+			<br class="eeClearFix" />';
 			
 			
-			<label for="eeShowList">' . __('Front-Side Display', 'ee-simple-file-list') . '</label>
-			
-			<select name="eeShowList" id="eeShowList">
-			
-				<option value="YES"';
-
-				if($eeSFL_Config['ShowList'] == 'YES') { $eeOutput .= ' selected'; }
+			if(!$eeSFLA) {
 				
-				$eeOutput .= '>' . __('Show to Everyone', 'ee-simple-file-list') . '</option>
+				$eeOutput .= '<label for="eeShowList">' . __('Front-Side Display', 'ee-simple-file-list') . '</label>
 				
-				<option value="USER"';
-
-				if($eeSFL_Config['ShowList'] == 'USER') { $eeOutput .= ' selected'; }
+				<select name="eeShowList" id="eeShowList">
 				
-				$eeOutput .= '>' . __('Show to Only Logged in Users', 'ee-simple-file-list') . '</option>
+					<option value="YES"';
+	
+					if($eeSFL_Config['ShowList'] == 'YES') { $eeOutput .= ' selected'; }
+					
+					$eeOutput .= '>' . __('Show to Everyone', 'ee-simple-file-list') . '</option>
+					
+					<option value="USER"';
+	
+					if($eeSFL_Config['ShowList'] == 'USER') { $eeOutput .= ' selected'; }
+					
+					$eeOutput .= '>' . __('Show to Only Logged in Users', 'ee-simple-file-list') . '</option>
+					
+					<option value="ADMIN"';
+	
+					if($eeSFL_Config['ShowList'] == 'ADMIN') { $eeOutput .= ' selected'; }
+					
+					$eeOutput .= '>' . __('Show to Only Logged in Admins', 'ee-simple-file-list') . '</option>
+					
+					<option value="NO"';
+	
+					if($eeSFL_Config['ShowList'] == 'NO') { $eeOutput .= ' selected'; }
+					
+					$eeOutput .= '>' . __('Hide the File List Completely', 'ee-simple-file-list') . '</option>
 				
-				<option value="ADMIN"';
-
-				if($eeSFL_Config['ShowList'] == 'ADMIN') { $eeOutput .= ' selected'; }
+				</select>
 				
-				$eeOutput .= '>' . __('Show to Only Logged in Admins', 'ee-simple-file-list') . '</option>
-				
-				<option value="NO"';
-
-				if($eeSFL_Config['ShowList'] == 'NO') { $eeOutput .= ' selected'; }
-				
-				$eeOutput .= '>' . __('Hide the File List Completely', 'ee-simple-file-list') . '</option>
-			
-			</select>
-			
-			<br class="eeClearFix" />
-			<div class="eeNote">' . __('Determine who you will show the front-side list to.', 'ee-simple-file-list') . '</div>
-						
-			
-			
-			<label for="eeAdminRole">' . __('Back-Side Settings Access', 'ee-simple-file-list') . '</label>
-			
-			<select name="eeAdminRole" id="eeAdminRole">
-			
-				<option value="1"'; // 1
-
-				if($eeSFL_Config['AdminRole'] == '1') { $eeOutput .= ' selected'; }
-				
-				$eeOutput .= '>' . __('Show to Subscribers and Above', 'ee-simple-file-list') . '</option>
+				<br class="eeClearFix" />
+				<div class="eeNote">' . __('Determine who you will show the front-side list to.', 'ee-simple-file-list') . '</div>
+							
 				
 				
-				<option value="2"'; // 2
-
-				if($eeSFL_Config['AdminRole'] == '2') { $eeOutput .= ' selected'; }
+				<label for="eeAdminRole">' . __('Back-Side Settings Access', 'ee-simple-file-list') . '</label>
 				
-				$eeOutput .= '>' . __('Show to Contributers and Above', 'ee-simple-file-list') . '</option>
+				<select name="eeAdminRole" id="eeAdminRole">
 				
+					<option value="1"'; // 1
+	
+					if($eeSFL_Config['AdminRole'] == '1') { $eeOutput .= ' selected'; }
+					
+					$eeOutput .= '>' . __('Show to Subscribers and Above', 'ee-simple-file-list') . '</option>
+					
+					
+					<option value="2"'; // 2
+	
+					if($eeSFL_Config['AdminRole'] == '2') { $eeOutput .= ' selected'; }
+					
+					$eeOutput .= '>' . __('Show to Contributers and Above', 'ee-simple-file-list') . '</option>
+					
+					
+					<option value="3"'; // 3
+	
+					if($eeSFL_Config['AdminRole'] == '3') { $eeOutput .= ' selected'; }
+					
+					$eeOutput .= '>' . __('Show to Authors and Above', 'ee-simple-file-list') . '</option>
+					
+					
+					<option value="4"'; // 4
+	
+					if($eeSFL_Config['AdminRole'] == '4') { $eeOutput .= ' selected'; }
+					
+					$eeOutput .= '>' . __('Show to Editors and Above', 'ee-simple-file-list') . '</option>
+					
+					
+					<option value="5"'; // 5
+	
+					if($eeSFL_Config['AdminRole'] == '5') { $eeOutput .= ' selected'; }
+					
+					$eeOutput .= '>' . __('Show to Admins Only', 'ee-simple-file-list') . '</option>
 				
-				<option value="3"'; // 3
-
-				if($eeSFL_Config['AdminRole'] == '3') { $eeOutput .= ' selected'; }
+				</select>
 				
-				$eeOutput .= '>' . __('Show to Authors and Above', 'ee-simple-file-list') . '</option>
+				<br class="eeClearFix" />
+				<div class="eeNote">' . __('Determine who can access the back-side settings.', 'ee-simple-file-list') . '</div>';
 				
-				
-				<option value="4"'; // 4
-
-				if($eeSFL_Config['AdminRole'] == '4') { $eeOutput .= ' selected'; }
-				
-				$eeOutput .= '>' . __('Show to Editors and Above', 'ee-simple-file-list') . '</option>
-				
-				
-				<option value="5"'; // 5
-
-				if($eeSFL_Config['AdminRole'] == '5') { $eeOutput .= ' selected'; }
-				
-				$eeOutput .= '>' . __('Show to Admins Only', 'ee-simple-file-list') . '</option>
-			
-			</select>
-			
-			<br class="eeClearFix" />
-			<div class="eeNote">' . __('Determine who can access the back-side settings.', 'ee-simple-file-list') . '</div>';
-				
+			}
 			
 			
 			if($eeSFL_Config['ShowList'] != 'NO') {
@@ -362,7 +375,7 @@ $eeOutput .= '
 					<p><span id="eeExpireTimeValue">' . $eeSFL_Config['ExpireTime'] . '</span> ' . __('Hours', 'ee-simple-file-list') . '</p>
 					<div class="eeNote">' . __('Choose how often the file list on your disc drive is re-scanned.', 'ee-simple-file-list') . ' ' .  
 						__('Set to zero to re-scan on each list page load.', 'ee-simple-file-list') . '<br />
-					<em>' . __('If you use FTP or another method to upload files to your list, set the interval to zero.', 'ee-simple-file-list') . '</em></div>';	
+					<em>' . __('If you use FTP or another method to upload files to your list, set the interval to zero.', 'ee-simple-file-list') . '</em></div>';		
 			}
 			
 		$eeOutput .= '<br class="eeClearFix" />
