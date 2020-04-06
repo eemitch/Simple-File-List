@@ -1,3 +1,0 @@
-
-[17-Mar-2020 22:18:29 UTC] PHP Notice:  Undefined index: mode in /Users/mitchellbennis/Dropbox/EE/Wordpress/eeWordpress/wp-content/plugins/ee-simple-file-list-access/includes/eeSFLA_ViewManager.php on line 16
-[17-Mar-2020 22:18:29 UTC] PHP Fatal error:  File Not Found: /Users/mitchellbennis/Dropbox/EE/Wordpress/eeWordpress/wp-content/uploads/simple-file-list/logo.png in /Users/mitchellbennis/Dropbox/EE/Wordpress/eeWordpress/wp-content/plugins/ee-simple-file-list-access/includes/eeSFLA_ViewManager.php on line 37
