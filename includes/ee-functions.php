@@ -239,7 +239,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 								
 								if( $eeArray2['FilePath'] ==  $eeSFLF_UploadFolder . $eeFile) {
 									
-									if(@$_POST['eeSFL_Name']) {
+									if(@$_POST['eeSFL_Comments']) {
 										$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterName', filter_var($_POST['eeSFL_Name'], FILTER_SANITIZE_STRING));
 										$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterEmail', filter_var($_POST['eeSFL_Email'], FILTER_VALIDATE_EMAIL));
 										$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterComments', filter_var($_POST['eeSFL_Comments'], FILTER_SANITIZE_STRING));

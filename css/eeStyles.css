@@ -138,9 +138,23 @@
 #eeSFL_UploadProgress em {
 	display: none; /* Show with javascript */
 }
+
 #eeUploadInfoForm {
 	margin-bottom: 20px;
 }
+#eeUploadInfoForm label,
+#eeUploadInfoForm input[type=text],
+#eeUploadInfoForm input[type=email] {
+	float: left;
+	margin-bottom: 5px;
+
+}
+#eeUploadInfoForm label {
+	width: 15%;
+	clear: left;
+	margin-right: 10px;
+}
+
 .eeSFL_UploadingImg,
 .entry-content .eeSFL_UploadingImg {
 	margin-right: 1em;
