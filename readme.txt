@@ -4,7 +4,7 @@ Donate link: http://simplefilelist.com/donations/simple-file-list-project/
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
 Tested up to: 5.4
-Stable tag: 4.2.1
+Stable tag: 4.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -177,7 +177,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.1 - Major Update
+* 4.2.2 - Update Process Bug Fix
 
 
 == Screenshots ==
@@ -188,6 +188,9 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Changelog ==
+
+= 4.2.2 =
+* Fixed a bug where some had a bad experience upon updating.
 
 = 4.2.1 =
 * File Access Manager (coming soon) integration

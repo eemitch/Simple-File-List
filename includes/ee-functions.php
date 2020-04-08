@@ -63,6 +63,8 @@ function eeSFL_AppendProperUrlOp($eeURL) {
 // Check for the Upload Folder, Create if Needed
 function eeSFL_FileListDirCheck($eeFileListDir) {
 	
+	if(!$eeFileListDir) { return FALSE; }
+	
 	global $eeSFL_Log, $eeSFL, $eeSFL_ID, $eeSFL_Env;
 	
 	// Check if FileListDir has a trailing slash...
@@ -120,34 +122,44 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 				$eeSFL_Log['DirCheck'][] = '"FileListDir" Has Been Created!';
 				$eeSFL_Log['DirCheck'][] = $eeFileListDir;
 			}
+			
+			
+		
 		} else {
 			$eeSFL_Log[] = 'FileListDir Looks Good';
 		}
 		
-		
 		// Check index.html, create if needed.	
-		$eeFile = ABSPATH . $eeFileListDir . 'index.html'; // Disallow direct file indexing.
-		
-		if($handle = @fopen($eeFile, "a+")) {
+		if( strlen($eeFileListDir) >= 2 ) {	
 			
-			if(!@is_readable($eeFile)) {
-			    
-				$eeSFL_Log['errors'][] = 'ERROR: Could not write index.html';
+			$eeFile = ABSPATH . $eeFileListDir . 'index.html'; // Disallow direct file indexing.
+			
+			if(!is_file($eeFile)) {
 				
-				return FALSE;
-				
-			} else {
-				
-				// Write nice content to the file
-				$eeString = file_get_contents( plugin_dir_path(__FILE__) . 'ee-index-template.html' );
-				fwrite($handle, $eeString);
-				fclose($handle);
+				if($handle = @fopen($eeFile, "a+")) {
+					
+					if(!@is_readable($eeFile)) {
+					    
+						$eeSFL_Log['errors'][] = 'ERROR: Could not write index.html';
+						
+						return FALSE;
+						
+					} else {
+						
+						// Write nice content to the file
+						$eeString = file_get_contents( plugin_dir_path(__FILE__) . 'ee-index-template.html' );
+						fwrite($handle, $eeString);
+						fclose($handle);
+					}
+				}
+			
 			}
 		}
-	
+		
+		
 		// Set Transient
 		set_transient('eeSFL-' . $eeSFL_ID . '-FileListDirCheck', $eeFileListDir, 86400); // 1 Expires in Day
-
+		
 		return TRUE;
 		
 	} else {
