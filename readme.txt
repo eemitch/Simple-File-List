@@ -27,12 +27,13 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 
 = This Plugin is Great For =
 
-* Exchanging files when the sizes get too large for email attachments.
 * Posting official documents.
 * Sharing files within an organization.
 * Sharing files with business clients or a community.
+* Enabling distance learning by allowing schools to share class materials with students. 
 * When you need a list of archived files, such as videos, PDF files, or music files.
 * When you need a simple front-side uploader so people can send you files.
+* Exchanging files when the sizes get too large for email attachments.
 
 
 = List Features =
@@ -69,10 +70,13 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * File Thumbnail Column: showthumb="YES / NO"
 * File Size Column: showsize="YES / NO"
 * File Date Column: showdate="YES / NO"
-* File Actions (Open | Download): showactions="YES / NO"
 * File List Appearance: showheader="YES / NO"
+* File Actions (Open | Download): showactions="YES / NO"
+* List Sort By: sortby="Name, Date, Size, or Random"
+* List Sort Order: sortorder="Descending or Ascending"
 * Hide Files: hidename="this-file.docx, that-folder"
 * Hide File Types: hidetype="psd, zip, folder"
+
 
 = Internationalized =
 
@@ -120,6 +124,8 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * Define the number of files per page in the settings.
 * Show or hide the search bar and/or pagination in the settings.
 * Updating to newer versions is just like other Wordpress plugins.
+* Shortcode attributes to control search visibility and pagination functionality.
+** [eeSFL search="YES/NO" paged="YES/NO" filecount="25"]
 * Use a shortcode to place a search form anywhere on your website.
 ** [eeSFLS permalink='file-list-url']
 
@@ -177,7 +183,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.2 - Update Process Bug Fix
+* 4.2.3 - Bug Fixes and Improvements
 
 
 == Screenshots ==
