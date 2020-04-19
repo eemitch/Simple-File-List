@@ -6,6 +6,21 @@
 var eeSFL_isTouchscreen = false;
 var eeSFL_FileID = false;
 var eeSFL_ID = 1;
+var eeSFL_CheckEmail = false;
+
+
+function eeSFL_ValidateEmail(eeSFL_CheckEmail) {
+
+	var eeSFL_EmailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	
+	if (eeSFL_CheckEmail.match(eeSFL_EmailFormat)) {
+    	return 'GOOD';
+  	} else {
+	  	return "BAD";
+  	}
+}
+
+
 
 // File Size Formatting
 function eeSFL_GetFileSize(bytes, si) {

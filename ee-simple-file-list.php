@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 define('eeSFL_Version', '4.2.3'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_DB_Version', '4.1'); // Database structure version - used for eeSFL_VersionCheck()
-define('eeSFL_Cache_Version', '1'); // Cache-Buster version for static files - used when updating CSS/JS
+define('eeSFL_Cache_Version', '3'); // Cache-Buster version for static files - used when updating CSS/JS
 
 // Our Core
 $eeSFL = FALSE; // Our main class
@@ -252,13 +252,15 @@ function eeSFL_Shortcode($atts, $content = null) {
 	
 		$atts = shortcode_atts( array( // Use lowercase att names only
 			'list' => '1',
-			'showlist' => '',
-			'allowuploads' => '',
-			'showthumb' => '',
-			'showdate' => '',
-			'showsize' => '',
-			'showheader' => '',
-			'showactions' => '',
+			'showlist' => '', // YES, ADMIN, USER or NO
+			'allowuploads' => '', // YES, ADMIN, USER or NO
+			'showthumb' => '', // YES or NO
+			'showdate' => '', // YES or NO
+			'showsize' => '', // YES or NO
+			'showheader' => '', // YES or NO
+			'showactions' => '', // YES or NO
+			'sortby' => '', // Name, Date, Size, or Random
+			'sortorder' => '', // Descending or Ascending
 			'hidetype' => '', // Hide file types
 			'hidename' => '', // Hide the name matches
 			'showfolder' => '', // eeSFLF
@@ -287,6 +289,8 @@ function eeSFL_Shortcode($atts, $content = null) {
 		if($showsize) { $eeSFL_Config['ShowFileSize'] = $showsize; }
 		if($showheader) { $eeSFL_Config['ShowHeader'] = $showheader; }
 		if($showactions) { $eeSFL_Config['ShowFileActions'] = $showactions; }
+		if($sortby) { $eeSFL_Config['SortBy'] = $sortby; }
+		if($sortorder) { $eeSFL_Config['SortOrder'] = $sortorder; }
 		
 		if($hidetype) { $eeSFL_HideType = strtolower($hidetype); } else { $eeSFL_HideType = FALSE; }
 		if($hidename) { $eeSFL_HideName = strtolower($hidename); } else { $eeSFL_HideName = FALSE; }

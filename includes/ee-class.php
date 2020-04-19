@@ -989,20 +989,20 @@ class eeSFL_MainClass {
 				
 				$eeOutput .= '<label for="eeSFL_Name">' . __('Name', 'ee-simple-file-list') . ':</label>
 			
-				<input required="required" type="text" name="eeSFL_Name" value="" id="eeSFL_Name" size="64" maxlength="64" /> 
+				<input type="text" name="eeSFL_Name" value="" id="eeSFL_Name" size="64" maxlength="64" /> 
 			
 				<label for="eeSFL_Email">' . __('Email', 'ee-simple-file-list') . ':</label>
-				<input required="required" type="email" name="eeSFL_Email" value="" id="eeSFL_Email" size="64" maxlength="128" />';
+				<input type="text" name="eeSFL_Email" value="" id="eeSFL_Email" size="64" maxlength="128" />';
 			
 			} else {
 				
-				$eeOutput .= '<input type="hidden" name="eeSFL_Name" value="' . $eeName . '" />
-								<input type="hidden" name="eeSFL_Email" value="' . $eeEmail . '" />';
+				$eeOutput .= '<input type="hidden" id="eeSFL_Name" name="eeSFL_Name" value="' . $eeName . '" />
+								<input type="hidden" id="eeSFL_Email" name="eeSFL_Email" value="' . $eeEmail . '" />';
 				
 			}
 			
 			$eeOutput .= '<label for="eeSFL_Comments">' . __('Description', 'ee-simple-file-list') . ':</label>
-			<textarea required="required" name="eeSFL_Comments" id="eeSFL_Comments" rows="5" cols="64" maxlength="5012"></textarea></div>';
+			<textarea name="eeSFL_Comments" id="eeSFL_Comments" rows="5" cols="64" maxlength="5012"></textarea></div>';
 			
 		return $eeOutput;
 	

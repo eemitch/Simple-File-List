@@ -391,7 +391,6 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 						
 						$eeIsFolder = TRUE;
 						$eeFileExt = 'folder';
-						// if(!$eeAdmin AND $eeSFL_ListRun > 1) { continue; } // Disable folder support for additional lists
 						$eeFileURL = $eeSFLF->eeSFLF_GetFolderURL($eeFilePath, $eeSFLF_ShortcodeFolder); // Extension required
 					
 					} else {
@@ -586,10 +585,10 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 								<small class="eeSFL_ListFileActions">';
 								
 							if(in_array($eeFileExt, $eeSFL->eeOpenableFileFormats)) {
-								$eeFileActions .= '<a class="eeSFL_FileOpen" href="' . $eeFileURL . '" target="_blank">' . __('Open', 'ee-simple-file-list') . '</a> | ';
+								$eeFileActions .= '<a class="eeSFL_FileOpen" href="' . $eeFileURL . '"';
+								if(!$eeIsFolder) { $eeFileActions .= ' target="_blank"'; }
+								$eeFileActions .= '>' . __('Open', 'ee-simple-file-list') . '</a> | ';
 							}
-							
-							
 							
 							if($eeIsFile) {
 								$eeFileActions .= '<a class="eeSFL_FileDownload" href="' . $eeFileURL;

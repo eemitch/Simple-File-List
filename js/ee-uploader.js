@@ -140,6 +140,22 @@ function eeUploadProcessor(eeSFL_FileObjects) {
 	
 	if(eeSFL_FileCount) {
 		
+		// Check if input fields have been completed, if they appear.
+		if(jQuery('#eeSFL_Comments').length >= 1) { // Get Uploader Info is ON
+			var eeSFL_Name = jQuery('#eeSFL_Name').val();
+			var eeSFL_Email = jQuery('#eeSFL_Email').val();
+			
+			if(eeSFL_Name.length < 1) {	
+				jQuery('#eeSFL_Name').css('border', '2px solid red');
+				return;
+			}
+			
+			if( eeSFL_ValidateEmail(eeSFL_Email) == 'BAD' ) {
+				jQuery('#eeSFL_Email').css('border', '2px solid red');
+				return;
+			}
+		}
+		
 		// Remove button and replace with progress bar
 	    jQuery("#eeSFL_UploadGo" ).hide();
 	

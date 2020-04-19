@@ -4,7 +4,7 @@ Donate link: http://simplefilelist.com/donations/simple-file-list-project/
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
 Tested up to: 5.4
-Stable tag: 4.2.2
+Stable tag: 4.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -188,6 +188,14 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Changelog ==
+
+= 4.2.3 =
+* Disallowed changing the file type when renaming, as this presented a security risk for untrusted users.
+* Add sorting shortcodes [eeSFL sortby="Name, Date, Size, or Random" sortorder="Descending or Ascending"]
+* Fixed where clicking the Open link for a folder was opening in a new tab.
+* Improved the upload info form's validation. Name and email are now required if getting uploader info.
+* Fixed an issue where both renaming a file and adding/editing the description caused the description to be applied to the wrong file.
+
 
 = 4.2.2 =
 * Fixed a bug where some had a bad experience upon updating.

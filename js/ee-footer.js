@@ -54,9 +54,7 @@ function eeSFL_EditSave(eeSFL_FileID) {
 	var eeDesc1 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_SavedDesc').text(); // Current Desc
 	var eeDesc2 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeSFL_NewFileDesc').val(); // New Desc
 	
-	if(eeDesc1 != eeDesc2) { // If no match, we update
-		
-		if(eeRenaming) { confirm('Update Description Too?'); }
+	if(eeDesc1 != eeDesc2 && !eeRenaming) { // If no match, we update
 		
 		eeSFL_FileAction(eeSFL_FileID, 'UpdateDesc');
 	}

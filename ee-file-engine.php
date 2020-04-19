@@ -86,6 +86,16 @@ if( strpos($eeFileAction, 'Rename') === 0 ) {
 		
 		if(strpos($eeOldFileName, '.') === FALSE) { // Folder
 			$eeNewFileName = str_replace('.', '_', $eeNewFileName); // Prevent adding an extension
+		} else {
+			$eePathParts = pathinfo($eeOldFileName);
+			$eeOldExtension = strtolower($eePathParts['extension']); // Prevent changing file extension
+			$eePathParts = pathinfo($eeNewFileName);
+			$eeNewExtension = strtolower($eePathParts['extension']);
+			if($eeOldExtension != $eeNewExtension) { 
+				$eeSFL_Error = "Changing File Extensions is Not Allowed";
+				trigger_error($eeSFL_Error, E_USER_ERROR);
+				exit($eeSFL_Error);
+			}	
 		}
 		
 		eeSFL_DetectUpwardTraversal($eeSFL_Config['FileListDir'] . $eeNewFileName); // Die if foolishness
