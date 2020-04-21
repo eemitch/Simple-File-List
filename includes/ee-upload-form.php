@@ -72,9 +72,9 @@ if(@$eeSFL_Config['FileListDir']) {
 		
 		// Security
 		$eeSFL_Timestamp = time();
-		$eeSFL_TimestampMD5 = md5('unique_salt' . $eeSFL_Timestamp);
+		$eeSFL_Timestamp_MD5 = md5('eeSFL-0420-deolpu-' . $eeSFL_Timestamp);
 	    
-		$eeOutput .= '<input type="file" name="eeSFL_FileInput" id="eeSFL_FileInput" onchange="eeSFL_FileInputHandler(event)" multiple />
+	    $eeOutput .= '<input type="file" name="eeSFL_FileInput" id="eeSFL_FileInput" onchange="eeSFL_FileInputHandler(event)" multiple />
 		
 		<p id="eeSFL_FilesDrug" class="eeHide"></p>
 		
@@ -88,7 +88,7 @@ if(@$eeSFL_Config['FileListDir']) {
 			var eeSFL_UploadMaxFileSize = ' . (($eeSFL_Config['UploadMaxFileSize']*1024)*1024) . ';
 			var eeSFL_FileFormats = "' . str_replace(' ' , '', $eeSFL_Config['FileFormats']) . '"; // Allowed file extensions
 			var eeSFL_TimeStamp = "' . $eeSFL_Timestamp . '"; // Security
-			var eeSFL_TimeStampMD5 = "' . $eeSFL_TimestampMD5 . '"; // Security
+			var eeSFL_TimeStamp2 = "' . $eeSFL_Timestamp_MD5 . '"; // Security
 			var eeSFL_UploadEngineURL = "' . $eeSFL_Env['pluginURL'] . 'ee-upload-engine.php' . '";
 			
 		</script>

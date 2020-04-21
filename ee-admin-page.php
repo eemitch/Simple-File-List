@@ -46,7 +46,7 @@ function eeSFL_ManageLists() {
 	}
 	
 	// Get the new tab's query string value
-	if( isset( $_GET[ 'tab' ] ) ) { $active_tab = $_GET[ 'tab' ]; } else { $active_tab = 'file_list'; }
+	if( isset( $_GET[ 'tab' ] ) ) { $active_tab = filter_var($_GET[ 'tab' ], FILTER_SANITIZE_STRING); } else { $active_tab = 'file_list'; }
 	
 	$eeOutput .= '<h2 class="nav-tab-wrapper">';
 	
@@ -126,7 +126,6 @@ function eeSFL_ManageLists() {
 	    	if(@$_POST['eeCreateEditList'] AND $_GET['tab'] == 'settings') {
 	    		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_CreateEditListProcess.php'); // Form processor
 	    	}
-	    	// $eeOutput .= '<p class="eeTitle">' . $eeSFL_Config['ListTitle'] . ' &ndash; ' . __('Settings', 'ee-simple-file-list') . '</p>';
 	    	
     	} else {
 	    	$eeOutput .= '<p class="eeTitle">' . __('File List Settings', 'ee-simple-file-list') . '</p>';

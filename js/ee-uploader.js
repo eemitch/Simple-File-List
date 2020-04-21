@@ -260,7 +260,7 @@ function eeUploadFile(eeSFL_File) { // Pass in file object
     eeFormData.append("eeSFL_ID", eeSFL_ListID);
     eeFormData.append("eeSFL_FileUploadDir", eeSFL_FileUploadDir);
     eeFormData.append("eeSFL_Timestamp", eeSFL_TimeStamp); 
-    eeFormData.append("eeSFL_Token", eeSFL_TimeStampMD5);
+    eeFormData.append("eeSFL_Token", eeSFL_TimeStamp2); // Salted
         
     // Send the AJAX request...
     eeXhr.send(eeFormData);

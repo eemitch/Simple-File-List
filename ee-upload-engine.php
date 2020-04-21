@@ -26,7 +26,7 @@ if(!$eeSFL_ID) {
 }
 
 
-// The Upload Destination
+// The Upload Destination - Relative to WP home dir
 if(@$_POST['eeSFL_FileUploadDir']) {
 	
 	$eeSFL_FileUploadDir = filter_var( $_POST['eeSFL_FileUploadDir'] , FILTER_SANITIZE_STRING);
@@ -52,8 +52,6 @@ if(is_file($wordpress)) {
 	exit;
 }
 
-
-
 // WP Security
 function eeSFL_CheckNonce() {
 	
@@ -66,11 +64,11 @@ add_action( 'plugins_loaded', 'eeSFL_CheckNonce' );
 
 
 // Get the Configuration Array
-$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID); 
+$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID);
 
 
 // Check size
-$eeSFL_FileSize = $_FILES['file']['size'];
+$eeSFL_FileSize = filter_var($_FILES['file']['size'], FILTER_VALIDATE_INT);
 $eeSFL_UploadMaxFileSize = $eeSFL_Config['UploadMaxFileSize']*1024*1024; // Convert MB to B
 
 if($eeSFL_FileSize > $eeSFL_UploadMaxFileSize) {
@@ -79,11 +77,12 @@ if($eeSFL_FileSize > $eeSFL_UploadMaxFileSize) {
 	exit();
 }
 
+
 // Go...
 if($eeSFL_FileUploadDir AND is_dir(ABSPATH . $eeSFL_FileUploadDir)) {
 		
 	// More Security
-	$verifyToken = md5('unique_salt' . $_POST['eeSFL_Timestamp']);
+	$verifyToken = md5('eeSFL-0420-deolpu-' . $_POST['eeSFL_Timestamp']);
 	
 	if($_POST['eeSFL_Token'] == $verifyToken) { 
 		
@@ -100,7 +99,7 @@ if($eeSFL_FileUploadDir AND is_dir(ABSPATH . $eeSFL_FileUploadDir)) {
 		// Format Check
 		$eeSFL_FileFormatsArray = array_map('trim', explode(',', $eeSFL_Config['FileFormats']));
 		
-		if(!in_array($eeSFL_Extension, $eeSFL_FileFormatsArray)) {
+		if(!in_array($eeSFL_Extension, $eeSFL_FileFormatsArray) OR in_array($eeSFL_Extension, $eeSFL->eeForbiddenTypes)) {
 			$eeSFL_Error = 'File type not allowed: (' . $eeSFL_Extension . ')';
 			trigger_error($eeSFL_Error, E_USER_ERROR);
 			exit($eeSFL_Error);	

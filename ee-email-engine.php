@@ -10,10 +10,7 @@ ini_set("error_log", "logs/ee-email-error.log");
 
 if(@$_POST['eeSFL_Body']) { 
 	
-	$eeSFL_Body = $_POST['eeSFL_Body'];
-	
-	// $eeSFL_Body = json_decode($eeSFL_Body);
-	$eeSFL_Body = filter_var($eeSFL_Body, FILTER_SANITIZE_STRING);
+	$eeSFL_Body = filter_var($_POST['eeSFL_Body'], FILTER_SANITIZE_STRING);
 	$eeSFL_Body = strip_tags($eeSFL_Body);
 	$eeSFL_Body = htmlspecialchars_decode($eeSFL_Body, ENT_QUOTES);
 	$eeSFL_Body = strip_tags($eeSFL_Body);

@@ -55,7 +55,19 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	
 	// File Formats
 	if(@$_POST['eeFileFormats']) { // Strip all but what we need for the comma list of file extensions
-		$eeSettings[$eeSFL_ID]['FileFormats'] = preg_replace("/[^a-z0-9,]/i", "", $_POST['eeFileFormats']);
+		
+		$eeFileFormatsIN = explode(',', $_POST['eeFileFormats']);
+		$eeFileFormatsOK = '';
+		foreach( $eeFileFormatsIN as $eeKey => $eeValue){
+			$eeValue = trim($eeValue);
+			if(in_array($eeValue, $eeSFL->eeForbiddenTypes)) {
+				$eeSFL_Log['errors'][] = 'This file type is not allowed: ' . $eeValue;
+			} elseif($eeValue) {
+				$eeFileFormatsOK .= $eeValue . ',';
+			}
+		}
+		$eeFileFormatsOK = substr($eeFileFormatsOK, 0, -1);
+		$eeSettings[$eeSFL_ID]['FileFormats'] = preg_replace("/[^a-z0-9,]/i", "", $eeFileFormatsOK);
 	}
 	
 	

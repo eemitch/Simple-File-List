@@ -1,47 +1,37 @@
 /* Simple File List Script: eeStyle.css | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.12.2019 */
 
-.eeSFL {
-	padding: 1em;
-}
 
 .eeSFL h1, .eeSFL p {
 	text-align: left;
 }
-
-.eeSFL form {
-	border: 2px solid #DDD;
-	padding: 1.5em;
-	padding-top: .5em;
-	margin: 1em auto;
-}
-
 .eeSFLContactInfo {
 	clear: both;
 	padding: 20px;
 	width: 100%;
 }
-
 .eeSFL_Spacer {
 	width: 100%;
 	height: 1em;
 	clear: both;
 }
 
-.eeSFL label {
-	float: left;
+
+
+.eeSFL {
+	padding: 1em;
 }
-
-
-
-
+.eeSFL form {
+	border: 2px solid #DDD;
+	padding: 1.5em;
+	padding-top: .5em;
+	margin: 1em auto;
+}
 .eeSFL table.eeFiles {
 	width: 100%;
 	border-collapse: collapse;
 	border: 1px solid #999;
 	text-align: center;
 }
-
-
 .eeSFL .eeFiles tr:hover {
 	background: #FFF;
 }
@@ -91,6 +81,9 @@
 }
 .eeSFL .eeFiles td a {
 	text-decoration: none;
+}
+.eeSFL label {
+	float: left;
 }
 .eeSFL input[type=file] {
 	float: left;

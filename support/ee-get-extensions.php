@@ -35,7 +35,7 @@ if(!$eeSFLF) {
 	
 	$eeOutput .= '<h3>' . __('Folder Support', 'ee-simple-file-list') . '</h3>
 	
-	<img src="https://get.simplefilelist.com/images/Folder-Demo.jpg" width="400" height="331" class="eeRight" />
+	<img src="' . $eeSFL_Env['pluginURL'] . 'support/images/Folder-Demo.jpg" width="400" height="331" class="eeRight" />
 	
 	<p>' . __('Adds an extension that allows folder listing, navigation and management capabilities.', 'ee-simple-file-list') . '</p>
 	
@@ -70,7 +70,7 @@ $eeSFL_Button = '<a class="button eeGet" target="_blank" href="' . $eeOrderURL .
 
 $eeOutput .= '<h3>Search &amp; Pagination</h3>
 	
-	<img src="https://get.simplefilelist.com/images/Search-Demo.jpg" width="400" height="301" class="eeRight" />
+	<img src="' . $eeSFL_Env['pluginURL'] . 'support/images/Search-Demo.jpg" width="400" height="301" class="eeRight" />
 	
 	<p>' . __('Adds searching and pagination functionality to Simple File List. It is designed to make very large file lists more manageable.', 'ee-simple-file-list') . '</p>
 	
