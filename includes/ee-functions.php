@@ -261,16 +261,18 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 					$eeSFL_Log['messages'][] = __('File Upload Complete', 'ee-simple-file-list');
 					
 					if( is_admin() ) {
-						$eeOutput = TRUE;
+						
+						return TRUE;
 					
 					} else  {
 						
 						// Send Email Notice
 						if($eeSFL_Config['Notify'] == 'YES') {
 							
-							// Retuns the <script> output for sending the email
-							return $eeSFL->eeSFL_AjaxEmail( $eeUploadJob, $eeSFL_ID ); 
-						
+							// Send the Email Notification
+							$eeSFL->eeSFL_NotificationEmail($eeUploadJob, $eeSFL_ID);
+							return TRUE;
+							
 						} else {
 							return TRUE; // No notice wanted
 						}

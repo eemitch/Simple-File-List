@@ -1,8 +1,8 @@
-// Simple File List Script: ee-uploader.js | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.22.2019
+// Simple File List Script: ee-uploader.js | Author: Mitchell Bennis | support@simplefilelist.com
 
 
 
-console.log("ee-upload.js | ver 3.1");
+console.log("ee-upload.js | ver 4.2.5");
 
 
 var eeSFL_FileSet = new Array(); // Names
@@ -133,7 +133,7 @@ function eeSFL_ProcessFileInput(eeSFL_Files) { // The files object
 
 
 
-// The Upload Queue Processor
+// The Upload Queue Processor - This runs when the Upload button is clicked
 function eeUploadProcessor(eeSFL_FileObjects) {
 	
 	eeSFL_FileCount = eeSFL_FileObjects.length;
@@ -209,14 +209,14 @@ function eeUploadFile(eeSFL_File) { // Pass in file object
     
     eeXhr.onreadystatechange = function() {
         
-        if (eeXhr.readyState == 4 && eeXhr.status != 500) { // && eeXhr.status == 200 <-- Windows returns 404?
+       if (eeXhr.readyState == 4 && eeXhr.status != 500) { // && eeXhr.status == 200 <-- Windows returns 404?
 	        
 	        eeSFL_Uploaded ++;
             
             console.log("File Uploaded (" + eeSFL_Uploaded + " of " + eeSFL_FileCount + ")");
             
 			// Every thing ok, file uploaded
-            console.log("RESPONSE: " + eeXhr.responseText); // handle response.
+            console.log("RESPONSE: " + eeXhr.responseText);
             
             // Submit the Form
             if(eeSFL_Uploaded == eeSFL_FileCount) {
@@ -227,7 +227,7 @@ function eeUploadFile(eeSFL_File) { // Pass in file object
 	            
 	            	console.log("--->>> SUBMITTING FORM ...");
 	            	
-	            	document.forms.eeSFL_UploadForm.submit(); // SUCCESS - Process the Form <<<----- FORM SUBMIT
+	            	document.forms.eeSFL_UploadForm.submit(); // <<<----- FORM SUBMIT
 					
 		        } else {
 			    	console.log("XHR Status: " + eeXhr.status);
@@ -253,14 +253,14 @@ function eeUploadFile(eeSFL_File) { // Pass in file object
         }
     };
     
-    // Pass to the Upload Engine...
-    eeFormData.append("file", eeSFL_File);
+    // Wordpress Action
+    eeFormData.append("action", "sfl_upload_job");
     
     // These values are set in ee-upload-form.php
+    eeFormData.append("file", eeSFL_File);
     eeFormData.append("eeSFL_ID", eeSFL_ListID);
     eeFormData.append("eeSFL_FileUploadDir", eeSFL_FileUploadDir);
-    eeFormData.append("eeSFL_Timestamp", eeSFL_TimeStamp); 
-    eeFormData.append("eeSFL_Token", eeSFL_TimeStamp2); // Salted
+    eeFormData.append("ee-simple-file-list-upload", eeSFL_Nonce);
         
     // Send the AJAX request...
     eeXhr.send(eeFormData);

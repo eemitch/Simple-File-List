@@ -54,10 +54,10 @@ if(!function_exists('eeMailError')) {
 		global $eeOutput, $eeContact_name, $eeContact_email, $eeContact_message, $eeContact_link;
 		
 		// Preserve input data
-		$eeContact_name = stripslashes(@$_POST['eeContact_name']);
-		$eeContact_email = @$_POST['eeContact_email'];
+		$eeContact_name = filter_var(stripslashes(@$_POST['eeContact_name']), FILTER_SANITIZE_STRING);
+		$eeContact_email = sanitize_email(@$_POST['eeContact_email']);
 		$eeContact_message = stripslashes(@$_POST['eeContact_message']);
-		$eeContact_link = @$_POST['eeContact_link'];
+		$eeContact_link = filter_var(@$_POST['eeContact_link'], FILTER_SANITIZE_STRING);
 		
 		$eeOutput .= '<div class="error"><p>' . __('The message failed to send.', 'ee-simple-file-list') . '</p>';
 		

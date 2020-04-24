@@ -87,9 +87,8 @@ if(@$eeSFL_Config['FileListDir']) {
 			var eeSFL_FileLimit = ' . $eeSFL_Config['UploadLimit'] . '; // Maximum number of files allowed
 			var eeSFL_UploadMaxFileSize = ' . (($eeSFL_Config['UploadMaxFileSize']*1024)*1024) . ';
 			var eeSFL_FileFormats = "' . str_replace(' ' , '', $eeSFL_Config['FileFormats']) . '"; // Allowed file extensions
-			var eeSFL_TimeStamp = "' . $eeSFL_Timestamp . '"; // Security
-			var eeSFL_TimeStamp2 = "' . $eeSFL_Timestamp_MD5 . '"; // Security
-			var eeSFL_UploadEngineURL = "' . $eeSFL_Env['pluginURL'] . 'ee-upload-engine.php' . '";
+			var eeSFL_Nonce = "' . $eeSFL_UploadNonce . '"; // Security
+			var eeSFL_UploadEngineURL = "' . admin_url( 'admin-ajax.php') . '";
 			
 		</script>
 		

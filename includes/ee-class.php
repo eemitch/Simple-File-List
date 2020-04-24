@@ -781,25 +781,17 @@ class eeSFL_MainClass {
 	
 	
 	
-	// Send a system notification email, via ee-email-engine.php 
-	public function eeSFL_AjaxEmail($eeSFL_UploadJob, $eeSFL_ID = 1) {
+	// Send the notification email
+	public function eeSFL_NotificationEmail($eeSFL_UploadJob, $eeSFL_ID = 1) {
 		
 		global $eeSFL_Log, $eeSFL_Config, $eeSFL_Env;
 		
-		// Email Notifications
-		$eeSFL_Message = '';
-		$eeSFL_Body = '';
-		
-		// Notifications via AJAX Engine
 		if($eeSFL_UploadJob) {
 		
 			$eeSFL_Log['notice'][] = 'Sending Notification Email';
 			
-			// Create nonce to be checked on the other side
-			$eeSFL_EmailNonce = wp_create_nonce('ee-simple-file-list-email');
-			
 			// Build the Message Body
-			$eeSFL_Body = $eeSFL_Config['NotifyMessage'];
+			$eeSFL_Body = $eeSFL_Config['NotifyMessage']; // Get the template
 			$eeSFL_Body = str_replace('[file-list]', $eeSFL_UploadJob, $eeSFL_Body); // Add files
 			$eeSFL_Body = str_replace('[web-page]', get_permalink(), $eeSFL_Body); // Add location
 			
@@ -825,93 +817,60 @@ class eeSFL_MainClass {
 				}
 			}
 			
-
-			
 			// Show if no extensions installed
 			if( @count($eeSFL_Env['installed']) < 1 OR strlen($eeSFL_Body) < 3) { // Or if no content
 				
 				$eeSFL_Body .= PHP_EOL . PHP_EOL . "----------------------------------"  . 
 				PHP_EOL . "Powered by Simple File List - simplefilelist.com";
 			}
+		
+			if($eeSFL_Config['NotifyFrom']) {
+				$eeSFL_NotifyFrom = $eeSFL_Config['NotifyFrom'];
+			} else {
+				$eeSFL_NotifyFrom = get_option('admin_email');
+			}
 			
+			if($eeSFL_Config['NotifyFromName']) {
+				$eeSFL_AdminName = $eeSFL_Config['NotifyFromName'];
+			} else {
+				$eeSFL_AdminName = $this->eePluginName;
+			}
 			
-			// Send the message to the Email Engine via Ajax
-			$eeOutput = '<script type="text/javascript">
+			$eeTo = $eeSFL_Config['NotifyTo'];
+			
+			$eeSFL_Headers = "From: " . stripslashes( $eeSFL_Config['NotifyFromName'] ) . " <$eeSFL_NotifyFrom>" . PHP_EOL . 
+				"Return-Path: $eeSFL_NotifyFrom" . PHP_EOL . "Reply-To: $eeSFL_NotifyFrom";
+			
+			if($eeSFL_Config['NotifyCc']) {
+				$eeSFL_Headers .= PHP_EOL . "CC:" . $eeSFL_Config['NotifyCc'];
+			}
 				
-				console.log("Simple File List - Upload Notification");
+			if($eeSFL_Config['NotifyBcc']) {
+				$eeSFL_Headers .= PHP_EOL . "BCC:" . $eeSFL_Config['NotifyBcc'];
+			}
+			
+			if($eeSFL_Config['NotifySubject']) {
+				$eeSFL_Subject = stripslashes( $eeSFL_Config['NotifySubject'] );
+			} else {
+				$eeSFL_Subject = __('File Upload Notice', 'ee-simple-file-list');
+			}
 				
-				function eeSFL_Notification() {
+			if(strpos($eeTo, '@') ) {
 				
-					var eeSFL_Url = "' . $eeSFL_Env['pluginURL'] . 'ee-email-engine.php' . '";
-					var eeSFL_Xhr = new XMLHttpRequest();
-					var eeSFL_FormData = new FormData();
-					    
-					console.log("Calling Email Engine: " + eeSFL_Url);
-					    
-					eeSFL_Xhr.open("POST", eeSFL_Url, true);
-					    
-				    eeSFL_Xhr.onreadystatechange = function() {
-				        
-				        if (eeSFL_Xhr.readyState == 4) {
-			            
-			            	// Every thing ok
-				            console.log("RESPONSE: " + eeSFL_Xhr.responseText);
-				            
-				            if(eeSFL_Xhr.responseText == "SENT") {
-					            
-				            	console.log("Message Sent");
-								
-					        } else {
-						    	
-						    	console.log("XHR Status: " + eeSFL_Xhr.status);
-						    	console.log("XHR State: " + eeSFL_Xhr.readyState);
-						    	
-						    	var n = eeSFL_Xhr.responseText.search("<"); // Error condition
-						    	
-						    	if(n === 0) {
-							    	console.log("Error Returned: " + eeSFL_Xhr.responseText);
-							    }
-							    return false;
-					        }
-				        
-				        } else {
-					    	console.log("XHR Status: " + eeSFL_Xhr.status);
-					    	console.log("XHR State: " + eeSFL_Xhr.readyState);
-					    	return false;
-				        }
-				    };';
-				    
-				    // Security First
-				    $eeSFL_Timestamp = time();
-				    $eeSFL_TimestampMD5 = md5('eeSFL_' . $eeSFL_Timestamp);
-				    
-				    $eeSFL_Body = json_encode($eeSFL_Body);
-				    
-				    $eeOutput .= '
-				    
-				    eeSFL_FormData.append("eeSFL_Timestamp", "' . $eeSFL_Timestamp . '");
-				     
-				    eeSFL_FormData.append("eeSFL_Token", "' . $eeSFL_TimestampMD5 . '");
-				    
-				    eeSFL_FormData.append("eeSFL_ID", "' . $eeSFL_ID . '");
-				    
-	 			    eeSFL_FormData.append("eeSFL_Body", ' . $eeSFL_Body . ');
-				        
-				    eeSFL_Xhr.send(eeSFL_FormData);
-				    
+				if(wp_mail($eeTo, $eeSFL_Subject, $eeSFL_Body, $eeSFL_Headers)) { // SEND IT
+					
+					$eeSFL_Log['notice'][] = 'Notification Email Sent';
+					return 'SUCCESS';
+					
+				} else {
+					
+					$eeSFL_Log['errors'][] = 'Notification Email FAILED';
 				}
-				
-				';
-				
-				$eeOutput .= 'eeSFL_Notification();'; // Run the above function right now
-				
-				$eeOutput .= '
-				
-			</script>';
-			
-			return $eeOutput;
+			}
+		
 		}
 	}
+	
 	
 	
 	

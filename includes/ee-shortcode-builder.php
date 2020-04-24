@@ -13,7 +13,9 @@ $eeSFL_ShortcodeArray = array(
 	'ShowFileDate' => array('showdate', 'File Date', 'YES|NO'), 
 	'ShowFileSize' => array('showsize', 'File Size', 'YES|NO'), 
 	'ShowHeader' => array('showheader', 'Table Header', 'YES|NO'), 
-	'ShowFileActions' => array('showactions', 'File Actions', 'YES|NO')
+	'ShowFileActions' => array('showactions', 'File Actions', 'YES|NO'),
+	'SortBy' => array('sortby', 'Sort By', 'Name|Date|Size|Random'),
+	'SortOrder' => array('sortorder', 'Sort Order', 'Descending|Ascending')
 );
 
 if($eeSFLF) { 
