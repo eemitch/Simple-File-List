@@ -12,6 +12,7 @@ function eeSFL_ManageLists() {
 	global $eeSFLF, $eeSFLS, $eeSFLA, $eeSFLA_Settings; // Extensions
 	
 	$eeSFL_Files = FALSE;
+	$eeForceSort = FALSE; // Only used in shortcode
 	
 	$eeAdmin = is_admin(); // Will be TRUE here
 	

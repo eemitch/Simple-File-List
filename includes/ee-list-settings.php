@@ -104,8 +104,15 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		}
 		
 		// Sort by Select Box	
-		if(@$_POST['eeSortBy']) { $eeSettings[$eeSFL_ID]['SortBy'] = filter_var($_POST['eeSortBy'], FILTER_SANITIZE_STRING); }
-			elseif(@$_POST['eeSortBy'] == 'NO') { $eeSettings[$eeSFL_ID]['SortBy'] = 'Name'; }
+		if(@$_POST['eeSortBy']) { 
+			
+			if($_POST['eeSortBy'] != $eeSettings[$eeSFL_ID]['SortBy']) { // Changed
+				
+				$eeSettings[$eeSFL_ID]['SortBy'] = filter_var($_POST['eeSortBy'], FILTER_SANITIZE_STRING);
+				
+			} else { $eeSettings[$eeSFL_ID]['SortBy'] = 'Name'; }
+			
+		}
 		
 		// Asc/Desc Checkbox
 		if(@$_POST['eeSortOrder'] == 'Descending') { $eeSettings[$eeSFL_ID]['SortOrder'] = 'Descending'; }
@@ -115,11 +122,12 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		if( is_numeric($_POST['eeExpireTime']) AND $_POST['eeExpireTime'] <= 24 ) { 
 			
 			if($eeSFL_Config['ExpireTime'] != $_POST['eeExpireTime']) {
-				$eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID); // Rescan only if setting changed
 				$eeSettings[$eeSFL_ID]['ExpireTime'] = $_POST['eeExpireTime'];
 			}	
 		}
 	}
+	
+	$eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID); // Rescan
 	
 	// Update DB
 	update_option('eeSFL-Settings', $eeSettings );

@@ -364,7 +364,11 @@ class eeSFL_MainClass {
 		
 		if( count($eeFilesArray) ) {
 	    
-		    $eeFilesArray = array_values($eeFilesArray); // Reset the Keys
+		    // Reset the Keys
+		    $eeFilesArray = array_values($eeFilesArray); 
+		    
+		    // Sort (Shortcode atts can re-sort)
+		    $eeFilesArray = $this->eeSFL_SortFiles($eeFilesArray, $eeSFL_Config['SortBy'], $eeSFL_Config['SortOrder']);
 		    
 		    // Update the DB
 		    update_option('eeSFL-FileList-' . $eeSFL_ID, $eeFilesArray);
@@ -647,7 +651,7 @@ class eeSFL_MainClass {
 	// Move the sort item to the array key and then sort. Preserve the key (File ID) in a new element
 	public function eeSFL_SortFiles($eeFiles, $eeSortBy, $eeSortOrder) {
 		
-		global $eeSFL_Log;
+		global $eeSFL_Log, $eeSFL_Config, $eeSFLF;
 		
 		if(is_array($eeFiles)) {
 			if( count($eeFiles) <= 1 ) { return $eeFiles; } // No point if none or one
@@ -713,6 +717,11 @@ class eeSFL_MainClass {
 		}
 		
 		$eeFilesSorted = array_values($eeFilesSorted); // Reindex the array keys
+		
+		if($eeSFLF AND $eeSFL_Config['FoldersFirst'] == 'YES') {
+			$eeFilesSorted = $eeSFLF->eeSFLF_SortFoldersFirst($eeFilesSorted, $eeSortBy, $eeSortOrder);
+		}
+		
 		
 		return $eeFilesSorted;
 	}

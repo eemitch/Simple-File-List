@@ -57,11 +57,11 @@ if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR @$eeSFL_Config['ExpireTime
 
 // echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
 
-// Sort Files Array
-$eeSFL_Files = $eeSFL->eeSFL_SortFiles($eeSFL_Files, $eeSFL_Config['SortBy'], $eeSFL_Config['SortOrder']);
+if($eeForceSort) {
+	$eeSFL_Files = $eeSFL->eeSFL_SortFiles($eeSFL_Files, $eeSFL_Config['SortBy'], $eeSFL_Config['SortOrder']);
+}
 
 // Save for later
-$eeAllFilesSorted = $eeSFL_Files;
 $eeSFL_FileTotalCount = 0;
 $eeSFL_FolderTotalCount = 0;
 $eeSFL_ItemTotalCount = $eeSFL_FileTotalCount + $eeSFL_FolderTotalCount;
@@ -783,8 +783,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 		</p>'; // This allows javascript to access the info
 	
 	$eeSFL_Env['FileLists'] = ''; // Remove to clean up display
-	// $eeSFL_Log['Raw Files'] = $eeSFL_Files;
-	// $eeSFL_Log['Sorted Files'] = $eeAllFilesSorted;
+	// $eeSFL_Log['Files'] = $eeSFL_Files;
 	
 	// Pagination Controls
 	if($eeSFLS) {
@@ -903,7 +902,6 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 		$eeOutput .= '<div id="eeSFL_noFiles"><p>&#8593; ' . __('Upload some files and they will appear here.', 'ee-simple-file-list') . '</p></div>';
 	}
 }
-
 
 $eeSFL_Log['Environment'] = $eeSFL_Env;
 $eeSFL_Log['Config'] = $eeSFL_Config;

@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A full-featured File List Manager | <a href="https://simplefilelist.com/donations/simple-file-list-project/">Donate</a> | <a href="admin.php?page=ee-simple-file-list&tab=extensions">Add Extensions</a>
 Author: Mitchell Bennis
-Version: 4.2.6
+Version: 4.2.7
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -21,9 +21,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
 
-define('eeSFL_Version', '4.2.6'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
-define('eeSFL_DB_Version', '4.1'); // Database structure version - used for eeSFL_VersionCheck()
-define('eeSFL_Cache_Version', '6'); // Cache-Buster version for static files - used when updating CSS/JS
+define('eeSFL_Version', '4.2.7'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_DB_Version', '4.2'); // Database structure version - used for eeSFL_VersionCheck()
+define('eeSFL_Cache_Version', '7'); // Cache-Buster version for static files - used when updating CSS/JS
 
 // Our Core
 $eeSFL = FALSE; // Our main class
@@ -246,7 +246,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 	if($eeAdmin) { return FALSE; } // Don't execute shortcode on page editor
     
     $eeSFL_ListNumber = $eeSFL_ListRun; // Legacy 03/20
-    
+    $eeForceSort = FALSE;
     $eeSFLF_ShortcodeFolder = FALSE;
 	
 	$eeOutput = '';
@@ -297,8 +297,17 @@ function eeSFL_Shortcode($atts, $content = null) {
 		if($showsize) { $eeSFL_Config['ShowFileSize'] = $showsize; }
 		if($showheader) { $eeSFL_Config['ShowHeader'] = $showheader; }
 		if($showactions) { $eeSFL_Config['ShowFileActions'] = $showactions; }
-		if($sortby) { $eeSFL_Config['SortBy'] = $sortby; }
-		if($sortorder) { $eeSFL_Config['SortOrder'] = $sortorder; }
+		
+		
+		if($sortby OR $sortorder) { // Force a re-sort of the file list array if a shortcode attribute was used
+			if( $sortby != $eeSFL_Config['SortBy'] OR $sortorder != $eeSFL_Config['SortOrder'] ) {
+				$eeForceSort = TRUE;
+				$eeSFL_Config['SortBy'] = $sortby;
+				$eeSFL_Config['SortOrder'] = $sortorder;
+			} else {
+				$eeForceSort = FALSE;
+			}
+		}
 		
 		if($hidetype) { $eeSFL_HideType = strtolower($hidetype); } else { $eeSFL_HideType = FALSE; }
 		if($hidename) { $eeSFL_HideName = strtolower($hidename); } else { $eeSFL_HideName = FALSE; }
@@ -407,6 +416,12 @@ function eeSFL_Shortcode($atts, $content = null) {
 		$eeSFL->eeSFL_WriteLogData($eeSFL_Log);
 		// $eeOutput .= '<pre id="eeSFL_DevMode">Log File ' . print_r($eeSFL_Log, TRUE) . '</pre>';
 	}
+	
+	// Give it back
+	unset($eeSFL_Files);
+	unset($eeSFL_Env);
+	unset($eeSFL_Config);
+	unset($eeSFL_Log);
 	
 	return $eeOutput; // Output the page
 }
@@ -872,11 +887,21 @@ function eeSFL_VersionCheck() {
 // Perform DB Update
 function eeSFL_UpdateThisPlugin() {
 	
-	if( get_option('eeSFL-DB-Version') ) { // Not yet
-		return;
-	}
-	
 	global $eeSFL, $eeSFL_Env, $eeSFL_Log;
+	
+	if( version_compare( get_option('eeSFL-DB-Version') , '4.2', '<') ) { 
+		
+		$eeSFL->eeSFL_UpdateFileListArray(1); // Now storing the file array sorted
+		
+		update_option('eeSFL-DB-Version', '4.2');
+		
+		return;
+	
+	} elseif(get_option('eeSFL-DB-Version')) {
+		
+		return; // Nothing more yet
+		
+	}
 	
 	$eeNewInstall = FALSE;
 	
