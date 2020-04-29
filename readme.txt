@@ -196,7 +196,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 == Changelog ==
 
 = 4.2.7 =
-Speed Improvement: Now storing the sorted file list. Only re-sorting when settings are changed or a shortcode attribute is used.
+* Speed and memory usage improvements
 
 
 = 4.2.6 =
