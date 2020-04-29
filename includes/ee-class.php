@@ -367,7 +367,7 @@ class eeSFL_MainClass {
 		    // Reset the Keys
 		    $eeFilesArray = array_values($eeFilesArray); 
 		    
-		    // Sort (Shortcode atts can re-sort)
+		    // Sort
 		    $eeFilesArray = $this->eeSFL_SortFiles($eeFilesArray, $eeSFL_Config['SortBy'], $eeSFL_Config['SortOrder']);
 		    
 		    // Update the DB
