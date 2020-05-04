@@ -55,7 +55,7 @@ if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR @$eeSFL_Config['ExpireTime
 
 // echo '<pre>'; print_r($eeSFL_Config); echo '</pre>';
 
-echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
+// echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
 
 // Shortcode used
 if($eeForceSort) { // Sorting is usually only done when the disk is scanned

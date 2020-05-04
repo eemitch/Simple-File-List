@@ -635,7 +635,7 @@ function eeSFL_FileEditor() {
 	
 	// WP Security
 	if( !check_ajax_referer( 'eeSFL_ActionNonce', 'eeSecurity' ) ) {
-		return "WP AJAX Error";	
+		return 'ERROR 98';	
 	}
 	
 	// The List ID
@@ -750,7 +750,7 @@ function eeSFL_FileEditor() {
 	} elseif($eeFileAction == 'UpdateDesc') {
 		
 		// The Description
-		if(filter_var($_POST['eeFileID'], FILTER_VALIDATE_INT) !== FALSE) { // Might be a zero
+		if(filter_var(@$_POST['eeFileID'], FILTER_VALIDATE_INT) !== FALSE) { // Might be a zero
 			$eeFileID = $_POST['eeFileID'];
 		} else { 
 			$eeFileID = 0;
@@ -761,6 +761,10 @@ function eeSFL_FileEditor() {
 			$eeFileDesc = filter_var($_POST['eeFileDesc'], FILTER_SANITIZE_STRING); 
 		} else { 
 			$eeFileDesc = '';
+		}
+		
+		if(!strpos($eeFileName, '.')) { // Folder
+			$eeFileName .= '/';
 		}
 		
 		// return $eeSFL_ID . ' - ' . $eeListFolder . $eeFileName . ' - ' . 'FileDescription' . ' - ' . $eeFileDesc;
@@ -891,7 +895,7 @@ function eeSFL_UpdateThisPlugin() {
 	
 	if( version_compare( get_option('eeSFL-DB-Version') , '4.2', '<') ) { 
 		
-		$eeSFL->eeSFL_UpdateFileListArray(1); // Now storing the file array sorted
+		delete_transient('eeSFL_FileList-1');
 		
 		update_option('eeSFL-DB-Version', '4.2');
 		
