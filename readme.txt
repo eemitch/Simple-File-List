@@ -85,6 +85,7 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * es_MX - Spanish (Mexico)
 * fr_CA - French (Canada)
 * fr_FR - French (France)
+* fr_BE - French (Belgium)
 * it_IT - Italian (Italy)
 * ja_JP - Japanese (Japan)
 * nl_NL - Dutch (Netherlands)
@@ -183,7 +184,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.6 - Various improvements
+* 4.2.7 - Various improvements
 
 
 == Screenshots ==
@@ -196,7 +197,10 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 == Changelog ==
 
 = 4.2.7 =
-* Speed and memory usage improvements
+* Speed and server load improvements.
+* Fixed a couple of bugs with sorting.
+* Fixed a bug where descriptions were not sticking to folders.
+* Improved the French translations, added French-Belgium translations.
 
 
 = 4.2.6 =

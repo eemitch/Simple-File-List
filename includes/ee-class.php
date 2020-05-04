@@ -671,12 +671,12 @@ class eeSFL_MainClass {
 				if(@$eeFileArray['FileDateChanged']) {
 					
 					$eeFilesSorted[ $eeFileArray['FileDateChanged'] . ' ' . $eeKey ] = $eeFileArray; // Add the file key to preserve files with same date or size.
-					$eeFilesSorted[$eeFileArray['FileDateChanged'] . ' ' . $eeKey]['FileID'] = $eeKey; // Save the ID in new element
+					$eeFilesSorted[ $eeFileArray['FileDateChanged'] . ' ' . $eeKey ]['FileID'] = $eeKey; // Save the ID in new element
 				
 				} elseif($eeFileArray['FileDateAdded']) {
 					
 					$eeFilesSorted[ $eeFileArray['FileDateAdded'] . ' ' . $eeKey ] = $eeFileArray;
-					$eeFilesSorted[$eeFileArray['FileDateAdded'] . ' ' . $eeKey]['FileID'] = $eeKey;
+					$eeFilesSorted[ $eeFileArray['FileDateAdded'] . ' ' . $eeKey ]['FileID'] = $eeKey;
 				}
 			}
 			
@@ -686,43 +686,55 @@ class eeSFL_MainClass {
 				
 				// Add the file key to preserve files with same size.
 				$eeFilesSorted[ $eeFileArray['FileSize'] . '.' . $eeKey ] = $eeFileArray;
-				$eeFilesSorted[$eeFileArray['FileSize'] . '.' . $eeKey]['FileID'] = $eeKey;
+				$eeFilesSorted[ $eeFileArray['FileSize'] . '.' . $eeKey ]['FileID'] = $eeKey;
 			}
 	
 		} elseif($eeSortBy == 'Name') { // Alpha
 			
 			foreach($eeFiles as $eeKey => $eeFileArray) {
 				
-				$eeFilesSorted[ $eeFileArray['FilePath'] ] = $eeFileArray; // These keys shall always be unique
-				$eeFilesSorted[ $eeFileArray['FilePath'] ]['FileID'] = $eeKey;
+				$eeFilePathLowerCase = strtolower($eeFileArray['FilePath']); // Make lower case so name sorting works properly
+				$eeFilesSorted[ $eeFilePathLowerCase ] = $eeFileArray; // These keys shall always be unique
+				$eeFilesSorted[ $eeFilePathLowerCase ]['FileID'] = $eeKey;
 			}
 		
 		} else { // Random
 			
 			foreach($eeFiles as $eeKey => $eeFileArray) {
 				
-				$eeFilesSorted[$eeKey]['FileID'] = $eeKey;
+				$eeFilesSorted[ $eeFileArray['FilePath'] ] = $eeFileArray;
+				$eeFilesSorted[ $eeFileArray['FilePath'] ]['FileID'] = $eeKey;
 			}
 			
-			$eeFilesSorted = shuffle($eeFilesSorted);
+			$eeKeys = array_keys($eeFilesSorted);
+
+	        shuffle($eeKeys);
+	
+	        foreach($eeKeys as $eeKey) {
+	            $eeNewArray[$eeKey] = $eeFilesSorted[$eeKey];
+	        }
+	
+	        $eeFilesSorted = $eeNewArray;
 			
 			return $eeFilesSorted;
 		}
-		
-		ksort($eeFilesSorted); // Sort by the key
+			
+		// Sort by the key
+		ksort($eeFilesSorted); 
 		
 		// If Descending
 		if($eeSortOrder == 'Descending') {
 			$eeFilesSorted = array_reverse($eeFilesSorted);
 		}
 		
-		$eeFilesSorted = array_values($eeFilesSorted); // Reindex the array keys
-		
+		// Reindex the array keys
+		$eeFilesSorted = array_values($eeFilesSorted);
+	
+		// Folders First?
 		if($eeSFLF AND $eeSFL_Config['FoldersFirst'] == 'YES') {
 			$eeFilesSorted = $eeSFLF->eeSFLF_SortFoldersFirst($eeFilesSorted, $eeSortBy, $eeSortOrder);
-		}
-		
-		
+		} 
+
 		return $eeFilesSorted;
 	}
 	

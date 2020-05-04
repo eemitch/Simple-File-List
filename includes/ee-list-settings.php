@@ -127,10 +127,10 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		}
 	}
 	
-	$eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID); // Rescan
-	
 	// Update DB
 	update_option('eeSFL-Settings', $eeSettings );
+	
+	delete_transient('eeSFL_FileList-' . $eeSFL_ID); // Force a rescan
 	
 	// Update the array with new values
 	$eeSFL_Config = $eeSettings[$eeSFL_ID];
