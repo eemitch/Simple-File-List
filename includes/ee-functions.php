@@ -424,7 +424,7 @@ function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded, $eeSFL_ID = 1) { // F
 					
 					for ($i = 1; $i <= $eeCopyLimit; $i++) { // Look for existing copies
 						
-						$eeSFL_FilePathAdded = $eeDir . $eeNameOnly . '_(' . $i . ').' . $eeExtension; // Indicate the copy number
+						$eeSFL_FilePathAdded = $eeDir . $eeNameOnly . '_' . $i . '.' . $eeExtension; // Indicate the copy number
 						
 						if(!is_file(ABSPATH . $eeSFL_FilePathAdded)) { break; } // If no copy is there, we're done.
 					}							

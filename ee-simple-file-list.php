@@ -705,7 +705,14 @@ function eeSFL_FileEditor() {
 			
 			} else {
 				
-				delete_transient('eeSFL_FileList-' . $eeSFL_ID); // Trigger a re-scan
+				if(!strpos($eeFileName, '.')) { // Folder, need the trailing slash
+					$eeFileName .= '/';
+					$eeNewFileName .= '/';
+				}
+				
+				$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeListFolder . $eeFileName, 'FilePath', $eeListFolder . $eeNewFileName);
+				
+				delete_transient('eeSFL_FileList-' . $eeSFL_ID); // Trigger a re-scan to rebuild thumbnail
 				
 				return 'SUCCESS';
 			}
@@ -763,7 +770,7 @@ function eeSFL_FileEditor() {
 			$eeFileDesc = '';
 		}
 		
-		if(!strpos($eeFileName, '.')) { // Folder
+		if(!strpos($eeFileName, '.')) { // Folder, need the trailing slash
 			$eeFileName .= '/';
 		}
 		

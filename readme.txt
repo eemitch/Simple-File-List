@@ -3,8 +3,8 @@ Contributors: eemitch
 Donate link: http://simplefilelist.com/donations/simple-file-list-project/
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
-Tested up to: 5.4
-Stable tag: 4.2.6
+Tested up to: 5.4.1
+Stable tag: 4.2.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,7 +184,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.7 - Various improvements
+* 4.2.7 - Various bug fixes and improvements
 
 
 == Screenshots ==
@@ -199,8 +199,9 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 = 4.2.7 =
 * Speed and server load improvements.
 * Fixed a couple of bugs with sorting.
-* Fixed a bug where descriptions were not sticking to folders.
+* Fixed a bug where descriptions were not sticking to folders or files after renaming the file.
 * Improved the French translations, added French-Belgium translations.
+* Various other improvements.
 
 
 = 4.2.6 =
