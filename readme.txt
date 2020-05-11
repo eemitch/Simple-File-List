@@ -184,7 +184,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.7 - Various improvements
+* 4.2.8 - Security Fix
 
 
 == Screenshots ==
@@ -195,6 +195,10 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Changelog ==
+
+= 4.2.8 =
+* Fixed a security issue for non-Linux users who allow front-side file management.
+
 
 = 4.2.7 =
 * Speed and server load improvements.
