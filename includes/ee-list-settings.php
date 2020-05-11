@@ -12,9 +12,9 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	$eeSettings = get_option('eeSFL-Settings');
 	
 	// File List Folder
-	$eeSFL_LastFileListDir = $eeSFL_Config['FileListDir'];
+	// $eeSFL_LastFileListDir = $eeSFL_Config['FileListDir'];
 	
-	if(@$_POST['eeFileListDir']) {
+	if($_POST['eeFileListDir'] != $eeSFL_Config['FileListDir']) { // It was changed
 		
 		$eeSFL_FileListDir = filter_var($_POST['eeFileListDir'], FILTER_SANITIZE_STRING);
 		
@@ -55,6 +55,8 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		} else {
 			$eeSettings[$eeSFL_ID]['FileListDir'] = $eeSFL_Env['FileListDefaultDir'];
 		}
+		
+		delete_option('eeSFL-FileList-' . $eeSFL_ID); // Delete the old file list array (meta data will be lost)
 	}
 	
 	
