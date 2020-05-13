@@ -10,7 +10,13 @@ Description: A full-featured File List Manager | <a href="https://simplefilelist
 Author: Mitchell Bennis
 Version: 4.2.8
 Author URI: http://simplefilelist.com
-License: GPLv2 or later
+License: EULA
+ * Intellectual Property rights, and copyright, reserved by Mitchell Bennis as allowed by law include,
+ * but are not limited to, the working concept, function, and behavior of this plugin,
+ * the logical code structure and expression as written.
+ *
+ * @category    Plugin
+ * @copyright   Copyright (c) Mitchell Bennis
 Text Domain: ee-simple-file-list
 Domain Path: /languages
 */
@@ -20,7 +26,6 @@ $eeSFL_DevMode = FALSE; // Enables visible logging
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
-
 define('eeSFL_Version', '4.2.8'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_DB_Version', '4.2'); // Database structure version - used for eeSFL_VersionCheck()
 define('eeSFL_Cache_Version', '8'); // Cache-Buster version for static files - used when updating CSS/JS
@@ -51,6 +56,23 @@ $eeSFL_Extensions = array( // Slugs
 $eeSFLF = FALSE; $eeSFLS = FALSE; $eeSFLA = FALSE; // Coming Soon
 $eeSFLF_ListFolder = FALSE;
 
+
+// Check for Update
+// https://github.com/YahnisElsts/plugin-update-checker
+// https://github.com/eemitch/ee-simple-file-list-extension
+// ae370143ceaad95ca6a8f8b27701bd3e126a0e2d
+
+include( plugin_dir_path(__FILE__) . '/updater/plugin-update-checker.php' );
+$eeSFL_updateChecker = Puc_v4_Factory::buildUpdateChecker(
+	'https://github.com/eemitch/simple-file-list',
+	__FILE__,
+	'simple-file-list'
+);
+$eeSFL_updateChecker->setAuthentication('ae370143ceaad95ca6a8f8b27701bd3e126a0e2d');
+$eeSFL_updateChecker->getVcsApi()->enableReleaseAssets();
+
+
+// AJAX
 // sfl_upload_job <<<----- File Upload Action Hooks (Ajax)
 add_action( 'wp_ajax_sfl_upload_job', 'sfl_upload_job' );
 add_action( 'wp_ajax_nopriv_sfl_upload_job', 'sfl_upload_job' );
