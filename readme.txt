@@ -3,10 +3,10 @@ Contributors: eemitch
 Donate link: http://simplefilelist.com/donations/simple-file-list-project/
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
-Tested up to: 5.4.1
-Stable tag: 4.2.7
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tested up to: 5.4
+Stable tag: trunk
+License: EULA
+License URI: https://simplefilelist.com/end-user-license-agreement/
 
 Simple File List gives your WordPress website a list of your files which allows your users to open and download them.
 
@@ -184,7 +184,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.7 - Various bug fixes and improvements
+* 4.2.8 - License Change to EULA
 
 
 == Screenshots ==
@@ -195,6 +195,13 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Changelog ==
+
+= 4.2.8 =
+* Fixed a security issue for non-Linux users who allow front-side file management.
+* Removed the plugin from the Wordpress public repo.
+* Changed license to EULA.
+* Added plugin update checker.
+
 
 = 4.2.7 =
 * Speed and server load improvements.

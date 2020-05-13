@@ -11,11 +11,7 @@ function eeSFL_DetectUpwardTraversal($eeFilePath) {
 
 	global $eeSFL_Log, $eeSFL_Env;
 	
-	if($eeSFL_Env['eeOS'] == 'WINDOWS') {
-		
-		return TRUE; // For now
-	
-	} elseif($eeSFL_Env['eeOS'] == 'LINUX') {
+	if($eeSFL_Env['eeOS'] == 'LINUX') {
 	
 		$eeUserPath = ABSPATH . dirname($eeFilePath);  // This could be problematic with things like ../
 		$eeRealPath = realpath( ABSPATH . dirname($eeFilePath) ); // Expunge the badness and then compare...
@@ -25,6 +21,16 @@ function eeSFL_DetectUpwardTraversal($eeFilePath) {
 		    wp_die('Error 99 :-('); // Bad guy found, bail out :-(
 		}
 		
+		return TRUE;
+	
+	} else {
+
+		$eeFilePath = urldecode($eeFilePath);
+		
+		if(strpos($eeFilePath, '..') OR strpos($eeFilePath, '..') === 0) {
+			wp_die('Error 99 :-('); // Bad guy found, bail out :-(
+		}
+			
 		return TRUE;
 	}
 }
