@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A full-featured File List Manager | <a href="https://simplefilelist.com/donations/simple-file-list-project/">Donate</a> | <a href="admin.php?page=ee-simple-file-list&tab=extensions">Add Extensions</a>
 Author: Mitchell Bennis
-Version: 4.2.8
+Version: 4.2.9
 Author URI: http://simplefilelist.com
 License: EULA
  * Intellectual Property rights, and copyright, reserved by Mitchell Bennis as allowed by law include,
@@ -26,9 +26,9 @@ $eeSFL_DevMode = FALSE; // Enables visible logging
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
-define('eeSFL_Version', '4.2.8'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_Version', '4.2.9'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_DB_Version', '4.2'); // Database structure version - used for eeSFL_VersionCheck()
-define('eeSFL_Cache_Version', '8'); // Cache-Buster version for static files - used when updating CSS/JS
+define('eeSFL_Cache_Version', '9'); // Cache-Buster version for static files - used when updating CSS/JS
 
 // Our Core
 $eeSFL = FALSE; // Our main class
@@ -1173,9 +1173,9 @@ function eeSFL_UpdateThisPlugin() {
 // Plugin Activation ==========================================================
 function eeSFL_Activate() {
 	
-	// TO DO - Check extension versions - Fail unless they are updated first.
-	
-	return TRUE; // All done, nothing to do here.	
+	 @wp_mail('support@simplefilelist.com', 'SFL Activation', 'Activated on ' . $_SERVER['HTTP_HOST'] . ' (' . get_option('admin_email') . ')');
+        
+    return TRUE;
 }
 register_activation_hook( __FILE__, 'eeSFL_Activate' );
 

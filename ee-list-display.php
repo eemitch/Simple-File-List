@@ -120,9 +120,6 @@ if(@$eeSFL_Env['UploadedFiles']) {
 // Extension Check
 if($eeSFLS) {
 	
-	$eeAllFilesSorted = $eeSFL_Files; // Legacy
-	
-	// $eeSFLS_TotalItemsCount = count($eeSFL_Files); // Before search
 	$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
 	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-search-processor.php'); // Run the Search Processor
 	$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
