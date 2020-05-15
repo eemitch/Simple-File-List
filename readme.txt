@@ -184,7 +184,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.8 - License Change to EULA
+* 4.2.9 - Minor update.
 
 
 == Screenshots ==
@@ -195,6 +195,9 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Changelog ==
+
+= 4.2.9 =
+* Minor update.
 
 = 4.2.8 =
 * Fixed a security issue for non-Linux users who allow front-side file management.
