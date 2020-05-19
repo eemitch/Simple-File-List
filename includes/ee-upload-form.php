@@ -11,7 +11,7 @@ $eeSFL_Log['Add Files'][] = 'Loaded: ee-uploader';
 // Extension Check
 if($eeSFLF) {
 	if(@$_REQUEST['eeFolder'] AND $eeSFL_ListRun == 1) { // Adjust the path based on REQUEST arg
-		$eeSFLF_ListFolder = filter_var(urldecode($_REQUEST['eeFolder']), FILTER_SANITIZE_STRING) . '/'; 
+		$eeSFLF_ListFolder = sanitize_text_field(urldecode($_REQUEST['eeFolder'])) . '/'; 
 	} elseif( strlen(@$eeSFLF_ShortcodeFolder) ) {
 		$eeSFLF_ListFolder = str_replace('&#34;', '', $eeSFLF_ShortcodeFolder) . '/'; // Fix for uploading to draft status page
 	} else {

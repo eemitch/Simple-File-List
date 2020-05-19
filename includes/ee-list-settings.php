@@ -16,7 +16,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	
 	if($_POST['eeFileListDir'] != $eeSFL_Config['FileListDir']) { // It was changed
 		
-		$eeSFL_FileListDir = filter_var($_POST['eeFileListDir'], FILTER_SANITIZE_STRING);
+		$eeSFL_FileListDir = sanitize_text_field($_POST['eeFileListDir']);
 		
 		$eeArray = explode('/', $eeSFL_FileListDir);
 		
@@ -110,7 +110,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 			
 			if($_POST['eeSortBy'] != $eeSettings[$eeSFL_ID]['SortBy']) { // Changed
 				
-				$eeSettings[$eeSFL_ID]['SortBy'] = filter_var($_POST['eeSortBy'], FILTER_SANITIZE_STRING);
+				$eeSettings[$eeSFL_ID]['SortBy'] = sanitize_text_field($_POST['eeSortBy']);
 				
 			} else { $eeSettings[$eeSFL_ID]['SortBy'] = 'Name'; }
 			
@@ -123,7 +123,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		// Expiration
 		if( is_numeric($_POST['eeExpireTime']) AND $_POST['eeExpireTime'] <= 24 ) { 
 			
-			if($eeSFL_Config['ExpireTime'] != $_POST['eeExpireTime']) {
+			if($eeSFL_Config['ExpireTime'] != $_POST['eeExpireTime']) { // Changed
 				$eeSettings[$eeSFL_ID]['ExpireTime'] = $_POST['eeExpireTime'];
 			}	
 		}

@@ -740,13 +740,15 @@ class eeSFL_MainClass {
 	
 	
 	
-	public function eeSFL_SendFilesEmail($eePOST) {
+	public function eeSFL_SendFilesEmail() {
+		
+		$eePOST = $_POST;
 		
 		global $eeSFL_Config, $eeSFL_Env;
 		$eeFiles = '';
 		
 		// Process a raw input of email addresses
-		$eeFrom = filter_var(@$eePOST['eeSFL_SendFrom'], FILTER_VALIDATE_EMAIL); // 1 Required
+		$eeFrom = sanitize_email(@$eePOST['eeSFL_SendFrom']); // 1 Required
 		if(!$eeFrom) { return FALSE; }
 		
 		$eeTo = eeSFL_ProcessEmailString(@$eePOST['eeSFL_SendTo']); // Required
@@ -759,16 +761,16 @@ class eeSFL_MainClass {
 		$eeHeaders = eeSFL_ReturnHeaderString($eeFrom, $eeCc);
 		
 		// Subject
-		$eeSubject = filter_var(@$eePOST['eeSFL_SendSubject'], FILTER_SANITIZE_STRING);
+		$eeSubject = sanitize_text_field(@$eePOST['eeSFL_SendSubject']);
 		if(!$eeSubject) { $eeSubject = __('File Notification', 'ee-simple-file-list'); }
 		
 		// Message
-		$eeMessage = filter_var(@$eePOST['eeSFL_SendMessage'], FILTER_SANITIZE_STRING);
+		$eeMessage = sanitize_text_field(@$eePOST['eeSFL_SendMessage']);
 		
 		if( is_array($eePOST['eeSFL_SendTheseFiles']) ) { // The files array checkboxes
 			
 			foreach( $eePOST['eeSFL_SendTheseFiles'] as $eeFile) {
-				$eeFiles .= '-> ' . $eeSFL_Config['FileListURL'] . urldecode($eeFile) . PHP_EOL;
+				$eeFiles .= '-> ' . $eeSFL_Config['FileListURL'] . sanitize_text_field( urldecode($eeFile) ) . PHP_EOL;
 			}
 		}
 		
@@ -821,17 +823,17 @@ class eeSFL_MainClass {
 				
 				$eeSFL_Body .= PHP_EOL . PHP_EOL . __('Uploader Information', 'ee-simple-file-list') . PHP_EOL;
 				
-				$eeSFL_Name = substr(filter_var(@$_POST['eeSFL_Name'], FILTER_SANITIZE_STRING), 0, 64);
+				$eeSFL_Name = substr(sanitize_text_field(@$_POST['eeSFL_Name']), 0, 64);
 				$eeSFL_Name = strip_tags($eeSFL_Name);
 				if($eeSFL_Name) { 
 					$eeSFL_Body .= __('Uploaded By', 'ee-simple-file-list') . ': ' . ucwords($eeSFL_Name) . " - ";
 				}
 				
-				$eeSFL_Email = substr(filter_var(@$_POST['eeSFL_Email'], FILTER_VALIDATE_EMAIL), 0, 128);
+				$eeSFL_Email = filter_var(sanitize_email(@$_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL);
 				$eeSFL_Body .= strtolower($eeSFL_Email) . PHP_EOL;
 				$eeSFL_ReplyTo = $eeSFL_Name . ' <' . $eeSFL_Email . '>';
 				
-				$eeSFL_Comments = substr(filter_var(@$_POST['eeSFL_Comments'], FILTER_SANITIZE_STRING), 0, 5012);
+				$eeSFL_Comments = substr(sanitize_text_field(@$_POST['eeSFL_Comments']), 0, 5012);
 				$eeSFL_Comments = strip_tags($eeSFL_Comments);
 				if($eeSFL_Comments) {
 					$eeSFL_Body .= $eeSFL_Comments . PHP_EOL . PHP_EOL;
@@ -912,7 +914,7 @@ class eeSFL_MainClass {
 				
 				$add = trim($add);
 				
-				if(filter_var($add, FILTER_VALIDATE_EMAIL)) {
+				if(filter_var(sanitize_email($add), FILTER_VALIDATE_EMAIL)) {
 			
 					$eeSFL_AddressesString .= $add . ',';
 					
@@ -924,11 +926,11 @@ class eeSFL_MainClass {
 			$eeAddressSanitized = substr($eeSFL_AddressesString, 0, -1); // Remove last comma
 			
 		
-		} elseif(filter_var($eeAddresses, FILTER_SANITIZE_EMAIL)) { // Only one address
+		} elseif(filter_var(sanitize_email($eeAddresses), FILTER_SANITIZE_EMAIL)) { // Only one address
 			
 			$add = $eeAddresses;
 			
-			if(filter_var($add, FILTER_VALIDATE_EMAIL)) {
+			if(filter_var(sanitize_email($add), FILTER_VALIDATE_EMAIL)) {
 				
 				$eeAddressSanitized = $add;
 				

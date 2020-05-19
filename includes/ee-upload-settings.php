@@ -35,12 +35,12 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	
 	// File Number Limit
 	$eeSettings[$eeSFL_ID]['UploadLimit'] = filter_var(@$_POST['eeUploadLimit'], FILTER_VALIDATE_INT);
-	if(!$eeSettings[$eeSFL_ID]['UploadLimit'] ) { $eeSettings[$eeSFL_ID]['UploadLimit'] = $eeSFL->eeDefaultUploadLimit; }
+	if(!$eeSettings[$eeSFL_ID]['UploadLimit'] OR $eeSettings[$eeSFL_ID]['UploadLimit'] > 999 ) { $eeSettings[$eeSFL_ID]['UploadLimit'] = $eeSFL->eeDefaultUploadLimit; }
 	
 	// Maximum File Size
 	if(@$_POST['eeUploadMaxFileSize']) {
 		
-		$eeSFL_UploadMaxFileSize = (int) $_POST['eeUploadMaxFileSize'];
+		$eeSFL_UploadMaxFileSize = filter_var($_POST['eeUploadMaxFileSize'], FILTER_VALIDATE_INT);
 		
 		// Can't be more than the system allows.
 		if(!$eeSFL_Config['UploadMaxFileSize'] OR $eeSFL_Config['UploadMaxFileSize'] > $eeSFL_Env['the_max_upload_size']) { 
@@ -56,7 +56,8 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	// File Formats
 	if(@$_POST['eeFileFormats']) { // Strip all but what we need for the comma list of file extensions
 		
-		$eeFileFormatsIN = explode(',', $_POST['eeFileFormats']);
+		$eeFileFormatsIN = preg_replace("/[^a-z0-9,]/i", "", $_POST['eeFileFormats']);
+		$eeFileFormatsIN = explode(',', $eeFileFormatsIN);
 		$eeFileFormatsOK = '';
 		foreach( $eeFileFormatsIN as $eeKey => $eeValue){
 			$eeValue = trim($eeValue);
@@ -66,12 +67,10 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 				$eeFileFormatsOK .= $eeValue . ',';
 			}
 		}
-		$eeFileFormatsOK = substr($eeFileFormatsOK, 0, -1);
-		$eeSettings[$eeSFL_ID]['FileFormats'] = preg_replace("/[^a-z0-9,]/i", "", $eeFileFormatsOK);
+		$eeSettings[$eeSFL_ID]['FileFormats'] = substr($eeFileFormatsOK, 0, -1);
 	}
 	
-	
-	
+
 	// YES/NO Checkboxes
 	$eeCheckboxes = array(
 		'AllowOverwrite'

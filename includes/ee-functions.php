@@ -185,7 +185,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 	$eeOutput = FALSE;
 	
 	$eeFileCount = filter_var(@$_POST['eeSFL_FileCount'], FILTER_VALIDATE_INT);
-	$eeSFLF_UploadFolder = urldecode(filter_var(@$_POST['eeSFLF_UploadFolder'], FILTER_SANITIZE_STRING));
+	$eeSFLF_UploadFolder = sanitize_text_field( urldecode(@$_POST['eeSFLF_UploadFolder']) );
 	
 	if($eeFileCount) {
 		
@@ -195,7 +195,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 		$eeSFL_Log['Add Files'][] = 'Post-processinging Upload Job ...';
 		$eeSFL_Log['Add Files'][] = $eeFileCount . ' Files';
 		
-		$eeFileList = stripslashes($_POST['eeSFL_FileList']);
+		$eeFileList = sanitize_text_field( stripslashes($_POST['eeSFL_FileList'] )); // Expecting a comma delimited list
 		
 		// Check for Nonce
 		if(check_admin_referer( 'ee-simple-file-list-upload', 'ee-simple-file-list-upload-nonce')) {
@@ -242,7 +242,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 								"(" . eeSFL_GetFileSize( $eeSFL_Config['FileListDir'] . $eeSFLF_UploadFolder . $eeFile ) . ")" . PHP_EOL . PHP_EOL;
 					
 						// Is uploader person logged-in?
-						if( is_numeric(@$_POST['eeSFL_FileOwner']) ) {
+						if( is_numeric(@$_POST['eeSFL_FileOwner']) ) { // Expecting a number
 							$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'FileOwner', $_POST['eeSFL_FileOwner']);
 						}
 								
@@ -255,9 +255,9 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 								
 								if( $eeArray2['FilePath'] ==  $eeSFLF_UploadFolder . $eeFile) {
 									
-									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterName', filter_var(@$_POST['eeSFL_Name'], FILTER_SANITIZE_STRING));
-									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterEmail', filter_var(@$_POST['eeSFL_Email'], FILTER_VALIDATE_EMAIL));
-									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterComments', filter_var(@$_POST['eeSFL_Comments'], FILTER_SANITIZE_STRING));
+									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterName', sanitize_text_field(@$_POST['eeSFL_Name']));
+									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterEmail', filter_var( sanitize_email(@$_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL) );
+									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterComments', sanitize_text_field(@$_POST['eeSFL_Comments']));
 								
 								}
 							}
@@ -363,7 +363,7 @@ function eeSFL_SanitizeFileName($eeSFL_FileName) {
 // Yes or No Settings Checkboxes
 function eeSFL_ProcessCheckboxInput($eeTerm) {
 	
-	$eeValue = filter_var(@$_POST['ee' . $eeTerm], FILTER_SANITIZE_STRING);
+	$eeValue = sanitize_text_field(@$_POST['ee' . $eeTerm]);
 	
 	if($eeValue == 'YES') { return 'YES'; } else { return 'NO'; }
 }
@@ -377,7 +377,7 @@ function eeSFL_ProcessTextInput($eeTerm, $eeType = 'text') {
 	
 	if($eeType == 'email') {
 		
-		$eeValue = filter_var(@$_POST['ee' . $eeTerm], FILTER_VALIDATE_EMAIL);
+		$eeValue = filter_var(sanitize_email(@$_POST['ee' . $eeTerm]), FILTER_VALIDATE_EMAIL);
 	
 	} elseif($eeType == 'textarea') {
 		
@@ -386,7 +386,7 @@ function eeSFL_ProcessTextInput($eeTerm, $eeType = 'text') {
 	
 	} else {
 		
-		$eeValue = filter_var(@$_POST['ee' . $eeTerm], FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$eeValue = sanitize_text_field(@$_POST['ee' . $eeTerm]);
 	}
 	
 	return $eeValue;
@@ -562,7 +562,7 @@ function eeSFL_ReturnHeaderString($eeFrom, $eeCc = FALSE, $eeBcc = FALSE) {
 // Can be a single address or a comma sep list
 function eeSFL_ProcessEmailString($eeString) {
 	
-	$eeString = filter_var($eeString, FILTER_SANITIZE_STRING);
+	$eeString = sanitize_text_field($eeString);
 	
 	if( strpos($eeString, ',') ) { // More than one address?
 		
@@ -572,7 +572,7 @@ function eeSFL_ProcessEmailString($eeString) {
 		
 		foreach( $eeArray as $eeEmail) {
 			
-			$eeEmail = filter_var($eeEmail, FILTER_VALIDATE_EMAIL);
+			$eeEmail = filter_var(sanitize_email($eeEmail), FILTER_VALIDATE_EMAIL);
 			
 			if($eeEmail) {
 				
@@ -584,7 +584,7 @@ function eeSFL_ProcessEmailString($eeString) {
 	
 	} else {
 		
-		$eeAddresses = filter_var($eeString, FILTER_VALIDATE_EMAIL);
+		$eeAddresses = filter_var(sanitize_email($eeString), FILTER_VALIDATE_EMAIL);
 	}
 	
 	if( strpos($eeAddresses, '@') ) {

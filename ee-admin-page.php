@@ -46,8 +46,8 @@ function eeSFL_ManageLists() {
 		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_ListNavigation.php'); // List Navigator
 	}
 	
-	// Get the new tab's query string value
-	if( isset( $_GET[ 'tab' ] ) ) { $active_tab = filter_var($_GET[ 'tab' ], FILTER_SANITIZE_STRING); } else { $active_tab = 'file_list'; }
+	// Get the new tab's query string value. We will only use values to display tabs that we are expecting.
+	if( isset( $_GET[ 'tab' ] ) ) { $active_tab = sanitize_text_field($_GET[ 'tab' ]); } else { $active_tab = 'file_list'; }
 	
 	$eeOutput .= '<h2 class="nav-tab-wrapper">';
 	
@@ -119,7 +119,7 @@ function eeSFL_ManageLists() {
 	} elseif($active_tab == 'settings') {
 		
 		// Sub Tabs
-		if( isset( $_GET[ 'subtab' ] ) ) { $active_subtab = $_GET[ 'subtab' ]; } else { $active_subtab = 'list_settings'; } 
+		if( isset( $_GET[ 'subtab' ] ) ) { $active_subtab = sanitize_text_field($_GET['subtab']); } else { $active_subtab = 'list_settings'; }
 		
 		// Extension Check
     	if($eeSFLA) { // Creating or Editing a File List
@@ -237,8 +237,8 @@ function eeSFL_ManageLists() {
 	// Logging
 	$eeSFL_Log['Admin'][] = 'Displaying Tab: ' . $active_tab . ' ' . @$active_subtab;
 	$eeSFL_Log['Config'][] = $eeSFL_Config;
-	$eeSFL_Log['Files'][] = $eeSFL_Files;
-	if(@$_POST) { array_unshift($eeSFL_Log, $_POST); } // Add POST to the beginning of the log
+	// $eeSFL_Log['Files'][] = $eeSFL_Files;
+	// if(@$_POST) { array_unshift($eeSFL_Log, $_POST); } // Add POST to the beginning of the log for
 	
 	// Timer
 	$eeSFL_Time = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];

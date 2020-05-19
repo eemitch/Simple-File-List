@@ -18,9 +18,6 @@ $eeContact_Headers = array();
 $eeContact_Install = WP_PLUGIN_URL;
 		
 include('ee-support-functions.php');
-
-// Convert the current plugin slug to a nice name
-$eeContact_PluginName = eeUnSlug(str_replace('ee-', '', filter_var($_GET['page'], FILTER_SANITIZE_STRING)));
 	
 // Form Processor ======================================
 
@@ -40,8 +37,8 @@ if(@$_POST['eeSupportForm']) {
 		unset($eeSFL_Env['FileLists']); // Don't want this
 		$eeContact_Body .= 'Plugin Environment: ' . print_r($eeSFL_Env, TRUE);
 		
-		$eeContact_Name = stripslashes( filter_var($_POST['eeContact_name'], FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES) );
-		$eeContact_From = filter_var($_POST['eeContact_email'], FILTER_VALIDATE_EMAIL);
+		$eeContact_Name = sanitize_text_field( stripslashes( $_POST['eeContact_name']) );
+		$eeContact_From = filter_var(sanitize_email($_POST['eeContact_email']), FILTER_VALIDATE_EMAIL);
 		
 		$eeContact_Headers[] = 'From: ' . $eeContact_Name . ' <wordpress@' . $_SERVER['HTTP_HOST'] . ">";
 		$eeContact_Headers[] = 'Reply-To: ' . $eeContact_From;
@@ -58,7 +55,7 @@ if(@$_POST['eeSupportForm']) {
 			$eeContact_Body = strip_tags($eeContact_Body);
 			$eeContact_Body = stripslashes($eeContact_Body);	// Make it all nice
 			
-			if(wp_mail($eeContact_To, $eeContact_PluginName . ' Support', $eeContact_Body, $eeContact_Headers)) {
+			if(wp_mail($eeContact_To, $eeSFL->eePluginName . ' Support', $eeContact_Body, $eeContact_Headers)) {
 				
 				$eeSFL_Log[] = 'Message Sent';
 				
@@ -66,7 +63,7 @@ if(@$_POST['eeSupportForm']) {
 				
 				alert('The message was sent. Expect a reply soon.');
 				
-				window.location.replace('" . get_admin_url() . basename($_SERVER['PHP_SELF']) . '?page=' . $_GET['page'] . "');
+				window.location.replace('" . get_admin_url() . basename($_SERVER['PHP_SELF']) . '?page=' . $eeSFL->eePluginSlug . "');
 				
 				</script>";
 				

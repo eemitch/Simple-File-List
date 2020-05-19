@@ -9,7 +9,7 @@ $eeSFL_Log[] = 'Loaded: ee-plugin-author';
 // Values here are inserted below
 $eeContributors = array('dmhendricks|https://github.com/dmhendricks/file-icon-vectors| for the awesome file type icons');  // else it's FALSE;
 
-$eePageSlug = $_GET['page'];
+// $eePageSlug = $_GET['page'];
 	
 // The Content
 $eeOutput .= '<article class="eeSupp">

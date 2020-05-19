@@ -91,7 +91,7 @@ function eeSFL_Setup() {
 	}	
 	
 	// If Sending Files
-	if(@$_POST['eeSFL_Send']) { $eeSFL->eeSFL_SendFilesEmail($_POST); }
+	if(@$_POST['eeSFL_Send']) { $eeSFL->eeSFL_SendFilesEmail(); }
 	
 	// Check/Create the Upload Folder
 	if( !eeSFL_FileListDirCheck( $eeSFL_Config['FileListDir'] ) ) { 
@@ -191,9 +191,9 @@ function eeSFL_CreatePostwithShortcode() {
 		if(!$eeSFL_ID) {  $eeSFL_ID = filter_var( @$_REQUEST['eeNewListID'], FILTER_VALIDATE_INT); } 
 		if(!$eeSFL_ID) {  $eeSFL_ID = 1; }
 		
-		$eeCreatePostType = filter_var(@$_POST['eeCreatePostType'], FILTER_SANITIZE_STRING);
-		$eeShortcode = filter_var(@$_POST['eeShortcode'], FILTER_SANITIZE_STRING);
-		$eePostTitle = filter_var(@$_POST['eePostTitle'], FILTER_SANITIZE_STRING);
+		$eeCreatePostType = sanitize_text_field(@$_POST['eeCreatePostType']);
+		$eeShortcode = sanitize_text_field(@$_POST['eeShortcode']);
+		$eePostTitle = sanitize_text_field(@$_POST['eePostTitle']);
 		
 		if(!$eeShortcode) {
 			$eeShortcode = '[eeSFL list="' . $eeSFL_ID . '"]';
@@ -401,11 +401,6 @@ function eeSFL_Shortcode($atts, $content = null) {
 	$eeOutput .= '</div>'; // Ends .eeSFL block
 	
 	$eeSFL_ListRun++;
-	
-	
-	if(@$_REQUEST) {
-		array_unshift($eeSFL_Log, $_REQUEST); // Add POST or GET to the beginning of the log
-	}
 
 	// Timer
 	$eeSFL_Time = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
@@ -413,6 +408,8 @@ function eeSFL_Shortcode($atts, $content = null) {
 	
 	// Logging
 	if($eeSFL_DevMode) {
+		// Add POST or GET to the beginning of the log
+		if(@$_REQUEST) { array_unshift($eeSFL_Log, $_REQUEST); }
 		$eeSFL->eeSFL_WriteLogData($eeSFL_Log);
 		// $eeOutput .= '<pre id="eeSFL_DevMode">Log File ' . print_r($eeSFL_Log, TRUE) . '</pre>';
 	}
@@ -553,10 +550,9 @@ function eeSFL_FileUploader() {
 	// The Upload Destination - Relative to WP home dir
 	if(@$_POST['eeSFL_FileUploadDir']) {
 		
-		$eeSFL_FileUploadDir = filter_var( $_POST['eeSFL_FileUploadDir'] , FILTER_SANITIZE_STRING);
-		$eeSFL_FileUploadDir = urldecode($eeSFL_FileUploadDir);
+		$eeSFL_FileUploadDir = sanitize_text_field( urldecode($_POST['eeSFL_FileUploadDir']) );
 		
-		if(!$eeSFL_FileUploadDir) { trigger_error('No Upload Folder !!!', E_USER_ERROR); exit(); }
+		if(!$eeSFL_FileUploadDir) { return('Bad Upload Folder'); }
 			
 	} else { 
 		return 'No Upload Folder Given';
@@ -643,7 +639,7 @@ function eeSFL_FileEditor() {
 	
 	// The Action
 	if(@$_POST['eeFileAction']) { 
-		$eeFileAction = filter_var($_POST['eeFileAction'], FILTER_SANITIZE_STRING); 
+		$eeFileAction = sanitize_text_field($_POST['eeFileAction']); 
 	}
 	if(!$eeFileAction) { 
 		return "Missing the Action";
@@ -651,7 +647,7 @@ function eeSFL_FileEditor() {
 			
 	// The File Name
 	if(@$_POST['eeFileName']) { 
-		$eeFileName = filter_var( $_POST['eeFileName'], FILTER_SANITIZE_STRING ); 
+		$eeFileName = sanitize_text_field($_POST['eeFileName']); 
 	}
 	if(!$eeFileName) { 
 		return "Missing the Current File Name";
@@ -659,7 +655,7 @@ function eeSFL_FileEditor() {
 	
 	// Are we in a Folder?
 	if(@$_POST['eeListFolder']) { 
-		$eeListFolder = urldecode( filter_var($_POST['eeListFolder'], FILTER_SANITIZE_STRING) ); 
+		$eeListFolder = sanitize_text_field( urldecode( $_POST['eeListFolder'] )); 
 	}
 	if(!$eeListFolder OR $eeListFolder == '/') {
 		$eeListFolder = '';
@@ -758,7 +754,7 @@ function eeSFL_FileEditor() {
 		
 		// The Description
 		if(@$_POST['eeFileDesc']) { 
-			$eeFileDesc = filter_var($_POST['eeFileDesc'], FILTER_SANITIZE_STRING); 
+			$eeFileDesc = sanitize_text_field($_POST['eeFileDesc']); 
 		} else { 
 			$eeFileDesc = '';
 		}

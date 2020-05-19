@@ -223,7 +223,7 @@ if($eeAdmin) {
 	
 	</div>';
 
-} elseif($eeSFL_Uploaded AND $eeSFL_ListRun == 1) { //  AND strpos(!@$_POST['eeSFLF_UploadFolder'], $eeSFLF_ShortcodeFolder) === 0
+} elseif($eeSFL_Uploaded AND $eeSFL_ListRun == 1) {
 	
 	$eeOutput .= '<p class="eeSFL_ListMeta"><a href="' . $eeURL . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . 
 		__('Back to the Files', 'ee-simple-file-list') . '</a></p>';
@@ -526,9 +526,6 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 									unset($eeArray[0]); // Remove this folder
 								}
 								$eeFileName = implode('/', $eeArray);
-								
-								
-								// $eeFileName = trim( str_replace('/', ' / ', $eeFilePath) );
 							}
 						}
 						
