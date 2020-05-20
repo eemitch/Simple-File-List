@@ -46,10 +46,13 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		'NotifyFrom'
 		,'NotifyFromName'
 		,'NotifySubject'
-		,'NotifyMessage'
 	);
 	foreach( $eeTextInputs as $eeTerm){
 		$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessTextInput($eeTerm);
+	}
+	
+	if(@$_POST['eeNotifyMessage']) { // Retain line breaks
+		$eeSettings[$eeSFL_ID]['NotifyMessage'] = sanitize_textarea_field($_POST['eeNotifyMessage']);
 	}
 	
 	// Update DB
