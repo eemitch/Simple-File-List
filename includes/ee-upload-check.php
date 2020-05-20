@@ -12,9 +12,7 @@ if(@$_POST['eeSFL_Upload']) {
 	
 	if($eeSFL_ID OR $eeSFL_ID === 0) {
 		
-		$eeOutput .= '<!-- Processing Upload -->';
-		
-		$eeOutput .= eeSFL_ProcessUpload($eeSFL_ID);
+		eeSFL_ProcessUpload($eeSFL_ID);
 	}
 	
 	if($eeAdmin) {

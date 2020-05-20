@@ -182,8 +182,6 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 	
 	global $eeSFL, $eeSFL_Config, $eeSFL_Env, $eeSFL_Log;
 	
-	$eeOutput = FALSE;
-	
 	$eeFileCount = filter_var(@$_POST['eeSFL_FileCount'], FILTER_VALIDATE_INT);
 	$eeSFLF_UploadFolder = sanitize_text_field( urldecode(@$_POST['eeSFLF_UploadFolder']) );
 	
@@ -379,14 +377,10 @@ function eeSFL_ProcessTextInput($eeTerm, $eeType = 'text') {
 		
 		$eeValue = filter_var(sanitize_email(@$_POST['ee' . $eeTerm]), FILTER_VALIDATE_EMAIL);
 	
-	} elseif($eeType == 'textarea') {
-		
-		// Currently not used
-		return;
-	
 	} else {
 		
-		$eeValue = sanitize_text_field(@$_POST['ee' . $eeTerm]);
+		$eeValue = strip_tags(@$_POST['ee' . $eeTerm]);
+		$eeValue = sanitize_text_field($eeValue);
 	}
 	
 	return $eeValue;

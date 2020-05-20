@@ -71,8 +71,8 @@ if(@$eeSFL_Config['FileListDir']) {
 		$eeSFL_FileFormats = str_replace(' ' , '', $eeSFL_Config['FileFormats']); // Strip spaces
 		
 		// Security
-		$eeSFL_Timestamp = time();
-		$eeSFL_Timestamp_MD5 = md5('eeSFL-0420-deolpu-' . $eeSFL_Timestamp);
+		// $eeSFL_Timestamp = time();
+		// $eeSFL_Timestamp_MD5 = md5('eeSFL-0420-deolpu-' . $eeSFL_Timestamp);
 	    
 	    $eeOutput .= '<input type="file" name="eeSFL_FileInput" id="eeSFL_FileInput" onchange="eeSFL_FileInputHandler(event)" multiple />
 		
@@ -91,8 +91,6 @@ if(@$eeSFL_Config['FileListDir']) {
 			var eeSFL_UploadEngineURL = "' . admin_url( 'admin-ajax.php') . '";
 			
 		</script>
-		
-		<script src="' . $eeSFL_Env['pluginURL'] . '/js/ee-uploader.js?v=' . eeSFL_Cache_Version . '"></script>
 		
 		<span id="eeSFL_UploadProgress"><em>' . __('Processing the Upload', 'ee-simple-file-list') . '</em></span>
 		

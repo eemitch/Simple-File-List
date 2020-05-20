@@ -51,13 +51,13 @@ $eeSFL_Extensions = array( // Slugs
 $eeSFLF = FALSE; $eeSFLS = FALSE; $eeSFLA = FALSE; // Coming Soon
 $eeSFLF_ListFolder = FALSE;
 
-// sfl_upload_job <<<----- File Upload Action Hooks (Ajax)
-add_action( 'wp_ajax_sfl_upload_job', 'sfl_upload_job' );
-add_action( 'wp_ajax_nopriv_sfl_upload_job', 'sfl_upload_job' );
+// simplefilelist_upload_job <<<----- File Upload Action Hooks (Ajax)
+add_action( 'wp_ajax_simplefilelist_upload_job', 'simplefilelist_upload_job' );
+add_action( 'wp_ajax_nopriv_simplefilelist_upload_job', 'simplefilelist_upload_job' );
 
-// sfl_edit_job <<<----- File Edit Action Hooks (Ajax)
-add_action( 'wp_ajax_sfl_edit_job', 'sfl_edit_job' );
-add_action( 'wp_ajax_nopriv_sfl_edit_job', 'sfl_edit_job' );
+// simplefilelist_edit_job <<<----- File Edit Action Hooks (Ajax)
+add_action( 'wp_ajax_simplefilelist_edit_job', 'simplefilelist_edit_job' );
+add_action( 'wp_ajax_nopriv_simplefilelist_edit_job', 'simplefilelist_edit_job' );
 
 
 // Plugin Setup
@@ -444,12 +444,12 @@ function eeSFL_Enqueue() {
 	// Register Scripts
 	wp_register_script( 'ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js' );
 	// wp_register_script( 'ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js' );
-	// wp_register_script( 'ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js' );
+	wp_register_script( 'ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js' );
 	
 	// Enqueue
 	wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js', $deps, eeSFL_Cache_Version, FALSE); // Head
 	wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js',$deps, eeSFL_Cache_Version, TRUE); // Footer
-	// wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_Cache_Version, TRUE);
+	wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_Cache_Version, TRUE);
 	
 	// Pass variables
 	wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $params ); // Footer
@@ -488,6 +488,7 @@ function eeSFL_AdminHead($eeHook) {
         wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js', $deps, eeSFL_Cache_Version, FALSE);
 		wp_enqueue_script('ee-simple-file-list-js-back', plugin_dir_url(__FILE__) . 'js/ee-back.js', $deps, eeSFL_Cache_Version, FALSE);
         wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js', $deps, eeSFL_Cache_Version, TRUE);
+        wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_Cache_Version, TRUE);
 		
 		wp_localize_script('ee-simple-file-list-js-head', 'eeSFL_JS', array( 'pluginsUrl' => plugins_url() ) ); // Needs expanding for alert boxes
 		
@@ -504,7 +505,7 @@ add_action('admin_enqueue_scripts', 'eeSFL_AdminHead');
 
 // Ajax Handler
 // Function name must be the same as the action name to work on front side ?
-function sfl_upload_job() {
+function simplefilelist_upload_job() {
 
 	$eeResult = eeSFL_FileUploader();
 
@@ -513,10 +514,10 @@ function sfl_upload_job() {
 	wp_die();
 
 }	
-add_action( 'wp_ajax_sfl_upload_job', 'sfl_upload_job' );
+add_action( 'wp_ajax_simplefilelist_upload_job', 'simplefilelist_upload_job' );
 
 
-function sfl_edit_job() {
+function simplefilelist_edit_job() {
 
 	$eeResult = eeSFL_FileEditor();
 
@@ -525,7 +526,7 @@ function sfl_edit_job() {
 	wp_die();
 
 }	
-add_action( 'wp_ajax_sfl_edit_job', 'sfl_edit_job' );
+add_action( 'wp_ajax_simplefilelist_edit_job', 'simplefilelist_edit_job' );
 
 
 
