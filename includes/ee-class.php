@@ -8,9 +8,9 @@ $eeSFL_Log[] = 'Loaded: ee-class';
 class eeSFL_MainClass {
 			
 	// Basics
-	public $eePluginName = 'Simple File List';
-	public $eePluginNameSlug = 'simple-file-list';
-	public $eePluginSlug = 'ee-simple-file-list';
+	public $eePluginName = 'Simple File List Pro';
+	public $eePluginNameSlug = 'simple-file-list-pro';
+	public $eePluginSlug = 'ee-simple-file-list-pro';
 	public $eePluginMenuTitle = 'File List';
 	public $eePluginWebPage = 'http://simplefilelist.com';
 	public $eeAddOnsURL = 'https://get.simplefilelist.com/index.php';
@@ -762,7 +762,7 @@ class eeSFL_MainClass {
 		
 		// Subject
 		$eeSubject = sanitize_text_field(@$eePOST['eeSFL_SendSubject']);
-		if(!$eeSubject) { $eeSubject = __('File Notification', 'ee-simple-file-list'); }
+		if(!$eeSubject) { $eeSubject = __('File Notification', 'ee-simple-file-list-pro'); }
 		
 		// Message
 		$eeMessage = sanitize_text_field(@$eePOST['eeSFL_SendMessage']);
@@ -821,12 +821,12 @@ class eeSFL_MainClass {
 			// Get Form Input?
 			if(@$_POST['eeSFL_Email']) {
 				
-				$eeSFL_Body .= PHP_EOL . PHP_EOL . __('Uploader Information', 'ee-simple-file-list') . PHP_EOL;
+				$eeSFL_Body .= PHP_EOL . PHP_EOL . __('Uploader Information', 'ee-simple-file-list-pro') . PHP_EOL;
 				
 				$eeSFL_Name = substr(sanitize_text_field(@$_POST['eeSFL_Name']), 0, 64);
 				$eeSFL_Name = strip_tags($eeSFL_Name);
 				if($eeSFL_Name) { 
-					$eeSFL_Body .= __('Uploaded By', 'ee-simple-file-list') . ': ' . ucwords($eeSFL_Name) . " - ";
+					$eeSFL_Body .= __('Uploaded By', 'ee-simple-file-list-pro') . ': ' . ucwords($eeSFL_Name) . " - ";
 				}
 				
 				$eeSFL_Email = filter_var(sanitize_email(@$_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL);
@@ -875,7 +875,7 @@ class eeSFL_MainClass {
 			if($eeSFL_Config['NotifySubject']) {
 				$eeSFL_Subject = stripslashes( $eeSFL_Config['NotifySubject'] );
 			} else {
-				$eeSFL_Subject = __('File Upload Notice', 'ee-simple-file-list');
+				$eeSFL_Subject = __('File Upload Notice', 'ee-simple-file-list-pro');
 			}
 				
 			if(strpos($eeTo, '@') ) {
@@ -919,7 +919,7 @@ class eeSFL_MainClass {
 					$eeSFL_AddressesString .= $add . ',';
 					
 				} else {
-					$eeSFL_Log['errors'][] = $add . ' - ' . __('This is not a valid email address.', 'ee-simple-file-list');
+					$eeSFL_Log['errors'][] = $add . ' - ' . __('This is not a valid email address.', 'ee-simple-file-list-pro');
 				}
 			}
 			
@@ -936,7 +936,7 @@ class eeSFL_MainClass {
 				
 			} else {
 				
-				$eeSFL_Log['errors'][] = $add . ' - ' . __('This is not a valid email address.', 'ee-simple-file-list');
+				$eeSFL_Log['errors'][] = $add . ' - ' . __('This is not a valid email address.', 'ee-simple-file-list-pro');
 			}
 			
 		} else {
@@ -969,11 +969,11 @@ class eeSFL_MainClass {
 		
 			if(!$eeEmail) {
 				
-				$eeOutput .= '<label for="eeSFL_Name">' . __('Name', 'ee-simple-file-list') . ':</label>
+				$eeOutput .= '<label for="eeSFL_Name">' . __('Name', 'ee-simple-file-list-pro') . ':</label>
 			
 				<input type="text" name="eeSFL_Name" value="" id="eeSFL_Name" size="64" maxlength="64" /> 
 			
-				<label for="eeSFL_Email">' . __('Email', 'ee-simple-file-list') . ':</label>
+				<label for="eeSFL_Email">' . __('Email', 'ee-simple-file-list-pro') . ':</label>
 				<input type="text" name="eeSFL_Email" value="" id="eeSFL_Email" size="64" maxlength="128" />';
 			
 			} else {
@@ -983,7 +983,7 @@ class eeSFL_MainClass {
 				
 			}
 			
-			$eeOutput .= '<label for="eeSFL_Comments">' . __('Description', 'ee-simple-file-list') . ':</label>
+			$eeOutput .= '<label for="eeSFL_Comments">' . __('Description', 'ee-simple-file-list-pro') . ':</label>
 			<textarea name="eeSFL_Comments" id="eeSFL_Comments" rows="5" cols="64" maxlength="5012"></textarea></div>';
 			
 		return $eeOutput;

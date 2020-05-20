@@ -6,7 +6,7 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98' ); // Exit
 $eeSFL_Log[] = 'Loading Uploader Settings Page ...';
 	
 // Check for POST and Nonce
-if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce')) {
+if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-pro-upload-settings', 'ee-simple-file-list-pro-upload-settings-nonce')) {
 	
 	// Get all the settings
 	$eeSettings = get_option('eeSFL-Settings');
@@ -86,7 +86,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	// Update the array with new values
 	$eeSFL_Config = $eeSettings[$eeSFL_ID];
 	
-	$eeSFL_Confirm = __('Uploader Settings Saved', 'ee-simple-file-list');
+	$eeSFL_Confirm = __('Uploader Settings Saved', 'ee-simple-file-list-pro');
 	$eeSFL_Log[] = $eeSFL_Confirm;
 	
 	if($eeSFL_DevMode) {
@@ -106,27 +106,27 @@ if(@$eeSFL_Log['errors']) {
 	
 $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=uploader_settings" method="post" id="eeSFL_Settings">
 
-	<p class="eeSettingsRight"><a class="eeInstructionsLink" href="https://simplefilelist.com/upload-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list') . '</a>
+	<p class="eeSettingsRight"><a class="eeInstructionsLink" href="https://simplefilelist.com/upload-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list-pro') . '</a>
 	
-	<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" /></p>
+	<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list-pro') . '" class="button eeSFL_Save" /></p>
 			
-	<h2>' . __('Upload Settings', 'ee-simple-file-list') . '</h2>
+	<h2>' . __('Upload Settings', 'ee-simple-file-list-pro') . '</h2>
 
 	<input type="hidden" name="eePost" value="TRUE" />
 	<input type="hidden" name="eeListID" value="' . $eeSFL_ID . '" />';	
 	
-	$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce', TRUE, FALSE);
+	$eeOutput .= wp_nonce_field( 'ee-simple-file-list-pro-upload-settings', 'ee-simple-file-list-pro-upload-settings-nonce', TRUE, FALSE);
 	
 	$eeOutput .= '<fieldset>';
 	
-	$eeOutput .= '<h4>' . __('List Location', 'ee-simple-file-list') . ':<br />
+	$eeOutput .= '<h4>' . __('List Location', 'ee-simple-file-list-pro') . ':<br />
 		' . ABSPATH . $eeSFL_Config['FileListDir'] . '</h4>';
 			
 	if(!$eeSFLA) {
 	
 		$eeOutput .= '
 		
-		<label for="eeAllowUploads">' . __('Allow File Upload', 'ee-simple-file-list') . '</label>
+		<label for="eeAllowUploads">' . __('Allow File Upload', 'ee-simple-file-list-pro') . '</label>
 		
 		<select name="eeAllowUploads" id="eeAllowUploads">
 		
@@ -134,28 +134,28 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePlug
 
 			if($eeSFL_Config['AllowUploads'] == 'YES') { $eeOutput .= ' selected'; }
 			
-			$eeOutput .= '>' . __('Anyone Can Upload', 'ee-simple-file-list') . '</option>
+			$eeOutput .= '>' . __('Anyone Can Upload', 'ee-simple-file-list-pro') . '</option>
 			
 			<option value="USER"';
 
 			if($eeSFL_Config['AllowUploads'] == 'USER') { $eeOutput .= ' selected'; }
 			
-			$eeOutput .= '>' . __('Only Logged in Users Can Upload', 'ee-simple-file-list') . '</option>
+			$eeOutput .= '>' . __('Only Logged in Users Can Upload', 'ee-simple-file-list-pro') . '</option>
 			
 			<option value="ADMIN"';
 
 			if($eeSFL_Config['AllowUploads'] == 'ADMIN') { $eeOutput .= ' selected'; }
 			
-			$eeOutput .= '>' . __('Only Logged in Admins Can Upload', 'ee-simple-file-list') . '</option>
+			$eeOutput .= '>' . __('Only Logged in Admins Can Upload', 'ee-simple-file-list-pro') . '</option>
 			
 			<option value="NO"';
 
 			if($eeSFL_Config['AllowUploads'] == 'NO') { $eeOutput .= ' selected'; }
 			
-			$eeOutput .= '>' . __('Hide the Front Side Uploader Completely', 'ee-simple-file-list') . '</option>
+			$eeOutput .= '>' . __('Hide the Front Side Uploader Completely', 'ee-simple-file-list-pro') . '</option>
 		
 		</select>
-		<div class="eeNote">' . __('Allow anyone to upload, only logged-in users, administrators or nobody.', 'ee-simple-file-list') . '</div>';
+		<div class="eeNote">' . __('Allow anyone to upload, only logged-in users, administrators or nobody.', 'ee-simple-file-list-pro') . '</div>';
 	
 	}
 
@@ -165,10 +165,10 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePlug
 	
 	$eeOutput .= '
 	
-	<label for="eeUploadLimit">' . __('Upload Limit', 'ee-simple-file-list') . '</label>
+	<label for="eeUploadLimit">' . __('Upload Limit', 'ee-simple-file-list-pro') . '</label>
 
 	<input type="number" min="1" max="100" step="1" name="eeUploadLimit" value="' . $eeSFL_Config['UploadLimit'] . '" class="eeAdminInput" id="eeUploadLimit" />
-		<div class="eeNote">' . __('The maximum number of files that may be uploaded per submission.', 'ee-simple-file-list') . '</div>
+		<div class="eeNote">' . __('The maximum number of files that may be uploaded per submission.', 'ee-simple-file-list-pro') . '</div>
 		
 	<br class="eeClearFix" />';
 		
@@ -176,36 +176,36 @@ $eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePlug
 	// Maximum File Size
 	if(!$eeSFL_Config['UploadMaxFileSize']) { $eeSFL_Config['UploadMaxFileSize'] = $eeSFL_Env['the_max_upload_size']; }
 	
-	$eeOutput .= '<label for="eeUploadMaxFileSize">' . __('Maximum File Size', 'ee-simple-file-list') . ' (MB):</label>
+	$eeOutput .= '<label for="eeUploadMaxFileSize">' . __('Maximum File Size', 'ee-simple-file-list-pro') . ' (MB):</label>
 	
 	<input type="number" min="1" max="' . $eeSFL_Env['the_max_upload_size']. '" step="1" name="eeUploadMaxFileSize" value="' . $eeSFL_Config['UploadMaxFileSize'] . '" class="eeAdminInput" id="eeUploadMaxFileSize" />
-		<div class="eeNote">' . __('Your hosting limits the maximum file upload size to', 'ee-simple-file-list') . ' <strong>' . $eeSFL_Env['the_max_upload_size']. ' MB</strong>.</div>
+		<div class="eeNote">' . __('Your hosting limits the maximum file upload size to', 'ee-simple-file-list-pro') . ' <strong>' . $eeSFL_Env['the_max_upload_size']. ' MB</strong>.</div>
 	
 	<br class="eeClearFix" />';
 	
 	
 	// File Formats Allowed
-	$eeOutput .= '<label for="eeFormats">' . __('Allowed File Types', 'ee-simple-file-list') . ':</label><textarea name="eeFileFormats" class="eeAdminInput" id="eeFormats" cols="64" rows="3" >' . $eeSFL_Config['FileFormats'] . '</textarea>
-		<div class="eeNote">' . __('Only use the file types you absolutely need, such as', 'ee-simple-file-list') . ' jpg, jpeg, png, pdf, mp4, etc</div>';
+	$eeOutput .= '<label for="eeFormats">' . __('Allowed File Types', 'ee-simple-file-list-pro') . ':</label><textarea name="eeFileFormats" class="eeAdminInput" id="eeFormats" cols="64" rows="3" >' . $eeSFL_Config['FileFormats'] . '</textarea>
+		<div class="eeNote">' . __('Only use the file types you absolutely need, such as', 'ee-simple-file-list-pro') . ' jpg, jpeg, png, pdf, mp4, etc</div>';
 
 	
 	// Overwrite or not
 	$eeOutput .= '<br class="eeClearFix" />
 		
-		<label for="eeAllowOverwrite">' . __('Allow Overwriting', 'ee-simple-file-list') . ':</label>
+		<label for="eeAllowOverwrite">' . __('Allow Overwriting', 'ee-simple-file-list-pro') . ':</label>
 	<input type="checkbox" name="eeAllowOverwrite" value="YES" id="eeAllowOverwrite"';
 	
 	if( @$eeSFL_Config['AllowOverwrite'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 	
-	$eeOutput .= ' /> <p>' . __('Do not number files, overwrite instead.', 'ee-simple-file-list') . '</p>
+	$eeOutput .= ' /> <p>' . __('Do not number files, overwrite instead.', 'ee-simple-file-list-pro') . '</p>
 	
-	<div class="eeNote">' . __('Existing files with the same name will be overwritten.', 'ee-simple-file-list') . ' ' .  
-		__('Use with caution!', 'ee-simple-file-list') . '</div>
+	<div class="eeNote">' . __('Existing files with the same name will be overwritten.', 'ee-simple-file-list-pro') . ' ' .  
+		__('Use with caution!', 'ee-simple-file-list-pro') . '</div>
 	
 	
 	<br class="eeClearFix" />
 		
-		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" />
+		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list-pro') . '" class="button eeSFL_Save" />
 		
 		</fieldset>
 	

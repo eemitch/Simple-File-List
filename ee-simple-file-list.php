@@ -1,17 +1,17 @@
 <?php
 
 /**
- * @package Element Engage - Simple File List
+ * @package Element Engage - Simple File List Pro
  */
 /*
-Plugin Name: Simple File List
+Plugin Name: Simple File List Pro
 Plugin URI: http://simplefilelist.com
-Description: A full-featured File List Manager | <a href="https://simplefilelist.com/donations/simple-file-list-project/">Donate</a> | <a href="admin.php?page=ee-simple-file-list&tab=extensions">Add Extensions</a>
+Description: Full-featured File List Manager | <a href="admin.php?page=ee-simple-file-list-pro&tab=extensions">Add Extensions</a>
 Author: Mitchell Bennis
-Version: 4.2.8
+Version: 4.3
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
-Text Domain: ee-simple-file-list
+Text Domain: ee-simple-file-list-pro
 Domain Path: /languages
 */
 
@@ -21,9 +21,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
 
-define('eeSFL_Version', '4.2.8'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_Version', '4.3'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_DB_Version', '4.2'); // Database structure version - used for eeSFL_VersionCheck()
-define('eeSFL_Cache_Version', '8'); // Cache-Buster version for static files - used when updating CSS/JS
+define('eeSFL_Cache_Version', '1'); // Cache-Buster version for static files - used when updating CSS/JS
 
 // Our Core
 $eeSFL = FALSE; // Our main class
@@ -51,13 +51,31 @@ $eeSFL_Extensions = array( // Slugs
 $eeSFLF = FALSE; $eeSFLS = FALSE; $eeSFLA = FALSE; // Coming Soon
 $eeSFLF_ListFolder = FALSE;
 
-// simplefilelist_upload_job <<<----- File Upload Action Hooks (Ajax)
-add_action( 'wp_ajax_simplefilelist_upload_job', 'simplefilelist_upload_job' );
-add_action( 'wp_ajax_nopriv_simplefilelist_upload_job', 'simplefilelist_upload_job' );
 
-// simplefilelist_edit_job <<<----- File Edit Action Hooks (Ajax)
-add_action( 'wp_ajax_simplefilelist_edit_job', 'simplefilelist_edit_job' );
-add_action( 'wp_ajax_nopriv_simplefilelist_edit_job', 'simplefilelist_edit_job' );
+
+// Check for Update
+// https://github.com/YahnisElsts/plugin-update-checker
+// https://github.com/eemitch/ee-simple-file-list-pro-extension
+// ae370143ceaad95ca6a8f8b27701bd3e126a0e2d
+
+include( plugin_dir_path(__FILE__) . '/updater/plugin-update-checker.php' );
+$eeSFL_updateChecker = Puc_v4_Factory::buildUpdateChecker(
+	'https://github.com/eemitch/simple-file-list',
+	__FILE__,
+	'simple-file-list'
+);
+$eeSFL_updateChecker->setAuthentication('ae370143ceaad95ca6a8f8b27701bd3e126a0e2d');
+$eeSFL_updateChecker->getVcsApi()->enableReleaseAssets();
+
+
+
+// simplefilelistpro_upload_job <<<----- File Upload Action Hooks (Ajax)
+add_action( 'wp_ajax_simplefilelistpro_upload_job', 'simplefilelistpro_upload_job' );
+add_action( 'wp_ajax_nopriv_simplefilelistpro_upload_job', 'simplefilelistpro_upload_job' );
+
+// simplefilelistpro_edit_job <<<----- File Edit Action Hooks (Ajax)
+add_action( 'wp_ajax_simplefilelistpro_edit_job', 'simplefilelistpro_edit_job' );
+add_action( 'wp_ajax_nopriv_simplefilelistpro_edit_job', 'simplefilelistpro_edit_job' );
 
 
 // Plugin Setup
@@ -114,10 +132,10 @@ function eeSFL_Setup() {
 	
 			if(!file_exists(WP_PLUGIN_DIR . '/' . $eeSFL_Extension . '/ee-check.txt')) {
 				
-				$eeSFLF_ERROR = '<strong>' . $eeSFL_Extension . ' &larr; ' . __('EXTENSION DISABLED', 'ee-simple-file-list') . '</strong><br />' . 
-					__('Please go to Plugins and update the extension to the latest version.', 'ee-simple-file-list');
+				$eeSFLF_ERROR = '<strong>' . $eeSFL_Extension . ' &larr; ' . __('EXTENSION DISABLED', 'ee-simple-file-list-pro') . '</strong><br />' . 
+					__('Please go to Plugins and update the extension to the latest version.', 'ee-simple-file-list-pro');
 				
-				if( is_admin() AND @$_GET['page'] == 'ee-simple-file-list') {
+				if( is_admin() AND @$_GET['page'] == 'ee-simple-file-list-pro') {
 					$eeSFL_Log['errors'][] = $eeSFLF_ERROR;
 				}
 				
@@ -170,7 +188,7 @@ add_action('wp_mail_failed', 'eeSFL_action_wp_mail_failed', 10, 1);
 
 // Language Enabler
 function eeSFL_Textdomain() {
-    load_plugin_textdomain( 'ee-simple-file-list', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+    load_plugin_textdomain( 'ee-simple-file-list-pro', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
 }
 
 
@@ -332,7 +350,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 	if($eeSFLA) { 
 	    $eeSFL_Log['SFLA'][] = 'User ID: ' . $eeSFL_Env['wpUserID'];
 	    $eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_FrontsideFirewall.php');
+		include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-access/includes/eeSFLA_FrontsideFirewall.php');
 		if($eeSFLA_Proceed === FALSE) {  // We cannot go on.
 			return $eeAltOutput;
 		}
@@ -430,8 +448,8 @@ add_shortcode( 'eeSFL', 'eeSFL_Shortcode' );
 function eeSFL_Enqueue() {
 	
 	// Register the style like this for a theme:
-    wp_register_style( 'ee-simple-file-list-css', plugin_dir_url(__FILE__) . 'css/eeStyles.css', '', eeSFL_Cache_Version);
-	wp_enqueue_style('ee-simple-file-list-css');
+    wp_register_style( 'ee-simple-file-list-pro-css', plugin_dir_url(__FILE__) . 'css/eeStyles.css', '', eeSFL_Cache_Version);
+	wp_enqueue_style('ee-simple-file-list-pro-css');
 	
 	// Javascript
 	$deps = array('jquery'); // Requires jQuery
@@ -442,17 +460,17 @@ function eeSFL_Enqueue() {
 	);
 	
 	// Register Scripts
-	wp_register_script( 'ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js' );
-	// wp_register_script( 'ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js' );
-	wp_register_script( 'ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js' );
+	wp_register_script( 'ee-simple-file-list-pro-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js' );
+	// wp_register_script( 'ee-simple-file-list-pro-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js' );
+	wp_register_script( 'ee-simple-file-list-pro-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js' );
 	
 	// Enqueue
-	wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js', $deps, eeSFL_Cache_Version, FALSE); // Head
-	wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js',$deps, eeSFL_Cache_Version, TRUE); // Footer
-	wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_Cache_Version, TRUE);
+	wp_enqueue_script('ee-simple-file-list-pro-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js', $deps, eeSFL_Cache_Version, FALSE); // Head
+	wp_enqueue_script('ee-simple-file-list-pro-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js',$deps, eeSFL_Cache_Version, TRUE); // Footer
+	wp_enqueue_script('ee-simple-file-list-pro-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_Cache_Version, TRUE);
 	
 	// Pass variables
-	wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $params ); // Footer
+	wp_localize_script( 'ee-simple-file-list-pro-js-foot', 'eesfl_vars', $params ); // Footer
 
 }
 add_action( 'wp_enqueue_scripts', 'eeSFL_Enqueue' );
@@ -472,28 +490,28 @@ function eeSFL_AdminHead($eeHook) {
 	// wp_die($eeHook);
     
     $eeHooks = array(
-    	'toplevel_page_ee-simple-file-list', // toplevel_page_ee-simple-file-list
-    	// 'simple-file-list_page_ee-simple-file-list',
-    	// 'simple-file-list_page_ee-simple-file-list-settings',
-    	'file-list_page_ee-simple-file-list-access'
+    	'toplevel_page_ee-simple-file-list-pro', // toplevel_page_ee-simple-file-list-pro
+    	// 'simple-file-list_page_ee-simple-file-list-pro',
+    	// 'simple-file-list_page_ee-simple-file-list-pro-settings',
+    	'file-list_page_ee-simple-file-list-pro-access'
     );
     
     if(in_array($eeHook, $eeHooks)) {
         
         // CSS
-        wp_enqueue_style( 'ee-simple-file-list-css-front', plugins_url('css/eeStyles.css', __FILE__), '', eeSFL_Cache_Version );
-        wp_enqueue_style( 'ee-simple-file-list-css-back', plugins_url('css/eeStyles-Back.css', __FILE__), '', eeSFL_Cache_Version );
+        wp_enqueue_style( 'ee-simple-file-list-pro-css-front', plugins_url('css/eeStyles.css', __FILE__), '', eeSFL_Cache_Version );
+        wp_enqueue_style( 'ee-simple-file-list-pro-css-back', plugins_url('css/eeStyles-Back.css', __FILE__), '', eeSFL_Cache_Version );
         
         // Javascript
-        wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js', $deps, eeSFL_Cache_Version, FALSE);
-		wp_enqueue_script('ee-simple-file-list-js-back', plugin_dir_url(__FILE__) . 'js/ee-back.js', $deps, eeSFL_Cache_Version, FALSE);
-        wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js', $deps, eeSFL_Cache_Version, TRUE);
-        wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_Cache_Version, TRUE);
+        wp_enqueue_script('ee-simple-file-list-pro-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js', $deps, eeSFL_Cache_Version, FALSE);
+		wp_enqueue_script('ee-simple-file-list-pro-js-back', plugin_dir_url(__FILE__) . 'js/ee-back.js', $deps, eeSFL_Cache_Version, FALSE);
+        wp_enqueue_script('ee-simple-file-list-pro-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js', $deps, eeSFL_Cache_Version, TRUE);
+        wp_enqueue_script('ee-simple-file-list-pro-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_Cache_Version, TRUE);
 		
-		wp_localize_script('ee-simple-file-list-js-head', 'eeSFL_JS', array( 'pluginsUrl' => plugins_url() ) ); // Needs expanding for alert boxes
+		wp_localize_script('ee-simple-file-list-pro-js-head', 'eeSFL_JS', array( 'pluginsUrl' => plugins_url() ) ); // Needs expanding for alert boxes
 		
 		// Pass variables
-		wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $params ); // Footer
+		wp_localize_script( 'ee-simple-file-list-pro-js-foot', 'eesfl_vars', $params ); // Footer
     }  
 }
 add_action('admin_enqueue_scripts', 'eeSFL_AdminHead');
@@ -505,7 +523,7 @@ add_action('admin_enqueue_scripts', 'eeSFL_AdminHead');
 
 // Ajax Handler
 // Function name must be the same as the action name to work on front side ?
-function simplefilelist_upload_job() {
+function simplefilelistpro_upload_job() {
 
 	$eeResult = eeSFL_FileUploader();
 
@@ -514,10 +532,10 @@ function simplefilelist_upload_job() {
 	wp_die();
 
 }	
-add_action( 'wp_ajax_simplefilelist_upload_job', 'simplefilelist_upload_job' );
+add_action( 'wp_ajax_simplefilelistpro_upload_job', 'simplefilelistpro_upload_job' );
 
 
-function simplefilelist_edit_job() {
+function simplefilelistpro_edit_job() {
 
 	$eeResult = eeSFL_FileEditor();
 
@@ -526,7 +544,7 @@ function simplefilelist_edit_job() {
 	wp_die();
 
 }	
-add_action( 'wp_ajax_simplefilelist_edit_job', 'simplefilelist_edit_job' );
+add_action( 'wp_ajax_simplefilelistpro_edit_job', 'simplefilelistpro_edit_job' );
 
 
 
@@ -570,7 +588,7 @@ function eeSFL_FileUploader() {
 	// Go...
 	if($eeSFL_FileUploadDir AND is_dir(ABSPATH . $eeSFL_FileUploadDir)) {
 			
-		if(wp_verify_nonce(@$_POST['ee-simple-file-list-upload'], 'ee-simple-file-list-upload')) {
+		if(wp_verify_nonce(@$_POST['ee-simple-file-list-pro-upload'], 'ee-simple-file-list-pro-upload')) {
 			
 			// Temp file
 			$eeTempFile = $_FILES['file']['tmp_name'];
@@ -726,7 +744,7 @@ function eeSFL_FileEditor() {
 				return 'SUCCESS';
 				
 			} else {
-				return __('File Delete Failed', 'ee-simple-file-list') . ':' . $eeListFolder . $eeFileName;
+				return __('File Delete Failed', 'ee-simple-file-list-pro') . ':' . $eeListFolder . $eeFileName;
 			}
 		
 		} else {
@@ -734,7 +752,7 @@ function eeSFL_FileEditor() {
 			// Delete Folder
 			if($eeSFLF) {
 				if( !$eeSFLF->eeSFLF_DeleteFolder($eeFilePath) ) {
-					return __('Folder Delete Failed', 'ee-simple-file-list') . ':' . $eeListFolder . $eeFileName;
+					return __('Folder Delete Failed', 'ee-simple-file-list-pro') . ':' . $eeListFolder . $eeFileName;
 				} else {
 					
 					delete_transient('eeSFL_FileList-' . $eeSFL_ID); // Trigger a re-scan
@@ -788,8 +806,8 @@ function eeSFL_FileEditor() {
 function eeSFL_ActionPluginLinks( $links ) {
 	
 	$eeLinks = array(
-		'<a href="' . admin_url( 'admin.php?page=ee-simple-file-list' ) . '">' . __('Admin List', 'ee-simple-file-list') . '</a>',
-		'<a href="' . admin_url( 'admin.php?page=ee-simple-file-list&tab=settings' ) . '">' . __('Settings', 'ee-simple-file-list') . '</a>'
+		'<a href="' . admin_url( 'admin.php?page=ee-simple-file-list-pro' ) . '">' . __('Admin List', 'ee-simple-file-list-pro') . '</a>',
+		'<a href="' . admin_url( 'admin.php?page=ee-simple-file-list-pro&tab=settings' ) . '">' . __('Settings', 'ee-simple-file-list-pro') . '</a>'
 	);
 	return array_merge( $links, $eeLinks );
 }
@@ -844,20 +862,20 @@ function eeSFL_AdminMenu() {
 	);
 	
 	// User Manager
-    if( is_plugin_active('ee-simple-file-list-access/ee-simple-file-list-access.php') ) {
+    if( is_plugin_active('ee-simple-file-list-pro-access/ee-simple-file-list-pro-access.php') ) {
         
         // Only include when accessing this plugin's admin pages
 		if(@$_GET['page'] == $eeSFLA->eeSFLA_Slug) {
         	$eeNonce = wp_create_nonce('eeSFLA'); // Security
-			include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-access/eeSFLA_Admin.php');
+			include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-access/eeSFLA_Admin.php');
         }
         
         add_submenu_page(
-	        'ee-simple-file-list', 
-	        __('File Access', 'ee-simple-file-list-access'), 
-	        __('File Access Manager', 'ee-simple-file-list-access'),  
+	        'ee-simple-file-list-pro', 
+	        __('File Access', 'ee-simple-file-list-pro-access'), 
+	        __('File Access Manager', 'ee-simple-file-list-pro-access'),  
 	        $eeCapability, 
-	        'ee-simple-file-list-access', 
+	        'ee-simple-file-list-pro-access', 
 	        'eeSFLA_Manager'
         );
     }
@@ -1141,7 +1159,7 @@ function eeSFL_UpdateThisPlugin() {
 // Plugin Activation ==========================================================
 function eeSFL_Activate() {
 	
-	// TO DO - Check extension versions - Fail unless they are updated first.
+	@wp_mail('support@simplefilelist.com', 'SFL Activation', 'Activated on ' . $_SERVER['HTTP_HOST'] . ' (' . get_option('admin_email') . ')');
 	
 	return TRUE; // All done, nothing to do here.	
 }

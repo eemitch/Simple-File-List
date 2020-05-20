@@ -90,11 +90,11 @@ $eeContact_Nonce = wp_nonce_field( 'ee-support-form', 'ee-support-form-nonce', T
 // Build the Support Form
 $eeOutput .= '<article class="eeSupp">
 
-		<a class="button eeRight" href="https://simplefilelist.com/docs/" target="_blank">' . __('Plugin Documentation', 'ee-simple-file-list') . '</a>
+		<a class="button eeRight" href="https://simplefilelist.com/docs/" target="_blank">' . __('Plugin Documentation', 'ee-simple-file-list-pro') . '</a>
 		
-		<h2>' . __('Support Request', 'ee-simple-file-list') . '</h2>
+		<h2>' . __('Support Request', 'ee-simple-file-list-pro') . '</h2>
 		
-		<p>' . __('Do you need help or have a question? Send a message and I will reply promptly.', 'ee-simple-file-list') . '</p>
+		<p>' . __('Do you need help or have a question? Send a message and I will reply promptly.', 'ee-simple-file-list-pro') . '</p>
 
 		<form action="' . $eeContact_Location . '" method="post" id="eeSupportForm">
 			  
@@ -110,16 +110,16 @@ $eeOutput .= '<article class="eeSupp">
 				}
 				
 				
-				$eeOutput .= '<label for="eeContact_name">' . __('Your Name', 'ee-simple-file-list') . ':</label>
+				$eeOutput .= '<label for="eeContact_name">' . __('Your Name', 'ee-simple-file-list-pro') . ':</label>
 				<input type="text" name="eeContact_name" id="eeContact_name" value="' . $eeContact_name . '" required />
 				
-				<label for="eeContact_email">' . __('Your Email', 'ee-simple-file-list') . ':</label>
+				<label for="eeContact_email">' . __('Your Email', 'ee-simple-file-list-pro') . ':</label>
 				<input type="email" name="eeContact_email" id="eeContact_email" value="' . $eeContact_email . '" required />
 				
-				<label for="eeContact_page">' . __('Page with Shortcode', 'ee-simple-file-list') . ':</label>
+				<label for="eeContact_page">' . __('Page with Shortcode', 'ee-simple-file-list-pro') . ':</label>
 				<input type="url" name="eeContact_Problem-Page" value="' . $eeContact_link . '" id="eeContact_page">
 
-				<label for="eeContact_message">' . __('Your Message', 'ee-simple-file-list') . ':</label>
+				<label for="eeContact_message">' . __('Your Message', 'ee-simple-file-list-pro') . ':</label>
 				<textarea required name="eeContact_message" id="eeContact_message" cols="60" rows="6">' . $eeContact_message . '</textarea>
 				
 				<input type="hidden" name="eeSupportForm" value="TRUE" /> 
@@ -141,14 +141,14 @@ $eeOutput .= '<article class="eeSupp">
 				
 				<br class="eeClearFix" />
 				
-				<input type="submit" name="submit" value="' . __('SEND', 'ee-simple-file-list') . '" class="button eeSFL_Save eeRight" />
+				<input type="submit" name="submit" value="' . __('SEND', 'ee-simple-file-list-pro') . '" class="button eeSFL_Save eeRight" />
 				
 				<br class="eeClearFix" />
 				
-				<p><i>' . __('Basic plugin environment details will be sent along with your message to:', 'ee-simple-file-list') . '</i> 
-				<a href="mailto:' . $eeContact_To . '" title="Mitchell Bennis" >' . $eeContact_To . '</a>.<br /><br />' . __('To help me further, please include this information', 'ee-simple-file-list') . '...<br />
+				<p><i>' . __('Basic plugin environment details will be sent along with your message to:', 'ee-simple-file-list-pro') . '</i> 
+				<a href="mailto:' . $eeContact_To . '" title="Mitchell Bennis" >' . $eeContact_To . '</a>.<br /><br />' . __('To help me further, please include this information', 'ee-simple-file-list-pro') . '...<br />
 				
-				<a target="_blank" href="/wp-admin/site-health.php?tab=debug">' . __('Click here', 'ee-simple-file-list') . '</a> &rarr; ' . __('Click the "Copy site info to clipboard button"', 'ee-simple-file-list') . ' &rarr; ' . __('Paste the result into the message above.', 'ee-simple-file-list') . '</p>
+				<a target="_blank" href="/wp-admin/site-health.php?tab=debug">' . __('Click here', 'ee-simple-file-list-pro') . '</a> &rarr; ' . __('Click the "Copy site info to clipboard button"', 'ee-simple-file-list-pro') . ' &rarr; ' . __('Paste the result into the message above.', 'ee-simple-file-list-pro') . '</p>
 			
 			</fieldset>
 			

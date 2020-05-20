@@ -13,7 +13,7 @@ msgstr ""
 "X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: ee-simple-file-list.php\n"
+"X-Poedit-WPHeader: ee-simple-file-list-pro.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
@@ -37,7 +37,7 @@ msgstr "投稿者"
 msgid "Get Help"
 msgstr "助けをもらう"
 
-#: ee-admin-page.php:84 ee-simple-file-list.php:795
+#: ee-admin-page.php:84 ee-simple-file-list-pro.php:795
 msgid "Settings"
 msgstr "設定"
 
@@ -246,31 +246,31 @@ msgstr "ファイルを更に追加"
 msgid "Upload some files and they will appear here."
 msgstr "いくつかのファイルをアップロードすると、ここに表示されます。"
 
-#: ee-simple-file-list.php:117
+#: ee-simple-file-list-pro.php:117
 msgid "EXTENSION DISABLED"
 msgstr "拡張子が無効"
 
-#: ee-simple-file-list.php:118
+#: ee-simple-file-list-pro.php:118
 msgid "Please go to Plugins and update the extension to the latest version."
 msgstr "プラグインに移動し、最新バージョンに拡張機能を更新してください。"
 
-#: ee-simple-file-list.php:732
+#: ee-simple-file-list-pro.php:732
 msgid "File Delete Failed"
 msgstr "ファイルの削除に失敗"
 
-#: ee-simple-file-list.php:740
+#: ee-simple-file-list-pro.php:740
 msgid "Folder Delete Failed"
 msgstr "フォルダの削除に失敗しました"
 
-#: ee-simple-file-list.php:794
+#: ee-simple-file-list-pro.php:794
 msgid "Admin List"
 msgstr "管理者リスト"
 
-#: ee-simple-file-list.php:860
+#: ee-simple-file-list-pro.php:860
 msgid "File Access"
 msgstr "ファイルアクセス"
 
-#: ee-simple-file-list.php:861
+#: ee-simple-file-list-pro.php:861
 msgid "File Access Manager"
 msgstr "ファイル アクセス マネージャー"
 
@@ -1242,7 +1242,7 @@ msgstr "http://simplefilelist.com"
 msgid ""
 "A full-featured File List Manager | <a href=\"https://simplefilelist.com/"
 "donations/simple-file-list-project/\">Donate</a> | <a href=\"admin.php?"
-"page=ee-simple-file-list&tab=extensions\">Add Extensions</a>"
+"page=ee-simple-file-list-pro&tab=extensions\">Add Extensions</a>"
 msgstr ""
 "フル機能のファイルリストマネージャ |<a href=\"https://simplefilelist.com/"
 "donations/simple-file-list-project/\">寄付</a>|<a href=\"admin.php?page=ee-"
@@ -1613,5 +1613,5 @@ msgstr ""
 #~ "所に置くことができます。"
 
 #, fuzzy
-#~ msgid "http://elementengage.com/ee-simple-file-list/"
-#~ msgstr "http://elementengage.com/ee-simple-file-list/"
+#~ msgid "http://elementengage.com/ee-simple-file-list-pro/"
+#~ msgstr "http://elementengage.com/ee-simple-file-list-pro/"

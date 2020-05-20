@@ -59,7 +59,7 @@ if(!function_exists('eeMailError')) {
 		$eeContact_message = sanitize_text_field(stripslashes(@$_POST['eeContact_message']));
 		$eeContact_link = sanitize_text_field(@$_POST['eeContact_link']);
 		
-		$eeOutput .= '<div class="error"><p>' . __('The message failed to send.', 'ee-simple-file-list') . '</p>';
+		$eeOutput .= '<div class="error"><p>' . __('The message failed to send.', 'ee-simple-file-list-pro') . '</p>';
 		
 		// $eeOutput .= "<pre>" . print_r($eeContact_wpError, TRUE) . "</pre></div>";
 		

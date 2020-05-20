@@ -196,7 +196,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 		$eeFileList = sanitize_text_field( stripslashes($_POST['eeSFL_FileList'] )); // Expecting a comma delimited list
 		
 		// Check for Nonce
-		if(check_admin_referer( 'ee-simple-file-list-upload', 'ee-simple-file-list-upload-nonce')) {
+		if(check_admin_referer( 'ee-simple-file-list-pro-upload', 'ee-simple-file-list-pro-upload-nonce')) {
 			
 			$eeArray = json_decode($eeFileList);
 			$eeArray = array_map('eeSFL_SanitizeFileName', $eeArray);
@@ -221,9 +221,9 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 				
 				// Semantics
 				if($eeFileCount > 1) { 
-					$eeUploadJob .= $eeFileCount . ' ' . __('Files uploaded', 'ee-simple-file-list');	
+					$eeUploadJob .= $eeFileCount . ' ' . __('Files uploaded', 'ee-simple-file-list-pro');	
 				} else {
-					$eeUploadJob .= __('File uploaded', 'ee-simple-file-list');
+					$eeUploadJob .= __('File uploaded', 'ee-simple-file-list-pro');
 				}
 				$eeUploadJob .= ":" . PHP_EOL . PHP_EOL;
 				
@@ -262,7 +262,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 						}
 					}
 						
-					$eeSFL_Log['messages'][] = __('File Upload Complete', 'ee-simple-file-list');
+					$eeSFL_Log['messages'][] = __('File Upload Complete', 'ee-simple-file-list-pro');
 					
 					if( is_admin() ) {
 						

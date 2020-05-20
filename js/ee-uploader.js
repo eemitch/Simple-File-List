@@ -254,13 +254,13 @@ function eeUploadFile(eeSFL_File) { // Pass in file object
     };
     
     // Wordpress Action
-    eeFormData.append("action", "simplefilelist_upload_job");
+    eeFormData.append("action", "simplefilelistpro_upload_job");
     
     // These values are set in ee-upload-form.php
     eeFormData.append("file", eeSFL_File);
     eeFormData.append("eeSFL_ID", eeSFL_ListID);
     eeFormData.append("eeSFL_FileUploadDir", eeSFL_FileUploadDir);
-    eeFormData.append("ee-simple-file-list-upload", eeSFL_Nonce);
+    eeFormData.append("ee-simple-file-list-pro-upload", eeSFL_Nonce);
         
     // Send the AJAX request...
     eeXhr.send(eeFormData);

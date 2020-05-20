@@ -13,7 +13,7 @@ msgstr ""
 "X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: ee-simple-file-list.php\n"
+"X-Poedit-WPHeader: ee-simple-file-list-pro.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
@@ -37,7 +37,7 @@ msgstr "Autor"
 msgid "Get Help"
 msgstr "Obtener ayuda"
 
-#: ee-admin-page.php:84 ee-simple-file-list.php:795
+#: ee-admin-page.php:84 ee-simple-file-list-pro.php:795
 msgid "Settings"
 msgstr "Ajuste de carga de Archivos"
 
@@ -247,31 +247,31 @@ msgstr "Añadir más archivos"
 msgid "Upload some files and they will appear here."
 msgstr "Sube algunos archivos y aparecerán aquí."
 
-#: ee-simple-file-list.php:117
+#: ee-simple-file-list-pro.php:117
 msgid "EXTENSION DISABLED"
 msgstr "EXTENSIÓN DESACTIVADA"
 
-#: ee-simple-file-list.php:118
+#: ee-simple-file-list-pro.php:118
 msgid "Please go to Plugins and update the extension to the latest version."
 msgstr "Vaya a Plugins y actualice la extensión a la última versión."
 
-#: ee-simple-file-list.php:732
+#: ee-simple-file-list-pro.php:732
 msgid "File Delete Failed"
 msgstr "Error al eliminar archivos"
 
-#: ee-simple-file-list.php:740
+#: ee-simple-file-list-pro.php:740
 msgid "Folder Delete Failed"
 msgstr "Error al eliminar carpetas"
 
-#: ee-simple-file-list.php:794
+#: ee-simple-file-list-pro.php:794
 msgid "Admin List"
 msgstr "Lista de administradores"
 
-#: ee-simple-file-list.php:860
+#: ee-simple-file-list-pro.php:860
 msgid "File Access"
 msgstr "Acceso a archivos"
 
-#: ee-simple-file-list.php:861
+#: ee-simple-file-list-pro.php:861
 msgid "File Access Manager"
 msgstr "Administrador de acceso a archivos"
 
@@ -1266,7 +1266,7 @@ msgstr "http://elementengage.com"
 msgid ""
 "A full-featured File List Manager | <a href=\"https://simplefilelist.com/"
 "donations/simple-file-list-project/\">Donate</a> | <a href=\"admin.php?"
-"page=ee-simple-file-list&tab=extensions\">Add Extensions</a>"
+"page=ee-simple-file-list-pro&tab=extensions\">Add Extensions</a>"
 msgstr ""
 "Un administrador de lista de archivos con todas las funciones de la lista de "
 "archivos <a href=\"https://simplefilelist.com/donations/simple-file-list-"
@@ -1637,5 +1637,5 @@ msgstr ""
 #~ "permite colocar la lista en un lugar y el Uploader en otro."
 
 #, fuzzy
-#~ msgid "http://elementengage.com/ee-simple-file-list/"
-#~ msgstr "http://elementengage.com/EE-simple-File-List/"
+#~ msgid "http://elementengage.com/ee-simple-file-list-pro/"
+#~ msgstr "http://elementengage.com/ee-simple-file-list-pro/"

@@ -13,7 +13,7 @@ msgstr ""
 "X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: ee-simple-file-list.php\n"
+"X-Poedit-WPHeader: ee-simple-file-list-pro.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
@@ -37,7 +37,7 @@ msgstr "Auteur"
 msgid "Get Help"
 msgstr "Aide"
 
-#: ee-admin-page.php:84 ee-simple-file-list.php:795
+#: ee-admin-page.php:84 ee-simple-file-list-pro.php:795
 msgid "Settings"
 msgstr "Paramètres"
 
@@ -246,33 +246,33 @@ msgstr "Ajouter d’autres fichiers"
 msgid "Upload some files and they will appear here."
 msgstr "Téléversez des fichiers et ils apparaîtront ici."
 
-#: ee-simple-file-list.php:117
+#: ee-simple-file-list-pro.php:117
 msgid "EXTENSION DISABLED"
 msgstr "EXTENSION DÉSACTIVÉE"
 
-#: ee-simple-file-list.php:118
+#: ee-simple-file-list-pro.php:118
 msgid "Please go to Plugins and update the extension to the latest version."
 msgstr ""
 "Veuillez vous rendre dans votre liste d'extensions et mettre à jour "
 "l'extension à la dernière version."
 
-#: ee-simple-file-list.php:732
+#: ee-simple-file-list-pro.php:732
 msgid "File Delete Failed"
 msgstr "Échec de la suppression de fichier"
 
-#: ee-simple-file-list.php:740
+#: ee-simple-file-list-pro.php:740
 msgid "Folder Delete Failed"
 msgstr "La Suppression du dossier a échoué"
 
-#: ee-simple-file-list.php:794
+#: ee-simple-file-list-pro.php:794
 msgid "Admin List"
 msgstr "Liste des Admins"
 
-#: ee-simple-file-list.php:860
+#: ee-simple-file-list-pro.php:860
 msgid "File Access"
 msgstr "Accès aux fichiers"
 
-#: ee-simple-file-list.php:861
+#: ee-simple-file-list-pro.php:861
 msgid "File Access Manager"
 msgstr "Gestionnaire de l’accès aux fichiers"
 
@@ -1277,11 +1277,11 @@ msgstr "http://simplefilelist.com"
 msgid ""
 "A full-featured File List Manager | <a href=\"https://simplefilelist.com/"
 "donations/simple-file-list-project/\">Donate</a> | <a href=\"admin.php?"
-"page=ee-simple-file-list&tab=extensions\">Add Extensions</a>"
+"page=ee-simple-file-list-pro&tab=extensions\">Add Extensions</a>"
 msgstr ""
 "Un gestionnaire de liste de fichiers complet (fr) <a href=\"https://"
 "simplefilelist.com/donations/simple-file-list-project/\">Faire un don</a> <a "
-"href=\"admin.php?page=ee-simple-file-list&tab=extensions\">Ajouter des "
+"href=\"admin.php?page=ee-simple-file-list-pro&tab=extensions\">Ajouter des "
 "extensions</a>"
 
 #. Author of the plugin/theme
@@ -1654,5 +1654,5 @@ msgstr "Mitchell Bennis"
 #~ "téléversement. Cela vous permet de placer la liste dans un endroit et le "
 #~ "module dans un autre."
 
-#~ msgid "http://elementengage.com/ee-simple-file-list/"
-#~ msgstr "http://elementengage.com/EE-simple-file-List/"
+#~ msgid "http://elementengage.com/ee-simple-file-list-pro/"
+#~ msgstr "http://elementengage.com/ee-simple-file-list-pro/"

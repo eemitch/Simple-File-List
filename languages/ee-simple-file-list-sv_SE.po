@@ -13,7 +13,7 @@ msgstr ""
 "X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: ee-simple-file-list.php\n"
+"X-Poedit-WPHeader: ee-simple-file-list-pro.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
@@ -37,7 +37,7 @@ msgstr "Författare"
 msgid "Get Help"
 msgstr "Skaffa hjälp"
 
-#: ee-admin-page.php:84 ee-simple-file-list.php:795
+#: ee-admin-page.php:84 ee-simple-file-list-pro.php:795
 msgid "Settings"
 msgstr "Inställningar"
 
@@ -246,32 +246,32 @@ msgstr "Lägg till fler filer"
 msgid "Upload some files and they will appear here."
 msgstr "Ladda upp några filer och de kommer att visas här."
 
-#: ee-simple-file-list.php:117
+#: ee-simple-file-list-pro.php:117
 msgid "EXTENSION DISABLED"
 msgstr "TILLÄGGET ÄR INAKTIVERAT"
 
-#: ee-simple-file-list.php:118
+#: ee-simple-file-list-pro.php:118
 msgid "Please go to Plugins and update the extension to the latest version."
 msgstr ""
 "Vänligen gå till plugins och uppdatera tillägget till den senaste versionen."
 
-#: ee-simple-file-list.php:732
+#: ee-simple-file-list-pro.php:732
 msgid "File Delete Failed"
 msgstr "Det gick inte att ta bort filen"
 
-#: ee-simple-file-list.php:740
+#: ee-simple-file-list-pro.php:740
 msgid "Folder Delete Failed"
 msgstr "Det gick inte att ta bort mappen"
 
-#: ee-simple-file-list.php:794
+#: ee-simple-file-list-pro.php:794
 msgid "Admin List"
 msgstr "Administratörslista"
 
-#: ee-simple-file-list.php:860
+#: ee-simple-file-list-pro.php:860
 msgid "File Access"
 msgstr "Tillgång till fil"
 
-#: ee-simple-file-list.php:861
+#: ee-simple-file-list-pro.php:861
 msgid "File Access Manager"
 msgstr "Hanteraren för filåtkomst"
 
@@ -1239,11 +1239,11 @@ msgstr "http://simplefilelist.com"
 msgid ""
 "A full-featured File List Manager | <a href=\"https://simplefilelist.com/"
 "donations/simple-file-list-project/\">Donate</a> | <a href=\"admin.php?"
-"page=ee-simple-file-list&tab=extensions\">Add Extensions</a>"
+"page=ee-simple-file-list-pro&tab=extensions\">Add Extensions</a>"
 msgstr ""
 "En fullfjädrad fillistehanterare | <a href=\"https://simplefilelist.com/"
 "donations/simple-file-list-project/\">Donera</a> | <a href=\"admin.php?"
-"page=ee-simple-file-list&tab=extensions\">Lägg till tillägg</a>"
+"page=ee-simple-file-list-pro&tab=extensions\">Lägg till tillägg</a>"
 
 #. Author of the plugin/theme
 msgid "Mitchell Bennis"
@@ -1615,5 +1615,5 @@ msgstr ""
 #~ "att du kan placera listan på ett ställe och uppladdaren i en annan."
 
 #, fuzzy
-#~ msgid "http://elementengage.com/ee-simple-file-list/"
-#~ msgstr "http://elementengage.com/ee-simple-file-list/"
+#~ msgid "http://elementengage.com/ee-simple-file-list-pro/"
+#~ msgstr "http://elementengage.com/ee-simple-file-list-pro/"
