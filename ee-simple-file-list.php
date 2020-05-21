@@ -591,7 +591,7 @@ function eeSFL_FileUploader() {
 			// Clean up messy names
 			$eeSFL_FileName = eeSFL_SanitizeFileName($_FILES['file']['name']);
 			
-			eeSFL_DetectUpwardTraversal($eeSFL_Config['FileListDir'] . $eeSFL_FileName); // Die if foolishness
+			eeSFL_DetectUpwardTraversal($eeSFL_FileUploadDir . $eeSFL_FileName); // Die if foolishness
 			
 			$eeSFL_PathParts = pathinfo($eeSFL_FileName);
 			$eeSFL_FileNameAlone = $eeSFL_PathParts['filename'];
