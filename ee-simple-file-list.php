@@ -557,6 +557,21 @@ function eeSFL_FileUploader() {
 		return 'Missing File Input';
 	}
 	
+	// Who should be uploading?
+	switch ($eeSFL_Config['AllowUploads']) {
+	    case 'YES':
+	        break; // Allow it, even if it's dangerous.
+	    case 'USER':
+	        // Show it if logged in at all
+	        if( get_current_user_id() ) { break; } else { return; }
+	    case 'ADMIN':
+	        // Show it if admin only.
+	        if(current_user_can('manage_options')) { break; } else { return; }
+	        break;
+		default:
+			return;
+	}
+	
 	// The List ID
 	if(@$_POST['eeSFL_ID']) { $eeSFL_ID = filter_var($_POST['eeSFL_ID'], FILTER_VALIDATE_INT); } else { $eeSFL_ID = FALSE; }
 	if(!$eeSFL_ID) { return "Missing ID"; }
