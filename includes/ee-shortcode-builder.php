@@ -20,7 +20,7 @@ $eeSFL_ShortcodeArray = array(
 
 if($eeSFLF) { 
 	$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
-	include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-folders/includes/eeSFLF_ShortcodeBuilder.php');
+	include(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_ShortcodeBuilder.php');
 	$eeSFL_ShortcodeAttributes[] = 'showfolder';
 }
 
@@ -185,7 +185,7 @@ $eeOutput .= '</article>';
 
 if($eeSFLS) {
 	$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-	include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-search/includes/ee-search-shortcode.php');
+	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-search-shortcode.php');
 }
 
 $eeOutput .= '

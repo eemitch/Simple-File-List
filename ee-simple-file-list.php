@@ -55,7 +55,7 @@ $eeSFLF_ListFolder = FALSE;
 
 // Check for Update
 // https://github.com/YahnisElsts/plugin-update-checker
-// https://github.com/eemitch/ee-simple-file-list-pro-extension
+// https://github.com/eemitch/ee-simple-file-list
 // ae370143ceaad95ca6a8f8b27701bd3e126a0e2d
 
 include( plugin_dir_path(__FILE__) . '/updater/plugin-update-checker.php' );
@@ -350,7 +350,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 	if($eeSFLA) { 
 	    $eeSFL_Log['SFLA'][] = 'User ID: ' . $eeSFL_Env['wpUserID'];
 	    $eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-		include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-access/includes/eeSFLA_FrontsideFirewall.php');
+		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_FrontsideFirewall.php');
 		if($eeSFLA_Proceed === FALSE) {  // We cannot go on.
 			return $eeAltOutput;
 		}
@@ -373,7 +373,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 	
 	// Upload Check
 	$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-	include(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/includes/ee-upload-check.php');
+	include($eeSFL_Env['pluginDir'] . 'includes/ee-upload-check.php');
 	
 	// Who Can Upload?
 	switch ($eeSFL_Config['AllowUploads']) {
@@ -392,7 +392,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 	
 	if($eeSFL_Config['AllowUploads'] != 'NO' AND !$eeSFL_UploadFormRun AND !@$_POST['eeSFLS_Searching']) {
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		include(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/includes/ee-upload-form.php');
+		include($eeSFL_Env['pluginDir'] . 'includes/ee-upload-form.php');
 		$eeSFL_UploadFormRun = TRUE;
 	}
 	
@@ -413,7 +413,7 @@ function eeSFL_Shortcode($atts, $content = null) {
 	
 	if($eeSFLA OR $eeSFL_Config['ShowList'] != 'NO') {
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		include(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/ee-list-display.php');
+		include($eeSFL_Env['pluginDir'] . 'ee-list-display.php');
 	}
 	
 	$eeOutput .= '</div>'; // Ends .eeSFL block
@@ -490,10 +490,7 @@ function eeSFL_AdminHead($eeHook) {
 	// wp_die($eeHook);
     
     $eeHooks = array(
-    	'toplevel_page_ee-simple-file-list-pro', // toplevel_page_ee-simple-file-list-pro
-    	// 'simple-file-list_page_ee-simple-file-list-pro',
-    	// 'simple-file-list_page_ee-simple-file-list-pro-settings',
-    	'file-list_page_ee-simple-file-list-pro-access'
+    	'toplevel_page_ee-simple-file-list-pro'
     );
     
     if(in_array($eeHook, $eeHooks)) {
@@ -827,7 +824,7 @@ function eeSFL_AdminMenu() {
 		$eeSFL_Log['Admin'][] = 'Admin Menu Loading ...';
 		
 		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-		include_once(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/ee-admin-page.php'); // Admin's List Management Page
+		include_once($eeSFL_Env['pluginDir'] . 'ee-admin-page.php'); // Admin's List Management Page
 	}
 	
 	// Admin Menu Visability
@@ -862,20 +859,20 @@ function eeSFL_AdminMenu() {
 	);
 	
 	// User Manager
-    if( is_plugin_active('ee-simple-file-list-pro-access/ee-simple-file-list-pro-access.php') ) {
+    if( is_plugin_active('ee-simple-file-list-access/ee-simple-file-list-access.php') ) {
         
         // Only include when accessing this plugin's admin pages
 		if(@$_GET['page'] == $eeSFLA->eeSFLA_Slug) {
         	$eeNonce = wp_create_nonce('eeSFLA'); // Security
-			include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-access/eeSFLA_Admin.php');
+			include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-access/eeSFLA_Admin.php');
         }
         
         add_submenu_page(
 	        'ee-simple-file-list-pro', 
-	        __('File Access', 'ee-simple-file-list-pro-access'), 
-	        __('File Access Manager', 'ee-simple-file-list-pro-access'),  
+	        __('File Access', 'ee-simple-file-list-access'), 
+	        __('File Access Manager', 'ee-simple-file-list-access'),  
 	        $eeCapability, 
-	        'ee-simple-file-list-pro-access', 
+	        'ee-simple-file-list-access', 
 	        'eeSFLA_Manager'
         );
     }

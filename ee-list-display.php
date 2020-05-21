@@ -83,7 +83,7 @@ $eeSFL_ListNumber = $eeSFL_ListRun; // Legacy 04/20
 // Extension Check
 if($eeSFLF) {
 	$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
-	include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-folders/eeSFLF_folderListSetup.php');
+	include(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/eeSFLF_folderListSetup.php');
 } else {
 	foreach( $eeSFL_Files as $eeKey => $eeFileArray) { // Send Files List
 		if(!strpos($eeFileArray['FilePath'], '/')) { // Omit folders for now
@@ -124,9 +124,9 @@ if($eeSFLS) {
 	
 	// $eeSFLS_TotalItemsCount = count($eeSFL_Files); // Before search
 	$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-	include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-search/includes/ee-search-processor.php'); // Run the Search Processor
+	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-search-processor.php'); // Run the Search Processor
 	$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-	include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-search/includes/ee-pagination-processing.php'); // Run Pagination Processing
+	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-processing.php'); // Run Pagination Processing
 }
 
 
@@ -241,7 +241,7 @@ if($eeSFLF) {
 
 if($eeSFLS AND !$eeSFL_Uploaded) {
 	$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-	include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-search/includes/ee-search-form.php');
+	include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-search-form.php');
 }
 
 // $eeSFL_Files = array_values($eeSFL_Files);
@@ -476,7 +476,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 								$eeDefaultThumb = $eeFileExt . '.svg';
 							}
 							
-							$eeFileThumbURL = $eeSFL_Env['wpPluginsURL'] . $eeSFL->eePluginNameSlug . '/images/thumbnails/' . $eeDefaultThumb;
+							$eeFileThumbURL = $eeSFL_Env['pluginURL'] . 'images/thumbnails/' . $eeDefaultThumb;
 						}
 					
 						$eeOutput .= '<td class="eeSFL_Thumbnail">';
@@ -716,7 +716,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 								if($eeSFLA) {
 									if($eeSFLA_Show) {
 										$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-										include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-access/includes/eeSFLA_FileListActions.php');
+										include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_FileListActions.php');
 									}
 								}
 							}
@@ -789,7 +789,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 	// Pagination Controls
 	if($eeSFLS) {
 		$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-		include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-search/includes/ee-pagination-display.php');
+		include(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-display.php');
 	}
 	
 	if($eeAdmin OR ($eeSFL_ListRun == 1 AND $eeSFL_Config['AllowFrontSend']) ) {

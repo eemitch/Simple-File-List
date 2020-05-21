@@ -25,7 +25,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-pro-settings'
 	if($eeSFLA) {
 				
 		$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-		include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-access/includes/eeSFLA_NoticeSettingsProcess.php');
+		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_NoticeSettingsProcess.php');
 	
 	} else {
 		
@@ -106,7 +106,7 @@ $eeOutput .= '
 	if($eeSFLA) {
 		
 		$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-		include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-access/includes/eeSFLA_NoticeSettingsDisplay.php');
+		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_NoticeSettingsDisplay.php');
 	
 	} else {
 		

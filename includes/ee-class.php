@@ -18,6 +18,9 @@ class eeSFL_MainClass {
 	public $eeAllFilesSorted = array();
 	public $eeDefaultUploadLimit = 99;
 	public $eeFileThumbSize = 64;
+	
+	
+	public $eePluginDir = 'simple-file-list';
     
     // File Types
     public $eeDynamicImageThumbFormats = array('gif', 'jpg', 'jpeg', 'png');
@@ -115,8 +118,8 @@ class eeSFL_MainClass {
 		$eeSFL_Env['wpSiteURL'] = get_site_url() . '/'; // This Wordpress Website
 		$eeSFL_Env['wpPluginsURL'] = plugins_url() . '/'; // The Wordpress Plugins Location
 		
-		$eeSFL_Env['pluginURL'] = plugins_url() . '/' . $this->eePluginNameSlug . '/';
-		$eeSFL_Env['pluginDir'] = WP_PLUGIN_DIR . '/' . $this->eePluginNameSlug . '/';
+		$eeSFL_Env['pluginURL'] = plugins_url() . '/' . $this->eePluginDir . '/';
+		$eeSFL_Env['pluginDir'] = WP_PLUGIN_DIR . '/' . $this->eePluginDir . '/';
 		
 		$wpUploadArray = wp_upload_dir();
 		$wpUploadDir = $wpUploadArray['basedir'];

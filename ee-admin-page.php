@@ -28,7 +28,7 @@ function eeSFL_ManageLists() {
     if($eeSFLA) { 
 	    if($eeSFLA_Settings['FirstRun'] == 'YES') { // Check for first plugin run
 		    $eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-		    include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-access/includes/eeSFLA_Installing.php');
+		    include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_Installing.php');
 		}
 	}
 	
@@ -43,7 +43,7 @@ function eeSFL_ManageLists() {
 	// Extension Check
 	if($eeSFLA) {
 		$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-		include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-access/includes/eeSFLA_ListNavigation.php'); // List Navigator
+		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_ListNavigation.php'); // List Navigator
 	}
 	
 	// Get the new tab's query string value. We will only use values to display tabs that we are expecting.
@@ -108,7 +108,7 @@ function eeSFL_ManageLists() {
 		
 		// Upload Check
 		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-		include(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/includes/ee-upload-check.php');
+		include($eeSFL_Env['pluginDir'] . '/includes/ee-upload-check.php');
 		
 		include($eeSFL_Env['pluginDir'] . 'includes/ee-upload-form.php'); // The Uploader
 		
@@ -125,7 +125,7 @@ function eeSFL_ManageLists() {
     	if($eeSFLA) { // Creating or Editing a File List
 	    	$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
 	    	if(@$_POST['eeCreateEditList'] AND $_GET['tab'] == 'settings') {
-	    		include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-access/includes/eeSFLA_CreateEditListProcess.php'); // Form processor
+	    		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_CreateEditListProcess.php'); // Form processor
 	    	}
 	    	
     	} else {
@@ -175,7 +175,7 @@ function eeSFL_ManageLists() {
 		if($eeSFLA AND $active_subtab == 'list_access') { // Extension Check
 			
 			$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-			include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-access/includes/eeSFLA_ListAccessSettingsDisplay.php');
+			include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_ListAccessSettingsDisplay.php');
 		
 		} elseif($active_subtab == 'uploader_settings') {
 			
@@ -228,7 +228,7 @@ function eeSFL_ManageLists() {
 	if($eeSFLA) { // Create/Edit List Overlay
 		if(@$_GET['subtab'] != 'list_access') {
 			$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-			include(WP_PLUGIN_DIR . '/ee-simple-file-list-pro-access/includes/eeSFLA_CreateList.php');	
+			include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_CreateList.php');	
 		}
 	}
 	
