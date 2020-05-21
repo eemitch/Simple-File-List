@@ -554,9 +554,7 @@ function eeSFL_FileUploader() {
 	
 	// The FILE object
 	if(empty($_FILES)) { 
-		$eeSFL_Error = "Missing Input";
-		trigger_error($eeSFL_Error, E_USER_ERROR);
-		exit();
+		return 'Missing File Input';
 	}
 	
 	// The List ID
@@ -592,6 +590,8 @@ function eeSFL_FileUploader() {
 			
 			// Clean up messy names
 			$eeSFL_FileName = eeSFL_SanitizeFileName($_FILES['file']['name']);
+			
+			eeSFL_DetectUpwardTraversal($eeSFL_Config['FileListDir'] . $eeSFL_FileName); // Die if foolishness
 			
 			$eeSFL_PathParts = pathinfo($eeSFL_FileName);
 			$eeSFL_FileNameAlone = $eeSFL_PathParts['filename'];

@@ -556,6 +556,15 @@ class eeSFL_MainClass {
 		// Image Files
 		if(in_array($eeExt, $this->eeDynamicImageThumbFormats)) { // Just for known image files... 
 		
+			// Make sure it's really an image
+			if(!@getimagesize($eeFileFullPath)) {
+				
+				// Alert the users
+				$eeSFL_Log['errors'][] = __('Error', 'simple-file-list') . ': ' . basename($eeFileFullPath) . ' ' . __('This is NOT an image.', 'simple-file-list');
+				
+				return FALSE;
+			}
+			
 			// Generate an Image Thumbnail
 			if(!$eeExt OR strpos($eeExt, '.') === 0) { // It's a Folder or Hidden
 			
