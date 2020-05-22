@@ -16,8 +16,6 @@ function eeSFL_ManageLists() {
 	
 	$eeAdmin = is_admin(); // Will be TRUE here
 	
-	$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security (Only one file included per load)
-	
 	// Process the Config Array
 	if(!is_array($eeSFL_Config) OR !is_array($eeSFL_Env)) {
 		$eeSFL_Log['errors'] = 'No SFL Configuration';
@@ -110,10 +108,12 @@ function eeSFL_ManageLists() {
 		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
 		include($eeSFL_Env['pluginDir'] . '/includes/ee-upload-check.php');
 		
+		$eeSFL_Nonce = wp_create_nonce('eeInclude');
 		include($eeSFL_Env['pluginDir'] . 'includes/ee-upload-form.php'); // The Uploader
 		
 		$eeOutput .= '</div>';
 		
+		$eeSFL_Nonce = wp_create_nonce('eeInclude');
 		include($eeSFL_Env['pluginDir'] . 'ee-list-display.php'); // The File List		
 	
 	} elseif($active_tab == 'settings') {
@@ -179,30 +179,36 @@ function eeSFL_ManageLists() {
 		
 		} elseif($active_subtab == 'uploader_settings') {
 			
+			$eeSFL_Nonce = wp_create_nonce('eeInclude');
 			include($eeSFL_Env['pluginDir'] . 'includes/ee-upload-settings.php'); // The Uploader Settings
 		
 		} elseif($active_subtab == 'display_settings') {
 			
+			$eeSFL_Nonce = wp_create_nonce('eeInclude');
 			include($eeSFL_Env['pluginDir'] . 'includes/ee-list-display-settings.php'); // The List Display Settings
 		
 		} elseif($active_subtab == 'email_settings') {
 			
+			$eeSFL_Nonce = wp_create_nonce('eeInclude');
 			include($eeSFL_Env['pluginDir'] . 'includes/ee-email-settings.php'); // The Notifications Settings
 		
 		} else {
 			
+			$eeSFL_Nonce = wp_create_nonce('eeInclude');
 			include($eeSFL_Env['pluginDir'] . 'includes/ee-list-settings.php'); // The File List Settings
 		}
 		
 	} elseif($active_tab == 'shortcode') { // Shortcode Builder Tab Display...
 			
 		// Get the instructions page
+		$eeSFL_Nonce = wp_create_nonce('eeInclude');
 		include($eeSFL_Env['pluginDir'] . 'includes/ee-shortcode-builder.php');
 	
 	
 	} elseif($active_tab == 'extensions') { // Instructions Tab Display...
 			
 		// Get the sales page
+		$eeSFL_Nonce = wp_create_nonce('eeInclude');
 		include($eeSFL_Env['pluginDir'] . 'support/ee-get-extensions.php');
 	
 	
@@ -211,18 +217,20 @@ function eeSFL_ManageLists() {
 		$eePlugin = $eeSFL->eePluginName;
 			
 		// Get the support page
+		$eeSFL_Nonce = wp_create_nonce('eeInclude');
 		include($eeSFL_Env['pluginDir'] . 'support/ee-get-help.php');
 	
 	
 	} else { // Author
 					
 		// Get the support page
+		$eeSFL_Nonce = wp_create_nonce('eeInclude');
 		include($eeSFL_Env['pluginDir'] . 'support/ee-plugin-author.php');
 		
 	} // END Tab Content
 	
-	
-	include('includes/ee-admin-footer.php');
+	$eeSFL_Nonce = wp_create_nonce('eeInclude');
+	include($eeSFL_Env['pluginDir'] . 'includes/ee-admin-footer.php');
 	
 	// Extension Check
 	if($eeSFLA) { // Create/Edit List Overlay

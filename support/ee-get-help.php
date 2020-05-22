@@ -17,7 +17,9 @@ $eeContact_wpError = '';
 $eeContact_Headers = array();
 $eeContact_Install = WP_PLUGIN_URL;
 		
-include('ee-support-functions.php');
+
+$eeSFL_Nonce = wp_create_nonce('eeInclude');
+include($eeSFL_Env['pluginDir'] . 'support/ee-support-functions.php');
 	
 // Form Processor ======================================
 

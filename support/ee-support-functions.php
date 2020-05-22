@@ -1,6 +1,7 @@
 <?php // Simple File List Script: ee-support-functions.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
 	
-defined( 'ABSPATH' ) or die( 'No direct access is allowed' );
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
 $eeSFL_Log[] = 'Loaded: ee-support-functions';
 

@@ -1,5 +1,8 @@
 <?php
 	
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
+	
 $eeOutput .= '<div id="eeAdminFooter">
 	
 	<fieldset><p id="eeFooterImportant" class="eeHide">' . __('IMPORTANT: Allowing the public to upload files to your web server comes with risk.', 'ee-simple-file-list-pro') . ' ' .  
