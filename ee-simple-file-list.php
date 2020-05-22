@@ -6,7 +6,7 @@
 /*
 Plugin Name: Simple File List Pro
 Plugin URI: http://simplefilelist.com
-Description: Full-featured File List Manager | <a href="admin.php?page=ee-simple-file-list-pro&tab=extensions">Add Extensions</a>
+Description: Full-featured File List Manager
 Author: Mitchell Bennis
 Version: 4.3.1
 Author URI: http://simplefilelist.com
@@ -1199,6 +1199,7 @@ function eeSFL_UpdateThisPlugin() {
 // Plugin Activation ==========================================================
 function eeSFL_Activate() {
 	
+	// In case I need to contact users
 	@wp_mail('support@simplefilelist.com', 'SFL Activation', 'Activated on ' . $_SERVER['HTTP_HOST'] . ' (' . get_option('admin_email') . ')');
 	
 	return TRUE; // All done, nothing to do here.	

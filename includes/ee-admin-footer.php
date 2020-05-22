@@ -12,13 +12,10 @@ $eeOutput .= '<div id="eeAdminFooter">
 	$eeOutput .= '<p class="eeRight">
 	<a class="button" href="https://simplefilelist.com/docs/" target="_blank">' . __('Plugin Documentation', 'ee-simple-file-list-pro') . '</a>
 		<a target="_blank" class="button" href="https://wordpress.org/support/plugin/simple-file-list/reviews/">' . __('Review Plugin', 'ee-simple-file-list-pro') . '</a></p>
-			<a href="' . $eeSFL->eePluginWebPage . '" target="_blank">' . __('Plugin Website', 'ee-simple-file-list-pro') . '</a> | 
+		
+		<strong>' . $eeSFL->eePluginName . '</strong> | <a href="' . $eeSFL->eePluginWebPage . '" target="_blank">' . __('Plugin Website', 'ee-simple-file-list-pro') . '</a> | 
 					<a href="https://simplefilelist.com/give-feedback/" target="_blank">' . __('Give Feedback', 'ee-simple-file-list-pro') . '</a> | 
 						<a href="#" id="eeFooterImportantLink">' . __('Caution', 'ee-simple-file-list-pro') . '</a>';
-						
-	if( !@count($eeSFL_Env['installed']) ) {
-		$eeOutput .= ' | <a href="https://simplefilelist.com/donations/simple-file-list-project/">' . __('Buy Me Lunch', 'ee-simple-file-list-pro') . '</a>';
-	}
 	
 	$eeOutput .= '<br />
 	

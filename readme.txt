@@ -184,7 +184,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.8 - Security Fix
+* 4.3.1 - Introducing Simple File List Pro
 
 
 == Screenshots ==
@@ -196,7 +196,12 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
-= 4.2.8 =
+= 4.3.1 =
+* Rebranded to Simple file List Pro.
+* Completed full security audit.
+* Numerous code improvements.
+
+= 4.2.9 =
 * Fixed a security issue for non-Linux users who allow front-side file management.
 
 
