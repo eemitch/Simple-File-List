@@ -562,6 +562,21 @@ function eeSFL_FileUploader() {
 	    case 'YES':
 	        break; // Allow it, even if it's dangerous.
 	    case 'USER':
+	        // Allow it if logged in at all
+	        if( get_current_user_id() ) { break; } else { return; }
+	    case 'ADMIN':
+	        // Allow it if admin only.
+	        if(current_user_can('manage_options')) { break; } else { return; }
+	        break;
+		default:
+			return;
+	}
+	
+	// Who should be uploading?
+	switch ($eeSFL_Config['AllowUploads']) {
+	    case 'YES':
+	        break; // Allow it, even if it's dangerous.
+	    case 'USER':
 	        // Show it if logged in at all
 	        if( get_current_user_id() ) { break; } else { return; }
 	    case 'ADMIN':
@@ -665,145 +680,150 @@ function eeSFL_FileEditor() {
 		return 'ERROR 98';	
 	}
 	
-	// The List ID
-	if(@$_POST['eeSFL_ID']) { $eeSFL_ID = filter_var($_POST['eeSFL_ID'], FILTER_VALIDATE_INT); } else { return "Missing ID"; }
+	// Check if we should be doing this
+	if(is_admin() OR $eeSFL_Config['AllowFrontManage'] == 'YES') {
 	
-	// The Action
-	if(@$_POST['eeFileAction']) { 
-		$eeFileAction = sanitize_text_field($_POST['eeFileAction']); 
-	}
-	if(!$eeFileAction) { 
-		return "Missing the Action";
-	}
-			
-	// The File Name
-	if(@$_POST['eeFileName']) { 
-		$eeFileName = sanitize_text_field($_POST['eeFileName']); 
-	}
-	if(!$eeFileName) { 
-		return "Missing the Current File Name";
-	}
-	
-	// Are we in a Folder?
-	if(@$_POST['eeListFolder']) { 
-		$eeListFolder = sanitize_text_field( urldecode( $_POST['eeListFolder'] )); 
-	}
-	if(!$eeListFolder OR $eeListFolder == '/') {
-		$eeListFolder = '';
-	}
-	
-	// Get the correct file list config if not main list
-	$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID);
-	
-	// Renaming
-	if( strpos($eeFileAction, 'Rename') === 0 ) {
-	
-		// If Renaming
-		if( strpos($eeFileAction, '|') ) {
-			$eeArray = explode('|', $eeFileAction);
-			$eeFileAction = $eeArray[0];
-			$eeNewFileName = urldecode( $eeArray[1] );
-			$eeNewFileName = eeSFL_SanitizeFileName($eeNewFileName);
+		// The List ID
+		if(@$_POST['eeSFL_ID']) { $eeSFL_ID = filter_var($_POST['eeSFL_ID'], FILTER_VALIDATE_INT); } else { return "Missing ID"; }
+		
+		// The Action
+		if(@$_POST['eeFileAction']) { 
+			$eeFileAction = sanitize_text_field($_POST['eeFileAction']); 
+		}
+		if(!$eeFileAction) { 
+			return "Missing the Action";
+		}
+				
+		// The File Name
+		if(@$_POST['eeFileName']) { 
+			$eeFileName = sanitize_text_field($_POST['eeFileName']); 
+		}
+		if(!$eeFileName) { 
+			return "Missing the Current File Name";
 		}
 		
-		if($eeNewFileName) {
-			
-			if(strpos($eeFileName, '.') === FALSE) { // Folder
-				$eeNewFileName = str_replace('.', '_', $eeNewFileName); // Prevent adding an extension
-			} else {
-				$eePathParts = pathinfo($eeFileName);
-				$eeOldExtension = strtolower($eePathParts['extension']); // Prevent changing file extension
-				$eePathParts = pathinfo($eeNewFileName);
-				$eeNewExtension = strtolower($eePathParts['extension']);
-				if($eeOldExtension != $eeNewExtension) { 
-					return "Changing File Extensions is Not Allowed";
-				}	
-			}
-			
-			eeSFL_DetectUpwardTraversal($eeSFL_Config['FileListDir'] . $eeNewFileName); // Die if foolishness
-			
-			$eeFullPath = ABSPATH . $eeSFL_Config['FileListDir'] . $eeListFolder;
-			$eeOldFilePath = $eeFullPath . $eeFileName;
-			$eeNewFilePath = $eeFullPath . $eeNewFileName;
-			
-			if( !rename($eeOldFilePath, $eeNewFilePath) ) {
-				
-				return 'Could Not Rename ' . $eeFileName . ' to ' . $eeNewFileName;
-			
-			} else {
-				
-				delete_transient('eeSFL_FileList-' . $eeSFL_ID); // Trigger a re-scan
-				
-				return 'SUCCESS';
-			}
-		
-		} else { 
-			return "Missing the New File Name";
+		// Are we in a Folder?
+		if(@$_POST['eeListFolder']) { 
+			$eeListFolder = sanitize_text_field( urldecode( $_POST['eeListFolder'] )); 
+		}
+		if(!$eeListFolder OR $eeListFolder == '/') {
+			$eeListFolder = '';
 		}
 		
-	} elseif($eeFileAction == 'Delete') {
+		// Get the correct file list config if not main list
+		$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID);
 		
-		eeSFL_DetectUpwardTraversal($eeSFL_Config['FileListDir'] . $eeListFolder . $eeFileName); // Die if foolishness
+		// Renaming
+		if( strpos($eeFileAction, 'Rename') === 0 ) {
 		
-		$eeFilePath = ABSPATH . $eeSFL_Config['FileListDir'] . $eeListFolder . $eeFileName;
-		
-		if( strpos($eeFileName, '.') ) { // Gotta be a File - Looking for the dot rather than using is_file() for better speed
-			
-			if(unlink($eeFilePath)) {
-				
-				delete_transient('eeSFL_FileList-' . $eeSFL_ID);
-				
-				return 'SUCCESS';
-				
-			} else {
-				return __('File Delete Failed', 'ee-simple-file-list-pro') . ':' . $eeListFolder . $eeFileName;
+			// If Renaming
+			if( strpos($eeFileAction, '|') ) {
+				$eeArray = explode('|', $eeFileAction);
+				$eeFileAction = $eeArray[0];
+				$eeNewFileName = urldecode( $eeArray[1] );
+				$eeNewFileName = eeSFL_SanitizeFileName($eeNewFileName);
 			}
-		
-		} else {
 			
-			// Delete Folder
-			if($eeSFLF) {
-				if( !$eeSFLF->eeSFLF_DeleteFolder($eeFilePath) ) {
-					return __('Folder Delete Failed', 'ee-simple-file-list-pro') . ':' . $eeListFolder . $eeFileName;
+			if($eeNewFileName) {
+				
+				if(strpos($eeFileName, '.') === FALSE) { // Folder
+					$eeNewFileName = str_replace('.', '_', $eeNewFileName); // Prevent adding an extension
+				} else {
+					$eePathParts = pathinfo($eeFileName);
+					$eeOldExtension = strtolower($eePathParts['extension']); // Prevent changing file extension
+					$eePathParts = pathinfo($eeNewFileName);
+					$eeNewExtension = strtolower($eePathParts['extension']);
+					if($eeOldExtension != $eeNewExtension) { 
+						return "Changing File Extensions is Not Allowed";
+					}	
+				}
+				
+				eeSFL_DetectUpwardTraversal($eeSFL_Config['FileListDir'] . $eeNewFileName); // Die if foolishness
+				
+				$eeFullPath = ABSPATH . $eeSFL_Config['FileListDir'] . $eeListFolder;
+				$eeOldFilePath = $eeFullPath . $eeFileName;
+				$eeNewFilePath = $eeFullPath . $eeNewFileName;
+				
+				if( !rename($eeOldFilePath, $eeNewFilePath) ) {
+					
+					return 'Could Not Rename ' . $eeFileName . ' to ' . $eeNewFileName;
+				
 				} else {
 					
 					delete_transient('eeSFL_FileList-' . $eeSFL_ID); // Trigger a re-scan
 					
 					return 'SUCCESS';
 				}
+			
+			} else { 
+				return "Missing the New File Name";
 			}
+			
+		} elseif($eeFileAction == 'Delete') {
+			
+			eeSFL_DetectUpwardTraversal($eeSFL_Config['FileListDir'] . $eeListFolder . $eeFileName); // Die if foolishness
+			
+			$eeFilePath = ABSPATH . $eeSFL_Config['FileListDir'] . $eeListFolder . $eeFileName;
+			
+			if( strpos($eeFileName, '.') ) { // Gotta be a File - Looking for the dot rather than using is_file() for better speed
+				
+				if(unlink($eeFilePath)) {
+					
+					delete_transient('eeSFL_FileList-' . $eeSFL_ID);
+					
+					return 'SUCCESS';
+					
+				} else {
+					return __('File Delete Failed', 'ee-simple-file-list-pro') . ':' . $eeListFolder . $eeFileName;
+				}
+			
+			} else {
+				
+				// Delete Folder
+				if($eeSFLF) {
+					if( !$eeSFLF->eeSFLF_DeleteFolder($eeFilePath) ) {
+						return __('Folder Delete Failed', 'ee-simple-file-list-pro') . ':' . $eeListFolder . $eeFileName;
+					} else {
+						
+						delete_transient('eeSFL_FileList-' . $eeSFL_ID); // Trigger a re-scan
+						
+						return 'SUCCESS';
+					}
+				}
+			}
+		
+		} elseif($eeFileAction == 'UpdateDesc') {
+			
+			// The Description
+			if(filter_var(@$_POST['eeFileID'], FILTER_VALIDATE_INT) !== FALSE) { // Might be a zero
+				$eeFileID = $_POST['eeFileID'];
+			} else { 
+				$eeFileID = 0;
+			}
+			
+			// The Description
+			if(@$_POST['eeFileDesc']) { 
+				$eeFileDesc = sanitize_text_field($_POST['eeFileDesc']); 
+			} else { 
+				$eeFileDesc = '';
+			}
+			
+			if(!strpos($eeFileName, '.')) { // Folder
+				$eeFileName .= '/';
+			}
+			
+			// return $eeSFL_ID . ' - ' . $eeListFolder . $eeFileName . ' - ' . 'FileDescription' . ' - ' . $eeFileDesc;
+			
+			$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeListFolder . $eeFileName, 'FileDescription', $eeFileDesc);
+		
+			return 'SUCCESS';
+			
+		} else {
+			
+			return; // Nothing to do
+			
 		}
 	
-	} elseif($eeFileAction == 'UpdateDesc') {
-		
-		// The Description
-		if(filter_var(@$_POST['eeFileID'], FILTER_VALIDATE_INT) !== FALSE) { // Might be a zero
-			$eeFileID = $_POST['eeFileID'];
-		} else { 
-			$eeFileID = 0;
-		}
-		
-		// The Description
-		if(@$_POST['eeFileDesc']) { 
-			$eeFileDesc = sanitize_text_field($_POST['eeFileDesc']); 
-		} else { 
-			$eeFileDesc = '';
-		}
-		
-		if(!strpos($eeFileName, '.')) { // Folder
-			$eeFileName .= '/';
-		}
-		
-		// return $eeSFL_ID . ' - ' . $eeListFolder . $eeFileName . ' - ' . 'FileDescription' . ' - ' . $eeFileDesc;
-		
-		$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeListFolder . $eeFileName, 'FileDescription', $eeFileDesc);
-	
-		return 'SUCCESS';
-		
-	} else {
-		
-		return; // Nothing to do
-		
 	}	
 }
 
