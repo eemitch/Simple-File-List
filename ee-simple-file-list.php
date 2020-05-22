@@ -946,7 +946,7 @@ function eeSFL_UpdateThisPlugin() {
 	
 	if($eeSFL_DB_Version) {
 		
-		if( version_compare( get_option('eeSFL-DB-Version') , '4.2', '<') ) { 
+		if( version_compare( $eeSFL_DB_Version, '4.2', '<') ) { 
 			
 			delete_transient('eeSFL_FileList-1'); // Force a re-scan because now we're storing a sorted file array.
 			
