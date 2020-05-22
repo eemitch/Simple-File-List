@@ -3,7 +3,7 @@ Contributors: eemitch
 Donate link: http://simplefilelist.com/donations/simple-file-list-project/
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
-Tested up to: 5.4
+Tested up to: 5.4.1
 Stable tag: trunk
 License: EULA
 License URI: https://simplefilelist.com/end-user-license-agreement/
