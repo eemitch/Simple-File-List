@@ -8,7 +8,7 @@ Plugin Name: Simple File List Pro
 Plugin URI: http://simplefilelist.com
 Description: Full-featured File List Manager | <a href="admin.php?page=ee-simple-file-list-pro&tab=extensions">Add Extensions</a>
 Author: Mitchell Bennis
-Version: 4.3
+Version: 4.3.1
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list-pro
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
 
-define('eeSFL_Version', '4.3'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_Version', '4.3.1'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_DB_Version', '4.2'); // Database structure version - used for eeSFL_VersionCheck()
 define('eeSFL_Cache_Version', '1'); // Cache-Buster version for static files - used when updating CSS/JS
 
