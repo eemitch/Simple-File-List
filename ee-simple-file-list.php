@@ -391,9 +391,11 @@ function eeSFL_Shortcode($atts, $content = null) {
 	}
 	
 	if($eeSFL_Config['AllowUploads'] != 'NO' AND !$eeSFL_UploadFormRun AND !@$_POST['eeSFLS_Searching']) {
-		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		include($eeSFL_Env['pluginDir'] . 'includes/ee-upload-form.php');
-		$eeSFL_UploadFormRun = TRUE;
+		if(!@$_POST['eeSFL_Upload']) {
+			$eeSFL_Nonce = wp_create_nonce('eeInclude');
+			include($eeSFL_Env['pluginDir'] . '/includes/ee-upload-form.php');
+			$eeSFL_UploadFormRun = TRUE;
+		}
 	}
 	
 	// Who Can View the List?
