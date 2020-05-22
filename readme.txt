@@ -1,18 +1,18 @@
-=== Simple File List ===
+=== Simple File List Pro ===
 Contributors: eemitch
 Donate link: http://simplefilelist.com/donations/simple-file-list-project/
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
 Tested up to: 5.4
-Stable tag: 4.2.6
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Stable tag: trunk
+License: EULA
+License URI: https://simplefilelist.com/end-user-license-agreement/
 
 Simple File List gives your WordPress website a list of your files which allows your users to open and download them.
 
 == Description ==
 
-Simple File List is a free plugin that gives your WordPress website a list of your files allowing your users to open and download them. Users can also upload files if you choose.
+Simple File List is a plugin that gives your WordPress website a list of your files allowing your users to open and download them. Users can also upload files if you choose.
 
 Simple File List is also an alternative to using FTP or Dropbox for larger files. There's no need to deal with Dropbox or FTP usernames and passwords anymore! Everything is on your Wordpress website.
 
