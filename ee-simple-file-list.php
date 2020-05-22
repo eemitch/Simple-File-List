@@ -942,19 +942,25 @@ function eeSFL_UpdateThisPlugin() {
 	
 	global $eeSFL, $eeSFL_Env, $eeSFL_Log;
 	
-	if( version_compare( get_option('eeSFL-DB-Version') , '4.2', '<') ) { 
-		
-		delete_transient('eeSFL_FileList-1');
-		
-		update_option('eeSFL-DB-Version', '4.2');
-		
-		return;
+	$eeSFL_DB_Version = get_option('eeSFL-DB-Version');
 	
-	} elseif(get_option('eeSFL-DB-Version')) {
+	if($eeSFL_DB_Version) {
 		
-		return; // Nothing more yet
+		if( version_compare( get_option('eeSFL-DB-Version') , '4.2', '<') ) { 
+			
+			delete_transient('eeSFL_FileList-1'); // Force a re-scan because now we're storing a sorted file array.
+			
+			update_option('eeSFL-DB-Version', '4.2');
+			
+			return;
 		
+		} else {
+	
+			return; // Nothing more yet
+		}
 	}
+	
+	// New install or update from an old version
 	
 	$eeNewInstall = FALSE;
 	
