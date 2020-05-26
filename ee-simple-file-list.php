@@ -90,6 +90,32 @@ add_action( 'wp_ajax_simplefilelistpro_move_job', 'simplefilelistpro_move_job' )
 add_action( 'wp_ajax_nopriv_simplefilelistpro_move_job', 'simplefilelistpro_move_job' );
 
 
+
+
+// Display Notice to Update Simple File List 
+function eeSFL_ALERT() {
+    
+    if(is_dir(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/')) {
+		
+		// Get the current screen
+	    $wpScreen = get_current_screen();
+	 
+	    if ( $wpScreen->id == 'dashboard' OR $wpScreen->id == 'plugins' OR $wpScreen->id == 'toplevel_page_ee-simple-file-list-pro' ) {
+	        
+	        $eeOutput = '<div class="notice notice-warning is-dismissible">
+	            <p><strong>' . __('NOTICE', 'ee-simple-file-list') . '</strong><br />
+	            	' . __('You can safely remove the plugin; Simple File List Folders', 'ee-simple-file-list-pro') . ' &larr; <a href="https://simplefilelist.com/introducing-simple-file-list-pro/">' .  __('More Info', 'ee-simple-file-list-pro') . '</a> :-)</p>
+	            </div>';
+	            
+	        echo $eeOutput;
+	    }
+    }
+}
+add_action( 'admin_notices', 'eeSFL_ALERT' );
+
+
+
+
 // Plugin Setup
 function eeSFL_Setup() {
 	
