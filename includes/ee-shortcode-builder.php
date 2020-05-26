@@ -196,11 +196,11 @@ function eeSFLF_FolderSelect($eeSFL_ID) {
 	
 	$eeOutput = '
 	
-	<label class="eeClearfix eeFullWidth">' . __('Choose a List Folder', 'ee-simple-file-list-folders') . '<br />
+	<label class="eeClearfix eeFullWidth">' . __('Choose a List Folder', 'ee-simple-file-list') . '<br />
 	
 	<select name="showfolder" id="eeShortcodeBuilder_showfolder" onchange="eeShortcodeBuilder(\'showfolder\', \'select\')">' . "\n";
 			
-		$eeOutput .= ' <option value="remove">' . __('Main Folder', 'ee-simple-file-list-folders') . '</option>' . "\n";
+		$eeOutput .= ' <option value="remove">' . __('Main Folder', 'ee-simple-file-list') . '</option>' . "\n";
 			
 		foreach($eeFilesArray as $eeKey => $eeFileArray) {
 			

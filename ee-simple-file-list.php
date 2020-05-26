@@ -111,7 +111,7 @@ function eeSFL_Setup() {
 		$eeSFL_Env = $eeSFL->eeSFL_GetEnv(); // Get the Environment Array
 		
 		// Update database if needed.
-		eeSFL_VersionCheck(); 
+		eeSFL_VersionCheck();
 		
 		// Folder Support Class
 		$eeSFL_Log['eeSFLF'][] = 'Loading the Folder Support Class ...';			
@@ -1026,30 +1026,12 @@ add_action( 'admin_menu', 'eeSFL_AdminMenu' );
 
 
 
-// Plugin Version Check
-// We only run the update function if there has been a change in the database revision.
-function eeSFL_VersionCheck() { 
-		
-	global $eeSFL_Log;
-	
-	
-	
-	$eeSFL_Log[] = 'Checking DB Version...';
-	
-	$eeSFL_DB_VersionInstalled = get_option('eeSFL-DB-Version'); // We store the DB version in the DB, okay?
-	
-	if($eeSFL_DB_VersionInstalled < eeSFL_DB_Version OR !get_option('eeSFL-Settings') ) {
-		
-		eeSFL_UpdateThisPlugin(); // Run the DB update process
-	}
-}
-
-
-
 // Perform DB Update
 function eeSFL_UpdateThisPlugin() {
 	
 	global $eeSFL, $eeSFL_Env, $eeSFL_Log;
+	
+	eeSFL_Registration(); // Register for free if you have an extension registered.
 	
 	$eeSFL_DB_Version = get_option('eeSFL-DB-Version');
 	
@@ -1312,13 +1294,75 @@ function eeSFL_UpdateThisPlugin() {
 }
 
 
+
+// Plugin Version Check
+// We only run the update function if there has been a change in the database revision.
+function eeSFL_VersionCheck() { 
+		
+	global $eeSFL_Log;
+	
+	eeSFL_Registration();
+	
+	$eeSFL_Log[] = 'Checking DB Version...';
+	
+	$eeSFL_DB_VersionInstalled = get_option('eeSFL-DB-Version'); // We store the DB version in the DB, okay?
+	
+	if($eeSFL_DB_VersionInstalled < eeSFL_DB_Version OR !get_option('eeSFL-Settings') ) {
+		
+		eeSFL_UpdateThisPlugin(); // Run the DB update process
+	}
+		
+	// This is built-in now.
+	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	$eeObsolete = 'ee-simple-file-list-folders/ee-simple-file-list-folders.php';
+	if( is_plugin_active($eeObsolete) ) {
+		deactivate_plugins($eeObsolete);
+	}
+}
+
+
+// Free registration, while supplies last.
+function eeSFL_Registration() {
+	
+	// Registration Check
+    $eeExtension = 'ee-simple-file-list-pro'; // This Plugin
+    
+    // This Domain
+    $eeDomain = $_SERVER['HTTP_HOST'];
+    $eeReturn = FALSE;
+    
+    // Lucky you, skipping registration check for these ...
+    if(strpos($eeDomain, 'ocalhost')) { return TRUE; }
+    if(strpos($eeDomain, '.domains')) { return TRUE; }
+    if(strpos($eeDomain, '.local')) { return TRUE; }
+    if(strpos($eeDomain, '.wpengine')) { return TRUE; }
+    if(filter_var($eeDomain, FILTER_VALIDATE_IP)) { return TRUE; }
+	
+	$eeRegCheck = get_option('eeSFL-Registration');
+	
+	if($eeRegCheck == 'YES') { return TRUE; }
+    
+    // FOR NOW, we are checking registration and adding this product for FREE if an exension is already registered.
+    $eeRegCheckURL = 'http://reg.simplefilelist.com/auto.php?eeDomain=' . $eeDomain . 
+    
+            '&eeExtension=' . $eeExtension . 
+            '&eeEmail=' . urlencode( get_option('admin_email') );
+        
+    $eeReturn = @file_get_contents($eeRegCheckURL);
+    
+    if($eeReturn == 'SUCCESS') {
+	    add_option('eeSFL-Registration', 'YES');
+    }
+    
+    return TRUE;	
+}
+
 // Plugin Activation ==========================================================
 function eeSFL_Activate() {
 	
-	// In case I need to contact users
-	@wp_mail('support@simplefilelist.com', 'SFL Activation', 'Activated on ' . $_SERVER['HTTP_HOST'] . ' (' . get_option('admin_email') . ')');
+	@wp_mail('support@simplefilelist.com', 'SFL Activation', 'Simple File List activated on ' . $_SERVER['HTTP_HOST'] . ' (' . get_option('admin_email') . ')');
 	
-	return TRUE; // All done, nothing to do here.	
+	return TRUE;
 }
 register_activation_hook( __FILE__, 'eeSFL_Activate' );
 
