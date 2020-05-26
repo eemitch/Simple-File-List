@@ -1,4 +1,4 @@
-<?php  // Simple File List Script: ee-upload-form.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.23.2019
+<?php  // Simple File List Script: ee-upload-form.php | Author: Mitchell Bennis | support@simplefilelist.com
 
 // Security	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -8,15 +8,10 @@ $eeSFL_UploadNonce = wp_create_nonce('ee-simple-file-list-pro-upload'); // Check
 global $eeSFL_ListRun;
 $eeSFL_Log['Add Files'][] = 'Loaded: ee-uploader';
 
-// Extension Check
-if($eeSFLF) {
-	if(@$_REQUEST['eeFolder'] AND $eeSFL_ListRun == 1) { // Adjust the path based on REQUEST arg
-		$eeSFLF_ListFolder = sanitize_text_field(urldecode($_REQUEST['eeFolder'])) . '/'; 
-	} elseif( strlen(@$eeSFLF_ShortcodeFolder) ) {
-		$eeSFLF_ListFolder = str_replace('&#34;', '', $eeSFLF_ShortcodeFolder) . '/'; // Fix for uploading to draft status page
-	} else {
-		$eeSFLF_ListFolder = FALSE;
-	}
+if(@$_REQUEST['eeFolder'] AND $eeSFL_ListRun == 1) { // Adjust the path based on REQUEST arg
+	$eeSFLF_ListFolder = sanitize_text_field(urldecode($_REQUEST['eeFolder'])) . '/'; 
+} elseif( strlen(@$eeSFLF_ShortcodeFolder) ) {
+	$eeSFLF_ListFolder = str_replace('&#34;', '', $eeSFLF_ShortcodeFolder) . '/'; // Fix for uploading to draft status page
 } else {
 	$eeSFLF_ListFolder = FALSE;
 }
@@ -54,8 +49,8 @@ if(@$eeSFL_Config['FileListDir']) {
 		
 		if($eeSFL_Env['wpUserID'] > 0) { $eeOutput .= '<input type="hidden" name="eeSFL_FileOwner" value="' . $eeSFL_Env['wpUserID'] . '" id="eeSFL_FileOwner" />'; }
 			
-		if($eeSFLF AND $eeSFLF_ListFolder) { $eeOutput .= '
-			<input type="hidden" name="eeSFLF_UploadFolder" value="' . urlencode($eeSFLF_ListFolder) . '" id="eeSFLF_UploadFolder" />
+		if($eeSFLF_ListFolder) { $eeOutput .= '
+			<input type="hidden" name="eeSFL_UploadFolder" value="' . urlencode($eeSFLF_ListFolder) . '" id="eeSFL_UploadFolder" />
 			';
 		}
 		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-pro-upload', 'ee-simple-file-list-pro-upload-nonce', TRUE, FALSE);

@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-plugin-author.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
+<?php // Simple File List Script: ee-plugin-author.php | Author: Mitchell Bennis | support@simplefilelist.com
 	
 defined( 'ABSPATH' ) or die( 'No direct access is allowed' );
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails

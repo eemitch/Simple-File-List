@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-class.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.12.2019
+<?php // Simple File List Script: ee-class.php | Author: Mitchell Bennis | support@simplefilelist.com
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Class' ) ) exit('ERROR 98'); // Exit if nonce fails
@@ -48,7 +48,7 @@ class eeSFL_MainClass {
 			
 			// List Settings
 			'ListTitle' => 'Simple File List', // List Title (Not currently used)
-			'FileListDir' => 'wp-content/uploads/simple-file-list', // List Directory Name (relative to ABSPATH)
+			'FileListDir' => 'wp-content/uploads/simple-file-list/', // List Directory Name (relative to ABSPATH)
 			'ExpireTime' => 0, // Hours before next re-scan
 			'ShowList' => 'YES', // Show the File List (YES, ADMIN, USER, NO)
 			'AdminRole' => 2, // Who can access settings, based on WP role (5 = Admin ... 1 = Subscriber)
@@ -90,6 +90,11 @@ class eeSFL_MainClass {
 			'NotifyFromName' => '', // The nice name of the sender
 			'NotifySubject' => '', // The subject line
 			'NotifyMessage' => '', // The notice message's body
+			
+			// Folders
+			'ShowBreadCrumb' => 'YES', // Navigation above the list
+			'FoldersFirst' => 'YES', // Group folders together at the top
+			'ShowFolderSize' => 'YES' // Calculate the size of each folder
 			
 			// Extensions will add to this as needed
 		)
@@ -231,6 +236,7 @@ class eeSFL_MainClass {
 
     
     
+    
     // Scan the real files and create or update array as needed.
     public function eeSFL_UpdateFileListArray($eeSFL_ID = 1) {
 	    
@@ -238,17 +244,41 @@ class eeSFL_MainClass {
 	    
 	    $eeSFL_Log['File List'][] = 'Scanning File List...';
 	    
-	    $eeFilesArray = get_option('eeSFL-FileList-' . $eeSFL_ID); // Get the File List Array
+	    // File List Directory Check
+	    if( !is_dir(ABSPATH . $eeSFL_Config['FileListDir']) ) {
+		    
+		    $eeSFL_Log['errors'][] = 'The File Directory is Gone. Re-Creating...';
+		    
+		    eeSFL_FileListDirCheck($eeSFL_Config['FileListDir']);
+	    }
 	    
-	    $eeFilePathsArray = $this->eeSFL_IndexFileListDir($eeSFL_Config['FileListDir']); // Get the real files
 	    
-	    if ( !is_array($eeFilesArray) OR !@count($eeFilesArray) ) { // Creating New
+	    // Get the File List Array
+	    $eeFilesArray = get_option('eeSFL-FileList-' . $eeSFL_ID); 
+	    
+	    
+	    // List the actual files on the disk
+	    $eeSFL_Log['File List'][] = 'Getting files and folders...';
+	    
+	    // Run the File/Folder Scanner the Method
+	    $eeSFLF->eeSFLF_IndexCompleteFileListDirectory($eeSFL_Config['FileListDir']); // $eeSFLF->eeSFLF_FileScanArray is now Full
+	    
+	    // echo '<pre>'; print_r($eeSFLF->eeSFLF_FileScanArray); echo '</pre>'; exit;
+	    
+	    
+	    if(!count($eeSFLF->eeSFLF_FileScanArray)) {
+		    $eeSFL_Log['File List'][] = 'No Files Found';
+		    return FALSE;
+	    }
+	    
+	    // No List in the DB, Creating New...
+	    if ( !is_array($eeFilesArray) OR !@count($eeFilesArray) ) { 
 			
 			$eeSFL_Log['File List'][] = 'No List Found! Creating from scratch...';
 			
 			$eeFilesArray = array();
 			
-			foreach( $eeFilePathsArray as $eeKey => $eeFile) {
+			foreach( $eeSFLF->eeSFLF_FileScanArray as $eeKey => $eeFile) {
 				
 				$eeFilesArray[$eeKey]['FileList'] = $eeSFL_ID;
 				$eeFilesArray[$eeKey]['FilePath'] = $eeFile;
@@ -295,12 +325,11 @@ class eeSFL_MainClass {
 					$eeFileArrayNew[$eeKey]['FileDateChanged'] = date("Y-m-d H:i:s", @filemtime($eeFile));
 					
 				} elseif( is_dir($eeFile) ) {
-					
-					if($eeSFLF) {
-						if($eeSFL_Config['ShowFolderSize'] == 'YES') { // How Big?
-							$eeFileArrayNew[$eeKey]['FileSize'] = $eeSFLF->eeSFLF_GetFolderSize( $eeSFL_Config['FileListDir'] . $eeFileSet['FilePath'] );
-						}
+						
+					if($eeSFL_Config['ShowFolderSize'] == 'YES') { // How Big?
+						$eeFileArrayNew[$eeKey]['FileSize'] = $eeSFLF->eeSFLF_GetFolderSize( $eeSFL_Config['FileListDir'] . $eeFileSet['FilePath'] );
 					}
+					
 				} else { // Get rid of it
 					
 					$eeSFL_Log['File List'][] = 'Removing: ' . $eeFile;
@@ -316,7 +345,7 @@ class eeSFL_MainClass {
 
 			
 			// Check if any new files have been added
-			foreach( $eeFilePathsArray as $eeKey => $eeFile) {
+			foreach( $eeSFLF->eeSFLF_FileScanArray as $eeKey => $eeFile) {
 				
 				$eeMatch = FALSE;
 				
@@ -403,6 +432,8 @@ class eeSFL_MainClass {
 				$eeSFL_Log[] = 'FFMPEG is not supported';
 			}
 			
+			$eeSFLF->eeSFLF_FileScanArray = array(); // Clear this
+			
 			return $eeFilesArray;
 		}
 	    
@@ -427,47 +458,13 @@ class eeSFL_MainClass {
 		    return $eeFilesArray;
 	    }
 	    
-	    if($eeSFLF) {
-		    
-		    $eeSFL_Log['File List'][] = 'Getting files and folders...';
-		    
-		    $eeSFLF->eeSFLF_IndexCompleteFileListDirectory($eeFileListDir);
-		    $eeFilesArray = $eeSFLF->eeSFLF_FileListArray;
-		    
-		    $eeFilesArray = str_replace($eeFileListDir . '/', '', $eeFilesArray); // Strip the FileListDir
-		    
-	    } else {
-		    
-		    $eeSFL_Log['File List'][] = 'Getting files from: ' . $eeFileListDir; 
-		    
-		    $eeFileNameOnlyArray = scandir(ABSPATH . $eeFileListDir);
-		    
-		    foreach($eeFileNameOnlyArray as $eeValue) {
-		    	
-		    	if(strpos($eeValue, '.') !== 0 ) { // Not hidden
-			    	
-			    	if(is_file(ABSPATH . $eeFileListDir . $eeValue)) { // Is a regular file
-			    	
-				    	if(!in_array($eeValue, $this->eeExcludedFiles) )  { // Not excluded
-					    	
-					    	// Catch and correct spaces in items found
-					    	if( strpos($eeValue, ' ') AND strpos($eeValue, ' ') !== 0 ) {
-				        
-						        $eeNewItem = str_replace(' ', '-', $eeValue);
-						        
-						        if(rename(ABSPATH . $eeFileListDir . $eeValue, ABSPATH . $eeFileListDir . $eeNewItem)) {
-							        $eeValue = $eeNewItem;
-						        }
-						    }
-					    	
-					    	$eeFilesArray[] = $eeValue; // Add the path
-				    	}
-			    	}
-		    	}
-		    }
-	    }
+	    $eeSFL_Log['File List'][] = 'Getting files and folders...';
 	    
+	    $eeSFLF->eeSFLF_IndexCompleteFileListDirectory($eeFileListDir);
+	    $eeFilesArray = $eeSFLF->eeSFLF_FileListArray;
 	    
+	    $eeFilesArray = str_replace($eeFileListDir . '/', '', $eeFilesArray); // Strip the FileListDir
+		    
 	    if(!count($eeFilesArray)) {
 		    // $eeSFL_Log['errors'][] = 'No Files Found';
 		    $eeSFL_Log['File List'][] = 'No Files Found';
@@ -743,7 +740,7 @@ class eeSFL_MainClass {
 		$eeFilesSorted = array_values($eeFilesSorted);
 	
 		// Folders First?
-		if($eeSFLF AND $eeSFL_Config['FoldersFirst'] == 'YES') {
+		if($eeSFL_Config['FoldersFirst'] == 'YES') {
 			$eeFilesSorted = $eeSFLF->eeSFLF_SortFoldersFirst($eeFilesSorted, $eeSortBy, $eeSortOrder);
 		} 
 

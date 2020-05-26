@@ -183,7 +183,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 	global $eeSFL, $eeSFL_Config, $eeSFL_Env, $eeSFL_Log;
 	
 	$eeFileCount = filter_var(@$_POST['eeSFL_FileCount'], FILTER_VALIDATE_INT);
-	$eeSFLF_UploadFolder = sanitize_text_field( urldecode(@$_POST['eeSFLF_UploadFolder']) );
+	$eeSFL_UploadFolder = sanitize_text_field( urldecode(@$_POST['eeSFL_UploadFolder']) );
 	
 	if($eeFileCount) {
 		
@@ -207,7 +207,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 			foreach( $eeArray as $eeFile) {  // We need to do this here and in ee-upload-engine.php
 				
 				$eeArray = explode('.', $eeFile);
-				$eeNewArray[] = $eeSFLF_UploadFolder . $eeArray[0] . '.' . strtolower($eeArray[1]);
+				$eeNewArray[] = $eeSFL_UploadFolder . $eeArray[0] . '.' . strtolower($eeArray[1]);
 			}
 			$eeArray = $eeNewArray;
 			
@@ -235,9 +235,9 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 						$eeFile = eeSFL_SanitizeFileName($eeFile);
 						
 						// Notification
-						$eeUploadJob .=  $eeSFLF_UploadFolder . $eeFile . PHP_EOL . 
-							$eeSFL_Config['FileListURL'] . $eeSFLF_UploadFolder . $eeFile . PHP_EOL . 
-								"(" . eeSFL_GetFileSize( $eeSFL_Config['FileListDir'] . $eeSFLF_UploadFolder . $eeFile ) . ")" . PHP_EOL . PHP_EOL;
+						$eeUploadJob .=  $eeSFL_UploadFolder . $eeFile . PHP_EOL . 
+							$eeSFL_Config['FileListURL'] . $eeSFL_UploadFolder . $eeFile . PHP_EOL . 
+								"(" . eeSFL_GetFileSize( $eeSFL_Config['FileListDir'] . $eeSFL_UploadFolder . $eeFile ) . ")" . PHP_EOL . PHP_EOL;
 					
 						// Is uploader person logged-in?
 						if( is_numeric(@$_POST['eeSFL_FileOwner']) ) { // Expecting a number
@@ -251,7 +251,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 							
 							foreach( $eeFiles as $eeKey => $eeArray2) {
 								
-								if( $eeArray2['FilePath'] ==  $eeSFLF_UploadFolder . $eeFile) {
+								if( $eeArray2['FilePath'] ==  $eeSFL_UploadFolder . $eeFile) {
 									
 									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterName', sanitize_text_field(@$_POST['eeSFL_Name']));
 									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterEmail', filter_var( sanitize_email(@$_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL) );

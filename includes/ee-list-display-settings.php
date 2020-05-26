@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-list-display-settings.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
+<?php // Simple File List Script: ee-list-display-settings.php | Author: Mitchell Bennis | support@simplefilelist.com
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
@@ -23,17 +23,16 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-pro-settings'
 		,'PreserveSpaces'
 		,'ShowFileExtension'
 		,'AllowFrontSend'
+		,'ShowBreadCrumb'
+		,'FoldersFirst'
+		,'ShowFolderSize'
+	,
 	);
 	foreach( $eeCheckboxes as $eeTerm){
 		$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
 	}
 	
-	// Extension Processing
-	if($eeSFLF) {
-		$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
-		include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_ListSettingsProcess.php');
-	}
-	
+	// Extensions
 	if($eeSFLS) {
 		$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
 		include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-settings-process.php');
@@ -76,20 +75,61 @@ $eeOutput .= '
 		
 		$eeOutput .= '
 		
-		<fieldset>';
+		<fieldset>
 		
-		if($eeSFLF) {
-			
-			$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
-			include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_ListSettings.php');
-		}
+		<h3>' . __('Folder Options', 'ee-simple-file-list-folders') . '</h3>';
+
+		// Show or Hide Bread Crumb	
+		$eeOutput .= '<label for="eeShowBreadCrumb">' . __('Show Breadcrumb', 'ee-simple-file-list-folders') . ':</label>
+		<input type="checkbox" name="eeShowBreadCrumb" value="YES" id="eeShowBreadCrumb"';
+		
+		if($eeSFL_Config['ShowBreadCrumb'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /> <p>' . __('Home / Folder 1 / Folder 2', 'ee-simple-file-list-folders') . '</p>
+		
+		<div class="eeNote">' . __('Show the folder breadcrumb trail above the front-side list.', 'ee-simple-file-list-folders') . '</div>
+		
+		<br class=eeClearFix />';
+		
+		
+		
+		// Sort Folders First	
+		$eeOutput .= '<label for="eeFoldersFirst">' . __('Sort Folders First', 'ee-simple-file-list-folders') . ':</label>
+		<input type="checkbox" name="eeFoldersFirst" value="YES" id="eeFoldersFirst"';
+		
+		if($eeSFL_Config['FoldersFirst'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /> <p>' . __('Group Folders Together', 'ee-simple-file-list-folders') . '</p>
+		
+		<div class="eeNote">' . __('Shows the folders grouped together at the top of the list, rather than sorted along with the files.', 'ee-simple-file-list-folders') . '</div>
+		
+		<br class=eeClearFix />';
+		
+		
+		
+		// Calculate and Display the Folder's Size
+		$eeOutput .= '<label for="eeShowFolderSize">' . __('Show Folder Size', 'ee-simple-file-list-folders') . ':</label>
+		<input type="checkbox" name="eeShowFolderSize" value="YES" id="eeShowFolderSize"';
+		
+		if($eeSFL_Config['ShowFolderSize'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /> <p>' . __('Calculate and Display the Folder Size', 'ee-simple-file-list-folders') . '</p>
+		
+		<div class="eeNote">' . __('This may slow performance significantly if folders are very large.', 'ee-simple-file-list-folders') . '</div>
+		
+		<br class=eeClearFix />';
+		
+		
+		
 		
 		if($eeSFLS) {
-			
 			$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
 			include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-settings.php');
 		}
 			
+		
+		
+		
 		$eeOutput .= '<h3>' . __('Appearance', 'ee-simple-file-list-pro') . '</h3>
 		
 		

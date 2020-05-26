@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-admin-page.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
+<?php // Simple File List Script: ee-admin-page.php | Author: Mitchell Bennis | support@simplefilelist.com
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' )) exit('ERROR 98'); // Exit if nonce fails
@@ -88,7 +88,7 @@ function eeSFL_ManageLists() {
     $eeOutput .= $active_tab . '">' . __('Create Shortcode', 'ee-simple-file-list-pro') . '</a>';
     
     // Get Extensions
-    if(!$eeSFLF OR !$eeSFLS) {
+    if(!$eeSFLS) {
 	    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=extensions&eeListID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
 		if($active_tab == 'extensions') {$eeOutput .= '  eeActiveTab '; }  
 	    $active_tab == 'extensions' ? 'nav-tab-active' : ''; 

@@ -1,4 +1,4 @@
-// Simple File List Script: ee-footer.js | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 12.22.2019
+// Simple File List Script: ee-footer.js | Author: Mitchell Bennis | support@simplefilelist.com
 
 // Used in front-side and back-side file list display
 

@@ -1,11 +1,11 @@
-<?php // Simple File List Script: ee-shortcode-builder.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.25.2019
+<?php // Simple File List Script: ee-shortcode-builder.php | Author: Mitchell Bennis | support@simplefilelist.com
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
 $eeSFL_Log[] = 'Loaded: ee-plugin-instructions';
 
-// All the shortcodes we have
+// All the shortcodes we have with pre-defined options
 $eeSFL_ShortcodeArray = array(
 	'ShowList' => array('showlist', 'File List', 'YES|ADMIN|USER|NO'), 
 	'AllowUploads' => array('allowuploads',  'Uploader', 'YES|ADMIN|USER|NO'),
@@ -17,12 +17,6 @@ $eeSFL_ShortcodeArray = array(
 	'SortBy' => array('sortby', 'Sort By', 'Name|Date|Size|Random'),
 	'SortOrder' => array('sortorder', 'Sort Order', 'Descending|Ascending')
 );
-
-if($eeSFLF) { 
-	$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
-	include(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_ShortcodeBuilder.php');
-	$eeSFL_ShortcodeAttributes[] = 'showfolder';
-}
 
 $eeChecked = '';
 $eeCheckmark = ' (' . __('Default', 'ee-simple-file-list-pro') . ')';
@@ -190,6 +184,40 @@ if($eeSFLS) {
 
 $eeOutput .= '
 
-</article>';	
+</article>';
+
+
+// Build the folder selection input
+function eeSFLF_FolderSelect($eeSFL_ID) {
 	
+	global $eeSFLF;
+	
+	$eeFilesArray = get_option('eeSFL-FileList-' . $eeSFL_ID); // Get the File List Array
+	
+	$eeOutput = '
+	
+	<label class="eeClearfix eeFullWidth">' . __('Choose a List Folder', 'ee-simple-file-list-folders') . '<br />
+	
+	<select name="showfolder" id="eeShortcodeBuilder_showfolder" onchange="eeShortcodeBuilder(\'showfolder\', \'select\')">' . "\n";
+			
+		$eeOutput .= ' <option value="remove">' . __('Main Folder', 'ee-simple-file-list-folders') . '</option>' . "\n";
+			
+		foreach($eeFilesArray as $eeKey => $eeFileArray) {
+			
+			$eeFolderPath = substr($eeFileArray['FilePath'], 0, -1);
+			
+			if($eeFileArray['FileExt'] == 'folder') {
+				$eeOutput .= ' <option value="' . $eeFolderPath . '">' . $eeFolderPath . '</option>' . "\n";
+			}
+		}
+			
+		$eeOutput .= '</select>
+	
+	</label>
+	
+	';
+	
+	return $eeOutput;
+}
+
 ?>

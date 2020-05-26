@@ -1,4 +1,4 @@
-<?php // Simple File List Script: ee-get-extensions.php | Author: Mitchell Bennis | support@simplefilelist.com | Revised: 11.23.2019
+<?php // Simple File List Script: ee-get-extensions.php | Author: Mitchell Bennis | support@simplefilelist.com
 	
 defined( 'ABSPATH' ) or die( 'No direct access is allowed' );
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
@@ -29,40 +29,6 @@ $eeOutput .= '<article class="eeSupp eeExtensions">
 	
 	<hr />';
 	
-if(!$eeSFLF) {
-	
-	$eeSFL_Button = '<a class="button eeGet" target="_blank" href="' . $eeOrderURL . '&eeExtension=ee-simple-file-list-pro-folders">' . __('Add Folder Support Now', 'ee-simple-file-list-pro') . '</a>';
-	
-	$eeOutput .= '<h3>' . __('Folder Support', 'ee-simple-file-list-pro') . '</h3>
-	
-	<img src="' . $eeSFL_Env['pluginURL'] . 'support/images/Folder-Demo.jpg" width="400" height="331" class="eeRight" />
-	
-	<p>' . __('Adds an extension that allows folder listing, navigation and management capabilities.', 'ee-simple-file-list-pro') . '</p>
-	
-	<ul>
-		<li>' . __('Create folders and unlimited levels of sub-folders.', 'ee-simple-file-list-pro') . '</li>
-		<li>' . __('Use a shortcode attribute to display specific folders.', 'ee-simple-file-list-pro') . '</li>
-		<li>' . __('Display different folders in different places on your site.', 'ee-simple-file-list-pro') . '<br />
-			' . __('You can even show several different folders on the same page and within widgets.', 'ee-simple-file-list-pro') . '<br />
-			' . __('Front-side users cannot navigate above the folder you specify.', 'ee-simple-file-list-pro') . '</li>
-		<li>' . __('Breadcrumb navigation indicates where you are.', 'ee-simple-file-list-pro') . '</li>
-		<li>' . __('Easily move files or entire folders.', 'ee-simple-file-list-pro') . '</li>
-		<li>' . __('Easily rename any folder.', 'ee-simple-file-list-pro') . '</li>
-		<li>' . __('Easily delete any folder, along with all contents.', 'ee-simple-file-list-pro') . '</li>
-		<li>' . __('Choose to sort folders first or sort along with the files.', 'ee-simple-file-list-pro') . '</li>
-		<li>' . __('Optionally display folder sizes.', 'ee-simple-file-list-pro') . '</li>
-		<li>' . __('Updating to newer versions is just like other Wordpress plugins.', 'ee-simple-file-list-pro') . '</li>
-		<li><a target="_blank" href="https://simplefilelist.com/how-to-organize-your-files-into-folders/">' . __('How to Organize Your Files into Folders', 'ee-simple-file-list-pro') . '</a></li>
-		<li><a target="_blank" href="https://simplefilelist.com/add-folder-support/">' . __('See the Demo', 'ee-simple-file-list-pro') . '</a></li>
-	</ul>
-	
-	<p class="eeCentered">' . $eeSFL_Button . '</p>
-	
-	<br class="clearing" />
-
-	<hr />';
-	
-}
 	
 if(!$eeSFLS) {
 		
