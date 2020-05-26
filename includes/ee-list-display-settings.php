@@ -77,45 +77,45 @@ $eeOutput .= '
 		
 		<fieldset>
 		
-		<h3>' . __('Folder Options', 'ee-simple-file-list') . '</h3>';
+		<h3>' . __('Folder Options', 'ee-simple-file-list-pro') . '</h3>';
 
 		// Show or Hide Bread Crumb	
-		$eeOutput .= '<label for="eeShowBreadCrumb">' . __('Show Breadcrumb', 'ee-simple-file-list') . ':</label>
+		$eeOutput .= '<label for="eeShowBreadCrumb">' . __('Show Breadcrumb', 'ee-simple-file-list-pro') . ':</label>
 		<input type="checkbox" name="eeShowBreadCrumb" value="YES" id="eeShowBreadCrumb"';
 		
 		if($eeSFL_Config['ShowBreadCrumb'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 		
-		$eeOutput .= ' /> <p>' . __('Home / Folder 1 / Folder 2', 'ee-simple-file-list') . '</p>
+		$eeOutput .= ' /> <p>' . __('Home / Folder 1 / Folder 2', 'ee-simple-file-list-pro') . '</p>
 		
-		<div class="eeNote">' . __('Show the folder breadcrumb trail above the front-side list.', 'ee-simple-file-list') . '</div>
+		<div class="eeNote">' . __('Show the folder breadcrumb trail above the front-side list.', 'ee-simple-file-list-pro') . '</div>
 		
 		<br class=eeClearFix />';
 		
 		
 		
 		// Sort Folders First	
-		$eeOutput .= '<label for="eeFoldersFirst">' . __('Sort Folders First', 'ee-simple-file-list') . ':</label>
+		$eeOutput .= '<label for="eeFoldersFirst">' . __('Sort Folders First', 'ee-simple-file-list-pro') . ':</label>
 		<input type="checkbox" name="eeFoldersFirst" value="YES" id="eeFoldersFirst"';
 		
 		if($eeSFL_Config['FoldersFirst'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 		
-		$eeOutput .= ' /> <p>' . __('Group Folders Together', 'ee-simple-file-list') . '</p>
+		$eeOutput .= ' /> <p>' . __('Group Folders Together', 'ee-simple-file-list-pro') . '</p>
 		
-		<div class="eeNote">' . __('Shows the folders grouped together at the top of the list, rather than sorted along with the files.', 'ee-simple-file-list') . '</div>
+		<div class="eeNote">' . __('Shows the folders grouped together at the top of the list, rather than sorted along with the files.', 'ee-simple-file-list-pro') . '</div>
 		
 		<br class=eeClearFix />';
 		
 		
 		
 		// Calculate and Display the Folder's Size
-		$eeOutput .= '<label for="eeShowFolderSize">' . __('Show Folder Size', 'ee-simple-file-list') . ':</label>
+		$eeOutput .= '<label for="eeShowFolderSize">' . __('Show Folder Size', 'ee-simple-file-list-pro') . ':</label>
 		<input type="checkbox" name="eeShowFolderSize" value="YES" id="eeShowFolderSize"';
 		
 		if($eeSFL_Config['ShowFolderSize'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 		
-		$eeOutput .= ' /> <p>' . __('Calculate and Display the Folder Size', 'ee-simple-file-list') . '</p>
+		$eeOutput .= ' /> <p>' . __('Calculate and Display the Folder Size', 'ee-simple-file-list-pro') . '</p>
 		
-		<div class="eeNote">' . __('This may slow performance significantly if folders are very large.', 'ee-simple-file-list') . '</div>
+		<div class="eeNote">' . __('This may slow performance significantly if folders are very large.', 'ee-simple-file-list-pro') . '</div>
 		
 		<br class=eeClearFix />';
 		

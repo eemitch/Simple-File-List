@@ -39,13 +39,25 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 = List Features =
 
 * Limit access to only Admins or logged-in users, or hide the list and only show the uploader.
-* Add and manage your files from the Admin List.
+* Add and manage your files and folders from the Admin List.
 * Show columns for file date, size and a thumbnail for images and videos.
 * Add descriptions to files and optionally show them in your list.
 * Sort file by name, date or file size ... ascending or descending.
 * Thumbnail images are generated automatically for images and videos (ffMpeg required).
 * Send emails with links to your files to others.
 * Files are kept separate from the media library
+
+
+= File Folders =
+
+* Create unlimited levels of sub-folders.
+* Display different folders in different places on your site.
+* You can even show several different folders on the same page and within widgets.
+* Front-side users cannot navigate above the folder you specify.
+* Breadcrumb navigation indicates where you are.
+* Choose to sort folders first or sort along with the files.
+* Optionally display folder sizes.
+* Use a shortcode attribute to display specific folders on your pages.
 
 
 = Uploader Features =
@@ -76,6 +88,7 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * List Sort Order: sortorder="Descending or Ascending"
 * Hide Files: hidename="this-file.docx, that-folder"
 * Hide File Types: hidetype="psd, zip, folder"
+* Show a Specific Folder: showfolder="folderA/folderB"
 
 
 = Internationalized =
@@ -99,20 +112,6 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * Simple lightweight design, easy to style and customize.
 * Committed support from the developer, including internal support contact form.
 
-= ADD-ON - Folder Support (Optional) =
-
-* Create unlimited levels of sub-folders.
-* Use a shortcode attribute to display specific folders.
-** [eeSFL showfolder="folderA/folderB"]
-* Display different folders in different places on your site.
-* You can even show several different folders on the same page and within widgets.
-* Front-side users cannot navigate above the folder you specify.
-* Breadcrumb navigation indicates where you are.
-* Easily move files and folders as needed.
-* Rename folders and add descriptions, which can be shown in the file list.
-* Quickly delete any folder, along with all contents.
-* Choose to sort folders first or sort along with the files.
-* Optionally display folder sizes.
 
 = ADD-ON - Search & Pagination (Optional) =
 
@@ -184,7 +183,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.3.1 - Introducing Simple File List Pro
+* 5.0.1 - Now with Folders!
 
 
 == Screenshots ==
@@ -195,6 +194,12 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Changelog ==
+
+= 5.0.1 =
+* Integrated the Folder Extension into the main plugin.
+* More code improvements.
+* FREE auto-registration for extension users.
+** Simple File List Pro will soon require payment. All current extension users will receive free registration.
 
 = 4.3.1 =
 * Rebranded to Simple file List Pro.

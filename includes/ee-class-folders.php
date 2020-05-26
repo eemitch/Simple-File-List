@@ -289,7 +289,7 @@ class eeSFLF_class {
 			
 			$eeForm .= '
 			
-				<input class="button" type="submit" value="' . __('Create Folder', 'ee-simple-file-list') . '" />
+				<input class="button" type="submit" value="' . __('Create Folder', 'ee-simple-file-list-pro') . '" />
 					<input class="" type="text" name="eeSFLF_NewFolderName" value="" size="64" />
 			</form>';
 		
@@ -334,7 +334,7 @@ class eeSFLF_class {
 				$eeTrail .= '<div class="eeSFL_FolderBreadcrumb"><strong>';
 				
 				if(!$eeSFLF_ShortcodeFolder) {
-					$eeTrail .= '<a href="' . $eeSFLF_BaseURL . '">' . __('Home', 'ee-simple-file-list') . '</a> / '; // Never show the Home folder if a shortcode folder was used
+					$eeTrail .= '<a href="' . $eeSFLF_BaseURL . '">' . __('Home', 'ee-simple-file-list-pro') . '</a> / '; // Never show the Home folder if a shortcode folder was used
 				}
 				
 				$count = count($eeSFLF_FolderArray);
@@ -357,7 +357,7 @@ class eeSFLF_class {
 							
 							if($i != $count) {
 							
-								if($i == 1) { $folder = __('Home', 'ee-simple-file-list'); } // We are within a sub-folder, change base folder name to "Home"
+								if($i == 1) { $folder = __('Home', 'ee-simple-file-list-pro'); } // We are within a sub-folder, change base folder name to "Home"
 								
 								$eeTrail .= '<a href="' . $eeSFLF_BaseURL;
 								
@@ -373,7 +373,7 @@ class eeSFLF_class {
 							
 							} elseif($count == count($eeSFLF_OmitFolderArray)) { // We are in the base folder, change name to "Home"
 								
-								$eeTrail .= __('Home', 'ee-simple-file-list') . ' / ';
+								$eeTrail .= __('Home', 'ee-simple-file-list-pro') . ' / ';
 							}
 						
 						} else { // Back-side or front-side showing home folder
