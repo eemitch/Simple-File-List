@@ -319,17 +319,20 @@ class eeSFLF_class {
 					$eeSFLF_FolderArray = array($eeSFLF_ListFolder);
 				}
 				
-				
-				
 				// TO DO - $eeURL
 				$eeRequestURI =  filter_var( $_SERVER['REQUEST_URI'], FILTER_SANITIZE_STRING );
 				
 				// Strip these arguments
 				if(@$_GET['eeFront'] == 1) {
 					$eeRequestURI = remove_query_arg('eeFront', $eeRequestURI);
-					$eeRequestURI = urldecode($eeRequestURI);
-				} 
-				$eeSFLF_BaseURL = str_replace('eeFolder=' . $eeSFLF_ListFolder, '', $eeRequestURI);
+					$eeRequestURI = $eeRequestURI;
+				}
+				if(@$_GET['eeFolder']) {
+					$eeRequestURI = remove_query_arg('eeFolder', $eeRequestURI);
+					$eeRequestURI = $eeRequestURI;
+				}
+				
+				$eeSFLF_BaseURL = urldecode($eeRequestURI);
 				
 				$eeTrail .= '<div class="eeSFL_FolderBreadcrumb"><strong>';
 				
@@ -353,13 +356,11 @@ class eeSFLF_class {
 						
 						if($eeSFLF_ShortcodeFolder) { // Shortcode defined folder. Omit folders up to here
 							
-							// wp_die('Bang');
-							
 							if($i != $count) {
 							
 								if($i == 1) { $folder = __('Home', 'ee-simple-file-list-pro'); } // We are within a sub-folder, change base folder name to "Home"
 								
-								$eeTrail .= '<a href="' . $eeSFLF_BaseURL;
+								$eeTrail .= '<a href="' . eeSFL_AppendProperUrlOp($eeSFLF_BaseURL);
 								
 								if($i > 1) { $eeTrail .= 'eeFolder=' . urlencode($path); }
 								
@@ -380,7 +381,7 @@ class eeSFLF_class {
 							
 							if($i != $count) {
 								
-								$eeTrail .= '<a href="' . $eeSFLF_BaseURL . 'eeFolder=' . urlencode($path) . '">' . $folder . '</a> / ';
+								$eeTrail .= '<a href="' . eeSFL_AppendProperUrlOp($eeSFLF_BaseURL) . 'eeFolder=' . urlencode($path) . '">' . $folder . '</a> / ';
 							
 							} else {
 								

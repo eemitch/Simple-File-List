@@ -11,7 +11,7 @@ class eeSFL_MainClass {
 	public $eePluginName = 'Simple File List Pro';
 	public $eePluginNameSlug = 'simple-file-list-pro';
 	public $eePluginSlug = 'ee-simple-file-list-pro';
-	public $eePluginMenuTitle = 'File List';
+	public $eePluginMenuTitle = 'File List Pro';
 	public $eePluginWebPage = 'http://simplefilelist.com';
 	public $eeAddOnsURL = 'https://get.simplefilelist.com/index.php';
 	// public $eeListID = 1;

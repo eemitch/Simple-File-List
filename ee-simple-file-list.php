@@ -104,7 +104,7 @@ function eeSFL_ALERT() {
 	        
 	        $eeOutput = '<div class="notice notice-warning is-dismissible">
 	            <p><strong>' . __('NOTICE', 'ee-simple-file-list') . '</strong><br />
-	            	' . __('You can safely remove the plugin; Simple File List Folders', 'ee-simple-file-list-pro') . ' &larr; <a href="https://simplefilelist.com/introducing-simple-file-list-pro/">' .  __('More Info', 'ee-simple-file-list-pro') . '</a> :-)</p>
+	            	' . __('You can safely remove the plugin; Simple File List Folders', 'ee-simple-file-list-pro') . ' ' . __('These functions are now included within Simple File List Pro.', 'simple-file-list') . ' &rarr; <a href="https://simplefilelist.com/introducing-simple-file-list-pro/">' .  __('More Info', 'ee-simple-file-list-pro') . '</a></p>
 	            </div>';
 	            
 	        echo $eeOutput;

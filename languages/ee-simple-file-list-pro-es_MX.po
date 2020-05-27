@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2020-05-26 16:55-0500\n"
-"PO-Revision-Date: 2020-05-26 17:11-0500\n"
+"POT-Creation-Date: 2020-05-27 11:46-0500\n"
+"PO-Revision-Date: 2020-05-27 11:52-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_MX\n"
@@ -37,7 +37,7 @@ msgstr "Autor"
 msgid "Get Help"
 msgstr "Obtener Ayuda"
 
-#: ee-admin-page.php:82 ee-simple-file-list.php:951
+#: ee-admin-page.php:82 ee-simple-file-list.php:977
 msgid "Settings"
 msgstr "Ajuste de carga de Archivos"
 
@@ -243,31 +243,49 @@ msgstr "Añadir más archivos"
 msgid "Upload some files and they will appear here."
 msgstr "Sube algunos archivos y aparecerán aquí."
 
-#: ee-simple-file-list.php:156
+#: ee-simple-file-list.php:106
+msgid "NOTICE"
+msgstr "AVISO"
+
+#: ee-simple-file-list.php:107
+msgid "You can safely remove the plugin; Simple File List Folders"
+msgstr ""
+"Puedes quitar el plugin de forma segura; Carpetas de lista de archivos "
+"simples"
+
+#: ee-simple-file-list.php:107
+msgid "These functions are now included within Simple File List Pro."
+msgstr "Estas funciones están ahora incluidas en Simple File List Pro."
+
+#: ee-simple-file-list.php:107
+msgid "More Info"
+msgstr "Más Información"
+
+#: ee-simple-file-list.php:182
 msgid "EXTENSION DISABLED"
 msgstr "EXTENSIÓN DESACTIVADA"
 
-#: ee-simple-file-list.php:157
+#: ee-simple-file-list.php:183
 msgid "Please go to Plugins and update the extension to the latest version."
 msgstr "Vaya a Plugins y actualice la extensión a la última versión."
 
-#: ee-simple-file-list.php:798
+#: ee-simple-file-list.php:824
 msgid "File Delete Failed"
 msgstr "Error al eliminar archivos"
 
-#: ee-simple-file-list.php:805
+#: ee-simple-file-list.php:831
 msgid "Folder Delete Failed"
 msgstr "Error al eliminar carpetas"
 
-#: ee-simple-file-list.php:950
+#: ee-simple-file-list.php:976
 msgid "Admin List"
 msgstr "Lista de administradores"
 
-#: ee-simple-file-list.php:1016
+#: ee-simple-file-list.php:1042
 msgid "File Access"
 msgstr "Acceso a archivos"
 
-#: ee-simple-file-list.php:1017
+#: ee-simple-file-list.php:1043
 msgid "File Access Manager"
 msgstr "Administrador de acceso a archivos"
 
@@ -331,8 +349,8 @@ msgstr "Extensión de acceso"
 msgid "Create Folder"
 msgstr "Crear carpeta"
 
-#: includes/ee-class-folders.php:337 includes/ee-class-folders.php:360
-#: includes/ee-class-folders.php:376
+#: includes/ee-class-folders.php:340 includes/ee-class-folders.php:361
+#: includes/ee-class-folders.php:377
 msgid "Home"
 msgstr "Inicio"
 

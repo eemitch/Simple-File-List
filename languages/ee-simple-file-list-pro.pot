@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2020-05-26 16:55-0500\n"
+"POT-Creation-Date: 2020-05-27 11:46-0500\n"
 "PO-Revision-Date: 2019-02-08 12:43-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -37,7 +37,7 @@ msgstr ""
 msgid "Get Help"
 msgstr ""
 
-#: ee-admin-page.php:82 ee-simple-file-list.php:951
+#: ee-admin-page.php:82 ee-simple-file-list.php:977
 msgid "Settings"
 msgstr ""
 
@@ -240,31 +240,47 @@ msgstr ""
 msgid "Upload some files and they will appear here."
 msgstr ""
 
-#: ee-simple-file-list.php:156
+#: ee-simple-file-list.php:106
+msgid "NOTICE"
+msgstr ""
+
+#: ee-simple-file-list.php:107
+msgid "You can safely remove the plugin; Simple File List Folders"
+msgstr ""
+
+#: ee-simple-file-list.php:107
+msgid "These functions are now included within Simple File List Pro."
+msgstr ""
+
+#: ee-simple-file-list.php:107
+msgid "More Info"
+msgstr ""
+
+#: ee-simple-file-list.php:182
 msgid "EXTENSION DISABLED"
 msgstr ""
 
-#: ee-simple-file-list.php:157
+#: ee-simple-file-list.php:183
 msgid "Please go to Plugins and update the extension to the latest version."
 msgstr ""
 
-#: ee-simple-file-list.php:798
+#: ee-simple-file-list.php:824
 msgid "File Delete Failed"
 msgstr ""
 
-#: ee-simple-file-list.php:805
+#: ee-simple-file-list.php:831
 msgid "Folder Delete Failed"
 msgstr ""
 
-#: ee-simple-file-list.php:950
+#: ee-simple-file-list.php:976
 msgid "Admin List"
 msgstr ""
 
-#: ee-simple-file-list.php:1016
+#: ee-simple-file-list.php:1042
 msgid "File Access"
 msgstr ""
 
-#: ee-simple-file-list.php:1017
+#: ee-simple-file-list.php:1043
 msgid "File Access Manager"
 msgstr ""
 
@@ -324,8 +340,8 @@ msgstr ""
 msgid "Create Folder"
 msgstr ""
 
-#: includes/ee-class-folders.php:337 includes/ee-class-folders.php:360
-#: includes/ee-class-folders.php:376
+#: includes/ee-class-folders.php:340 includes/ee-class-folders.php:361
+#: includes/ee-class-folders.php:377
 msgid "Home"
 msgstr ""
 
