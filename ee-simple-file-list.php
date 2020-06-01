@@ -1043,13 +1043,13 @@ add_action( 'admin_menu', 'eeSFL_AdminMenu' );
 // Perform DB Update
 function eeSFL_UpdateThisPlugin() {
 	
-	global $eeSFL,$eeSFL_Config, $eeSFL_Env, $eeSFL_Log;
+	global $eeSFL, $eeSFL_Env, $eeSFL_Log;
 	
 	eeSFL_Registration(); // Register for free if you have an extension registered.
 	
 	$eeSFL_DB_Version = get_option('eeSFL-DB-Version');
 	
-	if($eeSFL_DB_Version) {
+	if($eeSFL_DB_Version) { // This is version 4.x
 		
 		if( version_compare( $eeSFL_DB_Version, '4.2', '<') ) { 
 			
@@ -1058,7 +1058,10 @@ function eeSFL_UpdateThisPlugin() {
 		
 		if(version_compare( $eeSFL_DB_Version, '4.3', '<')) { // NOW WITH FOLDERS !
 			
-			if(!@$eeSFL_Config['FoldersFirst']) { // If no folder settings, use default settings
+			$eeSFL_Settings = get_option('eeSFL-Settings');
+			$eeSFL_Config = $eeSFL_Settings[1];
+			
+			if(!isset($eeSFL_Config['FoldersFirst'])) { // If no folder settings, use default settings
 				
 				$eeSFL_Config['ShowBreadCrumb'] = 'YES'; // Set defaults
 				$eeSFL_Config['FoldersFirst'] = 'NO';
@@ -1068,12 +1071,9 @@ function eeSFL_UpdateThisPlugin() {
 	
 				update_option('eeSFL-Settings', $eeSettings );
 			}
-			
-			update_option('eeSFL-DB-Version', '4.2');
-			
-			return;
-		
 		}
+			
+		update_option('eeSFL-DB-Version', '4.3');
 		
 		return; // We're done for now
 	}
