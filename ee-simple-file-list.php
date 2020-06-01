@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 // SFL Versions
 define('eeSFL_Version', '5.0.1'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 
-define('eeSFL_DB_Version', '4.2'); // Database structure version - used for eeSFL_VersionCheck()
+define('eeSFL_DB_Version', '4.3'); // Database structure version - used for eeSFL_VersionCheck()
 define('eeSFL_Cache_Version', '1'); // Cache-Buster version for static files - used when updating CSS/JS
 
 
@@ -1043,7 +1043,7 @@ add_action( 'admin_menu', 'eeSFL_AdminMenu' );
 // Perform DB Update
 function eeSFL_UpdateThisPlugin() {
 	
-	global $eeSFL, $eeSFL_Env, $eeSFL_Log;
+	global $eeSFL,$eeSFL_Config, $eeSFL_Env, $eeSFL_Log;
 	
 	eeSFL_Registration(); // Register for free if you have an extension registered.
 	
@@ -1054,6 +1054,9 @@ function eeSFL_UpdateThisPlugin() {
 		if( version_compare( $eeSFL_DB_Version, '4.2', '<') ) { 
 			
 			delete_transient('eeSFL_FileList-1'); // Force a re-scan because now we're storing a sorted file array in 4.2.
+		}
+		
+		if(version_compare( $eeSFL_DB_Version, '4.3', '<')) { // NOW WITH FOLDERS !
 			
 			if(!@$eeSFL_Config['FoldersFirst']) { // If no folder settings, use default settings
 				
@@ -1070,10 +1073,9 @@ function eeSFL_UpdateThisPlugin() {
 			
 			return;
 		
-		} else {
-	
-			return; // Nothing more yet
 		}
+		
+		return; // We're done for now
 	}
 	
 	// New install or update from an old version
