@@ -604,35 +604,23 @@ function eeSFL_FileUploader() {
 		return 'Missing File Input';
 	}
 	
-	// Who should be uploading?
-	switch ($eeSFL_Config['AllowUploads']) {
-	    case 'YES':
-	        break; // Allow it, even if it's dangerous.
-	    case 'USER':
-	        // Allow it if logged in at all
-	        if( get_current_user_id() ) { break; } else { return; }
-	    case 'ADMIN':
-	        // Allow it if admin only.
-	        if(current_user_can('manage_options')) { break; } else { return; }
-	        break;
-		default:
-			return;
-	}
+	if( !is_admin() ) { // Front-side protections
 	
-	// Who should be uploading?
-	switch ($eeSFL_Config['AllowUploads']) {
-	    case 'YES':
-	        break; // Allow it, even if it's dangerous.
-	    case 'USER':
-	        // Show it if logged in at all
-	        if( get_current_user_id() ) { break; } else { return; }
-	    case 'ADMIN':
-	        // Show it if admin only.
-	        if(current_user_can('manage_options')) { break; } else { return; }
-	        break;
-		default:
-			return;
-	}
+		// Who should be uploading?
+		switch ($eeSFL_Config['AllowUploads']) {
+		    case 'YES':
+		        break; // Allow it, even if it's dangerous.
+		    case 'USER':
+		        // Allow it if logged in at all
+		        if( get_current_user_id() ) { break; } else { return 'ERROR 97'; }
+		    case 'ADMIN':
+		        // Allow it if admin only.
+		        if(current_user_can('manage_options')) { break; } else { return 'ERROR 97'; }
+		        break;
+			default: // Don't allow at all
+				return 'ERROR 97';
+		}
+	} 
 	
 	// The List ID
 	if(@$_POST['eeSFL_ID']) { $eeSFL_ID = filter_var($_POST['eeSFL_ID'], FILTER_VALIDATE_INT); } else { $eeSFL_ID = FALSE; }
@@ -1066,6 +1054,17 @@ function eeSFL_UpdateThisPlugin() {
 		if( version_compare( $eeSFL_DB_Version, '4.2', '<') ) { 
 			
 			delete_transient('eeSFL_FileList-1'); // Force a re-scan because now we're storing a sorted file array in 4.2.
+			
+			if(!@$eeSFL_Config['FoldersFirst']) { // If no folder settings, use default settings
+				
+				$eeSFL_Config['ShowBreadCrumb'] = 'YES'; // Set defaults
+				$eeSFL_Config['FoldersFirst'] = 'NO';
+				$eeSFL_Config['ShowFolderSize'] = 'YES';
+				
+				$eeSettings[1] = $eeSFL_Config;
+	
+				update_option('eeSFL-Settings', $eeSettings );
+			}
 			
 			update_option('eeSFL-DB-Version', '4.2');
 			
