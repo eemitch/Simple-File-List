@@ -25,7 +25,7 @@ $eeOutput .= '<article class="eeSupp eeExtensions">
 
 	<h2>' . __('Add Feature Extensions', 'ee-simple-file-list-pro') . '</h2>
 	
-	<p>' . __('Extensions add extended feature support to the free version of Simple File List. They are designed to improve the management of larger, more complex, file lists.', 'ee-simple-file-list-pro') . '</p>
+	<p>' . __('Extensions add extended feature support to Simple File List. They are designed to improve the management of larger, more complex, file lists.', 'ee-simple-file-list-pro') . '</p>
 	
 	<hr />';
 	

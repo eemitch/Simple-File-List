@@ -104,7 +104,7 @@ function eeSFL_ALERT() {
 	        
 	        $eeOutput = '<div class="notice notice-warning is-dismissible">
 	            <p><strong>' . __('NOTICE', 'ee-simple-file-list') . '</strong><br />
-	            	' . __('You can safely remove the plugin; Simple File List Folders', 'ee-simple-file-list-pro') . ' ' . __('These functions are now included within Simple File List Pro.', 'simple-file-list') . ' &rarr; <a href="https://simplefilelist.com/introducing-simple-file-list-pro/">' .  __('More Info', 'ee-simple-file-list-pro') . '</a></p>
+	            	' . __('You can safely remove the plugin; Simple File List Folders.', 'ee-simple-file-list-pro') . ' ' . __('These functions are now included within Simple File List Pro.', 'simple-file-list') . ' &rarr; <a href="https://simplefilelist.com/introducing-simple-file-list-pro/">' .  __('More Info', 'ee-simple-file-list-pro') . '</a></p>
 	            </div>';
 	            
 	        echo $eeOutput;
@@ -1387,7 +1387,7 @@ function eeSFL_Registration() {
 // Plugin Activation ==========================================================
 function eeSFL_Activate() {
 	
-	@wp_mail('support@simplefilelist.com', 'SFL Activation', 'Simple File List activated on ' . $_SERVER['HTTP_HOST'] . ' (' . get_option('admin_email') . ')');
+	@wp_mail('support@simplefilelist.com', 'SFL Activation', 'Simple File List ' . eeSFL_Version . ' activated on ' . $_SERVER['HTTP_HOST'] . ' (' . get_option('admin_email') . ')');
 	
 	return TRUE;
 }
