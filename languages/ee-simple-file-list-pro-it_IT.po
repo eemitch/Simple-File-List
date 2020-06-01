@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2020-05-27 11:46-0500\n"
-"PO-Revision-Date: 2020-05-27 11:54-0500\n"
+"POT-Creation-Date: 2020-06-01 13:23-0500\n"
+"PO-Revision-Date: 2020-06-01 13:27-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: it_IT\n"
@@ -37,7 +37,7 @@ msgstr "Autore"
 msgid "Get Help"
 msgstr "Chiedi Supporto"
 
-#: ee-admin-page.php:82 ee-simple-file-list.php:977
+#: ee-admin-page.php:82 ee-simple-file-list.php:965
 msgid "Settings"
 msgstr "Impostazioni"
 
@@ -248,9 +248,9 @@ msgid "NOTICE"
 msgstr "AVVISO"
 
 #: ee-simple-file-list.php:107
-msgid "You can safely remove the plugin; Simple File List Folders"
+msgid "You can safely remove the plugin; Simple File List Folders."
 msgstr ""
-"È possibile rimuovere il plugin in modo sicuro; Simple File List Folders"
+"È possibile rimuovere il plugin in modo sicuro; Simple File List Folders."
 
 #: ee-simple-file-list.php:107
 msgid "These functions are now included within Simple File List Pro."
@@ -270,23 +270,23 @@ msgstr ""
 "Si prega di andare a Plugins e aggiornare l'estensione alla versione più "
 "recente."
 
-#: ee-simple-file-list.php:824
+#: ee-simple-file-list.php:812
 msgid "File Delete Failed"
 msgstr "Eliminazione file non riuscita"
 
-#: ee-simple-file-list.php:831
+#: ee-simple-file-list.php:819
 msgid "Folder Delete Failed"
 msgstr "Eliminazione cartella non riuscita"
 
-#: ee-simple-file-list.php:976
+#: ee-simple-file-list.php:964
 msgid "Admin List"
 msgstr "Elenco amministratori"
 
-#: ee-simple-file-list.php:1042
+#: ee-simple-file-list.php:1030
 msgid "File Access"
 msgstr "Accesso ai file"
 
-#: ee-simple-file-list.php:1043
+#: ee-simple-file-list.php:1031
 msgid "File Access Manager"
 msgstr "Gestione accesso ai file"
 
@@ -1102,13 +1102,12 @@ msgstr "Aggiunta di estensioni di funzionalità"
 
 #: support/ee-get-extensions.php:28
 msgid ""
-"Extensions add extended feature support to the free version of Simple File "
-"List. They are designed to improve the management of larger, more complex, "
-"file lists."
+"Extensions add extended feature support to Simple File List. They are "
+"designed to improve the management of larger, more complex, file lists."
 msgstr ""
-"Le estensioni aggiungono il supporto delle funzionalità estese alla versione "
-"gratuita di Simple File List. Sono progettati per migliorare la gestione di "
-"elenchi di file più grandi e complessi."
+"Le estensioni aggiungono il supporto di funzionalità estese a Simple File "
+"List. Sono progettate per migliorare la gestione di liste di file più grandi "
+"e complesse."
 
 #: support/ee-get-extensions.php:35
 msgid "Add Search &amp; Pagination Now"
