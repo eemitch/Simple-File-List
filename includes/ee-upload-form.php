@@ -4,14 +4,19 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_UploadNonce = wp_create_nonce('ee-simple-file-list-pro-upload'); // Checked in the upload engine.
+$eeSFL_UploadNonce = wp_create_nonce('ee-simple-file-list-upload'); // Checked in the upload engine.
 global $eeSFL_ListRun;
 $eeSFL_Log['Add Files'][] = 'Loaded: ee-uploader';
 
-if(@$_REQUEST['eeFolder'] AND $eeSFL_ListRun == 1) { // Adjust the path based on REQUEST arg
-	$eeSFLF_ListFolder = sanitize_text_field(urldecode($_REQUEST['eeFolder'])) . '/'; 
-} elseif( strlen(@$eeSFLF_ShortcodeFolder) ) {
-	$eeSFLF_ListFolder = str_replace('&#34;', '', $eeSFLF_ShortcodeFolder) . '/'; // Fix for uploading to draft status page
+// Extension Check
+if($eeSFLF) {
+	if(@$_REQUEST['eeFolder'] AND $eeSFL_ListRun == 1) { // Adjust the path based on REQUEST arg
+		$eeSFLF_ListFolder = sanitize_text_field(urldecode($_REQUEST['eeFolder'])) . '/'; 
+	} elseif( strlen(@$eeSFLF_ShortcodeFolder) ) {
+		$eeSFLF_ListFolder = str_replace('&#34;', '', $eeSFLF_ShortcodeFolder) . '/'; // Fix for uploading to draft status page
+	} else {
+		$eeSFLF_ListFolder = FALSE;
+	}
 } else {
 	$eeSFLF_ListFolder = FALSE;
 }
@@ -49,15 +54,15 @@ if(@$eeSFL_Config['FileListDir']) {
 		
 		if($eeSFL_Env['wpUserID'] > 0) { $eeOutput .= '<input type="hidden" name="eeSFL_FileOwner" value="' . $eeSFL_Env['wpUserID'] . '" id="eeSFL_FileOwner" />'; }
 			
-		if($eeSFLF_ListFolder) { $eeOutput .= '
-			<input type="hidden" name="eeSFL_UploadFolder" value="' . urlencode($eeSFLF_ListFolder) . '" id="eeSFL_UploadFolder" />
+		if($eeSFLF AND $eeSFLF_ListFolder) { $eeOutput .= '
+			<input type="hidden" name="eeSFLF_UploadFolder" value="' . urlencode($eeSFLF_ListFolder) . '" id="eeSFLF_UploadFolder" />
 			';
 		}
-		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-pro-upload', 'ee-simple-file-list-pro-upload-nonce', TRUE, FALSE);
+		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload', 'ee-simple-file-list-upload-nonce', TRUE, FALSE);
 	
 		$eeOutput .= '
 		
-		<h2 class="eeSFL_UploadFilesTitle">' . __('Upload Files', 'ee-simple-file-list-pro') . '</h2>
+		<h2 class="eeSFL_UploadFilesTitle">' . __('Upload Files', 'ee-simple-file-list') . '</h2>
 		
 		<div id="eeSFL_FileDropZone" ondrop="eeSFL_DropHandler(event);" ondragover="eeSFL_DragOverHandler(event);">';
 		
@@ -87,21 +92,21 @@ if(@$eeSFL_Config['FileListDir']) {
 			
 		</script>
 		
-		<span id="eeSFL_UploadProgress"><em>' . __('Processing the Upload', 'ee-simple-file-list-pro') . '</em></span>
+		<span id="eeSFL_UploadProgress"><em>' . __('Processing the Upload', 'ee-simple-file-list') . '</em></span>
 		
-		<button type="button" class="button eeButton" name="eeSFL_UploadGo" id="eeSFL_UploadGo" onclick="eeUploadProcessor(eeSFL_FileObjects);">' . __('Upload', 'ee-simple-file-list-pro') . '</button>';
+		<button type="button" class="button eeButton" name="eeSFL_UploadGo" id="eeSFL_UploadGo" onclick="eeUploadProcessor(eeSFL_FileObjects);">' . __('Upload', 'ee-simple-file-list') . '</button>';
 		
 		if($eeSFL_Config['ShowUploadLimits'] == 'YES' OR $eeAdmin) {
 		
-			$eeOutput .= '<p class="sfl_instuctions">' . __('File Limit', 'ee-simple-file-list-pro') . ': ' . $eeSFL_Config['UploadLimit'] . ' ' . __('files', 'ee-simple-file-list-pro') . '<br />
+			$eeOutput .= '<p class="sfl_instuctions">' . __('File Limit', 'ee-simple-file-list') . ': ' . $eeSFL_Config['UploadLimit'] . ' ' . __('files', 'ee-simple-file-list') . '<br />
 			
-			' . __('Size Limit', 'ee-simple-file-list-pro') . ': ' . $eeSFL_Config['UploadMaxFileSize'] . ' MB
+			' . __('Size Limit', 'ee-simple-file-list') . ': ' . $eeSFL_Config['UploadMaxFileSize'] . ' MB
 			
-			' . __('per file', 'ee-simple-file-list-pro') . '.<br />
+			' . __('per file', 'ee-simple-file-list') . '.<br />
 			
-			' . __('Types Allowed', 'ee-simple-file-list-pro') . ': ' . str_replace(',', ', ', $eeSFL_Config['FileFormats'])  . '<br />
+			' . __('Types Allowed', 'ee-simple-file-list') . ': ' . str_replace(',', ', ', $eeSFL_Config['FileFormats'])  . '<br />
 			
-			' . __('Drag-and-drop files here or use the Browse button.', 'ee-simple-file-list-pro') . '</p>';
+			' . __('Drag-and-drop files here or use the Browse button.', 'ee-simple-file-list') . '</p>';
 		
 		} else {
 			
@@ -118,7 +123,7 @@ if(@$eeSFL_Config['FileListDir']) {
 	
 	
 } else {
-	$eeOutput .= __('No upload directory configured.', 'ee-simple-file-list-pro');
+	$eeOutput .= __('No upload directory configured.', 'ee-simple-file-list');
 	$eeSFL_Log['errors'] = 'No upload directory configured.';
 }
 

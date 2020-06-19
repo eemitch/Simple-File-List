@@ -9,7 +9,7 @@ $eeSFL_Log['Admin'][] = 'Loaded: ee-admin-page';
 function eeSFL_ManageLists() {
 	
 	global $eeSFL, $eeSFL_Log, $eeSFL_DevMode, $eeSFL_ID, $eeSFL_Config, $eeSFL_Env, $eeSFL_ListRun;
-	global $eeSFLF, $eeSFLS, $eeSFLA, $eeSFLA_Settings; // Extensions
+	global $eeSFLF, $eeSFLS; // Extensions
 	
 	$eeSFL_Files = FALSE;
 	$eeForceSort = FALSE; // Only used in shortcode
@@ -22,27 +22,13 @@ function eeSFL_ManageLists() {
 		return FALSE;
 	}
 	
-	// Extension Check
-    if($eeSFLA) { 
-	    if($eeSFLA_Settings['FirstRun'] == 'YES') { // Check for first plugin run
-		    $eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-		    include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_Installing.php');
-		}
-	}
-	
 	// Begin Output
 	$eeOutput = '
 	
 	<div class="eeSFL_Admin wrap">
 	<div class="eeSFL" id="eeSFL">'; 
 	
-	if($eeSFL_DevMode) { $eeOutput .= '<p class="eeAlert">' . __('DEVELOPMENT MODE ON', 'ee-simple-file-list-pro') . '</p>'; }
-	
-	// Extension Check
-	if($eeSFLA) {
-		$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_ListNavigation.php'); // List Navigator
-	}
+	if($eeSFL_DevMode) { $eeOutput .= '<p class="eeAlert">' . __('DEVELOPMENT MODE ON', 'ee-simple-file-list') . '</p>'; }
 	
 	// Get the new tab's query string value. We will only use values to display tabs that we are expecting.
 	if( isset( $_GET[ 'tab' ] ) ) { $active_tab = sanitize_text_field($_GET[ 'tab' ]); } else { $active_tab = 'file_list'; }
@@ -55,44 +41,35 @@ function eeSFL_ManageLists() {
 	$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=file_list&eeListID=' . $eeSFL_ID . '" class="nav-tab tabList ';  
 	if($active_tab == 'file_list') {$eeOutput .= '  eeActiveTab ';}    
     $active_tab == 'file_list' ? 'nav-tab-active' : '';
-    $eeOutput .= $active_tab . '">';
-    
-    if($eeSFLA) { $eeOutput .= stripslashes($eeSFL_Config['ListTitle']); } 
-    	else { $eeOutput .= __('File List', 'ee-simple-file-list-pro'); }
-    
-    $eeOutput .= '</a>';
-
+    $eeOutput .= $active_tab . '">' . __('File List', 'ee-simple-file-list') . '</a>';
     
     // Author
     $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=author&eeListID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
 	if($active_tab == 'author') {$eeOutput .= '  eeActiveTab '; }  
     $active_tab == 'author' ? 'nav-tab-active' : ''; 
-    $eeOutput .= $active_tab . '">' . __('Author', 'ee-simple-file-list-pro') . '</a>';
+    $eeOutput .= $active_tab . '">' . __('Author', 'ee-simple-file-list') . '</a>';
     
 	// The Help / Email Form Page
-    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=help&eeListID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
-	if($active_tab == 'help') {$eeOutput .= '  eeActiveTab '; }  
-    $active_tab == 'help' ? 'nav-tab-active' : ''; 
-    $eeOutput .= $active_tab . '">' . __('Get Help', 'ee-simple-file-list-pro') . '</a>';
+    $eeOutput .= '<a href="mailto:support@simplefilelist.com" class="nav-tab tabSupport">' . __('Get Help', 'ee-simple-file-list') . '</a>';
     
     // Settings
     $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&eeListID=' . $eeSFL_ID . '" class="nav-tab tabSettings ';   
 	if($active_tab == 'settings') {$eeOutput .= '  eeActiveTab '; }  
     $active_tab == 'settings' ? 'nav-tab-active' : ''; 
-    $eeOutput .= $active_tab . '">' . __('Settings', 'ee-simple-file-list-pro') . '</a>';
+    $eeOutput .= $active_tab . '">' . __('Settings', 'ee-simple-file-list') . '</a>';
     
     // Shortcode Builder
     $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=shortcode&eeListID=' . $eeSFL_ID . '" class="nav-tab tabSettings ';  
 	if($active_tab == 'shortcode') {$eeOutput .= '  eeActiveTab '; }   
     $active_tab == 'support' ? 'nav-tab-active' : ''; 
-    $eeOutput .= $active_tab . '">' . __('Create Shortcode', 'ee-simple-file-list-pro') . '</a>';
+    $eeOutput .= $active_tab . '">' . __('Create Shortcode', 'ee-simple-file-list') . '</a>';
     
     // Get Extensions
-    if(!$eeSFLS) {
-	    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=extensions&eeListID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
-		if($active_tab == 'extensions') {$eeOutput .= '  eeActiveTab '; }  
-	    $active_tab == 'extensions' ? 'nav-tab-active' : ''; 
-	    $eeOutput .= $active_tab . '">' . __('Add Features', 'ee-simple-file-list-pro') . '</a>';
+    if(!$eeSFLF OR !$eeSFLS) {
+	    $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=pro&eeListID=' . $eeSFL_ID . '" class="nav-tab tabSupport ';   
+		if($active_tab == 'pro') {$eeOutput .= '  eeActiveTab '; }  
+	    $active_tab == 'pro' ? 'nav-tab-active' : ''; 
+	    $eeOutput .= $active_tab . '">' . __('Get Pro', 'ee-simple-file-list') . '</a>';
     }
     
     $eeOutput .= '</h2>'; // END Main Tabs   
@@ -108,76 +85,50 @@ function eeSFL_ManageLists() {
 		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
 		include($eeSFL_Env['pluginDir'] . '/includes/ee-upload-check.php');
 		
-		$eeSFL_Nonce = wp_create_nonce('eeInclude');
+		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
 		include($eeSFL_Env['pluginDir'] . 'includes/ee-upload-form.php'); // The Uploader
 		
 		$eeOutput .= '</div>';
 		
-		$eeSFL_Nonce = wp_create_nonce('eeInclude');
+		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
 		include($eeSFL_Env['pluginDir'] . 'ee-list-display.php'); // The File List		
 	
 	} elseif($active_tab == 'settings') {
 		
 		// Sub Tabs
 		if( isset( $_GET[ 'subtab' ] ) ) { $active_subtab = sanitize_text_field($_GET['subtab']); } else { $active_subtab = 'list_settings'; }
-		
-		// Extension Check
-    	if($eeSFLA) { // Creating or Editing a File List
-	    	$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-	    	if(@$_POST['eeCreateEditList'] AND $_GET['tab'] == 'settings') {
-	    		include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_CreateEditListProcess.php'); // Form processor
-	    	}
 	    	
-    	} else {
-	    	$eeOutput .= '<p class="eeTitle">' . __('File List Settings', 'ee-simple-file-list-pro') . '</p>';
-    	}
+    	$eeOutput .= '<p class="eeTitle">' . __('File List Settings', 'ee-simple-file-list') . '</p>
     	
-    	$eeOutput .= '<h2 class="nav-tab-wrapper">';
+    	<h2 class="nav-tab-wrapper">';
 		
 		// List Settings
 		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=list_settings&eeListID=' . $eeSFL_ID . '" class="nav-tab ';  
 		if($active_subtab == 'list_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'list_settings' ? 'nav-tab-active' : '';    
-	    $eeOutput .= $active_subtab . '">' . __('File List Settings', 'ee-simple-file-list-pro') . '</a>';
-		
-		// Extension Check
-		if($eeSFLA) {
-			if($eeSFLA_Settings['FirstRun'] == 'NO') {
-				$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=list_access&eeListID=' . $eeSFL_ID . '" class="nav-tab ';  
-				if($active_subtab == 'list_access') {$eeOutput .= '  eeActiveTab ';}    
-			    $active_subtab == 'list_access' ? 'nav-tab-active' : '';    
-			    $eeOutput .= $active_subtab . '">' . __('List Access Settings', 'ee-simple-file-list-pro') . '</a>';
-			} else {
-				$eeSFLA = FALSE;
-			}
-		}
+	    $eeOutput .= $active_subtab . '">' . __('File List Settings', 'ee-simple-file-list') . '</a>';
 	    
 	    // Uploader Settings
 		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=uploader_settings&eeListID=' . $eeSFL_ID . '" class="nav-tab ';  
 		if($active_subtab == 'uploader_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'uploader_settings' ? 'nav-tab-active' : '';    
-	    $eeOutput .= $active_subtab . '">' . __('File Upload Settings', 'ee-simple-file-list-pro') . '</a>';
+	    $eeOutput .= $active_subtab . '">' . __('File Upload Settings', 'ee-simple-file-list') . '</a>';
 	    
 	    // Display Settings
 		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=display_settings&eeListID=' . $eeSFL_ID . '" class="nav-tab ';  
 		if($active_subtab == 'display_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'display_settings' ? 'nav-tab-active' : '';    
-	    $eeOutput .= $active_subtab . '">' . __('Display Settings', 'ee-simple-file-list-pro') . '</a>';
+	    $eeOutput .= $active_subtab . '">' . __('Display Settings', 'ee-simple-file-list') . '</a>';
 	    
 	    // Notifications Settings
 		$eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=email_settings&eeListID=' . $eeSFL_ID . '" class="nav-tab ';  
 		if($active_subtab == 'email_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'email_settings' ? 'nav-tab-active' : '';    
-	    $eeOutput .= $active_subtab . '">' . __('Notification Settings', 'ee-simple-file-list-pro') . '</a>';
+	    $eeOutput .= $active_subtab . '">' . __('Notification Settings', 'ee-simple-file-list') . '</a>';
 	    
 	    $eeOutput .= '</h2>'; // END Subtabs
 	    
-		if($eeSFLA AND $active_subtab == 'list_access') { // Extension Check
-			
-			$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-			include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_ListAccessSettingsDisplay.php');
-		
-		} elseif($active_subtab == 'uploader_settings') {
+		if($active_subtab == 'uploader_settings') {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
 			include($eeSFL_Env['pluginDir'] . 'includes/ee-upload-settings.php'); // The Uploader Settings
@@ -205,11 +156,11 @@ function eeSFL_ManageLists() {
 		include($eeSFL_Env['pluginDir'] . 'includes/ee-shortcode-builder.php');
 	
 	
-	} elseif($active_tab == 'extensions') { // Instructions Tab Display...
+	} elseif($active_tab == 'pro') { // Instructions Tab Display...
 			
 		// Get the sales page
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		include($eeSFL_Env['pluginDir'] . 'support/ee-get-extensions.php');
+		include($eeSFL_Env['pluginDir'] . 'includes/ee-get-pro.php');
 	
 	
 	} elseif($active_tab == 'help') { // Email Support Tab Display...
@@ -225,20 +176,13 @@ function eeSFL_ManageLists() {
 					
 		// Get the support page
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		include($eeSFL_Env['pluginDir'] . 'support/ee-plugin-author.php');
+		include($eeSFL_Env['pluginDir'] . 'includes/ee-plugin-author.php');
 		
 	} // END Tab Content
 	
-	$eeSFL_Nonce = wp_create_nonce('eeInclude');
-	include($eeSFL_Env['pluginDir'] . 'includes/ee-admin-footer.php');
 	
-	// Extension Check
-	if($eeSFLA) { // Create/Edit List Overlay
-		if(@$_GET['subtab'] != 'list_access') {
-			$eeSFLA_Nonce = wp_create_nonce('eeSFLA'); // Security
-			include(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/eeSFLA_CreateList.php');	
-		}
-	}
+	$eeSFL_Nonce = wp_create_nonce('eeInclude');
+	include('includes/ee-admin-footer.php');
 	
 	$eeOutput .= '</div></div>';
 	
@@ -250,10 +194,7 @@ function eeSFL_ManageLists() {
 	
 	// Timer
 	$eeSFL_Time = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
-	$eeSFL_Log[] = 'Execution Time: ' . round($eeSFL_Time,3);
-	
-	// Write the log file to the Database
-	$eeSFL->eeSFL_WriteLogData($eeSFL_Log); 
+	$eeSFL_Log[] = 'Execution Time: ' . round($eeSFL_Time,3); 
 	
 	// Visual Logging
 	if($eeSFL_DevMode) { // Display the log at the bottom of the page.

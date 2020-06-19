@@ -5,7 +5,7 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit 
 
 $eeSFL_Log[] = 'Loaded: ee-plugin-instructions';
 
-// All the shortcodes we have with pre-defined options
+// All the shortcodes we have
 $eeSFL_ShortcodeArray = array(
 	'ShowList' => array('showlist', 'File List', 'YES|ADMIN|USER|NO'), 
 	'AllowUploads' => array('allowuploads',  'Uploader', 'YES|ADMIN|USER|NO'),
@@ -18,14 +18,14 @@ $eeSFL_ShortcodeArray = array(
 	'SortOrder' => array('sortorder', 'Sort Order', 'Descending|Ascending')
 );
 
-$eeChecked = '';
-$eeCheckmark = ' (' . __('Default', 'ee-simple-file-list-pro') . ')';
-
-// Extension Check
-if($eeSFLA) {
-	$eeOutput .= '
-	<script>var eeSFL_ID = ' . $eeSFL_ID . '</script>';
+if($eeSFLF) { 
+	$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
+	include(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_ShortcodeBuilder.php');
+	$eeSFL_ShortcodeAttributes[] = 'showfolder';
 }
+
+$eeChecked = '';
+$eeCheckmark = ' (' . __('Default', 'ee-simple-file-list') . ')';
 
 $eeOutput .= '
 
@@ -33,15 +33,15 @@ $eeOutput .= '
 
 <article class="eeSupp">
 
-	<a class="button eeRight" href="https://simplefilelist.com/shortcode/" target="_blank">' . __('Shortcode Documentation', 'ee-simple-file-list-pro') . '</a>
+	<a class="button eeRight" href="https://simplefilelist.com/shortcode/" target="_blank">' . __('Shortcode Documentation', 'ee-simple-file-list') . '</a>
 
-	<h2>' . __('Create Shortcode', 'ee-simple-file-list-pro') . '</h2>
+	<h2>' . __('Create Shortcode', 'ee-simple-file-list') . '</h2>
 
-	<p>' . __('Simply place this bit of shortcode in any post, page or widget that you would like the plugin to appear.', 'ee-simple-file-list-pro') . ' ' . 
-		__('Both the file list and uploader will be displayed using the plugin settings.', 'ee-simple-file-list-pro') . ' ' . 
-			__('Optionally, use the Shortcode Builder below to create a custom shortcode.', 'ee-simple-file-list-pro') . '</p>
+	<p>' . __('Simply place this bit of shortcode in any post, page or widget that you would like the plugin to appear.', 'ee-simple-file-list') . ' ' . 
+		__('Both the file list and uploader will be displayed using the plugin settings.', 'ee-simple-file-list') . ' ' . 
+			__('Optionally, use the Shortcode Builder below to create a custom shortcode.', 'ee-simple-file-list') . '</p>
 
-	<button id="eeCopytoClipboard" class="button eeButton eeRight">' . __('COPY', 'ee-simple-file-list-pro') . '</button>
+	<button id="eeCopytoClipboard" class="button eeButton eeRight">' . __('COPY', 'ee-simple-file-list') . '</button>
 
 	<p><textarea id="eeSFL_ShortCode" rows="3" cols="64" ></textarea></p>
 	
@@ -54,8 +54,8 @@ $eeOutput .= '
 			<input type="hidden" name="eeShortcode" value="" />
 	
 			<select name="eeCreatePostType">
-				<option value="Page">' . __('Create Page with Shortcode', 'ee-simple-file-list-pro') . '</option>
-				<option value="Post">' . __('Create Post with Shortcode', 'ee-simple-file-list-pro') . '</option>
+				<option value="Page">' . __('Create Page with Shortcode', 'ee-simple-file-list') . '</option>
+				<option value="Post">' . __('Create Post with Shortcode', 'ee-simple-file-list') . '</option>
 			</select>
 	
 			<input type="submit" name="eeGo" value="Go" class="button" />
@@ -68,9 +68,9 @@ $eeOutput .= '
 
 <article class="eeSupp" id="eeShortcodeBuilder">
 
-	<h3>' . __('Shortcode Builder', 'ee-simple-file-list-pro') . '</h3>
+	<h3>' . __('Shortcode Builder', 'ee-simple-file-list') . '</h3>
 
-	<p>' . __('Use this Shortcode Builder to create a customized shortcode that over-rides your default settings.', 'ee-simple-file-list-pro') . '</p>
+	<p>' . __('Use this Shortcode Builder to create a customized shortcode that over-rides your default settings.', 'ee-simple-file-list') . '</p>
 
 	<script>
 	
@@ -97,44 +97,44 @@ $eeOutput .= '
 		
 		if(function_exists('eeSFLF_FolderSelect')) { $eeOutput .= eeSFLF_FolderSelect($eeSFL_ID); }
 		
-		$eeOutput .= '<label class="eeClearfix">' . __('Show File List', 'ee-simple-file-list-pro') . '<br />
+		$eeOutput .= '<label class="eeClearfix">' . __('Show File List', 'ee-simple-file-list') . '<br />
 			<select name="eeSFL_' . $eeSFL_ID . '_ShowList" id="eeShortcodeBuilder_showlist" onchange="eeShortcodeBuilder(\'showlist\', \'select\')">
 				<option value="YES" ';
 				if($eeSFL_Config['ShowList'] == 'YES') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
-				$eeOutput .= '>' . __('Show to Everyone', 'ee-simple-file-list-pro') . $eeChecked . '</option>
+				$eeOutput .= '>' . __('Show to Everyone', 'ee-simple-file-list') . $eeChecked . '</option>
 				
 				<option value="USER" ';
 				if($eeSFL_Config['ShowList'] == 'ADMIN') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
-				$eeOutput .= '>' . __('Show Only to Logged-in Users', 'ee-simple-file-list-pro') . $eeChecked . '</option>
+				$eeOutput .= '>' . __('Show Only to Logged-in Users', 'ee-simple-file-list') . $eeChecked . '</option>
 				<option value="ADMIN" ';
 
 				if($eeSFL_Config['ShowList'] == 'USER') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
-				$eeOutput .= '>' . __('Show Only to Logged-in Administrators', 'ee-simple-file-list-pro') . $eeChecked . '</option>
+				$eeOutput .= '>' . __('Show Only to Logged-in Administrators', 'ee-simple-file-list') . $eeChecked . '</option>
 				<option value="NO" ';
 				
 				if($eeSFL_Config['ShowList'] == 'NO') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
-				$eeOutput .= '>' . __('Hide the List', 'ee-simple-file-list-pro') . $eeChecked . '</option>
+				$eeOutput .= '>' . __('Hide the List', 'ee-simple-file-list') . $eeChecked . '</option>
 			</select>
 		</label>
 		
 		
-		<label class="eeClearfix">' . __('Show Uploader', 'ee-simple-file-list-pro') . '<br />
+		<label class="eeClearfix">' . __('Show Uploader', 'ee-simple-file-list') . '<br />
 			<select name="eeSFL_' . $eeSFL_ID . '_AllowUploads" id="eeShortcodeBuilder_allowuploads" onchange="eeShortcodeBuilder(\'allowuploads\', \'select\')">
 				<option value="YES" ';
 				if($eeSFL_Config['AllowUploads'] == 'YES') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
-				$eeOutput .= '>' . __('Show to Everyone', 'ee-simple-file-list-pro') . $eeChecked . '</option>
+				$eeOutput .= '>' . __('Show to Everyone', 'ee-simple-file-list') . $eeChecked . '</option>
 				
 				<option value="USER" ';
 				if($eeSFL_Config['AllowUploads'] == 'ADMIN') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
-				$eeOutput .= '>' . __('Show Only to Logged-in Users', 'ee-simple-file-list-pro') . $eeChecked . '</option>
+				$eeOutput .= '>' . __('Show Only to Logged-in Users', 'ee-simple-file-list') . $eeChecked . '</option>
 				<option value="ADMIN" ';
 
 				if($eeSFL_Config['AllowUploads'] == 'USER') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
-				$eeOutput .= '>' . __('Show Only to Logged-in Administrators', 'ee-simple-file-list-pro') . $eeChecked . '</option>
+				$eeOutput .= '>' . __('Show Only to Logged-in Administrators', 'ee-simple-file-list') . $eeChecked . '</option>
 				<option value="NO" ';
 				
 				if($eeSFL_Config['AllowUploads'] == 'NO') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
-				$eeOutput .= '>' . __('Hide the Uploader', 'ee-simple-file-list-pro') . $eeChecked . '</option>
+				$eeOutput .= '>' . __('Hide the Uploader', 'ee-simple-file-list') . $eeChecked . '</option>
 			</select>
 		</label>';
 	
@@ -184,40 +184,6 @@ if($eeSFLS) {
 
 $eeOutput .= '
 
-</article>';
-
-
-// Build the folder selection input
-function eeSFLF_FolderSelect($eeSFL_ID) {
+</article>';	
 	
-	global $eeSFLF;
-	
-	$eeFilesArray = get_option('eeSFL-FileList-' . $eeSFL_ID); // Get the File List Array
-	
-	$eeOutput = '
-	
-	<label class="eeClearfix eeFullWidth">' . __('Choose a List Folder', 'ee-simple-file-list-pro') . '<br />
-	
-	<select name="showfolder" id="eeShortcodeBuilder_showfolder" onchange="eeShortcodeBuilder(\'showfolder\', \'select\')">' . "\n";
-			
-		$eeOutput .= ' <option value="remove">' . __('Main Folder', 'ee-simple-file-list-pro') . '</option>' . "\n";
-			
-		foreach($eeFilesArray as $eeKey => $eeFileArray) {
-			
-			$eeFolderPath = substr($eeFileArray['FilePath'], 0, -1);
-			
-			if($eeFileArray['FileExt'] == 'folder') {
-				$eeOutput .= ' <option value="' . $eeFolderPath . '">' . $eeFolderPath . '</option>' . "\n";
-			}
-		}
-			
-		$eeOutput .= '</select>
-	
-	</label>
-	
-	';
-	
-	return $eeOutput;
-}
-
 ?>

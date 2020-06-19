@@ -232,7 +232,7 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 		}
 	
 		var eeFormData = {
-			'action': 'simplefilelistpro_edit_job',
+			'action': 'simplefilelist_edit_job',
 			'eeSFL_ID': eeSFL_ListID,
 			'eeFileName': eeSFL_FileName,
 			'eeListFolder': eeSFL_ListFolder,
@@ -246,7 +246,7 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 		var eeSFL_FileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' .eeSFL_RealFileName').text();
 		
 		var eeFormData = {
-			'action': 'simplefilelistpro_edit_job',
+			'action': 'simplefilelist_edit_job',
 			'eeSFL_ID': eeSFL_ListID,
 			'eeListFolder': eeSFL_ListFolder,
 			'eeFileName': eeSFL_FileName,
@@ -261,7 +261,7 @@ function eeSFL_FileAction(eeSFL_FileID, eeSFL_Action) {
 		var eeSFL_FileDesc = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeSFL_NewFileDesc').val(); // Desc
 		
 		var eeFormData = {
-			'action': 'simplefilelistpro_edit_job',
+			'action': 'simplefilelist_edit_job',
 			'eeSFL_ID': eeSFL_ListID,
 			'eeFileAction': eeSFL_Action,
 			'eeListFolder': eeSFL_ListFolder,
