@@ -101,7 +101,7 @@ if(@$eeSFL_Log['errors']) {
 	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_Confirm, 'notice-success');
 }
 	
-$eeOutput .= '<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=uploader_settings" method="post" id="eeSFL_Settings">
+$eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=uploader_settings" method="post" id="eeSFL_Settings">
 
 	<p class="eeSettingsRight"><a class="eeInstructionsLink" href="https://simplefilelist.com/upload-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list') . '</a>
 	

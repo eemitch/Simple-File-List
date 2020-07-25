@@ -62,7 +62,7 @@ if(@$eeSFL_Log['errors']) {
 // Begin the Form	
 $eeOutput .= '
 
-<form action="' . $_SERVER['PHP_SELF'] . '?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=display_settings" method="post" id="eeSFL_Settings">
+<form action="' . admin_url() . '?page=' . $eeSFL->eePluginSlug . '&tab=settings&subtab=display_settings" method="post" id="eeSFL_Settings">
 		
 		<p class="eeSettingsRight"><a class="eeInstructionsLink" href="https://simplefilelist.com/display-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list') . '</a>
 		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" /></p>

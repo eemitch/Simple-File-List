@@ -197,6 +197,10 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
+= 4.2.10 =
+* Fixed a bug in the file list settings forms.
+
+
 = 4.2.8 =
 * Fixed several security issues.
 * Updated input sanitization to use Wordpress functions.
