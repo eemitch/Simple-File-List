@@ -45,7 +45,7 @@ $eeSFL_Log[] = 'ABSPATH: ' . ABSPATH;
 // Supported Extensions
 $eeSFL_Extensions = array( // Slugs
 	'ee-simple-file-list-folders' // Folder Support
-	,'ee-simple-file-list-search' // Search & Pagination
+	// ,'ee-simple-file-list-search' // Search & Pagination
 );
 $eeSFLF = FALSE; $eeSFLS = FALSE;
 $eeSFLF_ListFolder = FALSE;
@@ -406,6 +406,8 @@ add_shortcode( 'eeSFL', 'eeSFL_Shortcode' );
 // Load Front-side <head>
 function eeSFL_Enqueue() {
 	
+	global $eeSFL_Config;
+	
 	// Register the style like this for a theme:
     wp_register_style( 'ee-simple-file-list-css', plugin_dir_url(__FILE__) . 'css/eeStyles.css', '', eeSFL_Cache_Version);
 	wp_enqueue_style('ee-simple-file-list-css');
@@ -420,12 +422,14 @@ function eeSFL_Enqueue() {
 	
 	// Register Scripts
 	wp_register_script( 'ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js' );
-	// wp_register_script( 'ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js' );
-	wp_register_script( 'ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js' );
+	// wp_register_script( 'ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js' ); // Throws "jQuery Not Defined" error?
 	
 	// Enqueue
 	wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js', $deps, eeSFL_Cache_Version, FALSE); // Head
 	wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js',$deps, eeSFL_Cache_Version, TRUE); // Footer
+	
+	// Uploader
+	wp_register_script( 'ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js' );
 	wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_Cache_Version, TRUE);
 	
 	// Pass variables

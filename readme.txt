@@ -3,8 +3,8 @@ Contributors: eemitch
 Donate link: http://simplefilelist.com/donations/simple-file-list-project/
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
-Tested up to: 5.4.1
-Stable tag: 4.2.8
+Tested up to: 5.4.2
+Stable tag: 4.2.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -185,7 +185,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.8 - Security Fixes and Improvements
+* 4.2.10 - Bug Fixes and Improvements
 
 
 == Screenshots ==
@@ -198,7 +198,10 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 == Changelog ==
 
 = 4.2.10 =
-* Fixed a bug in the file list settings forms.
+* Fixed a bug where list settings were not working if Wordpress is in a sub-folder.
+* Fixed a Javascript warning shown when the uploader was not being shown.
+* Removed the Search and Pagination extension integration.
+* Various minor changes.
 
 
 = 4.2.8 =

@@ -1,8 +1,6 @@
 // Simple File List Script: ee-uploader.js | Author: Mitchell Bennis | support@simplefilelist.com
 
-
-
-console.log("ee-upload.js | ver 4.2.5");
+console.log("ee-upload.js | ver 4.2.10");
 
 
 var eeSFL_FileSet = new Array(); // Names
@@ -10,9 +8,10 @@ var eeSFL_FileObjects = new Array(); // File objects
 var eeSFL_FileCount = 0; // How many to upload
 var eeSFL_Uploaded = 0; // How many have uploaded
 var eeSFL_Error = false; // Bad things have happened
-var eeSFL_FormatsArray = eeSFL_FileFormats.split(","); // An array of the things.
 
-
+if(eeSFL_FileFormats.length > 1) {
+	var eeSFL_FormatsArray = eeSFL_FileFormats.split(","); // An array of the things.
+}
 
 
 // Receive files from input[type=file]

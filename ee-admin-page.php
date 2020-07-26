@@ -50,7 +50,7 @@ function eeSFL_ManageLists() {
     $eeOutput .= $active_tab . '">' . __('Author', 'ee-simple-file-list') . '</a>';
     
 	// The Help / Email Form Page
-    $eeOutput .= '<a href="mailto:support@simplefilelist.com" class="nav-tab tabSupport">' . __('Get Help', 'ee-simple-file-list') . '</a>';
+    $eeOutput .= '<a href="https://simplefilelist.com/get-support/" class="nav-tab tabSupport">' . __('Get Help', 'ee-simple-file-list') . '</a>';
     
     // Settings
     $eeOutput .= '<a href="?page=' . $eeSFL->eePluginSlug . '&tab=settings&eeListID=' . $eeSFL_ID . '" class="nav-tab tabSettings ';   
