@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
 "POT-Creation-Date: 2020-06-01 10:56-0500\n"
-"PO-Revision-Date: 2020-06-01 11:07-0500\n"
+"PO-Revision-Date: 2020-08-23 16:41-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.3.1\n"
+"X-Generator: Poedit 2.4.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: ee-simple-file-list.php\n"
@@ -43,7 +43,7 @@ msgstr "Paramètres"
 
 #: ee-admin-page.php:65 includes/ee-shortcode-builder.php:38
 msgid "Create Shortcode"
-msgstr "Créer Shortcode"
+msgstr "Créer raccourci"
 
 #: ee-admin-page.php:72
 msgid "Get Pro"
@@ -55,7 +55,7 @@ msgstr "Paramètres de liste de fichiers"
 
 #: ee-admin-page.php:115
 msgid "File Upload Settings"
-msgstr "Paramètres de téléversement de fichier"
+msgstr "Paramètres de téléchargement de fichier"
 
 #: ee-admin-page.php:121
 msgid "Display Settings"
@@ -71,11 +71,11 @@ msgstr "Aucune liste de fichiers n'a été trouvée. Veuillez répéter le scan"
 
 #: ee-list-display.php:168 includes/ee-upload-form.php:65
 msgid "Upload Files"
-msgstr "Téléverser des fichiers sur le serveur"
+msgstr "Télécharger des fichiers sur le serveur"
 
 #: ee-list-display.php:172
 msgid "Re-Scan Files"
-msgstr "Re-scan des fichiers"
+msgstr "Re-scannner des fichiers"
 
 #: ee-list-display.php:178
 msgid "Create Folder"
@@ -129,7 +129,7 @@ msgstr "Proposé par"
 
 #: ee-list-display.php:561
 msgid "Open"
-msgstr "Ouvert"
+msgstr "Ouvrir"
 
 #: ee-list-display.php:566
 msgid "Download"
@@ -232,7 +232,7 @@ msgstr "Ajouter d’autres fichiers"
 
 #: ee-list-display.php:832
 msgid "Upload some files and they will appear here."
-msgstr "Téléversez des fichiers et ils apparaîtront ici."
+msgstr "Télécharger des fichiers et ils apparaîtront ici."
 
 #: ee-simple-file-list.php:116
 msgid "EXTENSION DISABLED"

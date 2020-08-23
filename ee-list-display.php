@@ -156,7 +156,7 @@ $eeOutput .= '
 </script>
 ';
 
-$eeURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$eeURL = eeSFL_GetThisURL();
 
 // Back-side Buttons
 if($eeAdmin) {

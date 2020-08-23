@@ -789,7 +789,7 @@ class eeSFL_MainClass {
 			if( is_admin() ) {
 				$eeURL = $eeSFL_Env['wpSiteURL']; // The main URL
 			} else {
-				$eeURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; // The exact page
+				$eeURL = eeSFL_GetThisURL();
 			}
 			if($eeURL) {
 				$eeFooter = 'Sent from the file list at ' . $eeURL;
