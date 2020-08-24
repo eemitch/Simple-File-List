@@ -26,9 +26,6 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	} else { 
 		$eeSettings[$eeSFL_ID]['AllowUploads'] = 'NO';
 	}
-		
-	// YES/NO Checkboxes
-	$eeSettings[$eeSFL_ID]['GetUploaderInfo'] = eeSFL_ProcessCheckboxInput('GetUploaderInfo');
 	
 	// File Number Limit
 	$eeSettings[$eeSFL_ID]['UploadLimit'] = filter_var(@$_POST['eeUploadLimit'], FILTER_VALIDATE_INT);
@@ -75,7 +72,6 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	foreach( $eeCheckboxes as $eeTerm ) {
 		$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
 	}
-	
 	
 	// Update DB
 	update_option('eeSFL-Settings', $eeSettings );

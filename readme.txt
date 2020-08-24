@@ -3,7 +3,7 @@ Contributors: eemitch
 Donate link: http://simplefilelist.com/donations/simple-file-list-project/
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
-Tested up to: 5.4.2
+Tested up to: 5.5
 Stable tag: 4.2.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -197,8 +197,9 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 == Changelog ==
 
 = 4.2.11 =
-* Fixed a bug where the logged-in file owner's name was not being displayed in the list if the user had no name (just an email).
-* French language improvement.
+* Fixed a bug where the file uploader's info was not being collected.
+* Fixed a bug where the "Get Submitter Information" setting was getting cleared when saving Upload Settings. 
+* French and German language improvement.
 * Code improvements.
 
 = 4.2.10 =

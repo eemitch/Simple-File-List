@@ -244,22 +244,20 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 							$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'FileOwner', $_POST['eeSFL_FileOwner']);
 						}
 								
-						// Submitter Info
-						if(@$eeFileArray['SubmitterEmail']) {
+						// Add submitter data to file list array
+						if($eeSFL_Config['GetUploaderInfo'] == 'YES') {
+						
+							$eeSFL_Log['Add Files'][] = 'Adding submitter info...';
+							
+							foreach( $eeFiles as $eeKey => $eeArray2) {
 								
-							if($eeAdmin OR $eeSFL_Config['ShowSubmitterInfo'] == 'YES') {
+								if( $eeArray2['FilePath'] ==  $eeFile) {
+									
+									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterName', sanitize_text_field(@$_POST['eeSFL_Name']));
+									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterEmail', filter_var( sanitize_email(@$_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL) );
+									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterComments', sanitize_text_field(@$_POST['eeSFL_Comments']));
 								
-								$eeOutput .= '<p class="eeSFL_FileSubmitter">
-								
-								' . __('Submitted by', 'ee-simple-file-list') . ': <a href="mailto:' . $eeFileArray['SubmitterEmail'] . '">';
-								
-								if(@$eeFileArray['SubmitterName']) {
-									$eeOutput .= $eeFileArray['SubmitterName'];
-								} else {
-									$eeOutput .= $eeFileArray['SubmitterEmail'];
 								}
-								$eeOutput .= '</a></p>';
-								
 							}
 						}
 					}

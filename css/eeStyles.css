@@ -140,10 +140,11 @@
 #eeUploadInfoForm input[type=email] {
 	float: left;
 	margin-bottom: 5px;
+	max-width: 100%;
 
 }
 #eeUploadInfoForm label {
-	width: 15%;
+	width: auto;
 	clear: left;
 	margin-right: 10px;
 }
