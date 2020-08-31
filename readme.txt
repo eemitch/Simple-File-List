@@ -74,8 +74,6 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * File Actions (Open | Download): showactions="YES / NO"
 * List Sort By: sortby="Name, Date, Size, or Random"
 * List Sort Order: sortorder="Descending or Ascending"
-* Hide Files: hidename="this-file.docx, that-folder"
-* Hide File Types: hidetype="psd, zip, folder"
 
 
 = Internationalized =
@@ -184,7 +182,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.11 - General Fixes and Improvements
+* 4.2.12 - General Fixes and Improvements
 
 
 == Screenshots ==
@@ -195,6 +193,9 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Changelog ==
+
+= 4.2.12 =
+* Bug fix where file name formatting was reflected in the downloaded file.
 
 = 4.2.11 =
 * Fixed a bug where the file uploader's info was not being collected.

@@ -563,7 +563,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 							
 							if($eeIsFile) {
 								
-								$eeFileActions .= '<a class="eeSFL_FileDownload" href="' . $eeFileURL . '" download="' . $eeFileName . '">' . __('Download', 'ee-simple-file-list') . '</a> | ';
+								$eeFileActions .= '<a class="eeSFL_FileDownload" href="' . $eeFileURL . '" download="' . basename($eeFileURL) . '">' . __('Download', 'ee-simple-file-list') . '</a> | ';
 								
 								if($eeAdmin OR $eeSFL_Config['AllowFrontSend'] == 'YES') {
 									$eeFileActions .= '<a href="" onclick="eeSFL_SendFile(' . $eeRowID . ')">' . __('Send', 'ee-simple-file-list') . '</a> | ';
