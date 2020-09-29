@@ -8,47 +8,40 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager | <a href="https://simplefilelist.com/donations/simple-file-list-project/">Donate</a> | <a href="admin.php?page=ee-simple-file-list&tab=pro">Get Pro</a>
 Author: Mitchell Bennis
-Version: 4.2.12
+Version: 4.2.13
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
 Domain Path: /languages
 */
 
-$eeSFL_DevMode = FALSE; // Enables visible logging
+$eeSFL_FREE_DevMode = TRUE; // Enables visible logging
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
 
-define('eeSFL_Version', '4.2.12'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
-define('eeSFL_DB_Version', '4.2'); // Database structure version - used for eeSFL_VersionCheck()
-define('eeSFL_Cache_Version', eeSFL_Version); // Cache-Buster version for static files - used when updating CSS/JS
+define('eeSFL_FREE_Version', '4.2.13'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_FREE_DB_Version', '4.2'); // Database structure version - used for eeSFL_VersionCheck()
+define('eeSFL_FREE_Cache_Version', eeSFL_FREE_Version); // Cache-Buster version for static files - used when updating CSS/JS
 
 // Our Core
-$eeSFL = FALSE; // Our main class
+$eeSFL_FREE = FALSE; // Our main class
 $eeSFL_ID = 1;
-$eeSFL_Settings = array(); // All List Info
-$eeSFL_Config = array(); // This List Info
-$eeSFL_Env = array(); // Environment
-$eeSFL_ListRun = 1; // Count of lists per page
-$eeSFL_UploadFormRun = FALSE; // Check if uploader form has run
+$eeSFL_FREE_Settings = array(); // All List Info
+$eeSFL_FREE_Config = array(); // This List Info
+$eeSFL_FREE_Env = array(); // Environment
+$eeSFL_FREE_ListRun = 1; // Count of lists per page
+$eeSFL_FREE_UploadFormRun = FALSE; // Check if uploader form has run
 
 // The Log - Written to wp_option -> eeSFL-Log
-$eeSFL_Log = array('Simple File List is Loading...');
-$eeSFL_Log[] = 'Version ' . eeSFL_Version . ' (DB ' . eeSFL_DB_Version . ')';
-$eeSFL_Log[] = 'ABSPATH: ' . ABSPATH;
+$eeSFL_FREE_Log = array('Simple File List is Loading...');
+$eeSFL_FREE_Log[] = 'Version ' . eeSFL_FREE_Version . ' (DB ' . eeSFL_FREE_DB_Version . ')';
+$eeSFL_FREE_Log[] = 'ABSPATH: ' . ABSPATH;
 // Format: [] => 'log entry'
 //	['messages'][] = 'Message to the user'
 //	['errors'][] = 'Error condition to user'
 
-// Supported Extensions
-$eeSFL_Extensions = array( // Slugs
-	'ee-simple-file-list-folders' // Folder Support
-	// ,'ee-simple-file-list-search' // Search & Pagination
-);
-$eeSFLF = FALSE; $eeSFLS = FALSE;
-$eeSFLF_ListFolder = FALSE;
 
 // simplefilelist_upload_job <<<----- File Upload Action Hooks (Ajax)
 add_action( 'wp_ajax_simplefilelist_upload_job', 'simplefilelist_upload_job' );
@@ -60,24 +53,24 @@ add_action( 'wp_ajax_nopriv_simplefilelist_edit_job', 'simplefilelist_edit_job' 
 
 
 // Plugin Setup
-function eeSFL_Setup() {
+function eeSFL_FREE_Setup() {
 	
-	global $eeSFL, $eeSFL_ID, $eeSFL_Extensions, $eeSFL_Log, $eeSFL_Config, $eeSFL_Settings, $eeSFL_Env;
+	global $eeSFL_FREE, $eeSFL_ID, $eeSFL_FREE_Log, $eeSFL_FREE_Config, $eeSFL_FREE_Settings, $eeSFL_FREE_Env;
 	
-	$eeSFL_Log[] = 'Running Setup...';
+	$eeSFL_FREE_Log[] = 'Running Setup...';
 
 	// Get Functions
 	$eeSFL_Nonce = wp_create_nonce('eeSFL_Functions'); // Security
 	include_once(plugin_dir_path(__FILE__) . 'includes/ee-functions.php'); // Our Functions
 	
 	// Get Class
-	if(!class_exists('eeSFL')) {
+	if(!class_exists('eeSFL_FREE')) {
 		$eeSFL_Nonce = wp_create_nonce('eeSFL_Class'); // Security
 		require_once(plugin_dir_path(__FILE__) . 'includes/ee-class.php'); // Get the main class file
-		$eeSFL = new eeSFL_MainClass(); // Initiate the SFL Class
-		$eeSFL_Env = $eeSFL->eeSFL_GetEnv(); // Get the Environment Array
+		$eeSFL = new eeSFL_FREE_MainClass(); // Initiate the SFL Class
+		$eeSFL_FREE_Env = $eeSFL_FREE->eeSFL_FREE_GetEnv(); // Get the Environment Array
 		
-		eeSFL_VersionCheck(); // Update database if needed.
+		eeSFL_FREE_VersionCheck(); // Update database if needed.
 		
 		if( @$_REQUEST['eeListID'] ) {
 			$eeSFL_ID = filter_var($_REQUEST['eeListID'], FILTER_VALIDATE_INT);
@@ -85,81 +78,42 @@ function eeSFL_Setup() {
 		}
 		
 		// Get the lists
-		$eeSFL_Settings = get_option('eeSFL-Settings');
-		$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID); // Get this list
+		$eeSFL_FREE_Settings = get_option('eeSFL-Settings');
+		$eeSFL_FREE_Config = $eeSFL_FREE->eeSFL_Config($eeSFL_ID); // Get this list
 	}	
 	
 	// If Sending Files
-	if(@$_POST['eeSFL_Send']) { $eeSFL->eeSFL_SendFilesEmail(); }
+	if(@$_POST['eeSFL_Send']) { $eeSFL_FREE->eeSFL_SendFilesEmail(); }
 	
 	// Check/Create the Upload Folder
-	if( !eeSFL_FileListDirCheck( $eeSFL_Config['FileListDir'] ) ) { 
-		$eeSFL_Log['errors'][] = 'The upload directory is acting up.';
-	}
-	
-	// Extension Checks ------------------------
-	
-	// A required resource...
-	if(!function_exists('is_plugin_active')) {
-		include_once( ABSPATH . 'wp-admin/includes/plugin.php' ); 
-	}
-	
-	$eeSFL_Log[] = 'Checking for Extensions...';
-	
-	// Loop thru and set up
-	foreach($eeSFL_Extensions as $key => $eeSFL_Extension) {
-	
-		if(file_exists(WP_PLUGIN_DIR . '/' . $eeSFL_Extension . '/ee-ini.php')) { // Is the extension present?
-	
-			if(!file_exists(WP_PLUGIN_DIR . '/' . $eeSFL_Extension . '/ee-check.txt')) {
-				
-				$eeSFLF_ERROR = '<strong>' . $eeSFL_Extension . ' &larr; ' . __('EXTENSION DISABLED', 'ee-simple-file-list') . '</strong><br />' . 
-					__('Please go to Plugins and update the extension to the latest version.', 'ee-simple-file-list');
-				
-				if( is_admin() AND @$_GET['page'] == 'ee-simple-file-list') {
-					$eeSFL_Log['errors'][] = $eeSFLF_ERROR;
-				}
-				
-				continue;
-			}
-			
-			$eeSFL_Env['installed'][] = $eeSFL_Extension;
-			
-			if(is_plugin_active( $eeSFL_Extension . '/' . $eeSFL_Extension . '.php' )) { // Is the plugin active?
-			
-				$eeSFL_Log['active'][] = $eeSFL_Extension;
-				
-				$eeSFL_Nonce = wp_create_nonce('eeSFL_Include'); // Used in all extension INI files
-				
-				include_once(WP_PLUGIN_DIR . '/' . $eeSFL_Extension . '/ee-ini.php'); // Run initialization
-			}
-		}
+	if( !eeSFL_FREE_FileListDirCheck( $eeSFL_FREE_Config['FileListDir'] ) ) { 
+		$eeSFL_FREE_Log['errors'][] = 'The upload directory is acting up.';
 	}
 	
 	eeSFL_Textdomain(); // Language Setup
 	
 	return TRUE;
 }
-add_action('init', 'eeSFL_Setup');
+add_action('init', 'eeSFL_FREE_Setup');
 
 
 
 // Custom Hook
-function eeSFL_UploadCompleted() {
-    do_action('eeSFL_UploadCompleted'); // To be fired post-upload
+function eeSFL_FREE_UploadCompleted() {
+    do_action('eeSFL_FREE_UploadCompleted'); // To be fired post-upload
 }
 
-function eeSFL_UploadCompletedAdmin() {
-    do_action('eeSFL_UploadCompletedAdmin'); // To be fired post-upload
+function eeSFL_FREE_UploadCompletedAdmin() {
+    do_action('eeSFL_FREE_UploadCompletedAdmin'); // To be fired post-upload
 }
 
 
 // Log Failed Emails
 function eeSFL_action_wp_mail_failed($wp_error) {
     
-    global $eeSFL_Log;
+    global $eeSFL_FREE_Log;
     
-    $eeSFL_Log['Email-Fail'] = $wp_error;
+    $eeSFL_FREE_Log['Email-Fail'] = $wp_error;
     
     return error_log(print_r($wp_error, true));
 }
@@ -174,11 +128,11 @@ function eeSFL_Textdomain() {
 
 
 // Createing a New Post with Shortcode
-function eeSFL_CreatePostwithShortcode() { 
+function eeSFL_FREE_CreatePostwithShortcode() { 
 	
 	if(@$_POST['eeCreatePostType']) {
 		
-		global $eeSFL_Log;
+		global $eeSFL_FREE_Log;
 		
 		$eeSFL_ID = FALSE;
 		$eeShortcode = FALSE;
@@ -212,15 +166,15 @@ function eeSFL_CreatePostwithShortcode() {
 				'post_status'   => 'draft'
 			);
 			
-			$eeSFL_Log['Creating Post'] = $eeNewPost;
+			$eeSFL_FREE_Log['Creating Post'] = $eeNewPost;
 	 
 			// Create Post
 			$eeNewPostID = wp_insert_post( $eeNewPost );
 			
 			if($eeNewPostID) {
 				
-				$eeSFL_Log['p=' . $eeNewPostID][] = 'Creating new ' . $eeCreatePostType . ' with shortcode...';
-				$eeSFL_Log['p=' . $eeNewPostID][] = $eeShortcode;
+				$eeSFL_FREE_Log['p=' . $eeNewPostID][] = 'Creating new ' . $eeCreatePostType . ' with shortcode...';
+				$eeSFL_FREE_Log['p=' . $eeNewPostID][] = $eeShortcode;
 				
 				header('Location: /?p=' . $eeNewPostID);
 			}
@@ -229,30 +183,30 @@ function eeSFL_CreatePostwithShortcode() {
 		}
 	}
 }
-add_action( 'wp_loaded', 'eeSFL_CreatePostwithShortcode' );
+add_action( 'wp_loaded', 'eeSFL_FREE_CreatePostwithShortcode' );
 
 
 
 // Shortcode
-function eeSFL_Shortcode($atts, $content = null) {
+function eeSFL_FREE_Shortcode($atts, $content = null) {
 	
 	// Basic Usage: [eeSFL]
     
-    global $eeSFL, $eeSFL_ID, $eeSFL_DevMode, $eeSFL_Log, $eeSFL_Env, $eeSFL_Settings, $eeSFL_Config, $eeSFL_ListRun, $eeSFL_UploadFormRun;
+    global $eeSFL_FREE, $eeSFL_ID, $eeSFL_FREE_DevMode, $eeSFL_FREE_Log, $eeSFL_FREE_Env, $eeSFL_FREE_Settings, $eeSFL_FREE_Config, $eeSFL_FREE_ListRun, $eeSFL_FREE_UploadFormRun;
     global $eeSFLF, $eeSFLS; // Extensions
 	
 	$eeAdmin = is_admin();
 	if($eeAdmin) { return FALSE; } // Don't execute shortcode on page editor
     
-    $eeSFL_ListNumber = $eeSFL_ListRun; // Legacy 03/20
+    $eeSFL_ListNumber = $eeSFL_FREE_ListRun; // Legacy 03/20
     $eeForceSort = FALSE;
     $eeSFLF_ShortcodeFolder = FALSE;
 	
 	$eeOutput = '';
 	
-	$eeSFL_Log['L' . $eeSFL_ListRun][] = 'Shortcode Loading: ' . get_permalink();
+	$eeSFL_FREE_Log['L' . $eeSFL_FREE_ListRun][] = 'Shortcode Loading: ' . get_permalink();
 
-	if( $eeSFL_ListRun > 1 AND @$_GET['eeFront'] ) { return; }
+	if( $eeSFL_FREE_ListRun > 1 AND @$_GET['eeFront'] ) { return; }
 
     // Over-Riding Shortcode Attributes
 	if($atts) {
@@ -270,52 +224,38 @@ function eeSFL_Shortcode($atts, $content = null) {
 			'hidetype' => '', // Hide file types
 			'hidename' => '', // Hide the name matches
 			'showfolder' => '', // eeSFLF
-			'paged' => '', // eeSFLS
-			'filecount' => '', // eeSFLS
-			'search' => '', // eeSFLS
-			'matchrole' => '' // eeSFLA
 		), $atts );
 		
 		extract($atts);
 	
-		$eeSFL_Log['L' . $eeSFL_ListRun][] = 'Shortcode Attributes...';
+		$eeSFL_FREE_Log['L' . $eeSFL_FREE_ListRun][] = 'Shortcode Attributes...';
 		
-		if($showlist) { $eeSFL_Config['ShowList'] = $showlist; }
-		if($allowuploads) { $eeSFL_Config['AllowUploads'] = $allowuploads; }
-		if($showthumb) { $eeSFL_Config['ShowFileThumb'] = $showthumb; }
-		if($showdate) { $eeSFL_Config['ShowFileDate'] = $showdate; }
-		if($showsize) { $eeSFL_Config['ShowFileSize'] = $showsize; }
-		if($showheader) { $eeSFL_Config['ShowHeader'] = $showheader; }
-		if($showactions) { $eeSFL_Config['ShowFileActions'] = $showactions; }
+		if($showlist) { $eeSFL_FREE_Config['ShowList'] = $showlist; }
+		if($allowuploads) { $eeSFL_FREE_Config['AllowUploads'] = $allowuploads; }
+		if($showthumb) { $eeSFL_FREE_Config['ShowFileThumb'] = $showthumb; }
+		if($showdate) { $eeSFL_FREE_Config['ShowFileDate'] = $showdate; }
+		if($showsize) { $eeSFL_FREE_Config['ShowFileSize'] = $showsize; }
+		if($showheader) { $eeSFL_FREE_Config['ShowHeader'] = $showheader; }
+		if($showactions) { $eeSFL_FREE_Config['ShowFileActions'] = $showactions; }
 		
 		
 		if($sortby OR $sortorder) { // Force a re-sort of the file list array if a shortcode attribute was used
-			if( $sortby != $eeSFL_Config['SortBy'] OR $sortorder != $eeSFL_Config['SortOrder'] ) {
+			if( $sortby != $eeSFL_FREE_Config['SortBy'] OR $sortorder != $eeSFL_FREE_Config['SortOrder'] ) {
 				$eeForceSort = TRUE;
-				$eeSFL_Config['SortBy'] = $sortby;
-				$eeSFL_Config['SortOrder'] = $sortorder;
+				$eeSFL_FREE_Config['SortBy'] = $sortby;
+				$eeSFL_FREE_Config['SortOrder'] = $sortorder;
 			} else {
 				$eeForceSort = FALSE;
 			}
 		}
 		
+		// Legacy
 		if($hidetype) { $eeSFL_HideType = strtolower($hidetype); } else { $eeSFL_HideType = FALSE; }
 		if($hidename) { $eeSFL_HideName = strtolower($hidename); } else { $eeSFL_HideName = FALSE; }
-		
-		// Useless without eeSFLF
-		$eeSFLF_ShortcodeFolder = $showfolder;
-		
-		// Useless without eeSFLS
-		if($paged) { $eeSFL_Config['EnablePagination'] = $paged; }
-		if($filecount) { $eeSFL_Config['FilesPerPage'] = $filecount; }
-		if($search) { $eeSFL_Config['EnableSearch'] = $search; }
-		
-		// Useless without eeSFLA
-		if($matchrole) { $eeSFL_Config['MatchRole'] = $matchrole; }
 
 		
 	} else {
-		$eeSFL_Log['L' . $eeSFL_ListRun][] = 'No Shortcode Attributes';
+		$eeSFL_FREE_Log['L' . $eeSFL_FREE_ListRun][] = 'No Shortcode Attributes';
 	}
 	
 	
@@ -323,90 +263,90 @@ function eeSFL_Shortcode($atts, $content = null) {
 	
 	$eeOutput .= '<div class="eeSFL"';
 	
-	if($eeSFL_ListRun == 1) {$eeOutput .= ' id="eeSFL"'; } // 3/20 - Legacy for user CSS
+	if($eeSFL_FREE_ListRun == 1) {$eeOutput .= ' id="eeSFL"'; } // 3/20 - Legacy for user CSS
 	
 	$eeOutput .= '>';
 	
-	// if($eeSFLF AND $eeSFL_DevMode) { $eeOutput .= 'Folder: ' . $eeSFLF_ShortcodeFolder; }
-	
 	// Upload Check
 	$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-	include(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/includes/ee-upload-check.php');
+	include(WP_PLUGIN_DIR . '/' . $eeSFL_FREE->eePluginNameSlug . '/includes/ee-upload-check.php');
 	
 	// Who Can Upload?
-	switch ($eeSFL_Config['AllowUploads']) {
+	switch ($eeSFL_FREE_Config['AllowUploads']) {
 	    case 'YES':
 	        break; // Show It
 	    case 'USER':
 	        // Show It If...
-	        if( get_current_user_id() ) { break; } else { $eeSFL_Config['AllowUploads'] = 'NO'; }
+	        if( get_current_user_id() ) { break; } else { $eeSFL_FREE_Config['AllowUploads'] = 'NO'; }
 	    case 'ADMIN':
 	        // Show It If...
-	        if(current_user_can('manage_options')) { break; } else { $eeSFL_Config['AllowUploads'] = 'NO'; }
+	        if(current_user_can('manage_options')) { break; } else { $eeSFL_FREE_Config['AllowUploads'] = 'NO'; }
 	        break;
 		default:
-			$eeSFL_Config['AllowUploads'] = 'NO'; // Show Nothing
+			$eeSFL_FREE_Config['AllowUploads'] = 'NO'; // Show Nothing
 	}
 	
-	if($eeSFL_Config['AllowUploads'] != 'NO' AND !$eeSFL_UploadFormRun) {
+	if($eeSFL_FREE_Config['AllowUploads'] != 'NO' AND !$eeSFL_FREE_UploadFormRun) {
 		if(!@$_POST['eeSFL_Upload'] AND !@$_POST['eeSFLS_Searching']) {
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			include($eeSFL_Env['pluginDir'] . '/includes/ee-upload-form.php');
-			$eeSFL_UploadFormRun = TRUE;
+			include($eeSFL_FREE_Env['pluginDir'] . '/includes/ee-upload-form.php');
+			$eeSFL_FREE_UploadFormRun = TRUE;
 		}
 	}
 	
 	// Who Can View the List?
-	switch ($eeSFL_Config['ShowList']) {
+	switch ($eeSFL_FREE_Config['ShowList']) {
 	    case 'YES':
 	        break; // Show It
 	    case 'USER':
 	        // Show It If...
-	        if( get_current_user_id() ) { break; } else { $eeSFL_Config['ShowList'] = 'NO'; }
+	        if( get_current_user_id() ) { break; } else { $eeSFL_FREE_Config['ShowList'] = 'NO'; }
 	    case 'ADMIN':
 	        // Show It If...
-	        if(current_user_can('manage_options')) { break; } else { $eeSFL_Config['ShowList'] = 'NO'; }
+	        if(current_user_can('manage_options')) { break; } else { $eeSFL_FREE_Config['ShowList'] = 'NO'; }
 	        break;
 		default:
-			$eeSFL_Config['ShowList'] = 'NO'; // Show Nothing
+			$eeSFL_FREE_Config['ShowList'] = 'NO'; // Show Nothing
 	}
 	
-	if($eeSFL_Config['ShowList'] != 'NO') {
+	if($eeSFL_FREE_Config['ShowList'] != 'NO') {
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		include(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/ee-list-display.php');
+		include(WP_PLUGIN_DIR . '/' . $eeSFL_FREE->eePluginNameSlug . '/ee-list-display.php');
 	}
 	
 	$eeOutput .= '</div>'; // Ends .eeSFL block
 	
-	$eeSFL_ListRun++;
+	$eeSFL_FREE_ListRun++;
 
 	// Timer
 	$eeSFL_Time = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
-	$eeSFL_Log[] = 'Execution Time: ' . round($eeSFL_Time,3);
+	$eeSFL_FREE_Log[] = 'Execution Time: ' . round($eeSFL_Time,3);
 	
-	// Logging
-	if($eeSFL_DevMode) {
-		// Add POST or GET to the beginning of the log
-		if(@$_REQUEST) { array_unshift($eeSFL_Log, $_REQUEST); }
-		$eeOutput .= '<pre id="eeSFL_DevMode">Log File ' . print_r($eeSFL_Log, TRUE) . '</pre>';
+	if($eeSFL_FREE_DevMode) {
+		if(@$_REQUEST) { $eeOutput .= '<pre>REQUEST ' . print_r($_REQUEST, TRUE) . '</pre>'; array_unshift($eeSFL_FREE_Log, $_REQUEST); }
+		$eeOutput .= '<pre>Display File Array ' . print_r(@$eeSFL_Files, TRUE) . '</pre>';
+		$eeOutput .= '<pre>Display List Settings ' . print_r($eeSFL_FREE_Config, TRUE) . '</pre>';
+		$eeOutput .= '<pre>Environment ' . print_r($eeSFL_FREE_Env, TRUE) . '</pre>';
+		$eeOutput .= '<pre>Runtime Log ' . print_r($eeSFL_FREE_Log, TRUE) . '</pre>';
+		$eeSFL_FREE->eeSFL_WriteLogData($eeSFL_FREE_Log);
 	}
 	
 	// Give it back
 	unset($eeSFL_Files);
-	unset($eeSFL_Env);
-	unset($eeSFL_Config);
-	unset($eeSFL_Log);
+	unset($eeSFL_FREE_Env);
+	unset($eeSFL_FREE_Config);
+	unset($eeSFL_FREE_Log);
 	
 	return $eeOutput; // Output the page
 }
-add_shortcode( 'eeSFL', 'eeSFL_Shortcode' );
+add_shortcode( 'eeSFL', 'eeSFL_FREE_Shortcode' );
 
 
 
 // Load Front-side <head>
-function eeSFL_Enqueue() {
+function eeSFL_FREE_Enqueue() {
 	
-	global $eeSFL_Config;
+	global $eeSFL_FREE_Config;
 	
 	// Register the style like this for a theme:
     wp_register_style( 'ee-simple-file-list-css', plugin_dir_url(__FILE__) . 'css/eeStyles.css', '', eeSFL_Cache_Version);
@@ -436,12 +376,12 @@ function eeSFL_Enqueue() {
 	wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $params ); // Footer
 
 }
-add_action( 'wp_enqueue_scripts', 'eeSFL_Enqueue' );
+add_action( 'wp_enqueue_scripts', 'eeSFL_FREE_Enqueue' );
 
 
 
 // Admin <head>
-function eeSFL_AdminHead($eeHook) {
+function eeSFL_FREE_AdminHead($eeHook) {
 
 	$deps = array('jquery');
 	
@@ -477,7 +417,7 @@ function eeSFL_AdminHead($eeHook) {
 		wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $params ); // Footer
     }  
 }
-add_action('admin_enqueue_scripts', 'eeSFL_AdminHead');
+add_action('admin_enqueue_scripts', 'eeSFL_FREE_AdminHead');
 
 
 
@@ -512,11 +452,11 @@ add_action( 'wp_ajax_simplefilelist_edit_job', 'simplefilelist_edit_job' );
 
 
 // File Upload Engine
-function eeSFL_FileUploader() {
+function eeSFL_FREE_FileUploader() {
 	
 	// return 'TEST';
 	
-	global $eeSFL, $eeSFL_Log;
+	global $eeSFL_FREE, $eeSFL_FREE_Log;
 	
 	// The FILE object
 	if(empty($_FILES)) { 
@@ -526,7 +466,7 @@ function eeSFL_FileUploader() {
 	if( !is_admin() ) { // Front-side protections
 	
 		// Who should be uploading?
-		switch ($eeSFL_Config['AllowUploads']) {
+		switch ($eeSFL_FREE_Config['AllowUploads']) {
 		    case 'YES':
 		        break; // Allow it, even if it's dangerous.
 		    case 'USER':
@@ -557,11 +497,11 @@ function eeSFL_FileUploader() {
 	}
 
 	// Get this list's config
-	$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID);
+	$eeSFL_FREE_Config = $eeSFL_FREE->eeSFL_Config($eeSFL_ID);
 	
 	// Check size
 	$eeSFL_FileSize = filter_var($_FILES['file']['size'], FILTER_VALIDATE_INT);
-	$eeSFL_UploadMaxFileSize = $eeSFL_Config['UploadMaxFileSize']*1024*1024; // Convert MB to B
+	$eeSFL_UploadMaxFileSize = $eeSFL_FREE_Config['UploadMaxFileSize']*1024*1024; // Convert MB to B
 	
 	if($eeSFL_FileSize > $eeSFL_UploadMaxFileSize) {
 		return "File size is too large.";
@@ -585,9 +525,9 @@ function eeSFL_FileUploader() {
 			$eeSFL_Extension = strtolower($eeSFL_PathParts['extension']); // We need to do this here and in eeSFL_ProcessUpload()
 			
 			// Format Check
-			$eeSFL_FileFormatsArray = array_map('trim', explode(',', $eeSFL_Config['FileFormats']));
+			$eeSFL_FileFormatsArray = array_map('trim', explode(',', $eeSFL_FREE_Config['FileFormats']));
 			
-			if(!in_array($eeSFL_Extension, $eeSFL_FileFormatsArray) OR in_array($eeSFL_Extension, $eeSFL->eeForbiddenTypes)) {
+			if(!in_array($eeSFL_Extension, $eeSFL_FileFormatsArray) OR in_array($eeSFL_Extension, $eeSFL_FREE->eeForbiddenTypes)) {
 				return 'File type not allowed: (' . $eeSFL_Extension . ')';	
 			}
 			
@@ -602,8 +542,8 @@ function eeSFL_FileUploader() {
 			if($_FILES['file']['name'] != basename($eeSFL_TargetFile)) {
 				
 				// Set a transient with the new name so we can get it in ProcessUpload() after the form is submitted
-				$eeOldFilePath = str_replace($eeSFL_Config['FileListDir'], '', $eeSFL_FileUploadDir . $_FILES['file']['name']); // Strip the FileListDir
-				$eeNewFilePath = str_replace($eeSFL_Config['FileListDir'], '', $eeSFL_TargetFile); // Strip the FileListDir
+				$eeOldFilePath = str_replace($eeSFL_FREE_Config['FileListDir'], '', $eeSFL_FileUploadDir . $_FILES['file']['name']); // Strip the FileListDir
+				$eeNewFilePath = str_replace($eeSFL_FREE_Config['FileListDir'], '', $eeSFL_TargetFile); // Strip the FileListDir
 				set_transient('eeSFL-Renamed-' . $eeOldFilePath, $eeNewFilePath, 900); // Expires in 15 minutes
 			}
 			
@@ -635,11 +575,10 @@ function eeSFL_FileUploader() {
 
 
 // File Editor Engine
-function eeSFL_FileEditor() {
+function eeSFL_FREE_FileEditor() {
 	
-	global $eeSFL, $eeSFLF, $eeSFL_Log;
+	global $eeSFL_FREE, $eeSFL_FREE_Log;
 	$eeFileName = '';
-	$eeListFolder = '';
 	$eeFileAction = '';
 	
 	// WP Security
@@ -648,7 +587,7 @@ function eeSFL_FileEditor() {
 	}
 	
 	// Check if we should be doing this
-	if(is_admin() OR $eeSFL_Config['AllowFrontManage'] == 'YES') {
+	if(is_admin() OR $eeSFL_FREE_Config['AllowFrontManage'] == 'YES') {
 		
 		// The List ID
 		if(@$_POST['eeSFL_ID']) { $eeSFL_ID = filter_var($_POST['eeSFL_ID'], FILTER_VALIDATE_INT); } else { return "Missing ID"; }
@@ -678,7 +617,7 @@ function eeSFL_FileEditor() {
 		}
 		
 		// Get the correct file list config if not main list
-		$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID);
+		$eeSFL_FREE_Config = $eeSFL_FREE->eeSFL_Config($eeSFL_ID);
 		
 		// Renaming
 		if( strpos($eeFileAction, 'Rename') === 0 ) {
@@ -705,9 +644,9 @@ function eeSFL_FileEditor() {
 					}	
 				}
 				
-				eeSFL_DetectUpwardTraversal($eeSFL_Config['FileListDir'] . $eeNewFileName); // Die if foolishness
+				eeSFL_DetectUpwardTraversal($eeSFL_FREE_Config['FileListDir'] . $eeNewFileName); // Die if foolishness
 				
-				$eeFullPath = ABSPATH . $eeSFL_Config['FileListDir'] . $eeListFolder;
+				$eeFullPath = ABSPATH . $eeSFL_FREE_Config['FileListDir'] . $eeListFolder;
 				$eeOldFilePath = $eeFullPath . $eeFileName;
 				$eeNewFilePath = $eeFullPath . $eeNewFileName;
 				
@@ -728,9 +667,9 @@ function eeSFL_FileEditor() {
 			
 		} elseif($eeFileAction == 'Delete') {
 			
-			eeSFL_DetectUpwardTraversal($eeSFL_Config['FileListDir'] . $eeListFolder . $eeFileName); // Die if foolishness
+			eeSFL_DetectUpwardTraversal($eeSFL_FREE_Config['FileListDir'] . $eeListFolder . $eeFileName); // Die if foolishness
 			
-			$eeFilePath = ABSPATH . $eeSFL_Config['FileListDir'] . $eeListFolder . $eeFileName;
+			$eeFilePath = ABSPATH . $eeSFL_FREE_Config['FileListDir'] . $eeListFolder . $eeFileName;
 			
 			if( strpos($eeFileName, '.') ) { // Gotta be a File - Looking for the dot rather than using is_file() for better speed
 				
@@ -781,7 +720,7 @@ function eeSFL_FileEditor() {
 			
 			// return $eeSFL_ID . ' - ' . $eeListFolder . $eeFileName . ' - ' . 'FileDescription' . ' - ' . $eeFileDesc;
 			
-			$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeListFolder . $eeFileName, 'FileDescription', $eeFileDesc);
+			$eeSFL_FREE->eeSFL_UpdateFileDetail($eeSFL_ID, $eeListFolder . $eeFileName, 'FileDescription', $eeFileDesc);
 		
 			return 'SUCCESS';
 			
@@ -802,7 +741,7 @@ function eeSFL_FileEditor() {
 
 
 // Add Action Links to the Plugins Page
-function eeSFL_ActionPluginLinks( $links ) {
+function eeSFL_FREE_ActionPluginLinks( $links ) {
 	
 	$eeLinks = array(
 		'<a href="' . admin_url( 'admin.php?page=ee-simple-file-list' ) . '">' . __('Admin List', 'ee-simple-file-list') . '</a>',
@@ -810,27 +749,27 @@ function eeSFL_ActionPluginLinks( $links ) {
 	);
 	return array_merge( $links, $eeLinks );
 }
-add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'eeSFL_ActionPluginLinks' );
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'eeSFL_FREE_ActionPluginLinks' );
 
 
 
 // Admin Pages
-function eeSFL_AdminMenu() {
+function eeSFL_FREE_AdminMenu() {
 	
-	global $eeSFL, $eeSFL_ID, $eeSFL_Config, $eeSFL_Env, $eeSFL_Log;
+	global $eeSFL_FREE, $eeSFL_ID, $eeSFL_FREE_Config, $eeSFL_FREE_Env, $eeSFL_FREE_Log;
 	
 	// Only include when accessing the plugin admin pages
-	if(@$_GET['page'] == $eeSFL->eePluginSlug) {
+	if(@$_GET['page'] == $eeSFL_FREE->eePluginSlug) {
 		
 		$eeOutput = '<!-- Simple File List Admin -->';
-		$eeSFL_Log['Admin'][] = 'Admin Menu Loading ...';
+		$eeSFL_FREE_Log['Admin'][] = 'Admin Menu Loading ...';
 		
 		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-		include_once(WP_PLUGIN_DIR . '/' . $eeSFL->eePluginNameSlug . '/ee-admin-page.php'); // Admin's List Management Page
+		include_once(WP_PLUGIN_DIR . '/' . $eeSFL_FREE->eePluginNameSlug . '/ee-admin-page.php'); // Admin's List Management Page
 	}
 	
 	// Admin Menu Visability
-	switch ($eeSFL_Config['AdminRole']) {
+	switch ($eeSFL_FREE_Config['AdminRole']) {
 	    case 1:
 	        $eeCapability = 'read';
 	        break;
@@ -852,26 +791,26 @@ function eeSFL_AdminMenu() {
 	
 	// The Admin Menu
 	add_menu_page(
-		__($eeSFL->eePluginName, $eeSFL->eePluginSlug), // Page Title
-		__($eeSFL->eePluginMenuTitle, $eeSFL->eePluginSlug), // Menu Title
+		__($eeSFL_FREE->eePluginName, $eeSFL_FREE->eePluginSlug), // Page Title
+		__($eeSFL_FREE->eePluginMenuTitle, $eeSFL_FREE->eePluginSlug), // Menu Title
 		$eeCapability, // User status reguired to see the menu
-		$eeSFL->eePluginSlug, // Slug
-		'eeSFL_ManageLists', // Function that displays the menu page
+		$eeSFL_FREE->eePluginSlug, // Slug
+		'eeSFL_FREE_ManageLists', // Function that displays the menu page
 		'dashicons-index-card' // Icon used
 	);
 	
 }
-add_action( 'admin_menu', 'eeSFL_AdminMenu' );
+add_action( 'admin_menu', 'eeSFL_FREE_AdminMenu' );
 
 
 
 // Plugin Version Check
 // We only run the update function if there has been a change in the database revision.
-function eeSFL_VersionCheck() { 
+function eeSFL_FREE_VersionCheck() { 
 		
-	global $eeSFL_Log;
+	global $eeSFL_FREE_Log;
 	
-	$eeSFL_Log[] = 'Checking DB Version...';
+	$eeSFL_FREE_Log[] = 'Checking DB Version...';
 	
 	$eeSFL_DB_VersionInstalled = get_option('eeSFL-DB-Version'); // We store the DB version in the DB, okay?
 	
@@ -884,9 +823,9 @@ function eeSFL_VersionCheck() {
 
 
 // Perform DB Update
-function eeSFL_UpdateThisPlugin() {
+function eeSFL_FREE_UpdateThisPlugin() {
 	
-	global $eeSFL, $eeSFL_Env, $eeSFL_Log;
+	global $eeSFL, $eeSFL_FREE_Env, $eeSFL_FREE_Log;
 	
 	$eeSFL_DB_Version = get_option('eeSFL-DB-Version');
 	
@@ -919,7 +858,7 @@ function eeSFL_UpdateThisPlugin() {
 	// Upgrade Simple File List ?
 	if($eeSFL_V3) { // Updating from 3.x
 		
-		$eeSFL_Log['Updating'][] = 'Version 3.x Detected';
+		$eeSFL_FREE_Log['Updating'][] = 'Version 3.x Detected';
 		
 		// Get Existing Settings
 		$eeSFL_ShowList = get_option('eeSFL-1-ShowList');
@@ -975,7 +914,7 @@ function eeSFL_UpdateThisPlugin() {
 		
 		if(count($eeSettings) > 5) { // Version 2 Additions
 			
-			$eeSFL_Log['Updating'][] = 'Version 2.x Detected';
+			$eeSFL_FREE_Log['Updating'][] = 'Version 2.x Detected';
 			
 			$eeSetting = @explode('=', $eeSettings[5]); // Track File Owner
 			if(@$eeSetting[1] != 'Yes') { $eeSFL_TrackFileOwner = 'NO'; }
@@ -994,12 +933,12 @@ function eeSFL_UpdateThisPlugin() {
 	
 		} else {
 			
-			$eeSFL_Log['Updating'][] = 'Version 1.x Detected';
+			$eeSFL_FREE_Log['Updating'][] = 'Version 1.x Detected';
 		}	
 	
 	} else {
 		
-		$eeSFL_Log['Updating'][] = 'New Installation';
+		$eeSFL_FREE_Log['Updating'][] = 'New Installation';
 		$eeNewInstall = TRUE; 
 	}
 	
@@ -1041,7 +980,7 @@ function eeSFL_UpdateThisPlugin() {
 	if(!@$eeSFL_AllowFrontManage) { $eeSFL_AllowFrontManage = $eeConfigDefault['AllowFrontManage']; }
 	if(!@$eeSFL_FileFormats) { $eeSFL_FileFormats = $eeConfigDefault['FileFormats']; }
 	if(!@$eeSFL_UploadLimit) { $eeSFL_UploadLimit = $eeConfigDefault['UploadLimit']; }
-	if(!@$eeSFL_UploadMaxFileSize) { $eeSFL_UploadMaxFileSize = $eeSFL_Env['the_max_upload_size']; }
+	if(!@$eeSFL_UploadMaxFileSize) { $eeSFL_UploadMaxFileSize = $eeSFL_FREE_Env['the_max_upload_size']; }
 	if(!@$eeSFL_GetUploaderInfo) { $eeSFL_GetUploaderInfo = $eeConfigDefault['GetUploaderInfo']; }
 	if(!@$eeSFL_AllowUploads) { $eeSFL_AllowUploads = $eeConfigDefault['AllowUploads']; }
 	
@@ -1051,8 +990,8 @@ function eeSFL_UpdateThisPlugin() {
 	// Create the File List Dir if Needed
 	if(!@$eeSFL_FileListDir) {
 		
-		$eeSFL_FileListDir = $eeSFL_Env['FileListDefaultDir'];
-		eeSFL_FileListDirCheck( $eeSFL_FileListDir ); // Create the File List Folder
+		$eeSFL_FileListDir = $eeSFL_FREE_Env['FileListDefaultDir'];
+		eeSFL_FREE_FileListDirCheck( $eeSFL_FileListDir ); // Create the File List Folder
 	
 	} else {
 	
@@ -1063,7 +1002,7 @@ function eeSFL_UpdateThisPlugin() {
 		// Check if FileListDir has a leading slash
 		if($eeSFL_FileListDir[0] == '/') {  $eeSFL_FileListDir = substr($eeSFL_FileListDir, 1); } // Omit the slash, required for 4 +
 		
-		eeSFL_FileListDirCheck( $eeSFL_FileListDir ); // Check the File List Folder
+		eeSFL_FREE_FileListDirCheck( $eeSFL_FileListDir ); // Check the File List Folder
 	}
 	
 	// Add First File
@@ -1115,11 +1054,11 @@ function eeSFL_UpdateThisPlugin() {
 			'NotifyFrom' => get_option('admin_email'), // NEW in SFL 4
 			'NotifyFromName' => '', // NEW in SFL 4
 			'NotifySubject' => '', // NEW in SFL 4
-			'NotifyMessage' => $eeSFL->eeNotifyMessageDefault // NEW in SFL 4
+			'NotifyMessage' => $eeSFL_FREE->eeNotifyMessageDefault // NEW in SFL 4
 		)
 	);
 	
-	$eeSFL_Log['Updating'][] = $eeSettings;
+	$eeSFL_FREE_Log['Updating'][] = $eeSettings;
 	
 	// Update the Option		
 	update_option('eeSFL-Settings', $eeSettings); // NEW in SFL 4
@@ -1134,21 +1073,21 @@ function eeSFL_UpdateThisPlugin() {
 	// TO DO in SFL 4.1 -- Delete ALL old options
 	delete_option('eeSFL-Legacy'); // Don't need this anymore
 
-	$eeSFL_Log['Updating'][] = 'Plugin Updated to database version: ' . eeSFL_DB_Version;
+	$eeSFL_FREE_Log['Updating'][] = 'Plugin Updated to database version: ' . eeSFL_DB_Version;
 	
 	// Write the log file to the Database
-	$eeSFL->eeSFL_WriteLogData($eeSFL_Log);
+	$eeSFL_FREE->eeSFL_WriteLogData($eeSFL_FREE_Log);
 
 }
 
 
 // Plugin Activation ==========================================================
-function eeSFL_Activate() {
+function eeSFL_FREE_Activate() {
 	
 	// TO DO - Check extension versions - Fail unless they are updated first.
 	
 	return TRUE; // All done, nothing to do here.	
 }
-register_activation_hook( __FILE__, 'eeSFL_Activate' );
+register_activation_hook( __FILE__, 'eeSFL_FREE_Activate' );
 
 ?>

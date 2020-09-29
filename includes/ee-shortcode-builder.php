@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_Log[] = 'Loaded: ee-plugin-instructions';
+$eeSFL_FREE_Log[] = 'Loaded: ee-plugin-instructions';
 
 // All the shortcodes we have
 $eeSFL_ShortcodeArray = array(
@@ -83,7 +83,7 @@ $eeOutput .= '
 			if(is_array($eeSettingSet)) {
 				
 				// Pass to javascript
-				$eeOutput .= 'eeSFL_DefaultSettings["' . $eeSettingSet[0] . '"] = "' . $eeSFL_Config[$eeSetting] . '"' . PHP_EOL;
+				$eeOutput .= 'eeSFL_DefaultSettings["' . $eeSettingSet[0] . '"] = "' . $eeSFL_FREE_Config[$eeSetting] . '"' . PHP_EOL;
 			}
 		}
 	
@@ -100,19 +100,19 @@ $eeOutput .= '
 		$eeOutput .= '<label class="eeClearfix">' . __('Show File List', 'ee-simple-file-list') . '<br />
 			<select name="eeSFL_' . $eeSFL_ID . '_ShowList" id="eeShortcodeBuilder_showlist" onchange="eeShortcodeBuilder(\'showlist\', \'select\')">
 				<option value="YES" ';
-				if($eeSFL_Config['ShowList'] == 'YES') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
+				if($eeSFL_FREE_Config['ShowList'] == 'YES') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
 				$eeOutput .= '>' . __('Show to Everyone', 'ee-simple-file-list') . $eeChecked . '</option>
 				
 				<option value="USER" ';
-				if($eeSFL_Config['ShowList'] == 'ADMIN') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
+				if($eeSFL_FREE_Config['ShowList'] == 'ADMIN') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
 				$eeOutput .= '>' . __('Show Only to Logged-in Users', 'ee-simple-file-list') . $eeChecked . '</option>
 				<option value="ADMIN" ';
 
-				if($eeSFL_Config['ShowList'] == 'USER') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
+				if($eeSFL_FREE_Config['ShowList'] == 'USER') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
 				$eeOutput .= '>' . __('Show Only to Logged-in Administrators', 'ee-simple-file-list') . $eeChecked . '</option>
 				<option value="NO" ';
 				
-				if($eeSFL_Config['ShowList'] == 'NO') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
+				if($eeSFL_FREE_Config['ShowList'] == 'NO') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
 				$eeOutput .= '>' . __('Hide the List', 'ee-simple-file-list') . $eeChecked . '</option>
 			</select>
 		</label>
@@ -121,19 +121,19 @@ $eeOutput .= '
 		<label class="eeClearfix">' . __('Show Uploader', 'ee-simple-file-list') . '<br />
 			<select name="eeSFL_' . $eeSFL_ID . '_AllowUploads" id="eeShortcodeBuilder_allowuploads" onchange="eeShortcodeBuilder(\'allowuploads\', \'select\')">
 				<option value="YES" ';
-				if($eeSFL_Config['AllowUploads'] == 'YES') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
+				if($eeSFL_FREE_Config['AllowUploads'] == 'YES') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
 				$eeOutput .= '>' . __('Show to Everyone', 'ee-simple-file-list') . $eeChecked . '</option>
 				
 				<option value="USER" ';
-				if($eeSFL_Config['AllowUploads'] == 'ADMIN') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
+				if($eeSFL_FREE_Config['AllowUploads'] == 'ADMIN') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
 				$eeOutput .= '>' . __('Show Only to Logged-in Users', 'ee-simple-file-list') . $eeChecked . '</option>
 				<option value="ADMIN" ';
 
-				if($eeSFL_Config['AllowUploads'] == 'USER') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
+				if($eeSFL_FREE_Config['AllowUploads'] == 'USER') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
 				$eeOutput .= '>' . __('Show Only to Logged-in Administrators', 'ee-simple-file-list') . $eeChecked . '</option>
 				<option value="NO" ';
 				
-				if($eeSFL_Config['AllowUploads'] == 'NO') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
+				if($eeSFL_FREE_Config['AllowUploads'] == 'NO') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
 				$eeOutput .= '>' . __('Hide the Uploader', 'ee-simple-file-list') . $eeChecked . '</option>
 			</select>
 		</label>';
@@ -159,10 +159,10 @@ $eeOutput .= '
 			
 		if(is_array($eeSettingSet) AND $eeSettingSet[2] == 'YES|NO') {
 			
-			if($eeSFL_Config[$eeSetting]) {
+			if($eeSFL_FREE_Config[$eeSetting]) {
 			
-				$eeSettingNewValue = ($eeSFL_Config[$eeSetting] == 'YES' ? 'NO' : 'YES'); // Alternate
-				if($eeSFL_Config[$eeSetting] == 'YES') { $eeSettingShowValue ='Hide'; } else { $eeSettingShowValue ='Show'; }
+				$eeSettingNewValue = ($eeSFL_FREE_Config[$eeSetting] == 'YES' ? 'NO' : 'YES'); // Alternate
+				if($eeSFL_FREE_Config[$eeSetting] == 'YES') { $eeSettingShowValue ='Hide'; } else { $eeSettingShowValue ='Show'; }
 				
 				$eeOutput .= eeSFL_ShortcodeOptionButton($eeSettingSet[0], $eeSettingNewValue, '<b>' . $eeSettingShowValue . '</b>' . $eeSettingSet[1]);
 				

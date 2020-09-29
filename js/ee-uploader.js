@@ -9,8 +9,8 @@ var eeSFL_FileCount = 0; // How many to upload
 var eeSFL_Uploaded = 0; // How many have uploaded
 var eeSFL_Error = false; // Bad things have happened
 
-if(eeSFL_FileFormats.length > 1) {
-	var eeSFL_FormatsArray = eeSFL_FileFormats.split(","); // An array of the things.
+if(eeSFL_FREE_FileFormats.length > 1) {
+	var eeSFL_FormatsArray = eeSFL_FREE_FileFormats.split(","); // An array of the things.
 }
 
 

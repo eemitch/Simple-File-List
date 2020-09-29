@@ -24,7 +24,7 @@ $eeOutput .= '<article class="eeSupp eeExtensions">
 
 	<h2>' . __('Upgrade to Simple File List Pro', 'ee-simple-file-list') . '</h2>
 	
-	<img src="' . $eeSFL_Env['pluginURL'] . 'images/Folder-Demo.jpg" width="400" height="331" class="eeRight" />
+	<img src="' . $eeSFL_FREE_Env['pluginURL'] . 'images/Folder-Demo.jpg" width="400" height="331" class="eeRight" />
 	
 	<p>' . __('The Pro version allows folder listing, navigation and management capabilities among other features not available in the free version.', 'ee-simple-file-list') . ' ' . __('The Pro version is also extendable, with extensions for search and pagination and file access management.', 'simple-file-list') . '</p>
 	
@@ -58,7 +58,7 @@ $eeOutput .= '<article class="eeSupp eeExtensions">
 	
 	</article>';
 	
-$eeSFL_Log[] = '$eeOrderURL ...';
-$eeSFL_Log[] = urldecode($eeOrderURL);	
+$eeSFL_FREE_Log[] = '$eeOrderURL ...';
+$eeSFL_FREE_Log[] = urldecode($eeOrderURL);	
 
 ?>

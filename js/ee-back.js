@@ -4,7 +4,7 @@ console.log('eeSFL Admin JS Loaded');
 
 var eeBaseShortcode = 'eeSFL';
 
-var eeSFL_FileID = 0;
+var eeSFL_FREE_FileID = 0;
 
 // Shortcode Builder
 var eeAttsObject = new Object();

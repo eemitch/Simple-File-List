@@ -3,21 +3,21 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Functions' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_Log[] = 'Loaded: ee-functions';
+$eeSFL_FREE_Log[] = 'Loaded: ee-functions';
 
 
 // Detect upward path traversal
-function eeSFL_DetectUpwardTraversal($eeFilePath) {
+function eeSFL_FREE_DetectUpwardTraversal($eeFilePath) {
 
-	global $eeSFL_Log, $eeSFL_Env;
+	global $eeSFL_FREE_Log, $eeSFL_FREE_Env;
 	
-	if($eeSFL_Env['eeOS'] == 'LINUX') {
+	if($eeSFL_FREE_Env['eeOS'] == 'LINUX') {
 	
 		$eeUserPath = ABSPATH . dirname($eeFilePath);  // This could be problematic with things like ../
 		$eeRealPath = realpath( ABSPATH . dirname($eeFilePath) ); // Expunge the badness and then compare...
 		
 		if ($eeUserPath != $eeRealPath) { // They must match
-		    $eeSFL_Log['errors'] = 'Error 99'; // The infamous Error 99
+		    $eeSFL_FREE_Log['errors'] = 'Error 99'; // The infamous Error 99
 		    wp_die('Error 99 :-('); // Bad guy found, bail out :-(
 		}
 		
@@ -39,7 +39,7 @@ function eeSFL_DetectUpwardTraversal($eeFilePath) {
 
 
 // Convert hyphens to spaces for display only
-function eeSFL_PreserveSpaces($eeFileName) {
+function eeSFL_FREE_PreserveSpaces($eeFileName) {
 	
 	$eeFileName = str_replace('-', ' ', $eeFileName);
 	
@@ -51,7 +51,7 @@ function eeSFL_PreserveSpaces($eeFileName) {
 
 
 // Add the correct URL argument operator, ? or &
-function eeSFL_AppendProperUrlOp($eeURL) {
+function eeSFL_FREE_AppendProperUrlOp($eeURL) {
 	
 	if ( strpos($eeURL, '?') ) {
 		$eeURL .= '&';
@@ -67,11 +67,11 @@ function eeSFL_AppendProperUrlOp($eeURL) {
 
 
 // Check for the Upload Folder, Create if Needed
-function eeSFL_FileListDirCheck($eeFileListDir) {
+function eeSFL_FREE_FileListDirCheck($eeFileListDir) {
 	
 	if(!$eeFileListDir) { return FALSE; }
 	
-	global $eeSFL_Log, $eeSFL, $eeSFL_ID, $eeSFL_Env;
+	global $eeSFL_FREE_Log, $eeSFL, $eeSFL_ID, $eeSFL_FREE_Env;
 	
 	// Check if FileListDir has a trailing slash...
 	$eeLastChar = substr($eeFileListDir, -1);
@@ -79,7 +79,7 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 	
 	// Set some standards
 	if(strpos($eeFileListDir, '.') === 0 OR strpos($eeFileListDir, 'p-admin') OR strpos($eeFileListDir, 'p-includes') ) {
-		$eeSFL_Log['errors'][] = 'This File List Location is Not Allowed: ' . $eeFileListDir;
+		$eeSFL_FREE_Log['errors'][] = 'This File List Location is Not Allowed: ' . $eeFileListDir;
 		return FALSE;
 	}
 	
@@ -92,47 +92,47 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 		
 	} elseif( strlen($eeFileListDir) ) { // Transient Expired, Dir Changed or New Install
 	
-		$eeSFL_Log['DirCheck'][] = 'No Transient or Folder Change...';
+		$eeSFL_FREE_Log['DirCheck'][] = 'No Transient or Folder Change...';
 		
 		if( !is_writable( ABSPATH . $eeFileListDir ) ) {
 			
-			$eeSFL_Log['DirCheck'][] = 'No Directory Found';
-			$eeSFL_Log['DirCheck'][] = 'Creating new file list directory ...';
+			$eeSFL_FREE_Log['DirCheck'][] = 'No Directory Found';
+			$eeSFL_FREE_Log['DirCheck'][] = 'Creating new file list directory ...';
 			
-			if ($eeSFL_Env['eeOS'] == 'WINDOWS') {
+			if ($eeSFL_FREE_Env['eeOS'] == 'WINDOWS') {
 			    
 			    if( !mkdir(ABSPATH . $eeFileListDir) ) { // Linux - Need to set permissions
 				    
-				    $eeSFL_Log['errors'][] = 'Cannot Create Windows Folder: ' . $eeFileListDir;
+				    $eeSFL_FREE_Log['errors'][] = 'Cannot Create Windows Folder: ' . $eeFileListDir;
 				}
 			
-			} elseif($eeSFL_Env['eeOS'] == 'LINUX') {
+			} elseif($eeSFL_FREE_Env['eeOS'] == 'LINUX') {
 			    
 			    if( !mkdir(ABSPATH . $eeFileListDir , 0755) ) { // Linux - Need to set permissions
 				    
-				    $eeSFL_Log['errors'][] = 'Cannot Create Linux Folder: ' . $eeFileListDir;
+				    $eeSFL_FREE_Log['errors'][] = 'Cannot Create Linux Folder: ' . $eeFileListDir;
 				}
 			} else {
-				$eeSFL_Log['errors'][] = 'ERROR: Could not detect operating system';
+				$eeSFL_FREE_Log['errors'][] = 'ERROR: Could not detect operating system';
 				return FALSE;
 			}
 			
 			if(!is_writable( ABSPATH . $eeFileListDir )) {
-				$eeSFL_Log['errors'][] = 'Cannot create the upload directory: ' . $eeFileListDir;
-				$eeSFL_Log['errors'][] = 'Please check directory permissions';
+				$eeSFL_FREE_Log['errors'][] = 'Cannot create the upload directory: ' . $eeFileListDir;
+				$eeSFL_FREE_Log['errors'][] = 'Please check directory permissions';
 				
 				return FALSE;
 			
 			} else {
 				
-				$eeSFL_Log['DirCheck'][] = '"FileListDir" Has Been Created!';
-				$eeSFL_Log['DirCheck'][] = $eeFileListDir;
+				$eeSFL_FREE_Log['DirCheck'][] = '"FileListDir" Has Been Created!';
+				$eeSFL_FREE_Log['DirCheck'][] = $eeFileListDir;
 			}
 			
 			
 		
 		} else {
-			$eeSFL_Log[] = 'FileListDir Looks Good';
+			$eeSFL_FREE_Log[] = 'FileListDir Looks Good';
 		}
 		
 		// Check index.html, create if needed.	
@@ -146,7 +146,7 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 					
 					if(!@is_readable($eeFile)) {
 					    
-						$eeSFL_Log['errors'][] = 'ERROR: Could not write index.html';
+						$eeSFL_FREE_Log['errors'][] = 'ERROR: Could not write index.html';
 						
 						return FALSE;
 						
@@ -177,11 +177,11 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 
 
 // Post-process an upload job
-function eeSFL_ProcessUpload($eeSFL_ID) {
+function eeSFL_FREE_ProcessUpload($eeSFL_ID) {
 	
-	global $eeSFL, $eeSFL_Config, $eeSFL_Env, $eeSFL_Log;
+	global $eeSFL, $eeSFL_FREE_Config, $eeSFL_FREE_Env, $eeSFL_FREE_Log;
 	
-	$eeSFL_Log['SFL'][] = 'Function Called: eeSFL_ProcessUpload(' . $eeSFL_ID . ')';
+	$eeSFL_FREE_Log['SFL'][] = 'Function Called: eeSFL_ProcessUpload(' . $eeSFL_ID . ')';
 	
 	$eeFileCount = filter_var(@$_POST['eeSFL_FileCount'], FILTER_VALIDATE_INT);
 
@@ -190,9 +190,9 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 	if($eeFileCount) {
 		
 		// Add the new files to the array
-		$eeFiles = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID);
+		$eeFiles = $eeSFL_FREE->eeSFL_UpdateFileListArray($eeSFL_ID);
 	
-		$eeSFL_Log['SFL'][] = $eeFileCount . ' Files Uploaded';
+		$eeSFL_FREE_Log['SFL'][] = $eeFileCount . ' Files Uploaded';
 		
 		$eeFileList = sanitize_text_field( stripslashes($_POST['eeSFL_FileList'] )); // Expecting a comma delimited list
 		
@@ -216,7 +216,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 				}
 			}
 			
-			$eeSFL_Env['UploadedFiles'] = $eeArray;
+			$eeSFL_FREE_Env['UploadedFiles'] = $eeArray;
 			
 			
 			// Notification
@@ -241,34 +241,34 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 
 						// Set these if available
 						if( is_numeric(@$_POST['eeSFL_FileOwner']) ) { // Expecting a number
-							$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'FileOwner', $_POST['eeSFL_FileOwner']);
+							$eeSFL_FREE->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'FileOwner', $_POST['eeSFL_FileOwner']);
 						}
 						if( isset($_POST['eeSFL_Name'])) {
 							$eeString = sanitize_text_field(@$_POST['eeSFL_Name']);
 							if($eeString) {
-								$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterName', $eeString);
+								$eeSFL_FREE->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterName', $eeString);
 							}
 						}
 						if( isset($_POST['eeSFL_Email'])) {
 							$eeString = filter_var( sanitize_email(@$_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL);
 							if($eeString) {
-								$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterEmail', $eeString );
+								$eeSFL_FREE->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterEmail', $eeString );
 							}
 						}
 						if( isset($_POST['eeSFL_Comments'])) {
 							$eeString = sanitize_text_field(@$_POST['eeSFL_Comments']);
 							if($eeString) {
-								$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterComments', $eeString);
+								$eeSFL_FREE->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterComments', $eeString);
 							}
 						}
 						
 						// Notification Info (FREE)
 						$eeUploadJob .=  $eeSFLF_UploadFolder . $eeFile . PHP_EOL . 
-							$eeSFL_Config['FileListURL'] . $eeSFLF_UploadFolder . $eeFile . PHP_EOL . 
-								"(" . eeSFL_GetFileSize( $eeSFL_Config['FileListDir'] . $eeSFLF_UploadFolder . $eeFile ) . ")" . PHP_EOL . PHP_EOL;
+							$eeSFL_FREE_Config['FileListURL'] . $eeSFLF_UploadFolder . $eeFile . PHP_EOL . 
+								"(" . eeSFL_GetFileSize( $eeSFL_FREE_Config['FileListDir'] . $eeSFLF_UploadFolder . $eeFile ) . ")" . PHP_EOL . PHP_EOL;
 					}
 						
-					$eeSFL_Log['messages'][] = __('File Upload Complete', 'ee-simple-file-list');
+					$eeSFL_FREE_Log['messages'][] = __('File Upload Complete', 'ee-simple-file-list');
 					
 					if( is_admin() ) {
 						
@@ -277,10 +277,10 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 					} else  {
 						
 						// Send Email Notice
-						if($eeSFL_Config['Notify'] == 'YES') {
+						if($eeSFL_FREE_Config['Notify'] == 'YES') {
 							
 							// Send the Email Notification
-							$eeSFL->eeSFL_NotificationEmail($eeUploadJob, $eeSFL_ID);
+							$eeSFL_FREE->eeSFL_NotificationEmail($eeUploadJob, $eeSFL_ID);
 							return TRUE;
 							
 						} else {
@@ -289,7 +289,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 					}
 					
 				} else {
-					$eeSFL_Log['errors'][] = 'ERROR 96';
+					$eeSFL_FREE_Log['errors'][] = 'ERROR 96';
 					return FALSE;
 				}
 			}
@@ -299,7 +299,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 		}
 	
 	} else {
-		$eeSFL_Log['errors'][] = 'ERROR 96';
+		$eeSFL_FREE_Log['errors'][] = 'ERROR 96';
 		return FALSE;
 	}
 }
@@ -310,7 +310,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 
 // Return the size of a file in a nice format.
 // Accepts a path or filesize in bytes
-function eeSFL_GetFileSize($eeSFL_File) {  
+function eeSFL_FREE_GetFileSize($eeSFL_File) {  
     
     if( is_numeric($eeSFL_File) ) {
 		$bytes = $eeSFL_File;
@@ -349,7 +349,7 @@ function eeSFL_GetFileSize($eeSFL_File) {
 
 
 // Make sure the file name is acceptable
-function eeSFL_SanitizeFileName($eeSFL_FileName) {
+function eeSFL_FREE_SanitizeFileName($eeSFL_FileName) {
 	
 	// Make sure file has an extension
 	$eeSFL_PathParts = pathinfo($eeSFL_FileName);
@@ -363,7 +363,7 @@ function eeSFL_SanitizeFileName($eeSFL_FileName) {
 
 
 // Yes or No Settings Checkboxes
-function eeSFL_ProcessCheckboxInput($eeTerm) {
+function eeSFL_FREE_ProcessCheckboxInput($eeTerm) {
 	
 	$eeValue = sanitize_text_field(@$_POST['ee' . $eeTerm]);
 	
@@ -373,7 +373,7 @@ function eeSFL_ProcessCheckboxInput($eeTerm) {
 
 
 // Settings Text Inputs 
-function eeSFL_ProcessTextInput($eeTerm, $eeType = 'text') {
+function eeSFL_FREE_ProcessTextInput($eeTerm, $eeType = 'text') {
 	
 	$eeValue = '';
 	
@@ -394,13 +394,13 @@ function eeSFL_ProcessTextInput($eeTerm, $eeType = 'text') {
 
 
 // Check if a file already exists, then number it so file will not be over-written.
-function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded, $eeSFL_ID = 1) { // Full path from WP root
+function eeSFL_FREE_CheckForDuplicateFile($eeSFL_FilePathAdded, $eeSFL_ID = 1) { // Full path from WP root
 	
-	global $eeSFL, $eeSFL_Log;
+	global $eeSFL, $eeSFL_FREE_Log;
 	
-	$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID);
+	$eeSFL_FREE_Config = $eeSFL_FREE->eeSFL_Config($eeSFL_ID);
 	
-	if(@$eeSFL_Config['AllowOverwrite'] == 'YES') { // Overwriting files allowed
+	if(@$eeSFL_FREE_Config['AllowOverwrite'] == 'YES') { // Overwriting files allowed
 		return $eeSFL_FilePathAdded;
 	}
 	
@@ -420,9 +420,9 @@ function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded, $eeSFL_ID = 1) { // F
 			$eeFilePath = $eeArray['FilePath']; // Get the /folder/name.ext
 			
 			// Check if duplicate
-			if( $eeSFL_FilePathAdded == $eeSFL_Config['FileListDir'] . $eeFilePath ) { // Duplicate found
+			if( $eeSFL_FilePathAdded == $eeSFL_FREE_Config['FileListDir'] . $eeFilePath ) { // Duplicate found
 			
-				$eeSFL_Log['Add Files'][] = 'Duplicate Item Found: ' . $eeSFL_FilePathAdded;
+				$eeSFL_FREE_Log['Add Files'][] = 'Duplicate Item Found: ' . $eeSFL_FilePathAdded;
 				
 				if( is_file(ABSPATH . $eeSFL_FilePathAdded) ) { // Confirm the file is really there
 					
@@ -445,7 +445,7 @@ function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded, $eeSFL_ID = 1) { // F
 
 
 // Return the general size of a file in a nice format.
-function eeSFL_FormatFileSize($eeFileSizeBytes) {  
+function eeSFL_FREE_FormatFileSize($eeFileSizeBytes) {  
     
     $bytes = $eeFileSizeBytes;
     $kilobyte = 1024;
@@ -477,7 +477,7 @@ function eeSFL_FormatFileSize($eeFileSizeBytes) {
 
 
 // The form submission results bar at the top of the admin pages
-function eeSFL_ResultsDisplay($eeSFL_Results, $eeResultType) { // error, updated, etc...
+function eeSFL_FREE_ResultsDisplay($eeSFL_Results, $eeResultType) { // error, updated, etc...
 	
 	$eeReturn = '<div class="notice ';
 	
@@ -488,7 +488,7 @@ function eeSFL_ResultsDisplay($eeSFL_Results, $eeResultType) { // error, updated
 	}
 	
 	$eeReturn .= ' is-dismissible"><p>';
-	$eeReturn .= eeSFL_MessageDisplay($eeSFL_Results); // Parse the message array
+	$eeReturn .= eeSFL_FREE_MessageDisplay($eeSFL_Results); // Parse the message array
 	$eeReturn .= '</p></div>';
 	
 	return $eeReturn;
@@ -498,7 +498,7 @@ function eeSFL_ResultsDisplay($eeSFL_Results, $eeResultType) { // error, updated
 
 
 // Problem Display / Error reporting
-function eeSFL_MessageDisplay($eeSFL_Message) {
+function eeSFL_FREE_MessageDisplay($eeSFL_Message) {
 	
 	$eeReturn = '';
 	
@@ -532,7 +532,7 @@ function eeSFL_MessageDisplay($eeSFL_Message) {
 
 
 // Return a formatted header string
-function eeSFL_ReturnHeaderString($eeFrom, $eeCc = FALSE, $eeBcc = FALSE) {
+function eeSFL_FREE_ReturnHeaderString($eeFrom, $eeCc = FALSE, $eeBcc = FALSE) {
 	
 	$eeAdminEmail = get_option('admin_email');
 	
@@ -558,7 +558,7 @@ function eeSFL_ReturnHeaderString($eeFrom, $eeCc = FALSE, $eeBcc = FALSE) {
 
 // Process a raw input of email addresses
 // Can be a single address or a comma sep list
-function eeSFL_ProcessEmailString($eeString) {
+function eeSFL_FREE_ProcessEmailString($eeString) {
 	
 	$eeString = sanitize_text_field($eeString);
 	
@@ -600,7 +600,7 @@ function eeSFL_ProcessEmailString($eeString) {
 
 
 // Get what's in the address bar
-function eeSFL_GetThisURL($eeInclude_Request_URI = TRUE) {
+function eeSFL_FREE_GetThisURL($eeInclude_Request_URI = TRUE) {
 	
 	// Protocal
 	$thisUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
