@@ -16,6 +16,7 @@ class eeSFL_MainClass {
 	public $eeAllFilesSorted = array();
 	public $eeDefaultUploadLimit = 99;
 	public $eeFileThumbSize = 64;
+	public $eeSFL_FileScanArray = array(); // Temporary holder
     
     // File Types
     public $eeDynamicImageThumbFormats = array('gif', 'jpg', 'jpeg', 'png');

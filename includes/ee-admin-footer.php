@@ -11,8 +11,8 @@ $eeOutput .= '<div id="eeAdminFooter">
 		
 	$eeOutput .= '<p class="eeRight">
 	<a class="button" href="https://simplefilelist.com/docs/" target="_blank">' . __('Plugin Documentation', 'ee-simple-file-list') . '</a></p>
-			<a href="' . $eeSFL->eePluginWebPage . '" target="_blank">' . __('Plugin Website', 'ee-simple-file-list') . '</a> | 
-					<a href="https://simplefilelist.com/give-feedback/" target="_blank">' . __('Give Feedback', 'ee-simple-file-list') . '</a> | 
+			<a href="https://simplefilelist.com/?pr=free" target="_blank">' . __('Plugin Website', 'ee-simple-file-list') . '</a> | 
+					<a href="https://simplefilelist.com/give-feedback/?pr=free" target="_blank">' . __('Give Feedback', 'ee-simple-file-list') . '</a> | 
 						<strong><a href="#" id="eeFooterImportantLink">' . __('Caution', 'ee-simple-file-list') . '</a></strong>';
 	
 	$eeOutput .= '<br />
@@ -22,11 +22,6 @@ $eeOutput .= '<div id="eeAdminFooter">
 	if( @defined('eeSFLF_Version') ) { $eeOutput .= '<br />
 		
 		' . __('Folder Extension', 'ee-simple-file-list') . ': ' . eeSFLF_Version;
-	}
-	
-	if( @defined('eeSFLS_Version') ) { $eeOutput .= '<br />
-		
-		' . __('Search Extension', 'ee-simple-file-list') . ': ' . eeSFLS_Version;
 	}
 	
 	$eeOutput .= '

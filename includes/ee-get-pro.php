@@ -30,10 +30,13 @@ $eeOutput .= '<article class="eeSupp eeExtensions">
 	
 	<ul>
 		<li>' . __('Create folders and unlimited levels of sub-folders.', 'ee-simple-file-list') . '</li>
-		<li>' . __('Use a shortcode attribute to display specific folders.', 'ee-simple-file-list') . '</li>
+		<li>' . __('Use this shortcode attribute to display specific folders: ', 'ee-simple-file-list') . ' [eeSFL showfolder="folder-name"]</li>
 		<li>' . __('Display different folders in different places on your site.', 'ee-simple-file-list') . '<br />
-			' . __('You can even show several different folders on the same page and within widgets.', 'ee-simple-file-list') . '<br />
-			' . __('Front-side users cannot navigate above the folder you specify.', 'ee-simple-file-list') . '</li>
+			<ul>
+				<li>' . __('You can even show several different folders on the same page and within widgets.', 'ee-simple-file-list') . '</li>
+				<li>' . __('Front-side users cannot navigate above the folder you specify.', 'ee-simple-file-list') . '</li>
+			</ul>
+		</li>
 		<li>' . __('Breadcrumb navigation indicates where you are.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Easily move files or entire folders.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Easily rename any folder.', 'ee-simple-file-list') . '</li>
@@ -41,9 +44,14 @@ $eeOutput .= '<article class="eeSupp eeExtensions">
 		<li>' . __('Choose to sort folders first or sort along with the files.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Optionally display folder sizes.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Optionally define a custom directory for your file list.', 'ee-simple-file-list') . '</li>
+		<li>' . __('Optionally add extensions to add further features:', 'ee-simple-file-list') . '</li>
+			<ul>
+				<li><a href="https://simplefilelist.com/file-access-manager/?pr=free" target="_blank">' . __('File Access Manager', 'ee-simple-file-list') . '</a></li>
+				<li><a href="https://simplefilelist.com/add-search-pagination/?pr=free" target="_blank">' . __('Search and Pagination', 'ee-simple-file-list') . '</a></li>
+			</ul>
 		<li>' . __('Updating to newer versions is just like the free plugin.', 'ee-simple-file-list') . '</li>
-		<li><a target="_blank" href="https://simplefilelist.com/how-to-organize-your-files-into-folders/">' . __('How to Organize Your Files into Folders', 'ee-simple-file-list') . '</a></li>
-		<li><a target="_blank" href="https://simplefilelist.com/add-folder-support/">' . __('See the Demo', 'ee-simple-file-list') . '</a></li>
+		<li><a target="_blank" href="https://simplefilelist.com/how-to-organize-your-files-into-folders/?pr=free">' . __('How to Organize Your Files into Folders', 'ee-simple-file-list') . '</a></li>
+		<li><a target="_blank" href="https://simplefilelist.com/simple-file-list-demo/?pr=free">' . __('See the Demo', 'ee-simple-file-list') . '</a></li>
 	</ul>
 	
 	<p class="eeCentered">' . $eeSFL_Button . '</p>

@@ -4,7 +4,7 @@ Donate link: http://simplefilelist.com/donations/simple-file-list-project/
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
 Tested up to: 5.5
-Stable tag: 4.2.11
+Stable tag: 4.2.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 

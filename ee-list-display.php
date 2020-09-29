@@ -575,7 +575,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 							// Append Addition (admin or authorized) Actions
 							if( ($eeAdmin OR $eeSFL_Config['AllowFrontManage'] == 'YES') AND $eeSFL_ListRun == 1) {
 								
-								$eeFileActions .= '<a href="" id="eeSFL_EditFile_' . $eeRowID . '" onclick="eeSFL_EditFile(' . $eeRowID . ')">' . __('Edit', 'ee-simple-file-list') . '</a> | ';
+								$eeFileActions .= '<a href="" id="eeSFL_EditFile_' . $eeRowID . '" onclick="eeSFL_EditFile(' . $eeRowID . ')">' . __('Edit', 'ee-simple-file-list') . '</a> | <a href="#" onclick="eeSFL_Delete(' . $eeRowID . ')">' . __('Delete', 'ee-simple-file-list') . '</a> | ';
 								
 								if($eeSFLF AND $eeSFL_FolderTotalCount) { // Extension Check
 									
@@ -637,7 +637,6 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 								<p class="eeCenter">
 									<a class="button" href="#" onclick="eeSFL_EditSave(' . $eeRowID . ')">' . __('Save', 'ee-simple-file-list') . '</a> 
 									<a class="button" href="#" onclick="eeSFL_EditFile(' . $eeRowID . ')">' . __('Cancel', 'ee-simple-file-list') . '</a> 
-									<a class="button eeDeleteButton" href="#" onclick="eeSFL_Delete(' . $eeRowID . ')">' . __('Delete', 'ee-simple-file-list') . '</a>
 								</p>
 								
 								<p class="eeCenter"><small>' . __('Added', 'ee-simple-file-list') . ': ' . $eeFileDateAdded . ' — ';

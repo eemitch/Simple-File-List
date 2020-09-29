@@ -516,7 +516,7 @@ function eeSFL_FileUploader() {
 	
 	// return 'TEST';
 	
-	global $eeSFL, $eeSFL_Config, $eeSFL_Log;
+	global $eeSFL, $eeSFL_Log;
 	
 	// The FILE object
 	if(empty($_FILES)) { 
@@ -555,6 +555,9 @@ function eeSFL_FileUploader() {
 	} else { 
 		return 'No Upload Folder Given';
 	}
+
+	// Get this list's config
+	$eeSFL_Config = $eeSFL->eeSFL_Config($eeSFL_ID);
 	
 	// Check size
 	$eeSFL_FileSize = filter_var($_FILES['file']['size'], FILTER_VALIDATE_INT);
@@ -588,11 +591,21 @@ function eeSFL_FileUploader() {
 				return 'File type not allowed: (' . $eeSFL_Extension . ')';	
 			}
 			
-			// Assemble full name
+			// Assemble FilePath
 			$eeSFL_TargetFile = $eeSFL_FileUploadDir . $eeSFL_FileNameAlone . '.' . $eeSFL_Extension;
 			
 			// Check if it already exists
 			$eeSFL_TargetFile = eeSFL_CheckForDuplicateFile($eeSFL_TargetFile);
+
+
+			// Check if the name has changed
+			if($_FILES['file']['name'] != basename($eeSFL_TargetFile)) {
+				
+				// Set a transient with the new name so we can get it in ProcessUpload() after the form is submitted
+				$eeOldFilePath = str_replace($eeSFL_Config['FileListDir'], '', $eeSFL_FileUploadDir . $_FILES['file']['name']); // Strip the FileListDir
+				$eeNewFilePath = str_replace($eeSFL_Config['FileListDir'], '', $eeSFL_TargetFile); // Strip the FileListDir
+				set_transient('eeSFL-Renamed-' . $eeOldFilePath, $eeNewFilePath, 900); // Expires in 15 minutes
+			}
 			
 			$eeTarget = ABSPATH . $eeSFL_TargetFile;
 			

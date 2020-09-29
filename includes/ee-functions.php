@@ -176,22 +176,23 @@ function eeSFL_FileListDirCheck($eeFileListDir) {
 
 
 
-
 // Post-process an upload job
 function eeSFL_ProcessUpload($eeSFL_ID) {
 	
 	global $eeSFL, $eeSFL_Config, $eeSFL_Env, $eeSFL_Log;
 	
+	$eeSFL_Log['SFL'][] = 'Function Called: eeSFL_ProcessUpload(' . $eeSFL_ID . ')';
+	
 	$eeFileCount = filter_var(@$_POST['eeSFL_FileCount'], FILTER_VALIDATE_INT);
+
 	$eeSFLF_UploadFolder = sanitize_text_field( urldecode(@$_POST['eeSFLF_UploadFolder']) );
 	
 	if($eeFileCount) {
 		
-		// Re-index the File List
+		// Add the new files to the array
 		$eeFiles = $eeSFL->eeSFL_UpdateFileListArray($eeSFL_ID);
 	
-		$eeSFL_Log['Add Files'][] = 'Post-processinging Upload Job ...';
-		$eeSFL_Log['Add Files'][] = $eeFileCount . ' Files';
+		$eeSFL_Log['SFL'][] = $eeFileCount . ' Files Uploaded';
 		
 		$eeFileList = sanitize_text_field( stripslashes($_POST['eeSFL_FileList'] )); // Expecting a comma delimited list
 		
@@ -199,17 +200,21 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 		if(check_admin_referer( 'ee-simple-file-list-upload', 'ee-simple-file-list-upload-nonce')) {
 			
 			$eeArray = json_decode($eeFileList);
-			$eeArray = array_map('eeSFL_SanitizeFileName', $eeArray);
 			
-			$eeNewArray = array(); // For our lowered-case extensions
-			
-			// Drop file extensions to lowercase
-			foreach( $eeArray as $eeFile) {  // We need to do this here and in ee-upload-engine.php
+			// Loop thru and look for any renaming done in the Uploader Engine
+			foreach( $eeArray as $eeKey => $eeFileName) {
 				
-				$eeArray = explode('.', $eeFile);
-				$eeNewArray[] = $eeSFLF_UploadFolder . $eeArray[0] . '.' . strtolower($eeArray[1]);
+				$eeFileName = $eeSFLF_UploadFolder . $eeFileName; // Tack on the sub-folder
+				
+				$eeNewName = get_transient('eeSFL-Renamed-' . $eeFileName); // The value will include the sub-folder
+				
+				if($eeNewName) {
+					$eeArray[$eeKey] = $eeNewName;
+					delete_transient('eeSFL-Renamed-' . $eeFileName);
+				} else {
+					$eeArray[$eeKey] = $eeFileName;
+				}
 			}
-			$eeArray = $eeNewArray;
 			
 			$eeSFL_Env['UploadedFiles'] = $eeArray;
 			
@@ -232,34 +237,35 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 					
 					foreach($eeArray as $eeFile) { 
 						
-						$eeFile = eeSFL_SanitizeFileName($eeFile);
-						
-						// Notification
-						$eeUploadJob .=  $eeSFLF_UploadFolder . $eeFile . PHP_EOL . 
-							$eeSFL_Config['FileListURL'] . $eeSFLF_UploadFolder . $eeFile . PHP_EOL . 
-								"(" . eeSFL_GetFileSize( $eeSFL_Config['FileListDir'] . $eeSFLF_UploadFolder . $eeFile ) . ")" . PHP_EOL . PHP_EOL;
-					
-						// Is uploader person logged-in?
+						$eeFile = sanitize_text_field($eeFile);
+
+						// Set these if available
 						if( is_numeric(@$_POST['eeSFL_FileOwner']) ) { // Expecting a number
 							$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'FileOwner', $_POST['eeSFL_FileOwner']);
 						}
-								
-						// Add submitter data to file list array
-						if($eeSFL_Config['GetUploaderInfo'] == 'YES') {
-						
-							$eeSFL_Log['Add Files'][] = 'Adding submitter info...';
-							
-							foreach( $eeFiles as $eeKey => $eeArray2) {
-								
-								if( $eeArray2['FilePath'] ==  $eeFile) {
-									
-									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterName', sanitize_text_field(@$_POST['eeSFL_Name']));
-									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterEmail', filter_var( sanitize_email(@$_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL) );
-									$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterComments', sanitize_text_field(@$_POST['eeSFL_Comments']));
-								
-								}
+						if( isset($_POST['eeSFL_Name'])) {
+							$eeString = sanitize_text_field(@$_POST['eeSFL_Name']);
+							if($eeString) {
+								$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterName', $eeString);
 							}
 						}
+						if( isset($_POST['eeSFL_Email'])) {
+							$eeString = filter_var( sanitize_email(@$_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL);
+							if($eeString) {
+								$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterEmail', $eeString );
+							}
+						}
+						if( isset($_POST['eeSFL_Comments'])) {
+							$eeString = sanitize_text_field(@$_POST['eeSFL_Comments']);
+							if($eeString) {
+								$eeSFL->eeSFL_UpdateFileDetail($eeSFL_ID, $eeFile, 'SubmitterComments', $eeString);
+							}
+						}
+						
+						// Notification Info (FREE)
+						$eeUploadJob .=  $eeSFLF_UploadFolder . $eeFile . PHP_EOL . 
+							$eeSFL_Config['FileListURL'] . $eeSFLF_UploadFolder . $eeFile . PHP_EOL . 
+								"(" . eeSFL_GetFileSize( $eeSFL_Config['FileListDir'] . $eeSFLF_UploadFolder . $eeFile ) . ")" . PHP_EOL . PHP_EOL;
 					}
 						
 					$eeSFL_Log['messages'][] = __('File Upload Complete', 'ee-simple-file-list');
@@ -283,8 +289,7 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 					}
 					
 				} else {
-					$eeSFL_Log['errors'][] = 'Bad File Array';
-					$eeSFL_Log['errors'][] = $eeUploadJob;
+					$eeSFL_Log['errors'][] = 'ERROR 96';
 					return FALSE;
 				}
 			}
@@ -294,11 +299,10 @@ function eeSFL_ProcessUpload($eeSFL_ID) {
 		}
 	
 	} else {
-		$eeSFL_Log['errors'][] = 'No ID or Files';
+		$eeSFL_Log['errors'][] = 'ERROR 96';
 		return FALSE;
 	}
 }
-
 
 
 
