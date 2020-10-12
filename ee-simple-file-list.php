@@ -25,7 +25,7 @@ define('eeSFL_FREE_DB_Version', '4.2'); // Database structure version - used for
 define('eeSFL_FREE_Cache_Version', eeSFL_FREE_Version); // Cache-Buster version for static files - used when updating CSS/JS
 
 // LEGACY
-if( !defined('eeSFL_Version') ) { define('eeSFL_Version', eeSFL_FREE_Version); } // Fix for Folder Extension Need
+if( !defined('eeSFL_Version') ) { define('eeSFL_Version', eeSFL_FREE_Version); } // Fix for Folder Extension Need, post 4.2.12
 
 // Our Core
 $eeSFL_FREE = FALSE; // Our main class
