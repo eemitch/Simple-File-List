@@ -8,17 +8,12 @@ if(@$_POST['eeSFL_Upload']) {
 	
 	$eeSFL_Uploaded = TRUE;
 	
-	$eeSFL_ID = filter_var(@$_POST['eeListID'], FILTER_VALIDATE_INT);
-	
-	if($eeSFL_ID OR $eeSFL_ID === 0) {
-		
-		eeSFL_ProcessUpload($eeSFL_ID);
-	}
+	eeSFL_FREE_ProcessUpload();
 	
 	if($eeAdmin) {
-		eeSFL_UploadCompletedAdmin(); // Action Hook: eeSFL_UploadCompletedAdmin  <-- Admin side
+		eeSFL_FREE_UploadCompletedAdmin(); // Action Hook: eeSFL_UploadCompletedAdmin  <-- Admin side
 	} else {
-		eeSFL_UploadCompleted(); // Action Hook: eeSFL_UploadCompleted <-- Front side
+		eeSFL_FREE_UploadCompleted(); // Action Hook: eeSFL_UploadCompleted <-- Front side
 	}	
 } else {
 	$eeSFL_Uploaded = FALSE;

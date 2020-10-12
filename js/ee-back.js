@@ -4,7 +4,7 @@ console.log('eeSFL Admin JS Loaded');
 
 var eeBaseShortcode = 'eeSFL';
 
-var eeSFL_FREE_FileID = 0;
+var eeSFL_FileID = 0;
 
 // Shortcode Builder
 var eeAttsObject = new Object();
@@ -19,7 +19,7 @@ var eeArray2 = new Array;
 
 
 // Shortcode Builder
-function eeShortcodeBuilder(eeNewOption, eeInputType) {
+function eeSFL_FREE_ShortcodeBuilder(eeNewOption, eeInputType) {
 	
 	// Get the Value
 	if(eeInputType == 'select') {

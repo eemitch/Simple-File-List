@@ -38,8 +38,8 @@ $eeOutput .= '<article class="eeSupp eeExtensions">
 			</ul>
 		</li>
 		<li>' . __('Breadcrumb navigation indicates where you are.', 'ee-simple-file-list') . '</li>
-		<li>' . __('Easily move files or entire folders.', 'ee-simple-file-list') . '</li>
-		<li>' . __('Easily rename any folder.', 'ee-simple-file-list') . '</li>
+		<li>' . __('Move, rename and delete entire folders.', 'ee-simple-file-list') . '</li>
+		<li>' . __('Share files by sending emails containing file links to others.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Easily delete any folder, along with all contents.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Choose to sort folders first or sort along with the files.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Optionally display folder sizes.', 'ee-simple-file-list') . '</li>
@@ -56,9 +56,6 @@ $eeOutput .= '<article class="eeSupp eeExtensions">
 	
 	<p class="eeCentered">' . $eeSFL_Button . '</p>
 	
-	</article>';
-	
-$eeSFL_FREE_Log[] = '$eeOrderURL ...';
-$eeSFL_FREE_Log[] = urldecode($eeOrderURL);	
+	</article>';	
 
 ?>

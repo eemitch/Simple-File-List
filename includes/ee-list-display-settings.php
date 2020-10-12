@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_FREE_Log[] = 'Loading List Settings Page ...';
+$eeSFL_FREE_Log['SFL'][] = 'Loading List Settings Page ...';
 
 // Check for POST and Nonce
 if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {
@@ -22,26 +22,13 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		,'GetUploaderInfo'
 		,'PreserveSpaces'
 		,'ShowFileExtension'
-		,'AllowFrontSend'
 	);
 	foreach( $eeCheckboxes as $eeTerm){
-		$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
+		$eeSettings[1][$eeTerm] = eeSFL_FREE_ProcessCheckboxInput($eeTerm);
 	}
-	
-	// Extension Processing
-	if($eeSFLF) {
-		$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
-		include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_ListSettingsProcess.php');
-	}
-	
-	if($eeSFLS) {
-		$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-		include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-settings-process.php');
-	}
-	
 	
 	// Update the array with new values
-	$eeSFL_FREE_Config = $eeSettings[$eeSFL_ID];
+	$eeSFL_FREE_Config = $eeSettings[1];
 	
 	// Update DB
 	update_option('eeSFL-Settings', $eeSettings );
@@ -54,9 +41,9 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 $eeOutput .= '<div class="eeSFL_Admin">';
 	
 if(@$eeSFL_FREE_Log['errors']) { 
-	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_FREE_Log['errors'], 'notice-error');
+	$eeOutput .=  eeSFL_FREE_ResultsDisplay($eeSFL_FREE_Log['errors'], 'notice-error');
 } elseif(@$eeSFL_Confirm) { 
-	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_Confirm, 'notice-success');
+	$eeOutput .=  eeSFL_FREE_ResultsDisplay($eeSFL_Confirm, 'notice-success');
 }
 
 // Begin the Form	
@@ -69,29 +56,15 @@ $eeOutput .= '
 		
 		<h2>' . __('Front-Side Settings', 'ee-simple-file-list') . '</h2>
 		
-		<input type="hidden" name="eePost" value="TRUE" />
-		<input type="hidden" name="eeListID" value="' . $eeSFL_ID . '" />';	
+		<input type="hidden" name="eePost" value="TRUE" />';	
 		
 		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce', TRUE, FALSE);
 		
 		$eeOutput .= '
 		
-		<fieldset>';
+		<fieldset>
 		
-		if($eeSFLF) {
-			
-			$eeSFLF_Nonce = wp_create_nonce('eeSFLF_Include'); // Security
-			include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-folders/includes/eeSFLF_ListSettings.php');
-		}
-		
-		if($eeSFLS) {
-			
-			$eeSFLS_Nonce = wp_create_nonce('eeSFLS_Include'); // Security
-			include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-pagination-settings.php');
-		}
-			
-		$eeOutput .= '<h3>' . __('Appearance', 'ee-simple-file-list') . '</h3>
-		
+		<h3>' . __('Appearance', 'ee-simple-file-list') . '</h3>
 		
 		<label for="eePreserveSpaces">' . __('Preserve Spaces', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eePreserveSpaces" value="YES" id="eePreserveSpaces"';
@@ -192,17 +165,7 @@ $eeOutput .= '
 		
 		<br class="eeClearFix" />
 		
-		
-		<label for="eeAllowFrontSend">' . __('Allow File Sending', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeAllowFrontSend" value="YES" id="eeAllowFrontSend"';
-		
-		if( $eeSFL_FREE_Config['AllowFrontSend'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-		
-		$eeOutput .= ' /> <p>' . __('Send via Email', 'ee-simple-file-list') . '</p>
-		
-		<div class="eeNote">' . __('Allow front-side users to email links to files.', 'ee-simple-file-list') . '</div>
-		
-		<br class="eeClearFix" />';
+		';
 		
 		$eeOutput .= '<label for="eeAllowFrontManage">' . __('Front-Side Manage', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eeAllowFrontManage" value="YES" id="eeAllowFrontManage"';

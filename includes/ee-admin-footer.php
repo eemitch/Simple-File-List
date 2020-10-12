@@ -17,12 +17,7 @@ $eeOutput .= '<div id="eeAdminFooter">
 	
 	$eeOutput .= '<br />
 	
-	' . __('Plugin Version', 'ee-simple-file-list') . ': ' . eeSFL_Version . ' | DB: ' . eeSFL_DB_Version . ' | CB: ' . eeSFL_Cache_Version;
-	
-	if( @defined('eeSFLF_Version') ) { $eeOutput .= '<br />
-		
-		' . __('Folder Extension', 'ee-simple-file-list') . ': ' . eeSFLF_Version;
-	}
+	' . __('Plugin Version', 'ee-simple-file-list') . ': ' . eeSFL_FREE_Version . ' | DB: ' . eeSFL_FREE_DB_Version;
 	
 	$eeOutput .= '
 		

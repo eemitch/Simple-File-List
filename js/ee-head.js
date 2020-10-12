@@ -2,17 +2,17 @@
 
 // console.log('eeSFL Frontside Head JS Loaded');
 
-var eeSFL_FREE_isTouchscreen = false;
-var eeSFL_FREE_FileID = false;
+var eeSFL_isTouchscreen = false;
+var eeSFL_FileID = false;
 var eeSFL_ID = 1;
-var eeSFL_FREE_CheckEmail = false;
-var eeSFL_FREE_FileFormats = 'jpg,jpeg';
+var eeSFL_CheckEmail = false;
+var eeSFL_FileFormats = 'jpg,jpeg';
 
-function eeSFL_ValidateEmail(eeSFL_FREE_CheckEmail) {
+function eeSFL_FREE_ValidateEmail(eeSFL_CheckEmail) {
 
 	var eeSFL_EmailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	
-	if (eeSFL_FREE_CheckEmail.match(eeSFL_EmailFormat)) {
+	if (eeSFL_CheckEmail.match(eeSFL_EmailFormat)) {
     	return 'GOOD';
   	} else {
 	  	return "BAD";
@@ -21,7 +21,7 @@ function eeSFL_ValidateEmail(eeSFL_FREE_CheckEmail) {
 
 
 // File Size Formatting
-function eeSFL_GetFileSize(bytes, si) {
+function eeSFL_FREE_GetFileSize(bytes, si) {
     
     var thresh = si ? 1000 : 1024;
     

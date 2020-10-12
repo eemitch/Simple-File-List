@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_FREE_Log[] = 'Loading List Settings Page ...';
+$eeSFL_FREE_Log['SFL'][] = 'Loading List Settings Page ...';
 
 // Check for POST and Nonce
 if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {
@@ -11,10 +11,10 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	// Get all the settings
 	$eeSettings = get_option('eeSFL-Settings');
 	
-	if($_POST['eeShowList'] == 'YES') { $eeSettings[$eeSFL_ID]['ShowList'] = 'YES'; } 
-			elseif($_POST['eeShowList'] == 'USER') { $eeSettings[$eeSFL_ID]['ShowList'] = 'USER'; } // Show only to logged in users
-			 elseif($_POST['eeShowList'] == 'ADMIN') { $eeSettings[$eeSFL_ID]['ShowList'] = 'ADMIN'; } // Show only to logged in Admins
-				else { $eeSettings[$eeSFL_ID]['ShowList'] = 'NO'; }	
+	if($_POST['eeShowList'] == 'YES') { $eeSettings[1]['ShowList'] = 'YES'; } 
+			elseif($_POST['eeShowList'] == 'USER') { $eeSettings[1]['ShowList'] = 'USER'; } // Show only to logged in users
+			 elseif($_POST['eeShowList'] == 'ADMIN') { $eeSettings[1]['ShowList'] = 'ADMIN'; } // Show only to logged in Admins
+				else { $eeSettings[1]['ShowList'] = 'NO'; }	
 			
 	if($eeSFL_FREE_Config['ShowList'] != 'NO') { // Only update if showing the list
 		
@@ -27,7 +27,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		
 		foreach( $eeCheckboxes as $eeTerm){ // "ee" is added in the function
 			
-			$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
+			$eeSettings[1][$eeTerm] = eeSFL_FREE_ProcessCheckboxInput($eeTerm);
 		}
 		
 		$eeTextInputs = array(
@@ -37,29 +37,29 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 			,'LabelSize'
 		);
 		foreach( $eeTextInputs as $eeTerm){
-			$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessTextInput($eeTerm);
+			$eeSettings[1][$eeTerm] = eeSFL_FREE_ProcessTextInput($eeTerm);
 		}
 		
 		// Sort by Select Box	
 		if(@$_POST['eeSortBy']) { 
 			
-			if($_POST['eeSortBy'] != $eeSettings[$eeSFL_ID]['SortBy']) { // Changed
+			if($_POST['eeSortBy'] != $eeSettings[1]['SortBy']) { // Changed
 				
-				$eeSettings[$eeSFL_ID]['SortBy'] = sanitize_text_field($_POST['eeSortBy']);
+				$eeSettings[1]['SortBy'] = sanitize_text_field($_POST['eeSortBy']);
 				
-			} else { $eeSettings[$eeSFL_ID]['SortBy'] = 'Name'; }
+			} else { $eeSettings[1]['SortBy'] = 'Name'; }
 			
 		}
 		
 		// Asc/Desc Checkbox
-		if(@$_POST['eeSortOrder'] == 'Descending') { $eeSettings[$eeSFL_ID]['SortOrder'] = 'Descending'; }
-			elseif($_POST['eeSortBy'] AND !@$_POST['eeSortOrder']) { $eeSettings[$eeSFL_ID]['SortOrder'] = 'Ascending'; }
+		if(@$_POST['eeSortOrder'] == 'Descending') { $eeSettings[1]['SortOrder'] = 'Descending'; }
+			elseif($_POST['eeSortBy'] AND !@$_POST['eeSortOrder']) { $eeSettings[1]['SortOrder'] = 'Ascending'; }
 		
 		// Expiration
 		if( is_numeric($_POST['eeExpireTime']) AND $_POST['eeExpireTime'] <= 24 ) { 
 			
 			if($eeSFL_FREE_Config['ExpireTime'] != $_POST['eeExpireTime']) { // Changed
-				$eeSettings[$eeSFL_ID]['ExpireTime'] = $_POST['eeExpireTime'];
+				$eeSettings[1]['ExpireTime'] = $_POST['eeExpireTime'];
 			}	
 		}
 	}
@@ -67,10 +67,10 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	// Update DB
 	update_option('eeSFL-Settings', $eeSettings );
 	
-	delete_transient('eeSFL_FileList-' . $eeSFL_ID); // Force a rescan
+	delete_transient('eeSFL_FileList-1'); // Force a rescan
 	
 	// Update the array with new values
-	$eeSFL_FREE_Config = $eeSettings[$eeSFL_ID];
+	$eeSFL_FREE_Config = $eeSettings[1];
 	
 	$eeSFL_Confirm = __('List Settings Saved', 'ee-simple-file-list');
 }
@@ -80,9 +80,9 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 $eeOutput .= '<div class="eeSFL_Admin">';
 	
 if(@$eeSFL_FREE_Log['errors']) { 
-	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_FREE_Log['errors'], 'notice-error');
+	$eeOutput .=  eeSFL_FREE_ResultsDisplay($eeSFL_FREE_Log['errors'], 'notice-error');
 } elseif(@$eeSFL_Confirm) { 
-	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_Confirm, 'notice-success');
+	$eeOutput .=  eeSFL_FREE_ResultsDisplay($eeSFL_Confirm, 'notice-success');
 }
 
 // Begin the Form	
@@ -95,8 +95,7 @@ $eeOutput .= '
 		
 		<h2>' . __('List Settings', 'ee-simple-file-list') . '</h2>
 		
-		<input type="hidden" name="eePost" value="TRUE" />
-		<input type="hidden" name="eeListID" value="' . $eeSFL_ID . '" />';	
+		<input type="hidden" name="eePost" value="TRUE" />';	
 		
 		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce', TRUE, FALSE);
 		

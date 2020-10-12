@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98' ); // Exit if nonce fails
 
-$eeSFL_FREE_Log[] = 'Loading Uploader Settings Page ...';
+$eeSFL_FREE_Log['SFL'][] = 'Loading Uploader Settings Page ...';
 	
 // Check for POST and Nonce
 if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce')) {
@@ -13,23 +13,23 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 		
 	if($_POST['eeAllowUploads'] == 'YES') { 
 		
-		$eeSettings[$eeSFL_ID]['AllowUploads'] = 'YES';
+		$eeSettings[1]['AllowUploads'] = 'YES';
 	
 	} elseif($_POST['eeAllowUploads'] == 'USER') { // Only logged in users
 		 
-		 $eeSettings[$eeSFL_ID]['AllowUploads'] = 'USER';
+		 $eeSettings[1]['AllowUploads'] = 'USER';
 		 
 	} elseif($_POST['eeAllowUploads'] == 'ADMIN') { // Only logged in users
 		 
-		 $eeSettings[$eeSFL_ID]['AllowUploads'] = 'ADMIN';
+		 $eeSettings[1]['AllowUploads'] = 'ADMIN';
 		 
 	} else { 
-		$eeSettings[$eeSFL_ID]['AllowUploads'] = 'NO';
+		$eeSettings[1]['AllowUploads'] = 'NO';
 	}
 	
 	// File Number Limit
-	$eeSettings[$eeSFL_ID]['UploadLimit'] = filter_var(@$_POST['eeUploadLimit'], FILTER_VALIDATE_INT);
-	if(!$eeSettings[$eeSFL_ID]['UploadLimit'] OR $eeSettings[$eeSFL_ID]['UploadLimit'] > 999 ) { $eeSettings[$eeSFL_ID]['UploadLimit'] = $eeSFL_FREE->eeDefaultUploadLimit; }
+	$eeSettings[1]['UploadLimit'] = filter_var(@$_POST['eeUploadLimit'], FILTER_VALIDATE_INT);
+	if(!$eeSettings[1]['UploadLimit'] OR $eeSettings[1]['UploadLimit'] > 999 ) { $eeSettings[1]['UploadLimit'] = $eeSFL_FREE->eeDefaultUploadLimit; }
 	
 	// Maximum File Size
 	if(@$_POST['eeUploadMaxFileSize']) {
@@ -38,9 +38,9 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 		
 		// Can't be more than the system allows.
 		if(!$eeSFL_FREE_Config['UploadMaxFileSize'] OR $eeSFL_FREE_Config['UploadMaxFileSize'] > $eeSFL_FREE_Env['the_max_upload_size']) { 
-			$eeSettings[$eeSFL_ID]['UploadMaxFileSize'] = $eeSFL_FREE_Env['the_max_upload_size'];
+			$eeSettings[1]['UploadMaxFileSize'] = $eeSFL_FREE_Env['the_max_upload_size'];
 		} else {
-			$eeSettings[$eeSFL_ID]['UploadMaxFileSize'] = $eeSFL_UploadMaxFileSize;
+			$eeSettings[1]['UploadMaxFileSize'] = $eeSFL_UploadMaxFileSize;
 		}
 		
 	} else {
@@ -61,7 +61,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 				$eeFileFormatsOK .= $eeValue . ',';
 			}
 		}
-		$eeSettings[$eeSFL_ID]['FileFormats'] = substr($eeFileFormatsOK, 0, -1);
+		$eeSettings[1]['FileFormats'] = substr($eeFileFormatsOK, 0, -1);
 	}
 	
 
@@ -70,21 +70,18 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 		'AllowOverwrite'
 	);
 	foreach( $eeCheckboxes as $eeTerm ) {
-		$eeSettings[$eeSFL_ID][$eeTerm] = eeSFL_ProcessCheckboxInput($eeTerm);
+		$eeSettings[1][$eeTerm] = eeSFL_FREE_ProcessCheckboxInput($eeTerm);
 	}
 	
 	// Update DB
 	update_option('eeSFL-Settings', $eeSettings );
 	
 	// Update the array with new values
-	$eeSFL_FREE_Config = $eeSettings[$eeSFL_ID];
+	$eeSFL_FREE_Config = $eeSettings[1];
 	
 	$eeSFL_Confirm = __('Uploader Settings Saved', 'ee-simple-file-list');
-	$eeSFL_FREE_Log[] = $eeSFL_Confirm;
-	
-	if($eeSFL_FREE_DevMode) {
-		$eeSFL_FREE_Log[] = $_POST;
-	}
+	$eeSFL_FREE_Log['SFL'][] = $eeSFL_Confirm;
+
 }
 
 // Settings Display =========================================
@@ -92,9 +89,9 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 $eeOutput .= '<div class="eeSFL_Admin">';
 	
 if(@$eeSFL_FREE_Log['errors']) { 
-	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_FREE_Log['errors'], 'notice-error');
+	$eeOutput .=  eeSFL_FREE_ResultsDisplay($eeSFL_FREE_Log['errors'], 'notice-error');
 } elseif(@$eeSFL_Confirm) { 
-	$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_Confirm, 'notice-success');
+	$eeOutput .=  eeSFL_FREE_ResultsDisplay($eeSFL_Confirm, 'notice-success');
 }
 	
 $eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL_FREE->eePluginSlug . '&tab=settings&subtab=uploader_settings" method="post" id="eeSFL_Settings">
@@ -105,8 +102,7 @@ $eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL_FREE->eePluginSl
 			
 	<h2>' . __('Upload Settings', 'ee-simple-file-list') . '</h2>
 
-	<input type="hidden" name="eePost" value="TRUE" />
-	<input type="hidden" name="eeListID" value="' . $eeSFL_ID . '" />';	
+	<input type="hidden" name="eePost" value="TRUE" />';	
 	
 	$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce', TRUE, FALSE);
 	

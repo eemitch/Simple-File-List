@@ -3,8 +3,9 @@ Contributors: eemitch
 Donate link: http://simplefilelist.com/donations/simple-file-list-project/
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
-Tested up to: 5.5
-Stable tag: 4.2.12
+Requires PHP: 5.6
+Tested up to: 5.6
+Stable tag: 4.2.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,7 +45,6 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * Add descriptions to files and optionally show them in your list.
 * Sort file by name, date or file size ... ascending or descending.
 * Thumbnail images are generated automatically for images and videos (ffMpeg required).
-* Send emails with links to your files to others.
 * Files are kept separate from the media library
 
 
@@ -94,9 +94,10 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 = Plus =
 
 * Simple lightweight design, easy to style and customize.
-* Committed support from the developer, including internal support contact form.
+* Committed and responsive support from the developer.
 
-= PRO Version (Optional) =
+
+= Upgrade to the PRO Version =
 
 * Create unlimited levels of sub-folders.
 * Use a shortcode attribute to display specific folders.
@@ -112,7 +113,28 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * Optionally display folder sizes.
 * Optionally define a custom file list directory.
 
-= PRO ADD-ON - Search & Pagination (Optional) =
+
+= PRO Extensions =
+
+= File Access Manager =
+
+* Lock down your files to prevent direct access. Only allow specific users to see the file you want them to.
+* Limit file access to only logged-in users. Specify the minimum role or specify a matched role.
+* Create a file list for a specific WordPress user or a group of users.
+* For each list mode you can separately control permissions for file uploading and front-side file management.
+* Create Five Types Lists
+** Normal Mode
+** Do not restrict access. Files are viewable by anyone who can reach the file list page. Files may also be linked-to from outside of your website.
+** Limited Mode
+** Restrict file list access to all except WordPress users matching a specified role or with a minimum role or higher.
+** Group Mode
+** Restrict file list access to a specified group of WordPress users.
+** User Mode
+** Restrict file list access to a specific WordPress user.
+** Restricted Mode
+** Restrict access to all of the files by default. Grant access to specific files to specific users.
+
+= Search & Pagination =
 
 * Adds searching and pagination functionality.
 * Designed to make very large file lists more manageable.
@@ -182,7 +204,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.12 - General Fixes and Improvements
+* 4.2.13 - Removed Folder Extension Support (Free upgrade to Pro for extension owners)
 
 
 == Screenshots ==
@@ -194,7 +216,16 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
+= 4.2.13 =
+* Extensive under-the-hood changes so this version and the Pro version can run at the same time.
+* Removed support for the Folder Extension and added path to free upgrade to Pro for extension owners.
+* Removed support for files sending.
+
 = 4.2.12 =
+* Moved the "Delete" button from inside the File Edit dialog up to the File Actions links. (By popular demand)
+* Fixed a pesky bug where uploading a file with a name that required changing did not show in the confirmation list and wrongly applied meta data to the existing file.
+* Now updating the file modification date if file meta data is added or changed.
+* Process logging improvements.
 * Bug fix where file name formatting was reflected in the downloaded file.
 
 = 4.2.11 =
