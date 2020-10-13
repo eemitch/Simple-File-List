@@ -45,7 +45,7 @@ $eeSFL_Log[] = 'ABSPATH: ' . ABSPATH;
 // Supported Extensions
 $eeSFL_Extensions = array( // Slugs
 	'ee-simple-file-list-folders' // Folder Support
-	// ,'ee-simple-file-list-search' // Search & Pagination
+	,'ee-simple-file-list-search' // Search & Pagination
 );
 $eeSFLF = FALSE; $eeSFLS = FALSE;
 $eeSFLF_ListFolder = FALSE;
@@ -57,6 +57,34 @@ add_action( 'wp_ajax_nopriv_simplefilelist_upload_job', 'simplefilelist_upload_j
 // simplefilelist_edit_job <<<----- File Edit Action Hooks (Ajax)
 add_action( 'wp_ajax_simplefilelist_edit_job', 'simplefilelist_edit_job' );
 add_action( 'wp_ajax_nopriv_simplefilelist_edit_job', 'simplefilelist_edit_job' );
+
+
+
+// Display Notice to Update Simple File List Pro
+function eeSFL_ALERT() {
+    
+    include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	$eeFolders = 'ee-simple-file-list-folders/ee-simple-file-list-folders.php';
+	$eeSearch = 'ee-simple-file-list-folders/ee-simple-file-list-search.php';
+	
+	if( is_plugin_active($eeFolders) OR is_plugin_active($eeSearch) ) {
+		
+		$wpScreen = get_current_screen(); // Get the current screen
+	 
+	    if ( $wpScreen->id == 'dashboard' OR $wpScreen->id == 'plugins' OR $wpScreen->id == 'toplevel_page_ee-simple-file-list' ) {
+	        
+	        $eeOutput = '<div class="notice notice-warning is-dismissible">
+	            <p><strong>' . __('IMPORTANT', 'ee-simple-file-list') . '</strong><br />' . 
+	            	__('Extensions will no longer be supported within the free version of Simple File List soon!', 'ee-simple-file-list') . ' ' .
+	            	__('Please upgrade to the Pro version.', 'ee-simple-file-list') . ' <a href="https://simplefilelist.com/upgrade-to-simple-file-list-pro/" target="_blank">' . __('Free Upgrade', 'ee-simple-file-list') . '</a></p>
+	            </div>';
+	            
+	        echo $eeOutput;
+	    }
+    }
+}
+add_action( 'admin_notices', 'eeSFL_ALERT' );
+
 
 
 // Plugin Setup
