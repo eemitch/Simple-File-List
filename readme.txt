@@ -195,6 +195,10 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 == Changelog ==
 
 = 4.2.12 =
+* Moved the "Delete" button from inside the File Edit dialog up to the File Actions links. (By popular demand)
+* Fixed a pesky bug where uploading a file with a name that required changing did not show in the confirmation list and wrongly applied meta data to the existing file.
+* Now updating the file modification date if file meta data is added or changed.
+* Process logging improvements.
 * Bug fix where file name formatting was reflected in the downloaded file.
 
 = 4.2.11 =
