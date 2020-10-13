@@ -1,6 +1,6 @@
 === Simple File List ===
 Contributors: eemitch
-Donate link: http://simplefilelist.com/donations/simple-file-list-project/
+Donate link: http://simplefilelist.com
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
 Requires PHP: 5.6
@@ -13,9 +13,13 @@ Simple File List gives your WordPress website a list of your files which allows 
 
 == Description ==
 
-Simple File List is a free plugin that gives your WordPress website a list of your files allowing your users to open and download them. Users can also upload files if you choose.
+Simple File List is a free plugin that is great for when you need to provide a list of files, either publicly available or private to logged-in users. Place a file list anywhere on your site using a simple shortcode, allowing your front-end users to open, download and optionally edit them. Users can also upload files if you choose.
 
-Simple File List is also an alternative to using FTP or Dropbox for larger files. There's no need to deal with Dropbox or FTP usernames and passwords anymore! Everything is on your Wordpress website.
+Simple File List is also a good alternative for creative people using clumsy FTP or Dropbox for larger files. Simply provide your clients with a link to their file list.
+
+<img src="https://ps.w.org/simple-file-list/assets/screenshot-1.png" alt="Screenshot" />
+
+## Features
 
 * Manage your files and the list settings from the Admin List.
 * Complete settings for: list display and performance, file uploading restrictions, upload notifications and additional functionality options. 
@@ -25,8 +29,7 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * Use the Send option to send someone an email with a link to your file.
 * Optionally allow your front-side users full control over renaming, moving, sending, deleting and editing descriptions.
 
-
-= This Plugin is Great For =
+## This Plugin is Great For:
 
 * Posting official documents.
 * Sharing files within an organization.
@@ -37,7 +40,7 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * Exchanging files when the sizes get too large for email attachments.
 
 
-= List Features =
+## File List Features
 
 * Limit access to only Admins or logged-in users, or hide the list and only show the uploader.
 * Add and manage your files from the Admin List.
@@ -48,7 +51,7 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * Files are kept separate from the media library
 
 
-= Uploader Features =
+## File Uploader Features =
 
 * Simple reliable uploader, works on mobile devices too.
 * Drag and drop zone, plus upload progress bar
@@ -60,11 +63,12 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * Option to gather the uploader's name, email and comments.
 
 
-= Shortcode Attributes =
+##Shortcode Attributes
 
-* Over-ride the main list's settings on a per page/post/widget basis using shortcode attributes.
+Use shortcode attributes to over-ride the main plugin settings.
+
 * Shortcode Builder allows you to create custom file list shortcodes.
-** Choose to create a new draft post/page with the shortcode in place.
+* Choose to create a new draft post/page with the shortcode in place.*
 * List Visibility: showlist="YES / USER / ADMIN / NO"
 * Uploader Visibility: allowuploads="YES / USER / ADMIN / NO"
 * File Thumbnail Column: showthumb="YES / NO"
@@ -76,7 +80,7 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * List Sort Order: sortorder="Descending or Ascending"
 
 
-= Internationalized =
+##Internationalized
 
 * de_DE - German (Germany)
 * es_ES - Spanish (Spain)
@@ -91,17 +95,17 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * sv_SE - Swedish (Sweden)
 
 
-= Plus =
+###Plus
 
 * Simple lightweight design, easy to style and customize.
 * Committed and responsive support from the developer.
 
 
-= Upgrade to the PRO Version =
+##Upgrade to the PRO Version to Add Folder Support
 
 * Create unlimited levels of sub-folders.
 * Use a shortcode attribute to display specific folders.
-** [eeSFL showfolder="folderA/folderB"]
+**[eeSFL showfolder="folderA/folderB"]**
 * Display different folders in different places on your site.
 * You can even show several different folders on the same page and within widgets.
 * Front-side users cannot navigate above the folder you specify.
@@ -113,28 +117,36 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * Optionally display folder sizes.
 * Optionally define a custom file list directory.
 
+**Go to the Get Pro tab to Upgrade**
 
-= PRO Extensions =
 
-= File Access Manager =
+##PRO Extensions
+
+##File Access Manager
 
 * Lock down your files to prevent direct access. Only allow specific users to see the file you want them to.
 * Limit file access to only logged-in users. Specify the minimum role or specify a matched role.
 * Create a file list for a specific WordPress user or a group of users.
 * For each list mode you can separately control permissions for file uploading and front-side file management.
-* Create Five Types Lists
-** Normal Mode
-** Do not restrict access. Files are viewable by anyone who can reach the file list page. Files may also be linked-to from outside of your website.
-** Limited Mode
-** Restrict file list access to all except WordPress users matching a specified role or with a minimum role or higher.
-** Group Mode
-** Restrict file list access to a specified group of WordPress users.
-** User Mode
-** Restrict file list access to a specific WordPress user.
-** Restricted Mode
-** Restrict access to all of the files by default. Grant access to specific files to specific users.
 
-= Search & Pagination =
+##Create Five Types Lists
+
+**Normal Mode**
+Do not restrict access. Files are viewable by anyone who can reach the file list page. Files may also be linked-to from outside of your website.
+
+**Limited Mode**
+Restrict file list access to all except WordPress users matching a specified role or with a minimum role or higher.
+
+**Group Mode**
+Restrict file list access to a specified group of WordPress users.
+
+**User Mode**
+Restrict file list access to a specific WordPress user.
+
+**Restricted Mode**
+Restrict access to all of the files by default. Grant access to specific files to specific users.
+
+##Search & Pagination
 
 * Adds searching and pagination functionality.
 * Designed to make very large file lists more manageable.
@@ -146,16 +158,23 @@ Simple File List is also an alternative to using FTP or Dropbox for larger files
 * Show or hide the search bar and/or pagination in the settings.
 * Updating to newer versions is just like other Wordpress plugins.
 * Shortcode attributes to control search visibility and pagination functionality.
-** [eeSFL search="YES/NO" paged="YES/NO" filecount="25"]
+**[eeSFL search="YES/NO" paged="YES/NO" filecount="25"]**
 * Use a shortcode to place a search form anywhere on your website.
-** [eeSFLS permalink='file-list-url']
+**[eeSFLS permalink='file-list-url']**
+
+[More Information](htts://simplefilelistcom/) | [Try the Demo](https://simplefilelist.com/simple-file-list-demo/)
 
 
 == Installation ==
 
-1. To install, simply upload the plugin zip file to your Wordpress website and activate it. Configure the simple settings in the new menu that will appear in your sidebar. Explanations of each feature accompany the inputs.
-2. To add the plugin to your website, simply add this shortcode: [eeSFL]
-3. Customize the shortcode using attributes listed above.
+Just like most other Wordpress plugins...
+
+1. To install, simply use the amazing Wordpress plugin installer, or upload the plugin zip file to your Wordpress website, and activate it.
+1. A new main menu item will appear: **File List**  Click on this.
+1. Then click on **Settings** tab and configure the features you want for your file list.
+1. Upload some files by clicking on the **Upload Files** button
+1. To add the file list to your website, simply add this shortcode: **[eeSFL]**
+1. Over-ride the settings using the shortcode attributes listed above.
 
 
 == Frequently Asked Questions ==
@@ -168,13 +187,17 @@ A: This script is for media companies, print houses, educational institutions, m
 
 A: No, files are uploaded to a special folder inside your general WordPress uploads folder, or anywhere you specify.
 
+= Q: Can I limit the access to my file to only logged-in users? =
+
+Yes, you can limit to Admins or anyone who is logged in. If you need further users access control, consider the <a href="https://simplefilelist.com/file-access-manager/">File Access Manager</a> extension*.
+
 = Q: Can people who upload overwrite existing files? =
 
-A: No, files cannot be overwritten. If a file is uploaded having the same name as one already present, a series number is appended to the name ( filename_(2).ext ) You can use the renaming functionality to change this.
+A: No, you can choose that files not be overwritten. If a file is uploaded having the same name as one already present, a series number is appended to the name ( filename_(2).ext ) You can use the renaming functionality to change this. 
 
 = Q: Can I place different lists in different places? =
 
-A: Yes, with the optional Folder Support extension you can put different file lists on different posts, pages and widgets.
+A: Yes, you can put place your file lists on different posts, pages and widgets. If you upgrade to the <a href="https://simplefilelist.com">Pro</a>version, you can even place different folders on your site.
 
 = Q: Are the files in the list searchable by Google and other search engines? =
 
@@ -194,11 +217,12 @@ A: This is a setting that you choose in the file configuration. The initial defa
 
 = Q: What if I have trouble or need assistance? Will you help? =
 
-A: Yes! I enjoy helping people. Please contact me with any issues using the built in support form.
+A: Yes! I enjoy helping people. Please contact me with any issues using the <a href="https://wordpress.org/support/plugin/simple-file-list/">Wordpress Forum</a> or via <a href="https://simplefilelist.com/get-support/">SimpleFileList.com</a>
 
 = Q: Why did you develop this plugin? =
 
-A: I got tired of the difficulties of getting files back and forth between myself and my non-technical clients once they become too large for email. Training these people to use FTP or Dropbox was a challenge. I wanted something simple that I could use on my own website, so I created a simple index.php page that solved my problem. I later realized that others could benefit from this functionality, so I decided to port it to my favorite website platform; Wordpress. I also hoped that the donations would pay for a large home and a private jet, but that has not happened yet :-(  Regardless, I still enjoy giving to the community and helping others.
+A: I got tired of the difficulties of getting files back and forth between myself and my non-technical clients once they become too large for email, and having an archive for them to return to was needed. Training these people to use FTP or Dropbox was a challenge. I wanted something simple that I could use on my own website, so I created a simple index.php page that solved my problem. I later realized that others could benefit from this functionality, so I decided to port it to my favorite website platform; Wordpress. I also hoped that the donations would pay for a large home and a private jet, but that has not happened yet :-(  Regardless, I still enjoy giving to the community and helping others.
+
 
 
 
