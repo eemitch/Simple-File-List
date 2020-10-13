@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-01 10:56-0500\n"
-"PO-Revision-Date: 2020-06-01 11:12-0500\n"
+"POT-Creation-Date: 2020-10-13 14:10-0500\n"
+"PO-Revision-Date: 2020-10-13 14:19-0500\n"
 "Last-Translator: Diogo Bragança <ddbraganca@gmail.com>\n"
 "Language-Team: Português\n"
 "Language: pt_PT\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 2.3.1\n"
+"X-Generator: Poedit 2.4.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: ee-simple-file-list.php\n"
@@ -38,7 +38,7 @@ msgstr "Autor"
 msgid "Get Help"
 msgstr "Obter ajuda"
 
-#: ee-admin-page.php:59 ee-simple-file-list.php:789
+#: ee-admin-page.php:59 ee-simple-file-list.php:837
 msgid "Settings"
 msgstr "Configurações de Upload de Ficheiros"
 
@@ -110,12 +110,12 @@ msgstr "Última mudança"
 msgid "Thumb"
 msgstr "Miniatura"
 
-#: ee-list-display.php:276 includes/ee-class.php:980
+#: ee-list-display.php:276 includes/ee-class.php:981
 #: includes/ee-list-settings.php:164
 msgid "Name"
 msgstr "Nome"
 
-#: ee-list-display.php:286 ee-list-display.php:648
+#: ee-list-display.php:286 ee-list-display.php:647
 #: includes/ee-list-settings.php:184
 msgid "Size"
 msgstr "Tamanho"
@@ -136,13 +136,17 @@ msgstr "Abrir"
 msgid "Download"
 msgstr "Download"
 
-#: ee-list-display.php:569 ee-list-display.php:768
+#: ee-list-display.php:569 ee-list-display.php:767
 msgid "Send"
 msgstr "Enviar"
 
 #: ee-list-display.php:578
 msgid "Edit"
 msgstr "Editar"
+
+#: ee-list-display.php:578
+msgid "Delete"
+msgstr "Apagar"
 
 #: ee-list-display.php:585 ee-list-display.php:604
 msgid "Move"
@@ -157,7 +161,7 @@ msgstr "Eitar detalhes"
 msgid "File Name"
 msgstr "Nome do ficheiro"
 
-#: ee-list-display.php:633 includes/ee-class.php:994
+#: ee-list-display.php:633 includes/ee-class.php:995
 msgid "Description"
 msgstr "Descrição"
 
@@ -165,94 +169,110 @@ msgstr "Descrição"
 msgid "Save"
 msgstr "Guardar"
 
-#: ee-list-display.php:639 ee-list-display.php:767 ee-list-display.php:810
+#: ee-list-display.php:639 ee-list-display.php:766 ee-list-display.php:809
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ee-list-display.php:640
-msgid "Delete"
-msgstr "Apagar"
-
-#: ee-list-display.php:643
+#: ee-list-display.php:642
 msgid "Added"
 msgstr "Adicionado"
 
-#: ee-list-display.php:646
+#: ee-list-display.php:645
 msgid "Modified"
 msgstr "Modificado"
 
-#: ee-list-display.php:678
+#: ee-list-display.php:677
 msgid "Folder"
 msgstr "Pasta"
 
-#: ee-list-display.php:731
+#: ee-list-display.php:730
 msgid "Send Link"
 msgstr "Enviar link"
 
-#: ee-list-display.php:733
+#: ee-list-display.php:732
 msgid "Send an email with links to the files. Add more files if needed."
 msgstr ""
 "Envie um e-mail com links para os arquivos. Adicione mais arquivos, se "
 "necessário."
 
-#: ee-list-display.php:735
+#: ee-list-display.php:734
 msgid "Files to be sent:"
 msgstr "Arquivos a serem enviados:"
 
-#: ee-list-display.php:741
+#: ee-list-display.php:740
 msgid "Your Address"
 msgstr "Endereço"
 
-#: ee-list-display.php:744
+#: ee-list-display.php:743
 msgid "The TO Address"
 msgstr "O endereço TO"
 
-#: ee-list-display.php:747
+#: ee-list-display.php:746
 msgid "The CC Address"
 msgstr "O endereço CC"
 
-#: ee-list-display.php:749
+#: ee-list-display.php:748
 msgid "Separate multiple addresses with a comma"
 msgstr "Separar vários endereços com uma maa"
 
-#: ee-list-display.php:751
+#: ee-list-display.php:750
 msgid "The Subject"
 msgstr "O assunto"
 
-#: ee-list-display.php:754
+#: ee-list-display.php:753
 msgid "The Message"
 msgstr "A mensagem"
 
-#: ee-list-display.php:764 ee-list-display.php:809
+#: ee-list-display.php:763 ee-list-display.php:808
 msgid "Add Files"
 msgstr "Adicionar Ficheiros"
 
-#: ee-list-display.php:779
+#: ee-list-display.php:778
 msgid "Add More Files"
 msgstr "Adicionar mais arquivos"
 
-#: ee-list-display.php:832
+#: ee-list-display.php:831
 msgid "Upload some files and they will appear here."
 msgstr "Faça o upload de alguns arquivos e eles aparecerão aqui."
 
-#: ee-simple-file-list.php:116
+#: ee-simple-file-list.php:77
+msgid "IMPORTANT"
+msgstr "IMPORTANTE"
+
+#: ee-simple-file-list.php:78
+msgid ""
+"Extensions will no longer be supported within the free version of Simple "
+"File List soon!"
+msgstr ""
+"As extensões não serão mais suportadas dentro da versão gratuita da Simple "
+"File List em breve!"
+
+#: ee-simple-file-list.php:79
+msgid "Please upgrade to the Pro version."
+msgstr "Por favor, atualize para a versão Pro."
+
+#: ee-simple-file-list.php:79
+msgid "Free Upgrade"
+msgstr "Atualização gratuita"
+
+#: ee-simple-file-list.php:144
 msgid "EXTENSION DISABLED"
 msgstr "EXTENSÃO DESATIVADA"
 
-#: ee-simple-file-list.php:117
+#: ee-simple-file-list.php:145
 msgid "Please go to Plugins and update the extension to the latest version."
 msgstr ""
 "Por favor, vá para plugins e atualizar a extensão para a versão mais recente."
 
-#: ee-simple-file-list.php:724
+#: ee-simple-file-list.php:772
 msgid "File Delete Failed"
 msgstr "Falha ao eliminar ficheiro"
 
-#: ee-simple-file-list.php:732
+#: ee-simple-file-list.php:780
 msgid "Folder Delete Failed"
 msgstr "Pasta excluir falhou"
 
-#: ee-simple-file-list.php:788
+#: ee-simple-file-list.php:836
 msgid "Admin List"
 msgstr "Lista de admin"
 
@@ -300,39 +320,35 @@ msgstr "Versão do Plugin"
 msgid "Folder Extension"
 msgstr "Extensão da pasta"
 
-#: includes/ee-admin-footer.php:29
-msgid "Search Extension"
-msgstr "Extensão de pesquisa"
-
-#: includes/ee-class.php:559
+#: includes/ee-class.php:560
 msgid "Error"
 msgstr "Erro"
 
-#: includes/ee-class.php:559
+#: includes/ee-class.php:560
 msgid "This is NOT an image."
 msgstr "Isto NÃO é uma imagem."
 
-#: includes/ee-class.php:773
+#: includes/ee-class.php:774
 msgid "File Notification"
 msgstr "Notificação de arquivo"
 
-#: includes/ee-class.php:832
+#: includes/ee-class.php:833
 msgid "Uploader Information"
 msgstr "Uploader Informações"
 
-#: includes/ee-class.php:837
+#: includes/ee-class.php:838
 msgid "Uploaded By"
 msgstr "Carregado por"
 
-#: includes/ee-class.php:886
+#: includes/ee-class.php:887
 msgid "File Upload Notice"
 msgstr "Aviso de upload de ficheiro"
 
-#: includes/ee-class.php:930 includes/ee-class.php:947
+#: includes/ee-class.php:931 includes/ee-class.php:948
 msgid "This is not a valid email address."
 msgstr "Este não é um endereço de e-mail válido."
 
-#: includes/ee-class.php:984
+#: includes/ee-class.php:985
 msgid "Email"
 msgstr "E-mail"
 
@@ -341,15 +357,15 @@ msgid "Notification Settings Saved"
 msgstr "Configurações de notificação salvas"
 
 #: includes/ee-email-settings.php:75 includes/ee-list-display-settings.php:67
-#: includes/ee-list-settings.php:93 includes/ee-upload-settings.php:106
+#: includes/ee-list-settings.php:93 includes/ee-upload-settings.php:102
 msgid "Instructions"
 msgstr "Instruções"
 
 #: includes/ee-email-settings.php:76 includes/ee-email-settings.php:145
 #: includes/ee-list-display-settings.php:68
 #: includes/ee-list-display-settings.php:218 includes/ee-list-settings.php:94
-#: includes/ee-list-settings.php:256 includes/ee-upload-settings.php:108
-#: includes/ee-upload-settings.php:197
+#: includes/ee-list-settings.php:256 includes/ee-upload-settings.php:104
+#: includes/ee-upload-settings.php:193
 msgid "SAVE"
 msgstr "GUARDAR"
 
@@ -440,15 +456,15 @@ msgstr ""
 "Para inserir um link apontando para a lista de arquivos, use este código "
 "curto:"
 
-#: includes/ee-functions.php:224
+#: includes/ee-functions.php:229
 msgid "Files uploaded"
 msgstr "Arquivos enviados"
 
-#: includes/ee-functions.php:226
+#: includes/ee-functions.php:231
 msgid "File uploaded"
 msgstr "Ficheiro carregado"
 
-#: includes/ee-functions.php:265
+#: includes/ee-functions.php:271
 msgid "File Upload Complete"
 msgstr "Upload de ficheiro completo"
 
@@ -481,14 +497,14 @@ msgid "Create folders and unlimited levels of sub-folders."
 msgstr "Crie pastas e níveis ilimitados de subpastas."
 
 #: includes/ee-get-pro.php:33
-msgid "Use a shortcode attribute to display specific folders."
-msgstr "Use um atributo shortcode para exibir pastas específicas."
+msgid "Use this shortcode attribute to display specific folders: "
+msgstr "Use este atributo de atalho para exibir pastas específicas "
 
 #: includes/ee-get-pro.php:34
 msgid "Display different folders in different places on your site."
 msgstr "Exiba pastas diferentes em locais diferentes em seu site."
 
-#: includes/ee-get-pro.php:35
+#: includes/ee-get-pro.php:36
 msgid ""
 "You can even show several different folders on the same page and within "
 "widgets."
@@ -496,51 +512,63 @@ msgstr ""
 "Você pode até mesmo mostrar várias pastas diferentes na mesma página e "
 "dentro de widgets."
 
-#: includes/ee-get-pro.php:36
+#: includes/ee-get-pro.php:37
 msgid "Front-side users cannot navigate above the folder you specify."
 msgstr ""
 "Os usuários do Front-Side não podem navegar acima da pasta especificada."
 
-#: includes/ee-get-pro.php:37
+#: includes/ee-get-pro.php:40
 msgid "Breadcrumb navigation indicates where you are."
 msgstr "Navegação breadcrumb indica onde você está."
 
-#: includes/ee-get-pro.php:38
+#: includes/ee-get-pro.php:41
 msgid "Easily move files or entire folders."
 msgstr "Mova facilmente arquivos ou pastas inteiras."
 
-#: includes/ee-get-pro.php:39
+#: includes/ee-get-pro.php:42
 msgid "Easily rename any folder."
 msgstr "Renomeie facilmente qualquer pasta."
 
-#: includes/ee-get-pro.php:40
+#: includes/ee-get-pro.php:43
 msgid "Easily delete any folder, along with all contents."
 msgstr "Exclua facilmente qualquer pasta, juntamente com todo o conteúdo."
 
-#: includes/ee-get-pro.php:41
+#: includes/ee-get-pro.php:44
 msgid "Choose to sort folders first or sort along with the files."
 msgstr ""
 "Escolha classificar pastas primeiro ou classificar junto com os arquivos."
 
-#: includes/ee-get-pro.php:42
+#: includes/ee-get-pro.php:45
 msgid "Optionally display folder sizes."
 msgstr "Opcionalmente exibir tamanhos de pasta."
 
-#: includes/ee-get-pro.php:43
+#: includes/ee-get-pro.php:46
 msgid "Optionally define a custom directory for your file list."
 msgstr ""
 "Opcionalmente, defina um directório personalizado para a sua lista de "
 "ficheiros."
 
-#: includes/ee-get-pro.php:44
+#: includes/ee-get-pro.php:47
+msgid "Optionally add extensions to add further features:"
+msgstr "Opcionalmente, adicione extensões para adicionar mais funcionalidades:"
+
+#: includes/ee-get-pro.php:49
+msgid "File Access Manager"
+msgstr "Gerenciador de acesso de arquivos"
+
+#: includes/ee-get-pro.php:50
+msgid "Search and Pagination"
+msgstr "Pesquisa e Paginação"
+
+#: includes/ee-get-pro.php:52
 msgid "Updating to newer versions is just like the free plugin."
 msgstr "Actualizar para versões mais recentes é como o plugin gratuito."
 
-#: includes/ee-get-pro.php:45
+#: includes/ee-get-pro.php:53
 msgid "How to Organize Your Files into Folders"
 msgstr "Como organizar seus arquivos em pastas"
 
-#: includes/ee-get-pro.php:46
+#: includes/ee-get-pro.php:54
 msgid "See the Demo"
 msgstr "Veja o demo"
 
@@ -989,85 +1017,85 @@ msgstr "Arquivos de arrastar e soltar aqui ou usar o botão Browse."
 msgid "No upload directory configured."
 msgstr "Nenhuma directoria de upload configurada."
 
-#: includes/ee-upload-settings.php:86
+#: includes/ee-upload-settings.php:82
 msgid "Uploader Settings Saved"
 msgstr "Configurações Uploader guardadas"
 
-#: includes/ee-upload-settings.php:110
+#: includes/ee-upload-settings.php:106
 msgid "Upload Settings"
 msgstr "Configurações de Uploads"
 
-#: includes/ee-upload-settings.php:119
+#: includes/ee-upload-settings.php:115
 msgid "List Location"
 msgstr "Localização da lista"
 
-#: includes/ee-upload-settings.php:124
+#: includes/ee-upload-settings.php:120
 msgid "Allow File Upload"
 msgstr "Permitir o upload de arquivos"
 
-#: includes/ee-upload-settings.php:132
+#: includes/ee-upload-settings.php:128
 msgid "Anyone Can Upload"
 msgstr "Qualquer pessoa pode fazer upload"
 
-#: includes/ee-upload-settings.php:138
+#: includes/ee-upload-settings.php:134
 msgid "Only Logged in Users Can Upload"
 msgstr "Apenas os utilizadores logados podem carregar"
 
-#: includes/ee-upload-settings.php:144
+#: includes/ee-upload-settings.php:140
 msgid "Only Logged in Admins Can Upload"
 msgstr "Apenas os administradores logados podem carregar"
 
-#: includes/ee-upload-settings.php:150
+#: includes/ee-upload-settings.php:146
 msgid "Hide the Front Side Uploader Completely"
 msgstr "Ocultar o Uploader Front-Side completamente"
 
-#: includes/ee-upload-settings.php:153
+#: includes/ee-upload-settings.php:149
 msgid "Allow anyone to upload, only logged-in users, administrators or nobody."
 msgstr ""
 "Permita que qualquer pessoa faça upload, apenas usuários, administradores ou "
 "ninguém conectados."
 
-#: includes/ee-upload-settings.php:153
+#: includes/ee-upload-settings.php:149
 msgid "Please use \"Anyone Can Upload\" with Caution"
 msgstr "Por favor, use \"Qualquer pessoa pode carregar\" com cautela"
 
-#: includes/ee-upload-settings.php:157
+#: includes/ee-upload-settings.php:153
 msgid "Upload Limit"
 msgstr "Limite de upload"
 
-#: includes/ee-upload-settings.php:160
+#: includes/ee-upload-settings.php:156
 msgid "The maximum number of files that may be uploaded per submission."
 msgstr "O número máximo de ficheiros que podem ser carregados por envio."
 
-#: includes/ee-upload-settings.php:168
+#: includes/ee-upload-settings.php:164
 msgid "Maximum File Size"
 msgstr "Tamanho de Ficheiro Máximo"
 
-#: includes/ee-upload-settings.php:171
+#: includes/ee-upload-settings.php:167
 msgid "Your hosting limits the maximum file upload size to"
 msgstr "O teu alojamento limita o tamanho máximo de upload de ficheiros para"
 
-#: includes/ee-upload-settings.php:177
+#: includes/ee-upload-settings.php:173
 msgid "Allowed File Types"
 msgstr "Tipos de Ficheiro Permitidos"
 
-#: includes/ee-upload-settings.php:178
+#: includes/ee-upload-settings.php:174
 msgid "Only use the file types you absolutely need, such as"
 msgstr "Usa apenas os tipos de ficheiro que realmente precisas, como"
 
-#: includes/ee-upload-settings.php:184
+#: includes/ee-upload-settings.php:180
 msgid "Allow Overwriting"
 msgstr "Permitir a substituição"
 
-#: includes/ee-upload-settings.php:189
+#: includes/ee-upload-settings.php:185
 msgid "Do not number files, overwrite instead."
 msgstr "Não numerar arquivos, substituir em vez disso."
 
-#: includes/ee-upload-settings.php:191
+#: includes/ee-upload-settings.php:187
 msgid "Existing files with the same name will be overwritten."
 msgstr "Os arquivos existentes com o mesmo nome serão substituídos."
 
-#: includes/ee-upload-settings.php:192
+#: includes/ee-upload-settings.php:188
 msgid "Use with caution!"
 msgstr "Use com cautela!"
 
@@ -1092,7 +1120,10 @@ msgstr ""
 
 #. Author of the plugin/theme
 msgid "Mitchell Bennis"
-msgstr ""
+msgstr "Mitchell Bennis"
+
+#~ msgid "Search Extension"
+#~ msgstr "Extensão de pesquisa"
 
 #~ msgid "Add Features"
 #~ msgstr "Adicionar recursos"
@@ -1108,9 +1139,6 @@ msgstr ""
 
 #~ msgid "File Access"
 #~ msgstr "Acesso a arquivos"
-
-#~ msgid "File Access Manager"
-#~ msgstr "Gerenciador de acesso de arquivos"
 
 #~ msgid "Review Plugin"
 #~ msgstr "Revisão Plugin"
@@ -1174,9 +1202,6 @@ msgstr ""
 
 #~ msgid "Folder Support"
 #~ msgstr "Suporte de pasta"
-
-#~ msgid "Add Search &amp; Pagination Now"
-#~ msgstr "Adicionar pesquisa &amp; paginação agora"
 
 #~ msgid ""
 #~ "Adds searching and pagination functionality to Simple File List. It is "
