@@ -226,10 +226,13 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 			'sortorder' => '', // Descending or Ascending
 			'hidetype' => '', // Hide file types
 			'hidename' => '', // Hide the name matches
-			'showfolder' => '', // eeSFLF
+			'showfolder' => '', // eeSFLF - OBSOLETE
 		), $atts );
 		
 		extract($atts);
+		
+		// Don't show anything if a folder is defined.
+		if( strlen($showfolder) >= 1 ) { return '<p style="color:red;font-weight:bold;">ERROR 95</p>'; }
 	
 		$eeSFL_FREE_Log['L' . $eeSFL_FREE_ListRun][] = 'Shortcode Attributes...';
 		

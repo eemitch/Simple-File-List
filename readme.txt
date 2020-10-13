@@ -242,7 +242,8 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 = 4.2.13 =
 * Extensive under-the-hood changes so this version and the Pro version can run at the same time.
-* Removed support for the Folder Extension and added path to free upgrade to Pro for extension owners.
+* Removed support for extensions and added path to free upgrade to Pro for all extension owners.
+Pages using the showfolder shortcode attribute will show "ERROR 95" where the file list would be.
 * Removed support for files sending.
 
 = 4.2.12 =
