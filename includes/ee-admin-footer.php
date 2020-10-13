@@ -10,7 +10,7 @@ $eeOutput .= '<div id="eeAdminFooter">
 	__('Open each file submitted carefully.', 'ee-simple-file-list') . '</p>';
 		
 	$eeOutput .= '<p class="eeRight">
-	<a class="button" href="https://simplefilelist.com/docs/" target="_blank">' . __('Plugin Documentation', 'ee-simple-file-list') . '</a></p>
+	<a class="button" href="https://simplefilelist.com/documentation/" target="_blank">' . __('Plugin Documentation', 'ee-simple-file-list') . '</a></p>
 			<a href="https://simplefilelist.com/?pr=free" target="_blank">' . __('Plugin Website', 'ee-simple-file-list') . '</a> | 
 					<a href="https://simplefilelist.com/give-feedback/?pr=free" target="_blank">' . __('Give Feedback', 'ee-simple-file-list') . '</a> | 
 						<strong><a href="#" id="eeFooterImportantLink">' . __('Caution', 'ee-simple-file-list') . '</a></strong>';
