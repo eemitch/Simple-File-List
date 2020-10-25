@@ -193,7 +193,7 @@ Yes, you can limit to Admins or anyone who is logged in. If you need further use
 
 = Q: Can people who upload overwrite existing files? =
 
-A: No, you can choose that files not be overwritten. If a file is uploaded having the same name as one already present, a series number is appended to the name ( filename_(2).ext ) You can use the renaming functionality to change this. 
+A: No, by default a file will not be overwritten. If a file is uploaded having the same name as one already present, a series number is appended to the name ( filename_(2).ext ). If you don’t want this, uncheck the box on the Upload Settings tab. 
 
 = Q: Can I place different lists in different places? =
 

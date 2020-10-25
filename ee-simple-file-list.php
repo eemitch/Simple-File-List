@@ -65,7 +65,7 @@ function eeSFL_FREE_ALERT() {
 	 
 	    if ( $wpScreen->id == 'dashboard' OR $wpScreen->id == 'plugins' OR $wpScreen->id == 'toplevel_page_ee-simple-file-list' ) {
 	        
-	        $eeOutput = '<div class="notice notice-warning is-dismissible">
+	        $eeOutput = '<div class="notice notice-error is-dismissible">
 	            <p><strong>' . __('IMPORTANT', 'ee-simple-file-list') . '</strong><br />' . 
 	            	__('Extensions are no longer supported for the free version of Simple File List.', 'ee-simple-file-list') . ' ' .
 	            	__('Please upgrade to the Pro version.', 'ee-simple-file-list') . ' <a href="https://simplefilelist.com/upgrade-to-simple-file-list-pro/" target="_blank">' . __('Free Upgrade', 'ee-simple-file-list') . '</a></p>
