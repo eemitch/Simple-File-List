@@ -559,25 +559,22 @@ class eeSFL_FREE_MainClass {
 		// Dynamicly created thumbnails are here
 		$eeThumbsURL = $eeSFL_FREE_Env['wpSiteURL'] . '/' . $eeSFL_FREE_Config['FileListURL'] . $eeDir . '.thumbnails/'; 
 		$eeThumbsPATH = ABSPATH . $eeSFL_FREE_Config['FileListDir'] . $eeDir . '.thumbnails/'; // Path to them
+		
+		if(!is_dir($eeThumbsPATH)) {
+			if(!mkdir($eeThumbsPATH)) {
+				$eeSFL_Log['errors'][] = 'Cannot Create the Thumbnails Folder';
+				return; 
+			}
+		}
         
         $eeSizeCheck = @getimagesize($eeFileFullPath);
-        
-        // $eeSizeCheck['filesize'] = eeSFL_FormatFileSize($eeFileSize);
-        // $eeSizeCheck['pixels'] = $eeSizeCheck[0] * $eeSizeCheck[1];
-        // $eeSizeCheck['pixels-per-byte'] = $eeSizeCheck['pixels'] / $eeFileSize;
         
         $eeSizeCheck['memory-limit'] = preg_replace("/[^0-9]/", "", ini_get('memory_limit') ) * 1048576;
         $eeSizeCheck['memory-usage'] = memory_get_usage();
         
         $eeImageMemoryNeeded = ($eeSizeCheck[0] * $eeSizeCheck[1] * $eeSizeCheck['bits']) / 8;
         
-        // $eeSizeCheck['image-memory'] = eeSFL_FormatFileSize($eeImageMemoryNeeded);
-        
         $eeImageSizeLimit = ( $eeSizeCheck['memory-limit'] - $eeSizeCheck['memory-usage'] ) * .2;
-        
-        // $eeSizeCheck['image-size-limit'] = eeSFL_FormatFileSize($eeImageSizeLimit);
-        
-        // echo '<pre>' . $eeFileNameOnly; print_r($eeSizeCheck); echo '</pre>'; exit;
         
         if($eeImageMemoryNeeded >  $eeImageSizeLimit) { // It's too big for Wordpress
 			
