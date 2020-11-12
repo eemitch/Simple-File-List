@@ -383,7 +383,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 						
 						if($eeFileThumbURL) { 
 							
-							$eeOutput .= '<a href="' . $eeFileURL .  '"><img src="' . $eeFileThumbURL . '" width="64" height="64" alt="Thumbnail for ' . $eeFileName . '" /></a>';
+							$eeOutput .= '<a href="' . $eeFileURL .  '" target="_blank"><img src="' . $eeFileThumbURL . '" width="64" height="64" alt="Thumbnail for ' . $eeFileName . '" /></a>';
 						}
 						
 						$eeOutput .= '</td>';
@@ -403,7 +403,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 						
 						$eeOutput .= '<span class="eeSFL_RealFileName eeSFL_Hide">' . $eeRealFileName . '</span>
 						
-						<p class="eeSFL_FileLink"><a class="eeSFL_FileName" href="' . $eeFileURL .  '">';
+						<p class="eeSFL_FileLink"><a class="eeSFL_FileName" href="' . $eeFileURL .  '" target="_blank">';
 						
 						// Strip the extension?
 						if(!$eeAdmin AND $eeSFL_FREE_Config['ShowFileExtension'] == 'NO') {
