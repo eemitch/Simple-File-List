@@ -242,9 +242,11 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 = 4.2.13 =
 * Extensive under-the-hood changes so this version and the Pro version can run at the same time.
+* Now deleting corrupt image files (rather than jut warning) to prevent images disguised as malware being listed.
 * Removed support for extensions and added path to free upgrade to Pro for all extension owners.
 Pages using the showfolder shortcode attribute will show "ERROR 95" where the file list would be.
 * Removed support for files sending.
+* Added MIDI file type icon
 
 = 4.2.12 =
 * Moved the "Delete" button from inside the File Edit dialog up to the File Actions links. (By popular demand)

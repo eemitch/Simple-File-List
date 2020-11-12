@@ -517,8 +517,9 @@ class eeSFL_FREE_MainClass {
 			// Make sure it's really an image
 			if(!@getimagesize($eeFileFullPath)) {
 				
-				// Alert the users
-				$eeSFL_FREE_Log['errors'][] = __('Error', 'simple-file-list') . ': ' . basename($eeFileFullPath) . ' ' . __('This is NOT an image.', 'simple-file-list');
+				$eeSFL_FREE_Log['errors'][] = 'Corrupt File Deleted: ' . basename($eeFileFullPath);
+				
+				unlink($eeFileFullPath);
 				
 				return FALSE;
 			}
@@ -600,7 +601,7 @@ class eeSFL_FREE_MainClass {
 	        
 	        } else { // Cannot open
 		        
-		        $eeSFL_FREE_Log['errors'][] = 'File Not Compatible: ' . basename($eeFileFullPath);   
+		        $eeSFL_Log['SFL'][] = '!!! Bad Image File Deleted: ' . basename($eeFileFullPath);   
 	        }
 		}
 	}
