@@ -15,25 +15,25 @@ if(eeSFL_FileFormats.length > 1) {
 
 
 // Receive files from input[type=file]
-function eeSFL_FileInputHandler(eeEvent) {
+function eeSFL_FREE_FileInputHandler(eeEvent) {
 	
 	console.log("File Added via Input");
 	
 	var eeSFL_Files = document.getElementById("eeSFL_FileInput").files;
 	
-	eeSFL_ProcessFileInput(eeSFL_Files);
+	eeSFL_FREE_ProcessFileInput(eeSFL_Files);
 
 }
 
 // Receive files from the drop zone
-function eeSFL_DropHandler(eeEvent) {
+function eeSFL_FREE_DropHandler(eeEvent) {
   
   	console.log('File Added via Drop Zone');
 
 	// Prevent default behavior (Prevent file from being opened)
 	eeEvent.preventDefault();
 	  
-	eeSFL_ProcessFileInput(eeEvent.dataTransfer.files); // The file object
+	eeSFL_FREE_ProcessFileInput(eeEvent.dataTransfer.files); // The file object
 }
 
 // Prevent file from being opened in the browser window
@@ -47,7 +47,7 @@ function eeSFL_DragOverHandler(eeEvent) {
 
 	
 // Check the files and prepare for upload
-function eeSFL_ProcessFileInput(eeSFL_Files) { // The files object
+function eeSFL_FREE_ProcessFileInput(eeSFL_Files) { // The files object
     
     // Make sure it's not too many
     if(eeSFL_Files.length > eeSFL_FileLimit) { // If so, reset
@@ -133,7 +133,7 @@ function eeSFL_ProcessFileInput(eeSFL_Files) { // The files object
 
 
 // The Upload Queue Processor - This runs when the Upload button is clicked
-function eeUploadProcessor(eeSFL_FileObjects) {
+function eeSFL_FREE_UploadProcessor(eeSFL_FileObjects) {
 	
 	eeSFL_FileCount = eeSFL_FileObjects.length;
 	
@@ -149,7 +149,7 @@ function eeUploadProcessor(eeSFL_FileObjects) {
 				return;
 			}
 			
-			if( eeSFL_ValidateEmail(eeSFL_Email) == 'BAD' ) {
+			if( eeSFL_FREE_ValidateEmail(eeSFL_Email) == 'BAD' ) {
 				jQuery('#eeSFL_Email').css('border', '2px solid red');
 				return;
 			}
@@ -164,7 +164,7 @@ function eeUploadProcessor(eeSFL_FileObjects) {
 			
 			console.log("Processing File: " + eeSFL_FileObjects[i].name);
 						            
-            eeUploadFile(eeSFL_FileObjects[i]); // Upload the file using the function below...
+            eeSFL_FREE_UploadFile(eeSFL_FileObjects[i]); // Upload the file using the function below...
 		}
 	}		
 }
@@ -172,7 +172,7 @@ function eeUploadProcessor(eeSFL_FileObjects) {
 
 
 // File Upload AJAX Call
-function eeUploadFile(eeSFL_File) { // Pass in file object
+function eeSFL_FREE_UploadFile(eeSFL_File) { // Pass in file object
     
     var eeXhr = new XMLHttpRequest();
     
@@ -257,7 +257,6 @@ function eeUploadFile(eeSFL_File) { // Pass in file object
     
     // These values are set in ee-upload-form.php
     eeFormData.append("file", eeSFL_File);
-    eeFormData.append("eeSFL_ID", eeSFL_ListID);
     eeFormData.append("eeSFL_FileUploadDir", eeSFL_FileUploadDir);
     eeFormData.append("ee-simple-file-list-upload", eeSFL_Nonce);
         

@@ -24,7 +24,7 @@ $eeOutput .= '<article class="eeSupp eeExtensions">
 
 	<h2>' . __('Upgrade to Simple File List Pro', 'ee-simple-file-list') . '</h2>
 	
-	<img src="' . $eeSFL_Env['pluginURL'] . 'images/Folder-Demo.jpg" width="400" height="331" class="eeRight" />
+	<img src="' . $eeSFL_FREE_Env['pluginURL'] . 'images/Folder-Demo.jpg" width="400" height="331" class="eeRight" />
 	
 	<p>' . __('The Pro version allows folder listing, navigation and management capabilities among other features not available in the free version.', 'ee-simple-file-list') . ' ' . __('The Pro version is also extendable, with extensions for search and pagination and file access management.', 'simple-file-list') . '</p>
 	
@@ -38,8 +38,8 @@ $eeOutput .= '<article class="eeSupp eeExtensions">
 			</ul>
 		</li>
 		<li>' . __('Breadcrumb navigation indicates where you are.', 'ee-simple-file-list') . '</li>
-		<li>' . __('Easily move files or entire folders.', 'ee-simple-file-list') . '</li>
-		<li>' . __('Easily rename any folder.', 'ee-simple-file-list') . '</li>
+		<li>' . __('Move, rename and delete entire folders.', 'ee-simple-file-list') . '</li>
+		<li>' . __('Share files by sending emails containing file links to others.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Easily delete any folder, along with all contents.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Choose to sort folders first or sort along with the files.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Optionally display folder sizes.', 'ee-simple-file-list') . '</li>
@@ -56,9 +56,6 @@ $eeOutput .= '<article class="eeSupp eeExtensions">
 	
 	<p class="eeCentered">' . $eeSFL_Button . '</p>
 	
-	</article>';
-	
-$eeSFL_Log[] = '$eeOrderURL ...';
-$eeSFL_Log[] = urldecode($eeOrderURL);	
+	</article>';	
 
 ?>

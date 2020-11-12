@@ -5,7 +5,7 @@ Tags: file sharing, file list, file uploader, upload files, share files, exchang
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 5.6
-Stable tag: 4.2.12
+Stable tag: 4.2.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -193,7 +193,7 @@ Yes, you can limit to Admins or anyone who is logged in. If you need further use
 
 = Q: Can people who upload overwrite existing files? =
 
-A: No, you can choose that files not be overwritten. If a file is uploaded having the same name as one already present, a series number is appended to the name ( filename_(2).ext ) You can use the renaming functionality to change this. 
+A: No, by default a file will not be overwritten. If a file is uploaded having the same name as one already present, a series number is appended to the name ( filename_(2).ext ). If you don’t want this, uncheck the box on the Upload Settings tab. 
 
 = Q: Can I place different lists in different places? =
 
@@ -225,9 +225,10 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 
+
 == Upgrade Notice ==
 
-* 4.2.12 - General Fixes and Improvements
+* 4.2.13 - Removed Folder Extension Support (Free upgrade to Pro for extension owners)
 
 
 == Screenshots ==
@@ -238,6 +239,14 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Changelog ==
+
+= 4.2.13 =
+* Extensive under-the-hood changes so this version and the Pro version can run at the same time.
+* Now deleting corrupt image files (rather than jut warning) to prevent images disguised as malware being listed.
+* Removed support for extensions and added path to free upgrade to Pro for all extension owners.
+Pages using the showfolder shortcode attribute will show "ERROR 95" where the file list would be.
+* Removed support for files sending.
+* Added MIDI file type icon
 
 = 4.2.12 =
 * Moved the "Delete" button from inside the File Edit dialog up to the File Actions links. (By popular demand)

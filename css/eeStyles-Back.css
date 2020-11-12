@@ -694,12 +694,6 @@ button.eeDeleteCheckedButton {
 	box-shadow:         1px 1px 1px 1px #dbdbdb;
 	
 }
-.eeSFL table.eeFiles td.eeSFL_Thumbnail a.eeFolderIcon img {
-	border: none;
-	-moz-box-shadow:    none;
-	-webkit-box-shadow: none;
-	box-shadow:         none;
-}
 
 .eeSFL input[type="submit"] {
     float: none;

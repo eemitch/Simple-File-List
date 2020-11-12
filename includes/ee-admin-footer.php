@@ -10,19 +10,14 @@ $eeOutput .= '<div id="eeAdminFooter">
 	__('Open each file submitted carefully.', 'ee-simple-file-list') . '</p>';
 		
 	$eeOutput .= '<p class="eeRight">
-	<a class="button" href="https://simplefilelist.com/docs/" target="_blank">' . __('Plugin Documentation', 'ee-simple-file-list') . '</a></p>
+	<a class="button" href="https://simplefilelist.com/documentation/" target="_blank">' . __('Plugin Documentation', 'ee-simple-file-list') . '</a></p>
 			<a href="https://simplefilelist.com/?pr=free" target="_blank">' . __('Plugin Website', 'ee-simple-file-list') . '</a> | 
 					<a href="https://simplefilelist.com/give-feedback/?pr=free" target="_blank">' . __('Give Feedback', 'ee-simple-file-list') . '</a> | 
 						<strong><a href="#" id="eeFooterImportantLink">' . __('Caution', 'ee-simple-file-list') . '</a></strong>';
 	
 	$eeOutput .= '<br />
 	
-	' . __('Plugin Version', 'ee-simple-file-list') . ': ' . eeSFL_Version . ' | DB: ' . eeSFL_DB_Version . ' | CB: ' . eeSFL_Cache_Version;
-	
-	if( @defined('eeSFLF_Version') ) { $eeOutput .= '<br />
-		
-		' . __('Folder Extension', 'ee-simple-file-list') . ': ' . eeSFLF_Version;
-	}
+	' . __('Plugin Version', 'ee-simple-file-list') . ': ' . eeSFL_FREE_Version . ' | DB: ' . eeSFL_FREE_DB_Version;
 	
 	$eeOutput .= '
 		
