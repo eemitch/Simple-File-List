@@ -111,12 +111,6 @@ function eeSFL_FREE_ManageLists() {
 	    $active_subtab == 'uploader_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('File Upload Settings', 'ee-simple-file-list') . '</a>';
 	    
-	    // Display Settings
-		$eeOutput .= '<a href="?page=' . $eeSFL_FREE->eePluginSlug . '&tab=settings&subtab=display_settings" class="nav-tab ';  
-		if($active_subtab == 'display_settings') {$eeOutput .= '  eeActiveTab ';}    
-	    $active_subtab == 'display_settings' ? 'nav-tab-active' : '';    
-	    $eeOutput .= $active_subtab . '">' . __('Display Settings', 'ee-simple-file-list') . '</a>';
-	    
 	    // Notifications Settings
 		$eeOutput .= '<a href="?page=' . $eeSFL_FREE->eePluginSlug . '&tab=settings&subtab=email_settings" class="nav-tab ';  
 		if($active_subtab == 'email_settings') {$eeOutput .= '  eeActiveTab ';}    
@@ -129,11 +123,6 @@ function eeSFL_FREE_ManageLists() {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
 			include($eeSFL_FREE_Env['pluginDir'] . 'includes/ee-upload-settings.php'); // The Uploader Settings
-		
-		} elseif($active_subtab == 'display_settings') {
-			
-			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			include($eeSFL_FREE_Env['pluginDir'] . 'includes/ee-list-display-settings.php'); // The List Display Settings
 		
 		} elseif($active_subtab == 'email_settings') {
 			

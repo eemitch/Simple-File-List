@@ -77,7 +77,9 @@ $eeOutput .= '
 		
 	<input type="hidden" name="eePost" value="TRUE" />
 	
-	<h2>' . __('Notifications', 'ee-simple-file-list') . '</h2>';	
+	<h2>' . __('Notifications', 'ee-simple-file-list') . '</h2>
+	
+	<br class="eeClearFix" />';	
 	
 	$eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce', TRUE, FALSE);
 	
@@ -88,11 +90,19 @@ $eeOutput .= '
 		$eeSFL_FREE_Config['NotifyFrom'] = get_option('admin_email');
 	}
 	
-	$eeOutput .= '<fieldset>
+	$eeOutput .= '<fieldset class="eeSFL_SettingsFull">
+	
+	<h3>' . __('Enable Notifications', 'ee-simple-file-list') . '</h3>
 	
 	<label for="eeNotify">' . __('Enable Notifications', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeNotify" value="YES" id="eeNotify"'; 
 	if(@$eeSFL_FREE_Config['Notify'] == 'YES') { $eeOutput .= ' checked'; }
 	$eeOutput .= ' /> <div class="eeNote">' . __('Send an email notification when a file is uploaded on the front-side of the website.', 'ee-simple-file-list') . '</div>
+	
+	</fieldset>
+	
+	<fieldset class="eeSFL_SettingsFull">
+	
+	<h3>' . __('Notice Recipients', 'ee-simple-file-list') . '</h3>
 	
 	<label for="eeNotifyTo">' . __('Notice Email', 'ee-simple-file-list') . ':</label>
 			<input type="text" name="eeNotifyTo" value="' . @$eeSFL_FREE_Config['NotifyTo'] . '" class="eeAdminInput" id="eeNotifyTo" size="64" />
@@ -109,9 +119,12 @@ $eeOutput .= '
 	<input type="text" name="eeNotifyBcc" value="' . @$eeSFL_FREE_Config['NotifyBcc'] . '" class="eeAdminInput" id="eeNotifyBcc" size="64" />
 		<div class="eeNote">' . __('Blind copy notice emails here.', 'ee-simple-file-list') . '</div>
 	
-	<br class="eeClearFix" />	
+	</fieldset>
 	
-	<h3>Message Options</h3>
+	
+	<fieldset class="eeSFL_SettingsFull">	
+	
+	<h3>' . __('Message Details', 'ee-simple-file-list') . '</h3>
 	
 	<label for="eeNotifyFrom">' . __('Sender Email', 'ee-simple-file-list') . ':</label>
 	<input type="email" name="eeNotifyFrom" value="' . @$eeSFL_FREE_Config['NotifyFrom'] . '" class="eeAdminInput" id="eeNotifyFrom" size="64" />
@@ -139,11 +152,11 @@ $eeOutput .= '
 	';
 	
 	
-	$eeOutput .= '<br class="eeClearFix" />
-	
-	<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" />
+	$eeOutput .= '
 	
 	</fieldset>
+	
+	<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" />
 	
 </form>
 	

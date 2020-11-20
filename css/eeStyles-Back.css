@@ -20,6 +20,10 @@
 }
 
 
+.eeSFL_Admin h2 {
+	font-size: 150%;
+}
+
 .eeSFL_Admin h3 {
 	clear: left;
 	width: 75%;
@@ -64,42 +68,6 @@ p.eeTitle {
 
 
 
-
-.eeSFL_Admin .eeSFL .eeSFL_EditFileWrap {
-	display: none;
-	width: auto;
-	margin: 5px 0;
-	padding: 10px 3%;
-	border: 1px solid #6b6b6b;
-	border-radius: 6px;
-	background-color: #f6f6f6;
-}
-.eeSFL_Admin .eeSFL .eeSFL_EditFileWrap h4 {
-	margin: 0;
-}
-.eeSFL_Admin .eeSFL .eeSFL_EditFileWrap label {
-	float: none;
-	display: inline-block;
-	width: 98%;
-	margin: 0;
-	text-align: left;
-}
-.eeSFL_Admin .eeSFL .eeSFL_EditFileWrap input[type=text] {
-	float: right;
-	display: inline-block;
-	width: 80%;
-	margin: 0; 
-}
-.eeSFL_Admin .eeSFL .eeSFL_EditFileWrap .eeDeleteButton:hover {
-	background-color: #a93838;
-	color: #EEE;
-}
-
-
-
-
-
-
 .eeSFL_Admin .eeAlignLeftTwoThirds {
 	float: left;
 	width: 66%;
@@ -114,13 +82,7 @@ p.eeTitle {
 	display: block;
 	position: relative;
 	clear: both;
-/*
-	border: 2px solid #DDD;
-	border-top-width: 0;
-*/
 	padding: 1em;
-/* 	margin: 1em; */
-/* 	background-color: #fafafa; */
 }
 #eeAdminFooter fieldset {
 	border-top-width: 2px;
@@ -129,7 +91,6 @@ p.eeTitle {
 .eeSFL_Admin label, .eeSFL_Admin span.eeLabel {
 	float: left;
 	clear: left;
-	width: 33%;
 	text-align: right;
 	margin-right: .5em;
 	padding: 4px;
@@ -147,31 +108,48 @@ p.eeTitle {
 	width: auto;
 	background: transparent;
 }
+
+fieldset.eeSFL_SettingsBlock {
+	display: block;
+	width: 45%;
+	float: left;
+	clear: none;
+	margin: 0 1% 15px 0;
+	border: 2px solid #CCC;
+	min-height: 400px;
+}
+fieldset.eeSFL_SettingsFull {
+	margin: 0 2.2% 15px 0;
+	border: 2px solid #CCC;
+}
+
+
 .eeSFL_Admin .eeSFL #eeSFL_Settings p {
 	display: inline;
 }
 
+
+.eeSFL_Admin label, .eeSFL_Admin span.eeLabel {
+	width: 48%;
+}
 .eeSFL_Admin .eeSFL #eeSFL_Settings select,
 .eeSFL_Admin .eeSFL #eeSFL_Settings input[type=text],
-.eeSFL_Admin .eeSFL #eeSFL_Settings input[type=range], 
+.eeSFL_Admin .eeSFL #eeSFL_Settings input[type=number], 
 .eeSFL_Admin .eeSFL #eeSFL_Settings input[type=url], 
 .eeSFL_Admin .eeSFL #eeSFL_Settings input[type=password], 
 .eeSFL_Admin .eeSFL #eeSFL_Settings input[type=tel], 
 .eeSFL_Admin .eeSFL #eeSFL_Settings input[type=email],
-.eeSFL_Admin .eeSFL #eeSFL_Settings textarea, 
-.eeSFL_Admin .eeSFL #eeSFL_Settings span.eeValueDisplay {
+.eeSFL_Admin .eeSFL #eeSFL_Settings textarea
+/* , .eeSFL_Admin .eeSFL #eeSFL_Settings span.eeValueDisplay */ 
+{
 	float: left;
+	width: 45%;
 }
 .eeSFL_Admin #eeSFL_Settings input[type=text], 
 .eeSFL_Admin .eeSFL #eeSFL_Settings input[type=email] {
 	clear: none;
-	width: 56%;
+	/* width: 56%; */
 	margin-bottom: 0;
-}
-
-.eeSFL_Admin #eeSFL_Settings input[type=range] {
-	width: 50%;
-	margin-right: 2%;
 }
 .eeSFL_Admin #eeSFL_Settings textarea {
 	margin-bottom: 10px;
@@ -255,6 +233,20 @@ button.eeDeleteCheckedButton {
 
 
 
+form.eeSFL_ToolBox {
+	width: 30%;
+	height: 175px;
+	padding: 0;
+	margin: 7px 15px 7px 0;
+	float: left;
+	background-color: #E5E5E5;
+}
+form.eeSFL_ToolBox h3 {
+	margin: 0;
+	font-size: 100%;
+}
+
+
 
 
 .eeNote {
@@ -262,6 +254,7 @@ button.eeDeleteCheckedButton {
 	clear: both;
 	margin-bottom: 30px;
 	margin-left: 4%;
+	padding-top: 5px;
 	font-style: italic;
 }
 
@@ -293,25 +286,13 @@ button.eeDeleteCheckedButton {
 }
 
 
-/*
-#eeSFL_Settings h2 {
-	width: 50%;
-}
-*/
-
-
 #eeListSettingsTable {
-	clear: left;
 	width: 100%;
-	max-width: 66%;
 }
 #eeListSettingsTable th,
 #eeListSettingsTable td {
 	padding-right: 20px;
 	text-align: left;
-}
-#eeListSettingsTable td {
-	
 }
 #eeListSettingsTable input[type="checkbox"] {
     float: none;
@@ -319,10 +300,10 @@ button.eeDeleteCheckedButton {
     height: 1.4em;
     display: inline-block;
     margin: 0;
-    text-align: center;
 }
-#eeListSettingsTable input[type="text"] {
+.eeSFL_Admin .eeSFL #eeSFL_Settings #eeListSettingsTable input[type="text"] {
 	margin: 0;
+	width: 90%;
 }
 
 
@@ -347,6 +328,11 @@ button.eeDeleteCheckedButton {
 	box-shadow:         1px 1px 1px 1px #dbdbdb;
 }
 
+.eeSFL_TopSave {
+	display: block;
+	position: relative;
+	top: -75px;	
+}
 
 
 /* SUPPORT Page */
@@ -484,31 +470,28 @@ button.eeDeleteCheckedButton {
 }
 
 
-.wrap #eeSFL_DevMode {
 /*
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	width: 45%;
-*/
-
+.wrap #eeSFL_DevMode {
 	clear: both;
 	border: 2px dashed #333;
 	padding: 10px;
 }
-.eeAlert {
-	float: right;
+*/
+p.eeAlert {
+	text-align: center;
+	width: 100%;
 	font-size: 125%;
 	color: red;
 	background-color: #DDD;
-	margin: 20px;
+	margin: 20px 0;
 	padding: 4px;
 }
 
 
 .eeSFL_Admin .eeExtensions ul {
 	list-style: disc;
-	margin: 20px 0 20px 3%;
+	margin-left: 25px;
+	margin-bottom: 30px;
 }
 
 
@@ -694,11 +677,18 @@ button.eeDeleteCheckedButton {
 	box-shadow:         1px 1px 1px 1px #dbdbdb;
 	
 }
+.eeSFL table.eeFiles td.eeSFL_Thumbnail a.eeFolderIcon img {
+	border: none;
+	-moz-box-shadow:    none;
+	-webkit-box-shadow: none;
+	box-shadow:         none;
+}
 
 .eeSFL input[type="submit"] {
     float: none;
     margin: 20px;
 }
+
 
 .eeSFL a.eeDimmedLink {
 	color: #6a9db4;

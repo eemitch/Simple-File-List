@@ -38,23 +38,26 @@ function eeSFL_FREE_EditFile(eeSFL_FileID) {
 
 
 
-function eeSFL_FREE_EditSave(eeSFL_FileID) {
-	
-	var eeRenaming = false;
+function eeSFL_FREE_EditRename(eeSFL_FileID) {
 	
 	var eeName1 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileLink').text(); // Current File Name
 	var eeName2 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeNewFileName').val(); // New File Name
 	
 	if(eeName1 != eeName2) { // If no match, we rename
 		
-		eeRenaming = true;
 		eeSFL_FREE_FileAction(eeSFL_FileID, 'Rename');
 	}
+	
+	jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).slideUp();
+	jQuery('#eeSFL_EditFile_' + eeSFL_FileID).text('Edit');
+}
+
+function eeSFL_FREE_EditDesc(eeSFL_FileID) {
 	
 	var eeDesc1 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_SavedDesc').text(); // Current Desc
 	var eeDesc2 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeSFL_NewFileDesc').val(); // New Desc
 	
-	if(eeDesc1 != eeDesc2 && !eeRenaming) { // If no match, we update
+	if(eeDesc1 != eeDesc2) { // If no match, we update  && !eeRenaming
 		
 		eeSFL_FREE_FileAction(eeSFL_FileID, 'UpdateDesc');
 	}

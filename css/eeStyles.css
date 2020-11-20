@@ -173,23 +173,21 @@
 .eeSFL .eeSFL_EditFileWrap h4 {
 	margin: 0;
 }
+.eeSFL .eeSFL_EditFileWrap p {
+	margin: 10px 0;
+}
 .eeSFL .eeSFL_EditFileWrap label {
-	float: none;
+/* 	float: left; */
 	display: inline-block;
-	width: 98%;
-	margin: 0;
-	text-align: left;
-	font-size: 80%;
+	width: 20%;
+	margin-right: 6px;
+	text-align: right;
 }
 .eeSFL .eeSFL_EditFileWrap input[type=text] {
-	float: right;
+/* 	float: left; */
 	display: inline-block;
-	width: 80%;
+	width: 60%;
 	margin: 0; 
-}
-.eeSFL .eeSFL_EditFileWrap .eeDeleteButton:hover {
-	background-color: #a93838;
-	color: #EEE;
 }
 
 

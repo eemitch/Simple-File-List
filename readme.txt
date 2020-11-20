@@ -241,8 +241,9 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 == Changelog ==
 
 = 4.2.14 =
-
-
+* Bug Fix: Editing file name and description at the same time fails to the affect the description.
+* Redesigned the Edit Details dialog.
+* Reorganized the List Settings tabs.
 
 
 

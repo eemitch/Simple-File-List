@@ -4,6 +4,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
 $eeSFL_Files = FALSE;
+$eeFileArray = FALSE;
+$eeReScan = FALSE;
 $eeSFL_ListClass = 'eeSFL'; // The basic list's CSS class. Extensions might change this.
 $eeClass = ''; // Meaning, CSS class
 $eeSFL_AllowFrontManage = 'NO'; // Front-side freedom
@@ -19,7 +21,7 @@ $eeSFL_FREE_Log['SFL'][] = 'Loaded: ee-list-display';
 // echo '<pre>'; print_r($_POST); echo '</pre>';
 
 // Get the File List
-if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR @$eeSFL_FREE_Config['ExpireTime'] === 0) { // Only admins can force a rescan
+if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR @$eeSFL_FREE_Config['ExpireTime']) { // Only admins can force a rescan
 	
 	$eeSFL_Files = $eeSFL_FREE->eeSFL_UpdateFileListArray();
 	
@@ -497,17 +499,14 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 									
 									<h4>' . __('Edit Details', 'ee-simple-file-list') . '</h4>';
 									
-									$eeFileActions .= '<p><label>' . __('File Name', 'ee-simple-file-list') . '
-									<input required="required" type="text" class="eeNewFileName" name="eeNewFileName" value="' . $eeRealFileName . '" size="32" /></label></p>
+									$eeFileActions .= '<p><label for="eeSFL_NewFileName_' . $eeRowID . '">' . __('File Name', 'ee-simple-file-list') . '</label>
+									<input required="required" type="text" class="eeNewFileName" name="eeNewFileName" value="' . $eeRealFileName . '" size="32" id="eeSFL_NewFileName_' . $eeRowID . '" />
+										<a class="button" href="#" onclick="eeSFL_FREE_EditRename(' . $eeRowID . ')">' . __('Save', 'ee-simple-file-list') . '</a></p>
 										
-									<p class="eeSFL_FileDesc_in"><label>' . __('Description', 'ee-simple-file-list') . '
+									<p><label for="eeSFL_FileDesc_' . $eeRowID . '">' . __('Description', 'ee-simple-file-list') . '</label>
 										<span class="eeSFL_SavedDesc">' . @$eeFileArray['FileDescription'] . '</span>
-										<input type="text" class="eeSFL_NewFileDesc" name="eeSFL_FileID_' . $eeFileKey . '" value="' . @$eeFileArray['FileDescription'] . '" size="32" /></label></p> 
-										
-									<p class="eeCenter">
-										<a class="button" href="#" onclick="eeSFL_FREE_EditSave(' . $eeRowID . ')">' . __('Save', 'ee-simple-file-list') . '</a> 
-										<a class="button" href="#" onclick="eeSFL_FREE_EditFile(' . $eeRowID . ')">' . __('Cancel', 'ee-simple-file-list') . '</a> 
-									</p>
+										<input type="text" class="eeSFL_NewFileDesc" name="eeSFL_FileID_' . $eeFileKey . '" value="' . @$eeFileArray['FileDescription'] . '" size="32" id="eeSFL_FileDesc_' . $eeRowID . '" />
+											<a class="button" href="#" onclick="eeSFL_FREE_EditDesc(' . $eeRowID . ')">' . __('Save', 'ee-simple-file-list') . '</a></p>
 									
 									<p class="eeCenter"><small>' . __('Added', 'ee-simple-file-list') . ': ' . $eeFileDateAdded . ' — ';
 									
