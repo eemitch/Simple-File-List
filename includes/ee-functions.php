@@ -82,16 +82,10 @@ function eeSFL_FREE_FileListDirCheck($eeFileListDir) {
 		return FALSE;
 	}
 	
-	$eeSFL_FileListDirCheck = get_transient('eeSFL-1-FileListDirCheck');
-	
 	// Check Transient First
-	if( $eeFileListDir == $eeSFL_FileListDirCheck AND is_dir(ABSPATH . $eeFileListDir) ) {
-		
-		return TRUE; // OKAY, No Change
-		
-	} elseif( strlen($eeFileListDir) ) { // Transient Expired, Dir Changed or New Install
+	if( !is_dir(ABSPATH . $eeFileListDir) ) { // Directory Changed or New Install
 	
-		$eeSFL_FREE_Log['SFL'][] = 'No Transient or Directory Change...';
+		$eeSFL_FREE_Log['SFL'][] = 'New Install or Directory Change...';
 		
 		if( !is_writable( ABSPATH . $eeFileListDir ) ) {
 			
@@ -127,8 +121,6 @@ function eeSFL_FREE_FileListDirCheck($eeFileListDir) {
 				$eeSFL_FREE_Log['SFL'][] = '"FileListDir" Has Been Created!';
 				$eeSFL_FREE_Log['SFL'][] = $eeFileListDir;
 			}
-			
-			
 		
 		} else {
 			$eeSFL_FREE_Log['SFL'][] = 'FileListDir Looks Good';
@@ -161,15 +153,11 @@ function eeSFL_FREE_FileListDirCheck($eeFileListDir) {
 			}
 		}
 		
-		
-		// Set Transient
-		set_transient('eeSFL-1-FileListDirCheck', $eeFileListDir, 86400); // 1 Expires in Day
-		
-		return TRUE;
+		return TRUE; // SUCCESS
 		
 	} else {
 		
-		return FALSE;
+		return TRUE; // Looks Good
 	}
 }
 
@@ -178,7 +166,7 @@ function eeSFL_FREE_FileListDirCheck($eeFileListDir) {
 // Post-process an upload job
 function eeSFL_FREE_ProcessUpload() {
 	
-	global $eeSFL_FREE, $eeSFL_FREE_Config, $eeSFL_FREE_Env, $eeSFL_FREE_Log;
+	global $eeSFL_FREE, $eeSFL_Settings_1, $eeSFL_FREE_Env, $eeSFL_FREE_Log;
 	
 	$eeSFL_FREE_Log['SFL'][] = 'Function Called: eeSFL_ProcessUpload()';
 	
@@ -259,8 +247,8 @@ function eeSFL_FREE_ProcessUpload() {
 						
 						// Notification Info (FREE)
 						$eeUploadJob .=  $eeFile . PHP_EOL . 
-							$eeSFL_FREE_Config['FileListURL'] . $eeFile . PHP_EOL . 
-								"(" . eeSFL_FREE_GetFileSize( $eeSFL_FREE_Config['FileListDir'] . $eeFile ) . ")" . PHP_EOL . PHP_EOL;
+							$eeSFL_Settings_1['FileListURL'] . $eeFile . PHP_EOL . 
+								"(" . eeSFL_FREE_GetFileSize( $eeSFL_Settings_1['FileListDir'] . $eeFile ) . ")" . PHP_EOL . PHP_EOL;
 					}
 						
 					$eeSFL_FREE_Log['messages'][] = __('File Upload Complete', 'ee-simple-file-list');
@@ -272,7 +260,7 @@ function eeSFL_FREE_ProcessUpload() {
 					} else  {
 						
 						// Send Email Notice
-						if($eeSFL_FREE_Config['Notify'] == 'YES') {
+						if($eeSFL_Settings_1['Notify'] == 'YES') {
 							
 							// Send the Email Notification
 							$eeSFL_FREE->eeSFL_NotificationEmail($eeUploadJob);
@@ -391,11 +379,9 @@ function eeSFL_FREE_ProcessTextInput($eeTerm, $eeType = 'text') {
 // Check if a file already exists, then number it so file will not be over-written.
 function eeSFL_FREE_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path from WP root
 	
-	global $eeSFL_FREE, $eeSFL_FREE_Log;
+	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_Settings_1;
 	
-	$eeSFL_FREE_Config = $eeSFL_FREE->eeSFL_Config();
-	
-	if(@$eeSFL_FREE_Config['AllowOverwrite'] == 'YES') { // Overwriting files allowed
+	if(@$eeSFL_Settings_1['AllowOverwrite'] == 'YES') { // Overwriting files allowed
 		return $eeSFL_FilePathAdded;
 	}
 	
@@ -415,7 +401,7 @@ function eeSFL_FREE_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path f
 			$eeFilePath = $eeArray['FilePath']; // Get the name.ext
 			
 			// Check if duplicate
-			if( $eeSFL_FilePathAdded == $eeSFL_FREE_Config['FileListDir'] . $eeFilePath ) { // Duplicate found
+			if( $eeSFL_FilePathAdded == $eeSFL_Settings_1['FileListDir'] . $eeFilePath ) { // Duplicate found
 			
 				$eeSFL_FREE_Log['SFL'][] = 'Duplicate Item Found: ' . $eeSFL_FilePathAdded;
 				

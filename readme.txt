@@ -228,7 +228,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.13 - Removed Folder Extension Support (Free upgrade to Pro for extension owners)
+* 4.2.14 - Bug Fixes and Improvements
 
 
 == Screenshots ==
@@ -244,6 +244,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 * Bug Fix: Editing file name and description at the same time fails to the affect the description.
 * Redesigned the Edit Details dialog.
 * Reorganized the List Settings tabs.
+* Under-the-hood improvements
 
 
 
