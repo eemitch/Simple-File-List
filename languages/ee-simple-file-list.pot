@@ -3,14 +3,14 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2020-10-13 12:47-0500\n"
+"POT-Creation-Date: 2020-11-24 13:31-0600\n"
 "PO-Revision-Date: 2019-02-08 12:43-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: ee-simple-file-list.php\n"
@@ -37,7 +37,7 @@ msgstr ""
 msgid "Get Help"
 msgstr ""
 
-#: ee-admin-page.php:58 ee-simple-file-list.php:707
+#: ee-admin-page.php:58 ee-simple-file-list.php:706
 msgid "Settings"
 msgstr ""
 
@@ -58,150 +58,142 @@ msgid "File Upload Settings"
 msgstr ""
 
 #: ee-admin-page.php:118
-msgid "Display Settings"
-msgstr ""
-
-#: ee-admin-page.php:124
 msgid "Notification Settings"
 msgstr ""
 
-#: ee-list-display.php:46
+#: ee-list-display.php:48
 msgid "No File List Found. Please Re-Scan"
 msgstr ""
 
-#: ee-list-display.php:138 includes/ee-upload-form.php:46
+#: ee-list-display.php:140 includes/ee-upload-form.php:46
 msgid "Upload Files"
 msgstr ""
 
-#: ee-list-display.php:141
+#: ee-list-display.php:143
 msgid "Re-Scan Files"
 msgstr ""
 
-#: ee-list-display.php:144
+#: ee-list-display.php:146
 msgid "Create Folder"
 msgstr ""
 
-#: ee-list-display.php:153 ee-list-display.php:186
+#: ee-list-display.php:155 ee-list-display.php:188
 msgid "Back to the Files"
 msgstr ""
 
-#: ee-list-display.php:170
+#: ee-list-display.php:172
 msgid "Files"
 msgstr ""
 
-#: ee-list-display.php:171
+#: ee-list-display.php:173
 msgid "Sorted by"
 msgstr ""
 
-#: ee-list-display.php:172
+#: ee-list-display.php:174
 msgid "Last Changed"
 msgstr ""
 
-#: ee-list-display.php:213 includes/ee-list-settings.php:155
+#: ee-list-display.php:215 includes/ee-list-settings.php:193
 msgid "Thumb"
 msgstr ""
 
-#: ee-list-display.php:222 includes/ee-class.php:930
-#: includes/ee-list-settings.php:163
+#: ee-list-display.php:224 includes/ee-class.php:929
+#: includes/ee-list-settings.php:201
 msgid "Name"
 msgstr ""
 
-#: ee-list-display.php:232 ee-list-display.php:517
-#: includes/ee-list-settings.php:183
+#: ee-list-display.php:234 ee-list-display.php:522
+#: includes/ee-list-settings.php:221
 msgid "Size"
 msgstr ""
 
-#: ee-list-display.php:243 includes/ee-list-settings.php:173
+#: ee-list-display.php:245 includes/ee-list-settings.php:211
 msgid "Date"
 msgstr ""
 
-#: ee-list-display.php:451
+#: ee-list-display.php:453
 msgid "Submitted by"
 msgstr ""
 
-#: ee-list-display.php:465
+#: ee-list-display.php:467
 msgid "Open"
 msgstr ""
 
-#: ee-list-display.php:469
+#: ee-list-display.php:471
 msgid "Download"
 msgstr ""
 
-#: ee-list-display.php:477
+#: ee-list-display.php:479
 msgid "Edit"
 msgstr ""
 
-#: ee-list-display.php:478
+#: ee-list-display.php:480
 msgid "Delete"
 msgstr ""
 
-#: ee-list-display.php:479
+#: ee-list-display.php:485
 msgid "Move"
 msgstr ""
 
-#: ee-list-display.php:480
+#: ee-list-display.php:486
 msgid "Users"
 msgstr ""
 
-#: ee-list-display.php:481
+#: ee-list-display.php:487
 msgid "Send"
 msgstr ""
 
-#: ee-list-display.php:498
+#: ee-list-display.php:506
 msgid "Edit Details"
 msgstr ""
 
-#: ee-list-display.php:500 includes/ee-list-settings.php:160
-#: includes/ee-list-settings.php:208
+#: ee-list-display.php:508 includes/ee-list-settings.php:198
+#: includes/ee-list-settings.php:287
 msgid "File Name"
 msgstr ""
 
-#: ee-list-display.php:503 includes/ee-class.php:944
-msgid "Description"
-msgstr ""
-
-#: ee-list-display.php:508
+#: ee-list-display.php:510 ee-list-display.php:515
 msgid "Save"
 msgstr ""
 
-#: ee-list-display.php:509
-msgid "Cancel"
+#: ee-list-display.php:512 includes/ee-class.php:943
+msgid "Description"
 msgstr ""
 
-#: ee-list-display.php:512
+#: ee-list-display.php:517
 msgid "Added"
 msgstr ""
 
-#: ee-list-display.php:515
+#: ee-list-display.php:520
 msgid "Modified"
 msgstr ""
 
-#: ee-list-display.php:575
+#: ee-list-display.php:580
 msgid "Upload some files and they will appear here."
 msgstr ""
 
-#: ee-simple-file-list.php:69
+#: ee-simple-file-list.php:68
 msgid "IMPORTANT"
 msgstr ""
 
-#: ee-simple-file-list.php:70
+#: ee-simple-file-list.php:69
 msgid ""
 "Extensions are no longer supported for the free version of Simple File List."
 msgstr ""
 
-#: ee-simple-file-list.php:71
+#: ee-simple-file-list.php:70
 msgid "Please upgrade to the Pro version."
 msgstr ""
 
-#: ee-simple-file-list.php:71
+#: ee-simple-file-list.php:70
 msgid "Free Upgrade"
 msgstr ""
 
-#: ee-simple-file-list.php:662
+#: ee-simple-file-list.php:661
 msgid "File Delete Failed"
 msgstr ""
 
-#: ee-simple-file-list.php:706
+#: ee-simple-file-list.php:705
 msgid "Admin List"
 msgstr ""
 
@@ -241,146 +233,145 @@ msgstr ""
 msgid "Plugin Version"
 msgstr ""
 
-#: includes/ee-class.php:521
-msgid "Error"
-msgstr ""
-
-#: includes/ee-class.php:521
-msgid "This is NOT an image."
-msgstr ""
-
-#: includes/ee-class.php:723
+#: includes/ee-class.php:722
 msgid "File Notification"
 msgstr ""
 
-#: includes/ee-class.php:782
+#: includes/ee-class.php:781
 msgid "Uploader Information"
 msgstr ""
 
-#: includes/ee-class.php:787
+#: includes/ee-class.php:786
 msgid "Uploaded By"
 msgstr ""
 
-#: includes/ee-class.php:836
+#: includes/ee-class.php:835
 msgid "File Upload Notice"
 msgstr ""
 
-#: includes/ee-class.php:880 includes/ee-class.php:897
+#: includes/ee-class.php:879 includes/ee-class.php:896
 msgid "This is not a valid email address."
 msgstr ""
 
-#: includes/ee-class.php:934
+#: includes/ee-class.php:933
 msgid "Email"
 msgstr ""
 
-#: includes/ee-email-settings.php:55
-msgid "Notification Settings Saved"
+#: includes/ee-email-settings.php:46 includes/ee-list-settings.php:69
+#: includes/ee-upload-settings.php:78
+msgid "Settings Saved"
 msgstr ""
 
-#: includes/ee-email-settings.php:75 includes/ee-list-display-settings.php:54
-#: includes/ee-list-settings.php:93 includes/ee-upload-settings.php:99
+#: includes/ee-email-settings.php:70 includes/ee-list-settings.php:91
+#: includes/ee-upload-settings.php:97
 msgid "Instructions"
 msgstr ""
 
-#: includes/ee-email-settings.php:76 includes/ee-email-settings.php:144
-#: includes/ee-list-display-settings.php:55
-#: includes/ee-list-display-settings.php:181 includes/ee-list-settings.php:94
-#: includes/ee-list-settings.php:255 includes/ee-upload-settings.php:101
-#: includes/ee-upload-settings.php:189
+#: includes/ee-email-settings.php:71 includes/ee-email-settings.php:154
+#: includes/ee-list-settings.php:92 includes/ee-list-settings.php:386
+#: includes/ee-upload-settings.php:99 includes/ee-upload-settings.php:209
 msgid "SAVE"
 msgstr ""
 
-#: includes/ee-email-settings.php:80
+#: includes/ee-email-settings.php:75
 msgid "Notifications"
 msgstr ""
 
-#: includes/ee-email-settings.php:93
+#: includes/ee-email-settings.php:90 includes/ee-email-settings.php:92
 msgid "Enable Notifications"
 msgstr ""
 
-#: includes/ee-email-settings.php:95
+#: includes/ee-email-settings.php:94
 msgid ""
 "Send an email notification when a file is uploaded on the front-side of the "
 "website."
 msgstr ""
 
-#: includes/ee-email-settings.php:97
+#: includes/ee-email-settings.php:100
+msgid "Notice Recipients"
+msgstr ""
+
+#: includes/ee-email-settings.php:102
 msgid "Notice Email"
 msgstr ""
 
-#: includes/ee-email-settings.php:99
+#: includes/ee-email-settings.php:104
 msgid "Send an email whenever a file is uploaded."
 msgstr ""
 
-#: includes/ee-email-settings.php:99
+#: includes/ee-email-settings.php:104
 msgid "Separate multiple addresses with a comma."
 msgstr ""
 
-#: includes/ee-email-settings.php:103
+#: includes/ee-email-settings.php:108
 msgid "Copy to Email"
 msgstr ""
 
-#: includes/ee-email-settings.php:105
+#: includes/ee-email-settings.php:110
 msgid "Copy notice emails here."
 msgstr ""
 
-#: includes/ee-email-settings.php:108
+#: includes/ee-email-settings.php:113
 msgid "Blind Copy to Email"
 msgstr ""
 
-#: includes/ee-email-settings.php:110
+#: includes/ee-email-settings.php:115
 msgid "Blind copy notice emails here."
 msgstr ""
 
-#: includes/ee-email-settings.php:116
+#: includes/ee-email-settings.php:122
+msgid "Message Details"
+msgstr ""
+
+#: includes/ee-email-settings.php:124
 msgid "Sender Email"
 msgstr ""
 
-#: includes/ee-email-settings.php:118
+#: includes/ee-email-settings.php:126
 msgid "The notification message's reply-to address."
 msgstr ""
 
-#: includes/ee-email-settings.php:121
+#: includes/ee-email-settings.php:129
 msgid "Sender Name"
 msgstr ""
 
-#: includes/ee-email-settings.php:123
+#: includes/ee-email-settings.php:131
 msgid "The visible name in the From field."
 msgstr ""
 
-#: includes/ee-email-settings.php:126
+#: includes/ee-email-settings.php:134
 msgid "Notification Subject"
 msgstr ""
 
-#: includes/ee-email-settings.php:128
+#: includes/ee-email-settings.php:136
 msgid "The notification email subject line."
 msgstr ""
 
-#: includes/ee-email-settings.php:133
+#: includes/ee-email-settings.php:141
 msgid "Message Text"
 msgstr ""
 
-#: includes/ee-email-settings.php:135
+#: includes/ee-email-settings.php:143
 msgid "This will be the text for the file upload notification messages."
 msgstr ""
 
-#: includes/ee-email-settings.php:136
+#: includes/ee-email-settings.php:144
 msgid "To insert file information and link, use this shortcode:"
 msgstr ""
 
-#: includes/ee-email-settings.php:137
+#: includes/ee-email-settings.php:145
 msgid "To insert a link pointing to the file list, use this shortcode:"
 msgstr ""
 
-#: includes/ee-functions.php:224
+#: includes/ee-functions.php:212
 msgid "Files uploaded"
 msgstr ""
 
-#: includes/ee-functions.php:226
+#: includes/ee-functions.php:214
 msgid "File uploaded"
 msgstr ""
 
-#: includes/ee-functions.php:266
+#: includes/ee-functions.php:254
 msgid "File Upload Complete"
 msgstr ""
 
@@ -478,267 +469,239 @@ msgstr ""
 msgid "See the Demo"
 msgstr ""
 
-#: includes/ee-list-display-settings.php:36 includes/ee-list-settings.php:75
-msgid "List Settings Saved"
+#: includes/ee-list-settings.php:94
+msgid "List Settings"
 msgstr ""
 
-#: includes/ee-list-display-settings.php:57
-msgid "Front-Side Settings"
+#: includes/ee-list-settings.php:104
+msgid "List Location"
 msgstr ""
 
-#: includes/ee-list-display-settings.php:67
-msgid "Appearance"
+#: includes/ee-list-settings.php:107
+msgid "Get Pro Version"
 msgstr ""
 
-#: includes/ee-list-display-settings.php:69
+#: includes/ee-list-settings.php:107
+msgid "The Pro Version allows you to define a custom file list directory."
+msgstr ""
+
+#: includes/ee-list-settings.php:118
+msgid "File List Access"
+msgstr ""
+
+#: includes/ee-list-settings.php:120
+msgid "Front-Side Display"
+msgstr ""
+
+#: includes/ee-list-settings.php:128 includes/ee-shortcode-builder.php:96
+#: includes/ee-shortcode-builder.php:117
+msgid "Show to Everyone"
+msgstr ""
+
+#: includes/ee-list-settings.php:134
+msgid "Show to Only Logged in Users"
+msgstr ""
+
+#: includes/ee-list-settings.php:140
+msgid "Show to Only Logged in Admins"
+msgstr ""
+
+#: includes/ee-list-settings.php:146
+msgid "Hide the File List Completely"
+msgstr ""
+
+#: includes/ee-list-settings.php:149
+msgid "Determine who you will show the front-side list to."
+msgstr ""
+
+#: includes/ee-list-settings.php:155
+msgid "Front-End Management"
+msgstr ""
+
+#: includes/ee-list-settings.php:160
+msgid "Allow file deleting, renaming, etc..."
+msgstr ""
+
+#: includes/ee-list-settings.php:162
+msgid "Get File Access Manager"
+msgstr ""
+
+#: includes/ee-list-settings.php:163
+msgid ""
+"The Pro version allows you to add the \"File Access Manager\" extension.  "
+"This gives you improved user access control."
+msgstr ""
+
+#: includes/ee-list-settings.php:175
+msgid "File List Table Information"
+msgstr ""
+
+#: includes/ee-list-settings.php:180
+msgid "Item"
+msgstr ""
+
+#: includes/ee-list-settings.php:181
+msgid "Show"
+msgstr ""
+
+#: includes/ee-list-settings.php:182
+msgid "Label"
+msgstr ""
+
+#: includes/ee-list-settings.php:188
+msgid "File Thumbnail"
+msgstr ""
+
+#: includes/ee-list-settings.php:206 includes/ee-list-settings.php:292
+msgid "File Date"
+msgstr ""
+
+#: includes/ee-list-settings.php:216 includes/ee-list-settings.php:297
+msgid "File Size"
+msgstr ""
+
+#: includes/ee-list-settings.php:229
+msgid "Limit the file information to display on the front-side file list."
+msgstr ""
+
+#: includes/ee-list-settings.php:232
+msgid "Show Header"
+msgstr ""
+
+#: includes/ee-list-settings.php:237
+msgid "Show the table header"
+msgstr ""
+
+#: includes/ee-list-settings.php:239
+msgid "Show the table header above the file list or not."
+msgstr ""
+
+#: includes/ee-list-settings.php:243
+msgid "Show File Actions"
+msgstr ""
+
+#: includes/ee-list-settings.php:248
+msgid "Open, Download, etc."
+msgstr ""
+
+#: includes/ee-list-settings.php:250
+msgid "Show file action links below each file name on the front-end list"
+msgstr ""
+
+#: includes/ee-list-settings.php:254
+msgid "Show File Owner"
+msgstr ""
+
+#: includes/ee-list-settings.php:259
+msgid "Show on Front-End"
+msgstr ""
+
+#: includes/ee-list-settings.php:261
+msgid "Show the name of the user who uploaded the file."
+msgstr ""
+
+#: includes/ee-list-settings.php:277
+msgid "File Sorting and Order"
+msgstr ""
+
+#: includes/ee-list-settings.php:279
+msgid "Sort By"
+msgstr ""
+
+#: includes/ee-list-settings.php:302
+msgid "Random"
+msgstr ""
+
+#: includes/ee-list-settings.php:306
+msgid "Sort the list by name, date, file size, or randomly."
+msgstr ""
+
+#: includes/ee-list-settings.php:308
+msgid "Reverse Order"
+msgstr ""
+
+#: includes/ee-list-settings.php:313
+msgid "Descending"
+msgstr ""
+
+#: includes/ee-list-settings.php:315
+msgid "Check this box to reverse the default sort order."
+msgstr ""
+
+#: includes/ee-list-settings.php:316
+msgid "The list is sorted Ascending by default"
+msgstr ""
+
+#: includes/ee-list-settings.php:316
+msgid "Small to Large"
+msgstr ""
+
+#: includes/ee-list-settings.php:316
+msgid "Old to New"
+msgstr ""
+
+#: includes/ee-list-settings.php:329
+msgid "File Details"
+msgstr ""
+
+#: includes/ee-list-settings.php:331
 msgid "Preserve Spaces"
 msgstr ""
 
-#: includes/ee-list-display-settings.php:74
+#: includes/ee-list-settings.php:336
 msgid "File Name Spaces"
 msgstr ""
 
-#: includes/ee-list-display-settings.php:76
+#: includes/ee-list-settings.php:338
 msgid ""
 "Spaces in file names are replaced with hyphens in order to make the URL "
 "legal."
 msgstr ""
 
-#: includes/ee-list-display-settings.php:77
+#: includes/ee-list-settings.php:339
 msgid "This setting will revert this action for display."
 msgstr ""
 
-#: includes/ee-list-display-settings.php:82
+#: includes/ee-list-settings.php:343
 msgid "Show File Description"
 msgstr ""
 
-#: includes/ee-list-display-settings.php:87
+#: includes/ee-list-settings.php:348
 msgid "Description of the file"
 msgstr ""
 
-#: includes/ee-list-display-settings.php:89
+#: includes/ee-list-settings.php:350
 msgid "Display the file description below the file name."
 msgstr ""
 
-#: includes/ee-list-display-settings.php:94
-msgid "Show File Actions"
-msgstr ""
-
-#: includes/ee-list-display-settings.php:99
-msgid "Open | Download"
-msgstr ""
-
-#: includes/ee-list-display-settings.php:101
-msgid "Show file action links below each file name on the front-side list"
-msgstr ""
-
-#: includes/ee-list-display-settings.php:106
+#: includes/ee-list-settings.php:354
 msgid "Show Extension"
 msgstr ""
 
-#: includes/ee-list-display-settings.php:111
+#: includes/ee-list-settings.php:359
 msgid "File Type"
 msgstr ""
 
-#: includes/ee-list-display-settings.php:113
+#: includes/ee-list-settings.php:361
 msgid "Show or hide the file extension."
 msgstr ""
 
-#: includes/ee-list-display-settings.php:118
-msgid "Show Header"
+#: includes/ee-list-settings.php:373
+msgid "File List Cache"
 msgstr ""
 
-#: includes/ee-list-display-settings.php:123
-msgid "Show the table header"
+#: includes/ee-list-settings.php:375
+msgid "Use the File List Cache"
 msgstr ""
 
-#: includes/ee-list-display-settings.php:125
-msgid "Show the table header above the file list or not."
+#: includes/ee-list-settings.php:379
+msgid "Reduce server load by only scannng the hard disk occasionally."
 msgstr ""
 
-#: includes/ee-list-display-settings.php:130
-msgid "Show Upload Limits"
-msgstr ""
-
-#: includes/ee-list-display-settings.php:135
-msgid "Show the upload limitations"
-msgstr ""
-
-#: includes/ee-list-display-settings.php:137
-msgid "Show the user file size, number and file type restrictions."
-msgstr ""
-
-#: includes/ee-list-display-settings.php:142
-msgid "Functionality"
-msgstr ""
-
-#: includes/ee-list-display-settings.php:144
-msgid "Get Submitter Information"
-msgstr ""
-
-#: includes/ee-list-display-settings.php:149
-msgid "Get name, email and description"
-msgstr ""
-
-#: includes/ee-list-display-settings.php:151
-msgid "Display a form which must be filled out before a file is uploaded."
-msgstr ""
-
-#: includes/ee-list-display-settings.php:152
+#: includes/ee-list-settings.php:380
 msgid ""
-"Submissions are included within the upload notification email and added to "
-"the file details."
-msgstr ""
-
-#: includes/ee-list-display-settings.php:157
-msgid "Show Submitter Info"
-msgstr ""
-
-#: includes/ee-list-display-settings.php:162
-msgid "Show on Front-side"
-msgstr ""
-
-#: includes/ee-list-display-settings.php:164
-msgid "Show the file submitters information on the website."
-msgstr ""
-
-#: includes/ee-list-display-settings.php:170
-msgid "Front-Side Manage"
-msgstr ""
-
-#: includes/ee-list-display-settings.php:175
-msgid "Use with Caution"
-msgstr ""
-
-#: includes/ee-list-display-settings.php:177
-msgid "Allow file editing and deletion on the front side of the site."
-msgstr ""
-
-#: includes/ee-list-settings.php:96
-msgid "List Settings"
-msgstr ""
-
-#: includes/ee-list-settings.php:104
-msgid "Front-Side Display"
-msgstr ""
-
-#: includes/ee-list-settings.php:112 includes/ee-shortcode-builder.php:96
-#: includes/ee-shortcode-builder.php:117
-msgid "Show to Everyone"
-msgstr ""
-
-#: includes/ee-list-settings.php:118
-msgid "Show to Only Logged in Users"
-msgstr ""
-
-#: includes/ee-list-settings.php:124
-msgid "Show to Only Logged in Admins"
-msgstr ""
-
-#: includes/ee-list-settings.php:130
-msgid "Hide the File List Completely"
-msgstr ""
-
-#: includes/ee-list-settings.php:135
-msgid "Determine who you will show the front-side list to."
-msgstr ""
-
-#: includes/ee-list-settings.php:135
-msgid "Information to Show"
-msgstr ""
-
-#: includes/ee-list-settings.php:137
-msgid "Limit the file information to display on the front-side file list."
-msgstr ""
-
-#: includes/ee-list-settings.php:142
-msgid "Item"
-msgstr ""
-
-#: includes/ee-list-settings.php:143
-msgid "Show"
-msgstr ""
-
-#: includes/ee-list-settings.php:144
-msgid "Label"
-msgstr ""
-
-#: includes/ee-list-settings.php:150
-msgid "File Thumbnail"
-msgstr ""
-
-#: includes/ee-list-settings.php:168 includes/ee-list-settings.php:213
-msgid "File Date"
-msgstr ""
-
-#: includes/ee-list-settings.php:178 includes/ee-list-settings.php:218
-msgid "File Size"
-msgstr ""
-
-#: includes/ee-list-settings.php:198
-msgid "File Sorting and Order"
-msgstr ""
-
-#: includes/ee-list-settings.php:200
-msgid "Sort By"
-msgstr ""
-
-#: includes/ee-list-settings.php:223
-msgid "Random"
-msgstr ""
-
-#: includes/ee-list-settings.php:227
-msgid "Sort the list by name, date, file size, or randomly."
-msgstr ""
-
-#: includes/ee-list-settings.php:231
-msgid "Reverse Order"
-msgstr ""
-
-#: includes/ee-list-settings.php:236
-msgid "Descending"
-msgstr ""
-
-#: includes/ee-list-settings.php:238
-msgid "Check this box to reverse the default sort order."
-msgstr ""
-
-#: includes/ee-list-settings.php:239
-msgid "The list is sorted Ascending by default"
-msgstr ""
-
-#: includes/ee-list-settings.php:239
-msgid "Small to Large"
-msgstr ""
-
-#: includes/ee-list-settings.php:239
-msgid "Old to New"
-msgstr ""
-
-#: includes/ee-list-settings.php:243
-msgid "File List Performance"
-msgstr ""
-
-#: includes/ee-list-settings.php:245
-msgid "Re-Scan Interval"
-msgstr ""
-
-#: includes/ee-list-settings.php:247
-msgid "Hours"
-msgstr ""
-
-#: includes/ee-list-settings.php:248
-msgid "Choose how often the file list on your disc drive is re-scanned."
-msgstr ""
-
-#: includes/ee-list-settings.php:249
-msgid "Set to zero to re-scan on each list page load."
-msgstr ""
-
-#: includes/ee-list-settings.php:250
-msgid ""
-"If you use FTP or another method to upload files to your list, set the "
-"interval to zero."
+"If you use FTP or another method to upload files to your list, turn this off "
+"to always see the most recent files."
 msgstr ""
 
 #: includes/ee-plugin-author.php:17
@@ -885,84 +848,120 @@ msgstr ""
 msgid "No upload directory configured."
 msgstr ""
 
-#: includes/ee-upload-settings.php:82
-msgid "Uploader Settings Saved"
-msgstr ""
-
 #: includes/ee-upload-settings.php:103
 msgid "Upload Settings"
 msgstr ""
 
 #: includes/ee-upload-settings.php:111
-msgid "List Location"
+msgid "File Upload Restrictions"
 msgstr ""
 
-#: includes/ee-upload-settings.php:116
+#: includes/ee-upload-settings.php:113
 msgid "Allow File Upload"
 msgstr ""
 
-#: includes/ee-upload-settings.php:124
+#: includes/ee-upload-settings.php:121
 msgid "Anyone Can Upload"
 msgstr ""
 
-#: includes/ee-upload-settings.php:130
+#: includes/ee-upload-settings.php:127
 msgid "Only Logged in Users Can Upload"
 msgstr ""
 
-#: includes/ee-upload-settings.php:136
+#: includes/ee-upload-settings.php:133
 msgid "Only Logged in Admins Can Upload"
 msgstr ""
 
-#: includes/ee-upload-settings.php:142
+#: includes/ee-upload-settings.php:139
 msgid "Hide the Front Side Uploader Completely"
 msgstr ""
 
-#: includes/ee-upload-settings.php:145
+#: includes/ee-upload-settings.php:142
 msgid "Allow anyone to upload, only logged-in users, administrators or nobody."
 msgstr ""
 
-#: includes/ee-upload-settings.php:145
+#: includes/ee-upload-settings.php:142
 msgid "Please use \"Anyone Can Upload\" with Caution"
 msgstr ""
 
-#: includes/ee-upload-settings.php:149
-msgid "Upload Limit"
-msgstr ""
-
-#: includes/ee-upload-settings.php:152
-msgid "The maximum number of files that may be uploaded per submission."
-msgstr ""
-
-#: includes/ee-upload-settings.php:160
-msgid "Maximum File Size"
-msgstr ""
-
-#: includes/ee-upload-settings.php:163
-msgid "Your hosting limits the maximum file upload size to"
-msgstr ""
-
-#: includes/ee-upload-settings.php:169
-msgid "Allowed File Types"
-msgstr ""
-
-#: includes/ee-upload-settings.php:170
-msgid "Only use the file types you absolutely need, such as"
-msgstr ""
-
-#: includes/ee-upload-settings.php:176
+#: includes/ee-upload-settings.php:145
 msgid "Allow Overwriting"
 msgstr ""
 
-#: includes/ee-upload-settings.php:181
+#: includes/ee-upload-settings.php:150
 msgid "Do not number files, overwrite instead."
 msgstr ""
 
-#: includes/ee-upload-settings.php:183
+#: includes/ee-upload-settings.php:152
 msgid "Existing files with the same name will be overwritten."
 msgstr ""
 
-#: includes/ee-upload-settings.php:184
+#: includes/ee-upload-settings.php:153
 msgid "Use with caution!"
+msgstr ""
+
+#: includes/ee-upload-settings.php:157
+msgid "Get File Owner Information"
+msgstr ""
+
+#: includes/ee-upload-settings.php:162
+msgid "Get name, email and description"
+msgstr ""
+
+#: includes/ee-upload-settings.php:164
+msgid ""
+"Display a form which must be filled out before a file is uploaded; Name, "
+"Email, Description"
+msgstr ""
+
+#: includes/ee-upload-settings.php:165
+msgid ""
+"If the user is logged in, the name and email will automatically be captured "
+"regardless. Descriptions are always optional."
+msgstr ""
+
+#: includes/ee-upload-settings.php:166
+msgid "This user information can be displayed along with the file."
+msgstr ""
+
+#: includes/ee-upload-settings.php:178
+msgid "Upload Job Limits"
+msgstr ""
+
+#: includes/ee-upload-settings.php:180
+msgid "Upload Limit"
+msgstr ""
+
+#: includes/ee-upload-settings.php:182
+msgid "The maximum number of files that may be uploaded per submission."
+msgstr ""
+
+#: includes/ee-upload-settings.php:187
+msgid "Maximum File Size"
+msgstr ""
+
+#: includes/ee-upload-settings.php:190
+msgid "Your hosting limits the maximum file upload size to"
+msgstr ""
+
+#: includes/ee-upload-settings.php:194
+msgid "Allowed File Types"
+msgstr ""
+
+#: includes/ee-upload-settings.php:195
+msgid "Only use the file types you absolutely need, such as"
+msgstr ""
+
+#: includes/ee-upload-settings.php:198
+msgid "Show Upload Limits"
+msgstr ""
+
+#: includes/ee-upload-settings.php:203
+msgid "Display upload restrictions on the front-end."
+msgstr ""
+
+#: includes/ee-upload-settings.php:205
+msgid "Show the user file size, number and file type restrictions."
 msgstr ""
 
 #. Plugin Name of the plugin/theme
