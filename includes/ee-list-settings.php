@@ -374,9 +374,9 @@ $eeOutput .= '
 				
 		<label for="eeExpireTime">' . __('Use the File List Cache', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eeExpireTime" value="YES"';
-		if( $eeSFL_Settings_1['ExpireTime'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		if( $eeSFL_Settings_1['ExpireTime'] != 'NO') { $eeOutput .= ' checked="checked"'; }
 		$eeOutput .= ' /> 
-		<div class="eeNote">' . __('Reduce server load by only scannng the hard disk occasionally.', 'ee-simple-file-list') . ' '  . 
+		<div class="eeNote">' . __('Reduce server load by only scanning the hard disk occasionally.', 'ee-simple-file-list') . ' '  . 
 			__('If you use FTP or another method to upload files to your list, turn this off to always see the most recent files.', 'ee-simple-file-list') . '</div>
 		
 		</fieldset>
