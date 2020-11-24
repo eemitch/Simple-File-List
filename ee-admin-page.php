@@ -180,8 +180,8 @@ function eeSFL_FREE_ManageLists() {
 	if($eeSFL_FREE_DevMode) {
 		if(@$_REQUEST) { $eeOutput .= '<pre>REQUEST ' . print_r($_REQUEST, TRUE) . '</pre>'; array_unshift($eeSFL_FREE_Log, $_REQUEST); }
 		$eeOutput .= '<pre>Display File Array ' . print_r(@$eeSFL_Files, TRUE) . '</pre>';
-		$eeOutput .= '<pre>Display List Settings ' . print_r($eeSFL_Settings_1, TRUE) . '</pre>';
 		$eeOutput .= '<pre>Environment ' . print_r($eeSFL_FREE_Env, TRUE) . '</pre>';
+		$eeOutput .= '<pre>Display List Settings ' . print_r($eeSFL_Settings_1, TRUE) . '</pre>';
 		$eeOutput .= '<pre>Runtime Log ' . print_r($eeSFL_FREE_Log, TRUE) . '</pre>';
 		$eeSFL_FREE->eeSFL_WriteLogData($eeSFL_FREE_Log);
 	}

@@ -74,14 +74,12 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	}
 	
 	// Update DB
-	update_option('eeSFL_Settings_1', $eeSFL_Settings_1);
-	
-	// Update the array with new values
-	$eeSFL_Settings_1 = $eeSFL_Settings_1;
-	
-	$eeSFL_Confirm = __('Uploader Settings Saved', 'ee-simple-file-list');
-	$eeSFL_FREE_Log['SFL'][] = $eeSFL_Confirm;
-
+	if( update_option('eeSFL_Settings_1', $eeSFL_Settings_1) ) {
+		$eeSFL_Confirm = __('Settings Saved', 'ee-simple-file-list');
+		$eeSFL_FREE_Log['SFL'][] = $eeSFL_Confirm;
+	} else {
+		$eeSFL_FREE_Log['SFL'][] = '!!! The database was not updated.';
+	}
 }
 
 // Settings Display =========================================

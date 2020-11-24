@@ -15,7 +15,7 @@ Text Domain: ee-simple-file-list
 Domain Path: /languages
 */
 
-$eeSFL_FREE_DevMode = TRUE; // Enables visible logging
+$eeSFL_FREE_DevMode = FALSE; // Enables visible logging
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -1036,7 +1036,7 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 	
 	$eeSFL_FREE_Log['Updating'][] = $eeSettings;
 	
-	// echo '<pre>'; print_r($eeSettings); echo '</pre>'; exit;
+	ksort($eeSettings); // Sort for sanity
 	
 	// Update the Option		
 	update_option('eeSFL_Settings_1', $eeSettings);

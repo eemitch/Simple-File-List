@@ -28,6 +28,7 @@
 }
 .eeSFL table.eeFiles {
 	width: 100%;
+	margin: 0 auto;
 	border-collapse: collapse;
 	border: 1px solid #999;
 	text-align: center;

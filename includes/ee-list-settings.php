@@ -6,7 +6,7 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit 
 $eeSFL_FREE_Log['SFL'][] = 'Loading List Settings Page ...';
 
 // Check for POST and Nonce
-if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {
+if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {	
 	
 	// List Visibility
 	if($_POST['eeShowList'] == 'YES') { $eeSFL_Settings_1['ShowList'] = 'YES'; } 
@@ -59,21 +59,17 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	// Asc/Desc Checkbox
 	if(@$_POST['eeSortOrder'] == 'Descending') { $eeSFL_Settings_1['SortOrder'] = 'Descending'; }
 		elseif($_POST['eeSortBy'] AND !@$_POST['eeSortOrder']) { $eeSFL_Settings_1['SortOrder'] = 'Ascending'; }
+
 	
-	// Expiration
-	if( is_numeric($_POST['eeExpireTime']) AND $_POST['eeExpireTime'] <= 24 ) { 
-		
-		if($eeSFL_Settings_1['ExpireTime'] != $_POST['eeExpireTime']) { // Changed
-			$eeSFL_Settings_1['ExpireTime'] = $_POST['eeExpireTime'];
-		}	
-	}
+	// Sort for Sanity
+	ksort($eeSFL_Settings_1);
 	
 	// Update DB
 	if( update_option('eeSFL_Settings_1', $eeSFL_Settings_1) ) {
-		
-		$eeSFL_Confirm = __('List Settings Saved', 'ee-simple-file-list');
+		$eeSFL_Confirm = __('Settings Saved', 'ee-simple-file-list');
+		$eeSFL_FREE_Log['SFL'][] = $eeSFL_Confirm;
 	} else {
-		$eeSFL_FREE_Log['errors'][] = 'The database failed to update.';
+		$eeSFL_FREE_Log['SFL'][] = '!!! The database was not updated.';
 	}
 }
 

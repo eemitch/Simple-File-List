@@ -477,10 +477,16 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 								
 								$eeFileActions .= '<br /><a href="" id="eeSFL_EditFile_' . $eeRowID . '" onclick="eeSFL_FREE_EditFile(' . $eeRowID . ')">' . 
 								__('Edit', 'ee-simple-file-list') . '</a> | <a href="#" onclick="eeSFL_FREE_Delete(' . $eeRowID . ')">' . 
-								__('Delete', 'ee-simple-file-list') . '</a> | <a class="eeDimmedLink" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . 
-								__('Move', 'ee-simple-file-list') . '</a> | <a class="eeDimmedLink" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . 
-								__('Users', 'ee-simple-file-list') . '</a> | <a class="eeDimmedLink" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . 
-								__('Send', 'ee-simple-file-list') . '</a>';
+								__('Delete', 'ee-simple-file-list') . '</a>';
+								
+								if($eeAdmin) {
+								
+									$eeFileActions .= ' | 
+									 <a class="eeDimmedLink" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Move', 'ee-simple-file-list') . '</a> | 
+									 <a class="eeDimmedLink" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Users', 'ee-simple-file-list') . '</a> | 
+									 <a class="eeDimmedLink" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Send', 'ee-simple-file-list') . '</a>';
+									
+								}
 							
 								// Strip trailing pipe if needed
 								if(substr($eeFileActions, -2) == '| ') {
