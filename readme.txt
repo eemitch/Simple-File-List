@@ -246,8 +246,6 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 * Reorganized the List Settings tabs.
 * Under-the-hood improvements
 
-
-
 = 4.2.13 =
 * Extensive under-the-hood changes so this version and the Pro version can run at the same time.
 * Now deleting corrupt image files (rather than jut warning) to prevent images disguised as malware being listed.
