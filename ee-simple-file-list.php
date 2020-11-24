@@ -813,7 +813,7 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 			add_option('eeSFL_FileList_1', $eeFiles); // In with the new ...
 			delete_option('eeSFL-FileList-1'); // Out with the old
 			
-			$eeArray = get_option('eeSFL_Log');
+			$eeArray = get_option('eeSFL-Log');
 			add_option('eeSFL_Log', $eeArray);
 			delete_option('eeSFL-Log'); // Out with the old
 			
