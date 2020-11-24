@@ -811,7 +811,9 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 			// Rename the File List array's option name
 			$eeFiles = get_option('eeSFL_FileList_1');
 			add_option('eeSFL_FileList_1', $eeFiles); // In with the new ...
-			delete_option('eeSFL_FileList_1'); // Out with the old
+			delete_option('eeSFL-FileList-1'); // Out with the old
+			
+			delete_transient('eeSFL-1-FileListDirCheck');
 		
 		}
 		
