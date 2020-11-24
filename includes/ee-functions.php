@@ -392,7 +392,7 @@ function eeSFL_FREE_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path f
 	$eeNameOnly = $eePathParts['filename'];
 	$eeExtension = strtolower($eePathParts['extension']);
 	
-	$eeSFL_Files = get_option('eeSFL-FileList-1'); // Our array of file info
+	$eeSFL_Files = get_option('eeSFL_FileList_1'); // Our array of file info
 	
 	if($eeSFL_Files) {
 	

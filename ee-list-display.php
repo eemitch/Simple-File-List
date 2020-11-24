@@ -34,7 +34,7 @@ if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR @$eeSFL_Settings_1['Expire
 		
 		$eeSFL_FREE_Log['SFL'][] = 'Fresh :-)';
 		
-		$eeSFL_Files = get_option('eeSFL-FileList-1'); // Get the File List
+		$eeSFL_Files = get_option('eeSFL_FileList_1'); // Get the File List
 		
 	} else { // Update the list
 		

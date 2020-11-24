@@ -206,7 +206,7 @@ class eeSFL_FREE_MainClass {
 	    if($eeValue) {
 	    
 		    // Get the current file array
-			$eeFileArray = get_option('eeSFL-FileList-1');
+			$eeFileArray = get_option('eeSFL_FileList_1');
 			
 			foreach( $eeFileArray as $eeKey => $eeThisFileArray ) {
 		
@@ -217,7 +217,7 @@ class eeSFL_FREE_MainClass {
 			}
 			
 			// Save the updated array
-			$eeFileArray = update_option('eeSFL-FileList-1', $eeFileArray);
+			$eeFileArray = update_option('eeSFL_FileList_1', $eeFileArray);
 			
 			return $eeFileArray;
 		
@@ -235,7 +235,7 @@ class eeSFL_FREE_MainClass {
 	    
 	    $eeSFL_FREE_Log['SFL'][] = 'Scanning File List...';
 	    
-	    $eeFilesArray = get_option('eeSFL-FileList-1'); // Get the File List Array
+	    $eeFilesArray = get_option('eeSFL_FileList_1'); // Get the File List Array
 	    
 	    $eeFilePathsArray = $this->eeSFL_IndexFileListDir($eeSFL_Settings_1['FileListDir']); // Get the real files
 	    
@@ -347,7 +347,7 @@ class eeSFL_FREE_MainClass {
 		    $eeFilesArray = $this->eeSFL_SortFiles($eeFilesArray, $eeSFL_Settings_1['SortBy'], $eeSFL_Settings_1['SortOrder']);
 		    
 		    // Update the DB
-		    update_option('eeSFL-FileList-1', $eeFilesArray);
+		    update_option('eeSFL_FileList_1', $eeFilesArray);
 		    
 		    foreach($eeFilesArray as $eeKey => $eeFile) {
 		    	

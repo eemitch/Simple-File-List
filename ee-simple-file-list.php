@@ -809,9 +809,9 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 			delete_option('eeSFL-FREE-DB-Version'); // Out with the old
 			
 			// Rename the File List array's option name
-			$eeFiles = get_option('eeSFL-FileList-1');
+			$eeFiles = get_option('eeSFL_FileList_1');
 			add_option('eeSFL_FileList_1', $eeFiles); // In with the new ...
-			delete_option('eeSFL-FileList-1'); // Out with the old
+			delete_option('eeSFL_FileList_1'); // Out with the old
 		
 		}
 		
@@ -1043,7 +1043,7 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 	
 	// Create first file list array
 	$eeFilesArray = array();
-	update_option('eeSFL-FileList-1', $eeFilesArray);	
+	update_option('eeSFL_FileList_1', $eeFilesArray);	
 	
 	// Update the DB Version
 	update_option('eeSFL_FREE_DB_Version', eeSFL_FREE_DB_Version);
