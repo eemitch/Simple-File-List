@@ -166,7 +166,7 @@ function eeSFL_FREE_FileListDirCheck($eeFileListDir) {
 // Post-process an upload job
 function eeSFL_FREE_ProcessUpload() {
 	
-	global $eeSFL_FREE, $eeSFL_Settings_1, $eeSFL_FREE_Env, $eeSFL_FREE_Log;
+	global $eeSFL_FREE, $eeSFL_Settings, $eeSFL_FREE_Env, $eeSFL_FREE_Log;
 	
 	$eeSFL_FREE_Log['SFL'][] = 'Function Called: eeSFL_ProcessUpload()';
 	
@@ -247,8 +247,8 @@ function eeSFL_FREE_ProcessUpload() {
 						
 						// Notification Info (FREE)
 						$eeUploadJob .=  $eeFile . PHP_EOL . 
-							$eeSFL_Settings_1['FileListURL'] . $eeFile . PHP_EOL . 
-								"(" . eeSFL_FREE_GetFileSize( $eeSFL_Settings_1['FileListDir'] . $eeFile ) . ")" . PHP_EOL . PHP_EOL;
+							$eeSFL_Settings['FileListURL'] . $eeFile . PHP_EOL . 
+								"(" . eeSFL_FREE_GetFileSize( $eeSFL_Settings['FileListDir'] . $eeFile ) . ")" . PHP_EOL . PHP_EOL;
 					}
 						
 					$eeSFL_FREE_Log['messages'][] = __('File Upload Complete', 'ee-simple-file-list');
@@ -260,7 +260,7 @@ function eeSFL_FREE_ProcessUpload() {
 					} else  {
 						
 						// Send Email Notice
-						if($eeSFL_Settings_1['Notify'] == 'YES') {
+						if($eeSFL_Settings['Notify'] == 'YES') {
 							
 							// Send the Email Notification
 							$eeSFL_FREE->eeSFL_NotificationEmail($eeUploadJob);
@@ -379,9 +379,9 @@ function eeSFL_FREE_ProcessTextInput($eeTerm, $eeType = 'text') {
 // Check if a file already exists, then number it so file will not be over-written.
 function eeSFL_FREE_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path from WP root
 	
-	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_Settings_1;
+	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_Settings;
 	
-	if(@$eeSFL_Settings_1['AllowOverwrite'] == 'YES') { // Overwriting files allowed
+	if(@$eeSFL_Settings['AllowOverwrite'] == 'YES') { // Overwriting files allowed
 		return $eeSFL_FilePathAdded;
 	}
 	
@@ -401,7 +401,7 @@ function eeSFL_FREE_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path f
 			$eeFilePath = $eeArray['FilePath']; // Get the name.ext
 			
 			// Check if duplicate
-			if( $eeSFL_FilePathAdded == $eeSFL_Settings_1['FileListDir'] . $eeFilePath ) { // Duplicate found
+			if( $eeSFL_FilePathAdded == $eeSFL_Settings['FileListDir'] . $eeFilePath ) { // Duplicate found
 			
 				$eeSFL_FREE_Log['SFL'][] = 'Duplicate Item Found: ' . $eeSFL_FilePathAdded;
 				

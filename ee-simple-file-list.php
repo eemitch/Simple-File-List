@@ -29,7 +29,7 @@ if( !defined('eeSFL_Version') ) { define('eeSFL_Version', eeSFL_FREE_Version); }
 
 // Our Core
 $eeSFL_FREE = FALSE; // Our main class
-$eeSFL_Settings_1 = array(); // All List Info
+$eeSFL_Settings = array(); // All List Info
 $eeSFL_FREE_Env = array(); // Environment
 $eeSFL_FREE_ListRun = 1; // Count of lists per page
 $eeSFL_FREE_UploadFormRun = FALSE; // Check if uploader form has run
@@ -81,7 +81,7 @@ add_action( 'admin_notices', 'eeSFL_FREE_ALERT' );
 // Plugin Setup
 function eeSFL_FREE_Setup() {
 	
-	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_Settings_1, $eeSFL_FREE_Env;
+	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_Settings, $eeSFL_FREE_Env;
 	
 	$eeSFL_FREE_Log['SFL'][] = 'Running Setup...';
 	
@@ -99,14 +99,14 @@ function eeSFL_FREE_Setup() {
 		eeSFL_FREE_VersionCheck(); // Update database if needed.
 		
 		// Get the lists
-		$eeSFL_Settings_1 = $eeSFL_FREE->eeSFL_GetSettings(); // Get this list
+		$eeSFL_Settings = $eeSFL_FREE->eeSFL_GetSettings(); // Get this list
 	}
 	
 	// If Sending Files
 	if(@$_POST['eeSFL_Send']) { $eeSFL_FREE->eeSFL_SendFilesEmail(); }
 	
 	// Check/Create the Upload Folder
-	if( !eeSFL_FREE_FileListDirCheck( $eeSFL_Settings_1['FileListDir'] ) ) { 
+	if( !eeSFL_FREE_FileListDirCheck( $eeSFL_Settings['FileListDir'] ) ) { 
 		$eeSFL_FREE_Log['errors'][] = 'The upload directory is acting up.';
 	}
 	
@@ -195,7 +195,7 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	
 	// Basic Usage: [eeSFL]
     
-    global $eeSFL_FREE, $eeSFL_FREE_DevMode, $eeSFL_FREE_Log, $eeSFL_FREE_Env, $eeSFL_Settings_1, $eeSFL_FREE_ListRun, $eeSFL_FREE_UploadFormRun;
+    global $eeSFL_FREE, $eeSFL_FREE_DevMode, $eeSFL_FREE_Log, $eeSFL_FREE_Env, $eeSFL_Settings, $eeSFL_FREE_ListRun, $eeSFL_FREE_UploadFormRun;
 	
 	$eeAdmin = is_admin();
 	if($eeAdmin) { return FALSE; } // Don't execute shortcode on page editor
@@ -234,20 +234,20 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	
 		$eeSFL_FREE_Log['L' . $eeSFL_FREE_ListRun][] = 'Shortcode Attributes...';
 		
-		if($showlist) { $eeSFL_Settings_1['ShowList'] = $showlist; }
-		if($allowuploads) { $eeSFL_Settings_1['AllowUploads'] = $allowuploads; }
-		if($showthumb) { $eeSFL_Settings_1['ShowFileThumb'] = $showthumb; }
-		if($showdate) { $eeSFL_Settings_1['ShowFileDate'] = $showdate; }
-		if($showsize) { $eeSFL_Settings_1['ShowFileSize'] = $showsize; }
-		if($showheader) { $eeSFL_Settings_1['ShowHeader'] = $showheader; }
-		if($showactions) { $eeSFL_Settings_1['ShowFileActions'] = $showactions; }
+		if($showlist) { $eeSFL_Settings['ShowList'] = $showlist; }
+		if($allowuploads) { $eeSFL_Settings['AllowUploads'] = $allowuploads; }
+		if($showthumb) { $eeSFL_Settings['ShowFileThumb'] = $showthumb; }
+		if($showdate) { $eeSFL_Settings['ShowFileDate'] = $showdate; }
+		if($showsize) { $eeSFL_Settings['ShowFileSize'] = $showsize; }
+		if($showheader) { $eeSFL_Settings['ShowHeader'] = $showheader; }
+		if($showactions) { $eeSFL_Settings['ShowFileActions'] = $showactions; }
 		
 		
 		if($sortby OR $sortorder) { // Force a re-sort of the file list array if a shortcode attribute was used
-			if( $sortby != $eeSFL_Settings_1['SortBy'] OR $sortorder != $eeSFL_Settings_1['SortOrder'] ) {
+			if( $sortby != $eeSFL_Settings['SortBy'] OR $sortorder != $eeSFL_Settings['SortOrder'] ) {
 				$eeForceSort = TRUE;
-				$eeSFL_Settings_1['SortBy'] = $sortby;
-				$eeSFL_Settings_1['SortOrder'] = $sortorder;
+				$eeSFL_Settings['SortBy'] = $sortby;
+				$eeSFL_Settings['SortOrder'] = $sortorder;
 			} else {
 				$eeForceSort = FALSE;
 			}
@@ -276,21 +276,21 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	include(WP_PLUGIN_DIR . '/' . $eeSFL_FREE->eePluginNameSlug . '/includes/ee-upload-check.php');
 	
 	// Who Can Upload?
-	switch ($eeSFL_Settings_1['AllowUploads']) {
+	switch ($eeSFL_Settings['AllowUploads']) {
 	    case 'YES':
 	        break; // Show It
 	    case 'USER':
 	        // Show It If...
-	        if( get_current_user_id() ) { break; } else { $eeSFL_Settings_1['AllowUploads'] = 'NO'; }
+	        if( get_current_user_id() ) { break; } else { $eeSFL_Settings['AllowUploads'] = 'NO'; }
 	    case 'ADMIN':
 	        // Show It If...
-	        if(current_user_can('manage_options')) { break; } else { $eeSFL_Settings_1['AllowUploads'] = 'NO'; }
+	        if(current_user_can('manage_options')) { break; } else { $eeSFL_Settings['AllowUploads'] = 'NO'; }
 	        break;
 		default:
-			$eeSFL_Settings_1['AllowUploads'] = 'NO'; // Show Nothing
+			$eeSFL_Settings['AllowUploads'] = 'NO'; // Show Nothing
 	}
 	
-	if($eeSFL_Settings_1['AllowUploads'] != 'NO' AND !$eeSFL_FREE_UploadFormRun) {
+	if($eeSFL_Settings['AllowUploads'] != 'NO' AND !$eeSFL_FREE_UploadFormRun) {
 		if(!@$_POST['eeSFL_Upload'] AND !@$_POST['eeSFLS_Searching']) {
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
 			include($eeSFL_FREE_Env['pluginDir'] . '/includes/ee-upload-form.php');
@@ -299,21 +299,21 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	}
 	
 	// Who Can View the List?
-	switch ($eeSFL_Settings_1['ShowList']) {
+	switch ($eeSFL_Settings['ShowList']) {
 	    case 'YES':
 	        break; // Show It
 	    case 'USER':
 	        // Show It If...
-	        if( get_current_user_id() ) { break; } else { $eeSFL_Settings_1['ShowList'] = 'NO'; }
+	        if( get_current_user_id() ) { break; } else { $eeSFL_Settings['ShowList'] = 'NO'; }
 	    case 'ADMIN':
 	        // Show It If...
-	        if(current_user_can('manage_options')) { break; } else { $eeSFL_Settings_1['ShowList'] = 'NO'; }
+	        if(current_user_can('manage_options')) { break; } else { $eeSFL_Settings['ShowList'] = 'NO'; }
 	        break;
 		default:
-			$eeSFL_Settings_1['ShowList'] = 'NO'; // Show Nothing
+			$eeSFL_Settings['ShowList'] = 'NO'; // Show Nothing
 	}
 	
-	if($eeSFL_Settings_1['ShowList'] != 'NO') {
+	if($eeSFL_Settings['ShowList'] != 'NO') {
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
 		include(WP_PLUGIN_DIR . '/' . $eeSFL_FREE->eePluginNameSlug . '/ee-list-display.php');
 	}
@@ -329,7 +329,7 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	if($eeSFL_FREE_DevMode) {
 		if(@$_REQUEST) { $eeOutput .= '<pre>REQUEST ' . print_r($_REQUEST, TRUE) . '</pre>'; array_unshift($eeSFL_FREE_Log, $_REQUEST); }
 		$eeOutput .= '<pre>Display File Array ' . print_r(@$eeSFL_Files, TRUE) . '</pre>';
-		$eeOutput .= '<pre>Display List Settings ' . print_r($eeSFL_Settings_1, TRUE) . '</pre>';
+		$eeOutput .= '<pre>Display List Settings ' . print_r($eeSFL_Settings, TRUE) . '</pre>';
 		$eeOutput .= '<pre>Environment ' . print_r($eeSFL_FREE_Env, TRUE) . '</pre>';
 		$eeOutput .= '<pre>Runtime Log ' . print_r($eeSFL_FREE_Log, TRUE) . '</pre>';
 		$eeSFL_FREE->eeSFL_WriteLogData($eeSFL_FREE_Log);
@@ -338,7 +338,7 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	// Give it back
 	unset($eeSFL_Files);
 	unset($eeSFL_FREE_Env);
-	unset($eeSFL_Settings_1);
+	unset($eeSFL_Settings);
 	unset($eeSFL_FREE_Log);
 	
 	return $eeOutput; // Output the page
@@ -350,7 +350,7 @@ add_shortcode( 'eeSFL', 'eeSFL_FREE_Shortcode' );
 // Load Front-side <head>
 function eeSFL_FREE_Enqueue() {
 	
-	global $eeSFL_Settings_1;
+	global $eeSFL_Settings;
 	
 	// Register the style like this for a theme:
     wp_register_style( 'ee-simple-file-list-css', plugin_dir_url(__FILE__) . 'css/eeStyles.css', '', eeSFL_FREE_Cache_Version);
@@ -460,7 +460,7 @@ function eeSFL_FREE_FileUploader() {
 	
 	// return 'TEST';
 	
-	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_Settings_1;
+	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_Settings;
 	
 	// The FILE object
 	if(empty($_FILES)) { return 'Missing File Input'; }
@@ -468,7 +468,7 @@ function eeSFL_FREE_FileUploader() {
 	if( !is_admin() ) { // Front-side protections
 	
 		// Who should be uploading?
-		switch ($eeSFL_Settings_1['AllowUploads']) {
+		switch ($eeSFL_Settings['AllowUploads']) {
 		    case 'YES':
 		        break; // Allow it, even if it's dangerous.
 		    case 'USER':
@@ -496,7 +496,7 @@ function eeSFL_FREE_FileUploader() {
 	
 	// Check size
 	$eeSFL_FileSize = filter_var($_FILES['file']['size'], FILTER_VALIDATE_INT);
-	$eeSFL_UploadMaxFileSize = $eeSFL_Settings_1['UploadMaxFileSize']*1024*1024; // Convert MB to B
+	$eeSFL_UploadMaxFileSize = $eeSFL_Settings['UploadMaxFileSize']*1024*1024; // Convert MB to B
 	
 	if($eeSFL_FileSize > $eeSFL_UploadMaxFileSize) {
 		return "File size is too large.";
@@ -520,7 +520,7 @@ function eeSFL_FREE_FileUploader() {
 			$eeSFL_Extension = strtolower($eeSFL_PathParts['extension']); // We need to do this here and in eeSFL_ProcessUpload()
 			
 			// Format Check
-			$eeSFL_FileFormatsArray = array_map('trim', explode(',', $eeSFL_Settings_1['FileFormats']));
+			$eeSFL_FileFormatsArray = array_map('trim', explode(',', $eeSFL_Settings['FileFormats']));
 			
 			if(!in_array($eeSFL_Extension, $eeSFL_FileFormatsArray) OR in_array($eeSFL_Extension, $eeSFL_FREE->eeForbiddenTypes)) {
 				return 'File type not allowed: (' . $eeSFL_Extension . ')';	
@@ -537,8 +537,8 @@ function eeSFL_FREE_FileUploader() {
 			if($_FILES['file']['name'] != basename($eeSFL_TargetFile)) {
 				
 				// Set a transient with the new name so we can get it in ProcessUpload() after the form is submitted
-				$eeOldFilePath = str_replace($eeSFL_Settings_1['FileListDir'], '', $eeSFL_FileUploadDir . $_FILES['file']['name']); // Strip the FileListDir
-				$eeNewFilePath = str_replace($eeSFL_Settings_1['FileListDir'], '', $eeSFL_TargetFile); // Strip the FileListDir
+				$eeOldFilePath = str_replace($eeSFL_Settings['FileListDir'], '', $eeSFL_FileUploadDir . $_FILES['file']['name']); // Strip the FileListDir
+				$eeNewFilePath = str_replace($eeSFL_Settings['FileListDir'], '', $eeSFL_TargetFile); // Strip the FileListDir
 				set_transient('eeSFL-Renamed-' . $eeOldFilePath, $eeNewFilePath, 900); // Expires in 15 minutes
 			}
 			
@@ -572,7 +572,7 @@ function eeSFL_FREE_FileUploader() {
 // File Editor Engine
 function eeSFL_FREE_FileEditor() {
 	
-	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_Settings_1;
+	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_Settings;
 	$eeFileName = '';
 	$eeFileAction = '';
 	
@@ -582,7 +582,7 @@ function eeSFL_FREE_FileEditor() {
 	}
 	
 	// Check if we should be doing this
-	if(is_admin() OR $eeSFL_Settings_1['AllowFrontManage'] == 'YES') {
+	if(is_admin() OR $eeSFL_Settings['AllowFrontManage'] == 'YES') {
 		
 		// The Action
 		if(@$_POST['eeFileAction']) { 
@@ -621,11 +621,11 @@ function eeSFL_FREE_FileEditor() {
 					return "Changing File Extensions is Not Allowed";
 				}
 				
-				eeSFL_FREE_DetectUpwardTraversal($eeSFL_Settings_1['FileListDir'] . $eeNewFileName); // Die if foolishness
+				eeSFL_FREE_DetectUpwardTraversal($eeSFL_Settings['FileListDir'] . $eeNewFileName); // Die if foolishness
 				
-				$eeNewFileName = eeSFL_FREE_CheckForDuplicateFile($eeSFL_Settings_1['FileListDir'] . $eeNewFileName); // Don't over-write
+				$eeNewFileName = eeSFL_FREE_CheckForDuplicateFile($eeSFL_Settings['FileListDir'] . $eeNewFileName); // Don't over-write
 				
-				$eeOldFilePath = ABSPATH . $eeSFL_Settings_1['FileListDir'] . $eeFileName;
+				$eeOldFilePath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFileName;
 				$eeNewFilePath = ABSPATH . $eeNewFileName;
 				
 				if( !rename($eeOldFilePath, $eeNewFilePath) ) {
@@ -645,9 +645,9 @@ function eeSFL_FREE_FileEditor() {
 			
 		} elseif($eeFileAction == 'Delete') {
 			
-			eeSFL_FREE_DetectUpwardTraversal($eeSFL_Settings_1['FileListDir'] . $eeFileName); // Die if foolishness
+			eeSFL_FREE_DetectUpwardTraversal($eeSFL_Settings['FileListDir'] . $eeFileName); // Die if foolishness
 			
-			$eeFilePath = ABSPATH . $eeSFL_Settings_1['FileListDir'] . $eeFileName;
+			$eeFilePath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFileName;
 			
 			if( strpos($eeFileName, '.') ) { // Gotta be a File - Looking for the dot rather than using is_file() for better speed
 				
@@ -714,7 +714,7 @@ add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'eeSFL_FREE_Acti
 // Admin Pages
 function eeSFL_FREE_AdminMenu() {
 	
-	global $eeSFL_FREE, $eeSFL_Settings_1, $eeSFL_FREE_Env, $eeSFL_FREE_Log;
+	global $eeSFL_FREE, $eeSFL_Settings, $eeSFL_FREE_Env, $eeSFL_FREE_Log;
 	
 	// Only include when accessing the plugin admin pages
 	if(@$_GET['page'] == $eeSFL_FREE->eePluginSlug) {
@@ -727,7 +727,7 @@ function eeSFL_FREE_AdminMenu() {
 	}
 	
 	// Admin Menu Visability
-	switch ($eeSFL_Settings_1['AdminRole']) {
+	switch ($eeSFL_Settings['AdminRole']) {
 	    case 1:
 	        $eeCapability = 'read';
 	        break;
@@ -883,7 +883,7 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 		$eeSetting = @explode('=', $eeSettings[0]); // Show the File List
 		if($eeSetting[1] != 'Yes') { $eeShowList = 'NO'; }
 		
-		$eeSetting = @explode('=', $eeSFL_Settings_1); // AllowUploads
+		$eeSetting = @explode('=', $eeSFL_Settings); // AllowUploads
 		if($eeSetting[1] != 'Yes') { $eeAllowUploads = 'NO'; }
 			else { $eeSFL_AllowUploads = 'YES'; }
 		

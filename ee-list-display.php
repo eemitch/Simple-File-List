@@ -21,7 +21,7 @@ $eeSFL_FREE_Log['SFL'][] = 'Loaded: ee-list-display';
 // echo '<pre>'; print_r($_POST); echo '</pre>';
 
 // Get the File List
-if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR @$eeSFL_Settings_1['ExpireTime'] == 'NO') { // Only admins can force a rescan
+if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR @$eeSFL_Settings['ExpireTime'] == 'NO') { // Only admins can force a rescan
 	
 	$eeSFL_Files = $eeSFL_FREE->eeSFL_UpdateFileListArray();
 	
@@ -49,13 +49,13 @@ if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR @$eeSFL_Settings_1['Expire
 	}
 }
 
-// echo '<pre>'; print_r($eeSFL_Settings_1); echo '</pre>';
+// echo '<pre>'; print_r($eeSFL_Settings); echo '</pre>';
 
 // echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
 
 // Shortcode sorting att used
 if($eeForceSort) { // Sorting is usually only done when the disk is scanned
-	$eeSFL_Files = $eeSFL_FREE->eeSFL_SortFiles($eeSFL_Files, $eeSFL_Settings_1['SortBy'], $eeSFL_Settings_1['SortOrder']);
+	$eeSFL_Files = $eeSFL_FREE->eeSFL_SortFiles($eeSFL_Files, $eeSFL_Settings['SortBy'], $eeSFL_Settings['SortOrder']);
 }
 
 // Save for later
@@ -124,7 +124,7 @@ $eeOutput .= '
 <span class="eeSFL_Hide" id="eeSFL_ActionNonce">' . $eeSFL_ActionNonce . '</span>
 <script>
 	var eeSFL_PluginURL = "' . $eeSFL_FREE_Env['pluginURL'] . '";
-	var eeSFL_FileListDir = "' . $eeSFL_Settings_1['FileListDir'] . '";
+	var eeSFL_FileListDir = "' . $eeSFL_Settings['FileListDir'] . '";
 </script>
 ';
 
@@ -139,7 +139,7 @@ if($eeAdmin) {
 	
 		<a href="#" class="button eeButton" id="eeSFL_UploadFilesButton">' . __('Upload Files', 'ee-simple-file-list') . '</a>';
 	 					
-	if($eeSFL_Settings_1['ExpireTime'] != 'NO') {
+	if($eeSFL_Settings['ExpireTime'] != 'NO') {
 		$eeOutput .= '<a href="#" class="button eeButton" id="eeSFL_ReScanButton">' . __('Re-Scan Files', 'ee-simple-file-list') . '</a>';
 	}
 	
@@ -170,7 +170,7 @@ if($eeAdmin) {
 		$eeOutput .= '
 		
 		<p class="eeSFL_ListMeta">' . __('Files', 'ee-simple-file-list') . ': ' . $eeSFL_FileTotalCount . ' | '  . 
-		__('Sorted by', 'ee-simple-file-list') . ': ' . ucwords($eeSFL_Settings_1['SortBy']) . ' (' . $eeSFL_Settings_1['SortOrder'] . ')<br />
+		__('Sorted by', 'ee-simple-file-list') . ': ' . ucwords($eeSFL_Settings['SortBy']) . ' (' . $eeSFL_Settings['SortOrder'] . ')<br />
 		' . __('Last Changed', 'ee-simple-file-list') . ': ' . date_i18n( $eeDateFormat, strtotime( $eeArray[0] ) );
 		
 		$eeOutput .= '</p>';
@@ -205,13 +205,13 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 	
 	$eeOutput .= '<table class="eeFiles">';
 	
-	if($eeSFL_Settings_1['ShowHeader'] == 'YES' OR $eeAdmin) { $eeOutput .= '<thead><tr>';
+	if($eeSFL_Settings['ShowHeader'] == 'YES' OR $eeAdmin) { $eeOutput .= '<thead><tr>';
 							
-		if($eeSFL_Settings_1['ShowFileThumb'] == 'YES') { 
+		if($eeSFL_Settings['ShowFileThumb'] == 'YES') { 
 			
 			$eeOutput .= '<th class="eeSFL_Thumbnail">';
 			
-			if(@$eeSFL_Settings_1['LabelThumb']) { $eeOutput .= stripslashes($eeSFL_Settings_1['LabelThumb']); } 
+			if(@$eeSFL_Settings['LabelThumb']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelThumb']); } 
 				else { $eeOutput .= __('Thumb', 'ee-simple-file-list'); }
 			
 			$eeOutput .= '</th>';
@@ -220,28 +220,28 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 		
 		$eeOutput .= '<th class="eeSFL_Sortable eeSFL_FileName">';
 			
-		if(@$eeSFL_Settings_1['LabelName']) { $eeOutput .= stripslashes($eeSFL_Settings_1['LabelName']); } 
+		if(@$eeSFL_Settings['LabelName']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelName']); } 
 			else { $eeOutput .= __('Name', 'ee-simple-file-list'); }
 		
 		$eeOutput .= '</th>';
 		
 		
-		if($eeSFL_Settings_1['ShowFileSize'] == 'YES') { 
+		if($eeSFL_Settings['ShowFileSize'] == 'YES') { 
 			
 			$eeOutput .= '<th class="eeSFL_Sortable eeSFL_FileSize">';
 			
-			if(@$eeSFL_Settings_1['LabelSize']) { $eeOutput .= stripslashes($eeSFL_Settings_1['LabelSize']); } 
+			if(@$eeSFL_Settings['LabelSize']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelSize']); } 
 				else { $eeOutput .= __('Size', 'ee-simple-file-list'); }
 			
 			$eeOutput .= '</th>';
 		}
 		
 		
-		if($eeSFL_Settings_1['ShowFileDate'] == 'YES') { 
+		if($eeSFL_Settings['ShowFileDate'] == 'YES') { 
 			
 			$eeOutput .= '<th class="eeSFL_Sortable eeSFL_FileDate">';
 			
-			if(@$eeSFL_Settings_1['LabelDate']) { $eeOutput .= stripslashes($eeSFL_Settings_1['LabelDate']); } 
+			if(@$eeSFL_Settings['LabelDate']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelDate']); } 
 				else { $eeOutput .= __('Date', 'ee-simple-file-list'); }
 			
 			$eeOutput .= '</th>';
@@ -302,7 +302,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 						
 						$eeSFL_SendFile_AddFileArray[$eeFileCount] = $eeFilePath; // Used for Send -> Add Files
 						
-						$eeFileURL = $eeSFL_Settings_1['FileListURL'] . $eeFileArray['FilePath']; // Clickable URL
+						$eeFileURL = $eeSFL_Settings['FileListURL'] . $eeFileArray['FilePath']; // Clickable URL
 						
 						$eeFileURL = str_replace('://', '\\:', $eeFileURL); // Save this
 						$eeFileURL = str_replace('//', '/', $eeFileURL); // Remove double slashes
@@ -349,7 +349,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 					
 					
 					// Thumbnail
-					if($eeSFL_Settings_1['ShowFileThumb'] == 'YES') {
+					if($eeSFL_Settings['ShowFileThumb'] == 'YES') {
 						
 						// Create Thumbnail Path
 						$eeIsImage = in_array($eeFileExt,  $eeSFL_FREE->eeDynamicImageThumbFormats);
@@ -364,10 +364,10 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 						// Check Type
 						if($eeIsImage OR $eeIsVideo) { // Images use .jpg files
 							
-							$eePathParts = pathinfo($eeSFL_Settings_1['FileListDir'] . $eeFilePath);
+							$eePathParts = pathinfo($eeSFL_Settings['FileListDir'] . $eeFilePath);
 							$eeFileNameOnly = $eePathParts['filename'];
 							
-							$eeFileThumbURL = $eeSFL_Settings_1['FileListURL'];
+							$eeFileThumbURL = $eeSFL_Settings['FileListURL'];
 							$eeFileThumbURL .= '.thumbnails/thumb_' . $eeFileNameOnly . '.jpg';
 						
 						} else { // Others use our own .svg files
@@ -408,13 +408,13 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 						<p class="eeSFL_FileLink"><a class="eeSFL_FileName" href="' . $eeFileURL .  '" target="_blank">';
 						
 						// Strip the extension?
-						if(!$eeAdmin AND $eeSFL_Settings_1['ShowFileExtension'] == 'NO') {
+						if(!$eeAdmin AND $eeSFL_Settings['ShowFileExtension'] == 'NO') {
 							$eeSFL_PathParts = pathinfo($eeFileName);
 							$eeFileName = $eeSFL_PathParts['filename'];
 						}
 						
 						// Replace hyphens with spaces?
-						if(!$eeAdmin AND $eeSFL_Settings_1['PreserveSpaces'] == 'YES') {
+						if(!$eeAdmin AND $eeSFL_Settings['PreserveSpaces'] == 'YES') {
 							$eeFileName = eeSFL_FREE_PreserveSpaces($eeFileName); 
 						}
 						
@@ -436,7 +436,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 						// This is always here because for js access
 						$eeOutput .= '<p class="eeSFL_FileDesc ' . $eeClass . '">';
 						
-						if($eeSFL_Settings_1['ShowFileDescription'] == 'YES') {
+						if($eeSFL_Settings['ShowFileDescription'] == 'YES') {
 							$eeOutput .= stripslashes(@$eeFileArray['FileDescription']);
 						}
 						 
@@ -446,7 +446,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 						// Submitter Info
 						if(@$eeFileArray['SubmitterName']) {
 								
-							if($eeAdmin OR $eeSFL_Settings_1['ShowSubmitterInfo'] == 'YES') {
+							if($eeAdmin OR $eeSFL_Settings['ShowSubmitterInfo'] == 'YES') {
 								
 								$eeOutput .= '<p class="eeSFL_FileSubmitter">
 								
@@ -456,7 +456,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 						
 						// File Actions   ------------------------------------------------------------------------------------
 						
-						if($eeAdmin OR $eeSFL_Settings_1['ShowFileActions'] == 'YES') { // Always show to Admin
+						if($eeAdmin OR $eeSFL_Settings['ShowFileActions'] == 'YES') { // Always show to Admin
 							
 							// Construct
 							$eeFileActions = '
@@ -473,7 +473,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 														
 							
 							// Append Addition (admin or authorized) Actions
-							if( ($eeAdmin OR $eeSFL_Settings_1['AllowFrontManage'] == 'YES') AND $eeSFL_FREE_ListRun == 1) {
+							if( ($eeAdmin OR $eeSFL_Settings['AllowFrontManage'] == 'YES') AND $eeSFL_FREE_ListRun == 1) {
 								
 								$eeFileActions .= '<br /><a href="" id="eeSFL_EditFile_' . $eeRowID . '" onclick="eeSFL_FREE_EditFile(' . $eeRowID . ')">' . 
 								__('Edit', 'ee-simple-file-list') . '</a> | <a href="#" onclick="eeSFL_FREE_Delete(' . $eeRowID . ')">' . 
@@ -498,7 +498,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 								
 							
 								// Expanding Inputs
-								if($eeAdmin OR $eeSFL_Settings_1['AllowFrontManage'] == 'YES') {
+								if($eeAdmin OR $eeSFL_Settings['AllowFrontManage'] == 'YES') {
 									
 									// Javascript-powered Drop-Down Box
 									$eeFileActions .= '<div class="eeSFL_EditFileWrap" id="eeSFL_EditFileWrap_' . $eeRowID . '">
@@ -535,14 +535,14 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 					
 					
 					// File Size
-					if($eeSFL_Settings_1['ShowFileSize'] == 'YES') {
+					if($eeSFL_Settings['ShowFileSize'] == 'YES') {
 					
 						$eeOutput .= '<td class="eeSFL_FileSize">' . $eeFileSize . '</td>';
 					}
 					
 					
 					// File Modification Date
-					if($eeSFL_Settings_1['ShowFileDate'] == 'YES') {
+					if($eeSFL_Settings['ShowFileDate'] == 'YES') {
 						
 						$eeOutput .= '<td class="eeSFL_FileDate">' . $eeFileDate . '</td>';
 					}

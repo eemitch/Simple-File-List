@@ -11,23 +11,23 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	// Upload Form Visibility
 	if($_POST['eeAllowUploads'] == 'YES') { 
 		
-		$eeSFL_Settings_1['AllowUploads'] = 'YES';
+		$eeSFL_Settings['AllowUploads'] = 'YES';
 	
 	} elseif($_POST['eeAllowUploads'] == 'USER') { // Only logged in users
 		 
-		 $eeSFL_Settings_1['AllowUploads'] = 'USER';
+		 $eeSFL_Settings['AllowUploads'] = 'USER';
 		 
 	} elseif($_POST['eeAllowUploads'] == 'ADMIN') { // Only logged in users
 		 
-		 $eeSFL_Settings_1['AllowUploads'] = 'ADMIN';
+		 $eeSFL_Settings['AllowUploads'] = 'ADMIN';
 		 
 	} else { 
-		$eeSFL_Settings_1['AllowUploads'] = 'NO';
+		$eeSFL_Settings['AllowUploads'] = 'NO';
 	}
 	
 	// File Number Limit
-	$eeSFL_Settings_1['UploadLimit'] = filter_var(@$_POST['eeUploadLimit'], FILTER_VALIDATE_INT);
-	if(!$eeSFL_Settings_1['UploadLimit'] OR $eeSFL_Settings_1['UploadLimit'] > 999 ) { $eeSFL_Settings_1['UploadLimit'] = $eeSFL_FREE->eeDefaultUploadLimit; }
+	$eeSFL_Settings['UploadLimit'] = filter_var(@$_POST['eeUploadLimit'], FILTER_VALIDATE_INT);
+	if(!$eeSFL_Settings['UploadLimit'] OR $eeSFL_Settings['UploadLimit'] > 999 ) { $eeSFL_Settings['UploadLimit'] = $eeSFL_FREE->eeDefaultUploadLimit; }
 	
 	// Maximum File Size
 	if(@$_POST['eeUploadMaxFileSize']) {
@@ -35,10 +35,10 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 		$eeSFL_UploadMaxFileSize = filter_var($_POST['eeUploadMaxFileSize'], FILTER_VALIDATE_INT);
 		
 		// Can't be more than the system allows.
-		if(!$eeSFL_Settings_1['UploadMaxFileSize'] OR $eeSFL_Settings_1['UploadMaxFileSize'] > $eeSFL_FREE_Env['the_max_upload_size']) { 
-			$eeSFL_Settings_1['UploadMaxFileSize'] = $eeSFL_FREE_Env['the_max_upload_size'];
+		if(!$eeSFL_Settings['UploadMaxFileSize'] OR $eeSFL_Settings['UploadMaxFileSize'] > $eeSFL_FREE_Env['the_max_upload_size']) { 
+			$eeSFL_Settings['UploadMaxFileSize'] = $eeSFL_FREE_Env['the_max_upload_size'];
 		} else {
-			$eeSFL_Settings_1['UploadMaxFileSize'] = $eeSFL_UploadMaxFileSize;
+			$eeSFL_Settings['UploadMaxFileSize'] = $eeSFL_UploadMaxFileSize;
 		}
 		
 	} else {
@@ -59,7 +59,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 				$eeFileFormatsOK .= $eeValue . ',';
 			}
 		}
-		$eeSFL_Settings_1['FileFormats'] = substr($eeFileFormatsOK, 0, -1);
+		$eeSFL_Settings['FileFormats'] = substr($eeFileFormatsOK, 0, -1);
 	}
 	
 
@@ -70,11 +70,11 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 		,'GetUploaderInfo'
 	);
 	foreach( $eeCheckboxes as $eeTerm ) {
-		$eeSFL_Settings_1[$eeTerm] = eeSFL_FREE_ProcessCheckboxInput($eeTerm);
+		$eeSFL_Settings[$eeTerm] = eeSFL_FREE_ProcessCheckboxInput($eeTerm);
 	}
 	
 	// Update DB
-	if( update_option('eeSFL_Settings_1', $eeSFL_Settings_1) ) {
+	if( update_option('eeSFL_Settings_1', $eeSFL_Settings) ) {
 		$eeSFL_Confirm = __('Settings Saved', 'ee-simple-file-list');
 		$eeSFL_FREE_Log['SFL'][] = $eeSFL_Confirm;
 	} else {
@@ -116,25 +116,25 @@ $eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL_FREE->eePluginSl
 		
 			<option value="YES" style="background-color:#FFFF00;"';
 
-			if($eeSFL_Settings_1['AllowUploads'] == 'YES') { $eeOutput .= ' selected'; }
+			if($eeSFL_Settings['AllowUploads'] == 'YES') { $eeOutput .= ' selected'; }
 			
 			$eeOutput .= '>' . __('Anyone Can Upload', 'ee-simple-file-list') . ' !!!</option>
 			
 			<option value="USER"';
 
-			if($eeSFL_Settings_1['AllowUploads'] == 'USER') { $eeOutput .= ' selected'; }
+			if($eeSFL_Settings['AllowUploads'] == 'USER') { $eeOutput .= ' selected'; }
 			
 			$eeOutput .= '>' . __('Only Logged in Users Can Upload', 'ee-simple-file-list') . '</option>
 			
 			<option value="ADMIN"';
 
-			if($eeSFL_Settings_1['AllowUploads'] == 'ADMIN') { $eeOutput .= ' selected'; }
+			if($eeSFL_Settings['AllowUploads'] == 'ADMIN') { $eeOutput .= ' selected'; }
 			
 			$eeOutput .= '>' . __('Only Logged in Admins Can Upload', 'ee-simple-file-list') . '</option>
 			
 			<option value="NO"';
 
-			if($eeSFL_Settings_1['AllowUploads'] == 'NO') { $eeOutput .= ' selected'; }
+			if($eeSFL_Settings['AllowUploads'] == 'NO') { $eeOutput .= ' selected'; }
 			
 			$eeOutput .= '>' . __('Hide the Front Side Uploader Completely', 'ee-simple-file-list') . '</option>
 		
@@ -145,7 +145,7 @@ $eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL_FREE->eePluginSl
 		<label for="eeAllowOverwrite">' . __('Allow Overwriting', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eeAllowOverwrite" value="YES" id="eeAllowOverwrite"';
 		
-		if( @$eeSFL_Settings_1['AllowOverwrite'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		if( @$eeSFL_Settings['AllowOverwrite'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 		
 		$eeOutput .= ' /> <p>' . __('Do not number files, overwrite instead.', 'ee-simple-file-list') . '</p>
 		
@@ -157,7 +157,7 @@ $eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL_FREE->eePluginSl
 		<label for="eeGetUploaderInfo">' . __('Get File Owner Information', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eeGetUploaderInfo" value="YES" id="eeGetUploaderInfo"';
 		
-		if( $eeSFL_Settings_1['GetUploaderInfo'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		if( $eeSFL_Settings['GetUploaderInfo'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 		
 		$eeOutput .= ' /> <p>' . __('Get name, email and description', 'ee-simple-file-list') . '</p>
 		
@@ -178,27 +178,27 @@ $eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL_FREE->eePluginSl
 	<h3>' . __('Upload Job Limits', 'ee-simple-file-list') . '</h3>
 	
 	<label for="eeUploadLimit">' . __('Upload Limit', 'ee-simple-file-list') . '</label>
-		<input type="number" min="1" max="100" step="1" name="eeUploadLimit" value="' . $eeSFL_Settings_1['UploadLimit'] . '" class="eeAdminInput" id="eeUploadLimit" />
+		<input type="number" min="1" max="100" step="1" name="eeUploadLimit" value="' . $eeSFL_Settings['UploadLimit'] . '" class="eeAdminInput" id="eeUploadLimit" />
 		<div class="eeNote">' . __('The maximum number of files that may be uploaded per submission.', 'ee-simple-file-list') . '</div>';
 	
 	// Maximum File Size
-	if(!$eeSFL_Settings_1['UploadMaxFileSize']) { $eeSFL_Settings_1['UploadMaxFileSize'] = $eeSFL_FREE_Env['the_max_upload_size']; }
+	if(!$eeSFL_Settings['UploadMaxFileSize']) { $eeSFL_Settings['UploadMaxFileSize'] = $eeSFL_FREE_Env['the_max_upload_size']; }
 	
 	$eeOutput .= '<label for="eeUploadMaxFileSize">' . __('Maximum File Size', 'ee-simple-file-list') . ' (MB):</label>
 	
-	<input type="number" min="1" max="' . $eeSFL_FREE_Env['the_max_upload_size']. '" step="1" name="eeUploadMaxFileSize" value="' . $eeSFL_Settings_1['UploadMaxFileSize'] . '" class="eeAdminInput" id="eeUploadMaxFileSize" />
+	<input type="number" min="1" max="' . $eeSFL_FREE_Env['the_max_upload_size']. '" step="1" name="eeUploadMaxFileSize" value="' . $eeSFL_Settings['UploadMaxFileSize'] . '" class="eeAdminInput" id="eeUploadMaxFileSize" />
 		<div class="eeNote">' . __('Your hosting limits the maximum file upload size to', 'ee-simple-file-list') . ' <strong>' . $eeSFL_FREE_Env['the_max_upload_size']. ' MB</strong>.</div>';
 	
 	
 	// File Formats Allowed
-	$eeOutput .= '<label for="eeFormats">' . __('Allowed File Types', 'ee-simple-file-list') . ':</label><textarea name="eeFileFormats" class="eeAdminInput" id="eeFormats" cols="64" rows="3" >' . $eeSFL_Settings_1['FileFormats'] . '</textarea>
+	$eeOutput .= '<label for="eeFormats">' . __('Allowed File Types', 'ee-simple-file-list') . ':</label><textarea name="eeFileFormats" class="eeAdminInput" id="eeFormats" cols="64" rows="3" >' . $eeSFL_Settings['FileFormats'] . '</textarea>
 		<div class="eeNote">' . __('Only use the file types you absolutely need, such as', 'ee-simple-file-list') . ' jpg, jpeg, png, pdf, mp4, etc</div>
 		
 		
 	<label for="eeShowUploadLimits">' . __('Show Upload Limits', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eeShowUploadLimits" value="YES" id="eeShowUploadLimits"';
 		
-		if( $eeSFL_Settings_1['ShowUploadLimits'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		if( $eeSFL_Settings['ShowUploadLimits'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 		
 		$eeOutput .= ' /> <p>' . __('Display upload restrictions on the front-end.', 'ee-simple-file-list') . '</p>
 		

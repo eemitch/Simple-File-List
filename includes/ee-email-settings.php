@@ -13,7 +13,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		'Notify'
 	);
 	foreach( $eeCheckboxes as $eeTerm){
-		$eeSFL_Settings_1[$eeTerm] = eeSFL_FREE_ProcessCheckboxInput($eeTerm);
+		$eeSFL_Settings[$eeTerm] = eeSFL_FREE_ProcessCheckboxInput($eeTerm);
 	}
 	
 	$eeDelivery = array('To', 'Cc', 'Bcc');
@@ -23,7 +23,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		if( strpos($_POST['eeNotify' . $eeField], '@') ) {
 			
 			$eeAddresses = $eeSFL_FREE->eeSFL_SanitizeEmailString($_POST['eeNotify' . $eeField]);
-			$eeSFL_Settings_1['Notify' . $eeField] = $eeAddresses;
+			$eeSFL_Settings['Notify' . $eeField] = $eeAddresses;
 		}
 	}
 	
@@ -34,15 +34,15 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		,'NotifySubject'
 	);
 	foreach( $eeTextInputs as $eeTerm){
-		$eeSFL_Settings_1[$eeTerm] = eeSFL_FREE_ProcessTextInput($eeTerm);
+		$eeSFL_Settings[$eeTerm] = eeSFL_FREE_ProcessTextInput($eeTerm);
 	}
 	
 	if(@$_POST['eeNotifyMessage']) { // Retain line breaks
-		$eeSFL_Settings_1['NotifyMessage'] = sanitize_textarea_field($_POST['eeNotifyMessage']);
+		$eeSFL_Settings['NotifyMessage'] = sanitize_textarea_field($_POST['eeNotifyMessage']);
 	}
 	
 	// Update DB
-	if( update_option('eeSFL_Settings_1', $eeSFL_Settings_1) ) {
+	if( update_option('eeSFL_Settings_1', $eeSFL_Settings) ) {
 		$eeSFL_Confirm = __('Settings Saved', 'ee-simple-file-list');
 		$eeSFL_FREE_Log['SFL'][] = 'Settings Saved';
 	} else {
@@ -78,11 +78,11 @@ $eeOutput .= '
 	
 	$eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce', TRUE, FALSE);
 	
-	if(strlen($eeSFL_Settings_1['NotifyTo']) < 5) {
-		$eeSFL_Settings_1['NotifyTo'] = get_option('admin_email');
+	if(strlen($eeSFL_Settings['NotifyTo']) < 5) {
+		$eeSFL_Settings['NotifyTo'] = get_option('admin_email');
 	}
-	if(strlen($eeSFL_Settings_1['NotifyFrom']) < 5) {
-		$eeSFL_Settings_1['NotifyFrom'] = get_option('admin_email');
+	if(strlen($eeSFL_Settings['NotifyFrom']) < 5) {
+		$eeSFL_Settings['NotifyFrom'] = get_option('admin_email');
 	}
 	
 	$eeOutput .= '<fieldset class="eeSFL_SettingsFull">
@@ -90,7 +90,7 @@ $eeOutput .= '
 	<h3>' . __('Enable Notifications', 'ee-simple-file-list') . '</h3>
 	
 	<label for="eeNotify">' . __('Enable Notifications', 'ee-simple-file-list') . ':</label><input type="checkbox" name="eeNotify" value="YES" id="eeNotify"'; 
-	if(@$eeSFL_Settings_1['Notify'] == 'YES') { $eeOutput .= ' checked'; }
+	if(@$eeSFL_Settings['Notify'] == 'YES') { $eeOutput .= ' checked'; }
 	$eeOutput .= ' /> <div class="eeNote">' . __('Send an email notification when a file is uploaded on the front-side of the website.', 'ee-simple-file-list') . '</div>
 	
 	</fieldset>
@@ -100,18 +100,18 @@ $eeOutput .= '
 	<h3>' . __('Notice Recipients', 'ee-simple-file-list') . '</h3>
 	
 	<label for="eeNotifyTo">' . __('Notice Email', 'ee-simple-file-list') . ':</label>
-			<input type="text" name="eeNotifyTo" value="' . @$eeSFL_Settings_1['NotifyTo'] . '" class="eeAdminInput" id="eeNotifyTo" size="64" />
+			<input type="text" name="eeNotifyTo" value="' . @$eeSFL_Settings['NotifyTo'] . '" class="eeAdminInput" id="eeNotifyTo" size="64" />
 				<div class="eeNote">' . __('Send an email whenever a file is uploaded.', 'ee-simple-file-list') . ' ' .  __('Separate multiple addresses with a comma.', 'ee-simple-file-list') . '</div>
 				
 	<hr />
 	
 	<label for="eeNotifyCc">' . __('Copy to Email', 'ee-simple-file-list') . ':</label>
-	<input type="text" name="eeNotifyCc" value="' . @$eeSFL_Settings_1['NotifyCc'] . '" class="eeAdminInput" id="eeNotifyCc" size="64" />
+	<input type="text" name="eeNotifyCc" value="' . @$eeSFL_Settings['NotifyCc'] . '" class="eeAdminInput" id="eeNotifyCc" size="64" />
 		<div class="eeNote">' . __('Copy notice emails here.', 'ee-simple-file-list') . '</div>
 	
 	
 	<label for="eeNotifyBcc">' . __('Blind Copy to Email', 'ee-simple-file-list') . ':</label>
-	<input type="text" name="eeNotifyBcc" value="' . @$eeSFL_Settings_1['NotifyBcc'] . '" class="eeAdminInput" id="eeNotifyBcc" size="64" />
+	<input type="text" name="eeNotifyBcc" value="' . @$eeSFL_Settings['NotifyBcc'] . '" class="eeAdminInput" id="eeNotifyBcc" size="64" />
 		<div class="eeNote">' . __('Blind copy notice emails here.', 'ee-simple-file-list') . '</div>
 	
 	</fieldset>
@@ -122,24 +122,24 @@ $eeOutput .= '
 	<h3>' . __('Message Details', 'ee-simple-file-list') . '</h3>
 	
 	<label for="eeNotifyFrom">' . __('Sender Email', 'ee-simple-file-list') . ':</label>
-	<input type="email" name="eeNotifyFrom" value="' . @$eeSFL_Settings_1['NotifyFrom'] . '" class="eeAdminInput" id="eeNotifyFrom" size="64" />
+	<input type="email" name="eeNotifyFrom" value="' . @$eeSFL_Settings['NotifyFrom'] . '" class="eeAdminInput" id="eeNotifyFrom" size="64" />
 		<div class="eeNote">' . __('The notification message\'s reply-to address.', 'ee-simple-file-list') . '</div>
 	
 	
 	<label for="eeNotifyFromName">' . __('Sender Name', 'ee-simple-file-list') . ':</label>
-	<input type="text" name="eeNotifyFromName" value="' . stripslashes(@$eeSFL_Settings_1['NotifyFromName']) . '" class="eeAdminInput" id="eeNotifyFromName" size="64" />
+	<input type="text" name="eeNotifyFromName" value="' . stripslashes(@$eeSFL_Settings['NotifyFromName']) . '" class="eeAdminInput" id="eeNotifyFromName" size="64" />
 		<div class="eeNote">' . __('The visible name in the From field.', 'ee-simple-file-list') . '</div>
 	
 	
 	<label for="eeNotifySubject">' . __('Notification Subject', 'ee-simple-file-list') . ':</label>
-	<input type="text" name="eeNotifySubject" value="' . stripslashes(@$eeSFL_Settings_1['NotifySubject']) . '" class="eeAdminInput" id="eeNotifySubject" size="64" />
+	<input type="text" name="eeNotifySubject" value="' . stripslashes(@$eeSFL_Settings['NotifySubject']) . '" class="eeAdminInput" id="eeNotifySubject" size="64" />
 		<div class="eeNote">' . __('The notification email subject line.', 'ee-simple-file-list') . '</div>';
 		
 	
-	if(!@$eeSFL_Settings_1['NotifyMessage']) { $eeSFL_Settings_1['NotifyMessage'] = $eeSFL_FREE->eeNotifyMessageDefault; }
+	if(!@$eeSFL_Settings['NotifyMessage']) { $eeSFL_Settings['NotifyMessage'] = $eeSFL_FREE->eeNotifyMessageDefault; }
 	
 	$eeOutput .= '<label for="eeNotifyMessage">' . __('Message Text', 'ee-simple-file-list') . ':</label>
-	<textarea name="eeNotifyMessage" class="eeAdminInput" id="eeNotifyMessage" cols="64" rows="12" >' . stripslashes($eeSFL_Settings_1['NotifyMessage']) . '</textarea>
+	<textarea name="eeNotifyMessage" class="eeAdminInput" id="eeNotifyMessage" cols="64" rows="12" >' . stripslashes($eeSFL_Settings['NotifyMessage']) . '</textarea>
 		<div class="eeNote">' . __('This will be the text for the file upload notification messages.', 'ee-simple-file-list') . '<br />
 			' . __('To insert file information and link, use this shortcode:', 'ee-simple-file-list') . ' [file-list]<br />
 			' . __('To insert a link pointing to the file list, use this shortcode:', 'ee-simple-file-list') . ' [web-page]</div>

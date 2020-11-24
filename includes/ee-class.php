@@ -231,13 +231,13 @@ class eeSFL_FREE_MainClass {
     // Scan the real files and create or update array as needed.
     public function eeSFL_UpdateFileListArray() {
 	    
-	    global $eeSFL_FREE_Log, $eeSFL_Settings_1, $eeSFL_FREE_Env;
+	    global $eeSFL_FREE_Log, $eeSFL_Settings, $eeSFL_FREE_Env;
 	    
 	    $eeSFL_FREE_Log['SFL'][] = 'Scanning File List...';
 	    
 	    $eeFilesArray = get_option('eeSFL_FileList_1'); // Get the File List Array
 	    
-	    $eeFilePathsArray = $this->eeSFL_IndexFileListDir($eeSFL_Settings_1['FileListDir']); // Get the real files
+	    $eeFilePathsArray = $this->eeSFL_IndexFileListDir($eeSFL_Settings['FileListDir']); // Get the real files
 	    
 	    if ( !is_array($eeFilesArray) OR !@count($eeFilesArray) ) { // Creating New
 			
@@ -253,8 +253,8 @@ class eeSFL_FREE_MainClass {
 				$eeFileNameAlone = $eePathParts['filename'];
 				$eeExtension = strtolower(@$eePathParts['extension']);
 				$eeFilesArray[$eeKey]['FileExt'] = $eeExtension;
-				$eeFilesArray[$eeKey]['FileSize'] = @filesize(ABSPATH . $eeSFL_Settings_1['FileListDir'] . $eeFile);
-				$eeFilesArray[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings_1['FileListDir'] . $eeFile));
+				$eeFilesArray[$eeKey]['FileSize'] = @filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile);
+				$eeFilesArray[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile));
 				$eeFilesArray[$eeKey]['FileDateChanged'] = $eeFilesArray[$eeKey]['FileDateAdded'];
 				
 			}
@@ -271,7 +271,7 @@ class eeSFL_FREE_MainClass {
 			foreach( $eeFilesArray as $eeKey => $eeFileSet) {
 				
 				// Check if file is there
-				$eeFile = ABSPATH . $eeSFL_Settings_1['FileListDir'] . $eeFileSet['FilePath'];
+				$eeFile = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFileSet['FilePath'];
 				
 				if( is_file($eeFile) ) { // Update file particulars
 					
@@ -327,7 +327,7 @@ class eeSFL_FREE_MainClass {
 					$eeFileArrayNew[$eeKey]['FilePath'] = $eeFile;
 					$eeFileArrayNew[$eeKey]['FileExt'] = $eeExtension;
 					$eeFileArrayNew[$eeKey]['FileSize'] = 0;
-					$eeFileArrayNew[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s", @filemtime(ABSPATH . $eeSFL_Settings_1['FileListDir'] . $eeFile));
+					$eeFileArrayNew[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s", @filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile));
 					$eeFileArrayNew[$eeKey]['FileDateChanged'] = $eeFileArrayNew[$eeKey]['FileDateAdded'];
 				}
 			}
@@ -344,7 +344,7 @@ class eeSFL_FREE_MainClass {
 		    $eeFilesArray = array_values($eeFilesArray); 
 		    
 		    // Sort
-		    $eeFilesArray = $this->eeSFL_SortFiles($eeFilesArray, $eeSFL_Settings_1['SortBy'], $eeSFL_Settings_1['SortOrder']);
+		    $eeFilesArray = $this->eeSFL_SortFiles($eeFilesArray, $eeSFL_Settings['SortBy'], $eeSFL_Settings['SortOrder']);
 		    
 		    // Update the DB
 		    update_option('eeSFL_FileList_1', $eeFilesArray);
@@ -362,11 +362,11 @@ class eeSFL_FREE_MainClass {
 		    }
 		    
 		    // Set the transient
-		    if(@$eeSFL_Settings_1['ExpireTime'] >= 1) {
+		    if(@$eeSFL_Settings['ExpireTime'] >= 1) {
 			
 				$eeExpiresIn = $this->eeExpireTime * HOUR_IN_SECONDS;
 				
-				$eeSFL_FREE_Log['SFL'][] = 'Setting transient to expire in ' . $eeSFL_Settings_1['ExpireTime'] . ' hours.';
+				$eeSFL_FREE_Log['SFL'][] = 'Setting transient to expire in ' . $eeSFL_Settings['ExpireTime'] . ' hours.';
 				
 				set_transient('eeSFL_FileList-1', 'Good', $eeExpiresIn);
 			}
@@ -443,7 +443,7 @@ class eeSFL_FREE_MainClass {
 	// Check thumbnail
 	public function eeSFL_CheckThumbnail($eeFilePath) { // File Path relative to FileListDir
 		
-		global $eeSFL_FREE_Log, $eeSFL_Settings_1, $eeSFL_FREE_Env;
+		global $eeSFL_FREE_Log, $eeSFL_Settings, $eeSFL_FREE_Env;
 		
 		$eeExt = FALSE;
 		$eeScreenshot = FALSE;
@@ -454,10 +454,10 @@ class eeSFL_FREE_MainClass {
 		$eeFileNameOnly = $eePathParts['filename'];
 		$eeExt = strtolower(@$eePathParts['extension']);
 		
-		$eeFileFullPath = ABSPATH . $eeSFL_Settings_1['FileListDir'] . $eeFilePath;
+		$eeFileFullPath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath;
 		$eeFileFullPath = str_replace('//', '/', $eeFileFullPath);
 		
-		$eeThumbsPATH = ABSPATH . $eeSFL_Settings_1['FileListDir'] . '.thumbnails/';
+		$eeThumbsPATH = ABSPATH . $eeSFL_Settings['FileListDir'] . '.thumbnails/';
 		
 		// Is there already a thumb?
 		if(is_file($eeThumbsPATH . 'thumb_' . $eeFileNameOnly . '.jpg')) { return TRUE; } // Checked Okay
@@ -538,11 +538,11 @@ class eeSFL_FREE_MainClass {
 	// Create thumbnail image
 	private function eeSFL_CreateThumbnailImage($eeFileFullPath) { // Requires full path 
 		
-		global $eeSFL_FREE_Log, $eeSFL_Settings_1, $eeSFL_FREE_Env;
+		global $eeSFL_FREE_Log, $eeSFL_Settings, $eeSFL_FREE_Env;
 		
 		$eeFileSize = filesize($eeFileFullPath);
 		
-		$eeFilePath = str_replace(ABSPATH . $eeSFL_Settings_1['FileListDir'], '', $eeFileFullPath); // Strip path thru FileListDir
+		$eeFilePath = str_replace(ABSPATH . $eeSFL_Settings['FileListDir'], '', $eeFileFullPath); // Strip path thru FileListDir
 		
 		$eePathParts = pathinfo($eeFilePath);
 		
@@ -559,8 +559,8 @@ class eeSFL_FREE_MainClass {
 		$eeDir = str_replace('.thumbnails/', '', $eeDir); // Remove if .thumbnails/ is part of the path (video thumbs)
 
 		// Dynamicly created thumbnails are here
-		$eeThumbsURL = $eeSFL_FREE_Env['wpSiteURL'] . '/' . $eeSFL_Settings_1['FileListURL'] . $eeDir . '.thumbnails/'; 
-		$eeThumbsPATH = ABSPATH . $eeSFL_Settings_1['FileListDir'] . $eeDir . '.thumbnails/'; // Path to them
+		$eeThumbsURL = $eeSFL_FREE_Env['wpSiteURL'] . '/' . $eeSFL_Settings['FileListURL'] . $eeDir . '.thumbnails/'; 
+		$eeThumbsPATH = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeDir . '.thumbnails/'; // Path to them
 		
 		if(!is_dir($eeThumbsPATH)) {
 			if(!mkdir($eeThumbsPATH)) {
@@ -613,7 +613,7 @@ class eeSFL_FREE_MainClass {
 	// Move the sort item to the array key and then sort. Preserve the key (File ID) in a new element
 	public function eeSFL_SortFiles($eeFiles, $eeSortBy, $eeSortOrder) {
 		
-		global $eeSFL_FREE_Log, $eeSFL_Settings_1;
+		global $eeSFL_FREE_Log, $eeSFL_Settings;
 		
 		if(is_array($eeFiles)) {
 			if( count($eeFiles) <= 1 ) { return $eeFiles; } // No point if none or one
@@ -701,7 +701,7 @@ class eeSFL_FREE_MainClass {
 		
 		$eePOST = $_POST;
 		
-		global $eeSFL_Settings_1, $eeSFL_FREE_Env;
+		global $eeSFL_Settings, $eeSFL_FREE_Env;
 		$eeFiles = '';
 		
 		// Process a raw input of email addresses
@@ -727,13 +727,13 @@ class eeSFL_FREE_MainClass {
 		if( is_array($eePOST['eeSFL_SendTheseFiles']) ) { // The files array checkboxes
 			
 			foreach( $eePOST['eeSFL_SendTheseFiles'] as $eeFile) {
-				$eeFiles .= '-> ' . $eeSFL_Settings_1['FileListURL'] . sanitize_text_field( urldecode($eeFile) ) . PHP_EOL;
+				$eeFiles .= '-> ' . $eeSFL_Settings['FileListURL'] . sanitize_text_field( urldecode($eeFile) ) . PHP_EOL;
 			}
 		}
 		
 		// Footer
-		if(@$eeSFL_Settings_1['SendFooter']) {
-			$eeFooter = $eeSFL_Settings_1['SendFooter'];
+		if(@$eeSFL_Settings['SendFooter']) {
+			$eeFooter = $eeSFL_Settings['SendFooter'];
 		} else {
 			if( is_admin() ) {
 				$eeURL = $eeSFL_FREE_Env['wpSiteURL']; // The main URL
@@ -764,14 +764,14 @@ class eeSFL_FREE_MainClass {
 	// Send the notification email
 	public function eeSFL_NotificationEmail($eeSFL_UploadJob) {
 		
-		global $eeSFL_FREE_Log, $eeSFL_Settings_1, $eeSFL_FREE_Env;
+		global $eeSFL_FREE_Log, $eeSFL_Settings, $eeSFL_FREE_Env;
 		
 		if($eeSFL_UploadJob) {
 		
 			$eeSFL_FREE_Log['SFL'][] = 'Sending Notification Email...';
 			
 			// Build the Message Body
-			$eeSFL_Body = $eeSFL_Settings_1['NotifyMessage']; // Get the template
+			$eeSFL_Body = $eeSFL_Settings['NotifyMessage']; // Get the template
 			$eeSFL_Body = str_replace('[file-list]', $eeSFL_UploadJob, $eeSFL_Body); // Add files
 			$eeSFL_Body = str_replace('[web-page]', get_permalink(), $eeSFL_Body); // Add location
 			
@@ -804,33 +804,33 @@ class eeSFL_FREE_MainClass {
 				PHP_EOL . "Powered by Simple File List - simplefilelist.com";
 			}
 		
-			if($eeSFL_Settings_1['NotifyFrom']) {
-				$eeSFL_NotifyFrom = $eeSFL_Settings_1['NotifyFrom'];
+			if($eeSFL_Settings['NotifyFrom']) {
+				$eeSFL_NotifyFrom = $eeSFL_Settings['NotifyFrom'];
 			} else {
 				$eeSFL_NotifyFrom = get_option('admin_email');
 			}
 			
-			if($eeSFL_Settings_1['NotifyFromName']) {
-				$eeSFL_AdminName = $eeSFL_Settings_1['NotifyFromName'];
+			if($eeSFL_Settings['NotifyFromName']) {
+				$eeSFL_AdminName = $eeSFL_Settings['NotifyFromName'];
 			} else {
 				$eeSFL_AdminName = $this->eePluginName;
 			}
 			
-			$eeTo = $eeSFL_Settings_1['NotifyTo'];
+			$eeTo = $eeSFL_Settings['NotifyTo'];
 			
-			$eeSFL_Headers = "From: " . stripslashes( $eeSFL_Settings_1['NotifyFromName'] ) . " <$eeSFL_NotifyFrom>" . PHP_EOL . 
+			$eeSFL_Headers = "From: " . stripslashes( $eeSFL_Settings['NotifyFromName'] ) . " <$eeSFL_NotifyFrom>" . PHP_EOL . 
 				"Return-Path: $eeSFL_NotifyFrom" . PHP_EOL . "Reply-To: $eeSFL_NotifyFrom";
 			
-			if($eeSFL_Settings_1['NotifyCc']) {
-				$eeSFL_Headers .= PHP_EOL . "CC:" . $eeSFL_Settings_1['NotifyCc'];
+			if($eeSFL_Settings['NotifyCc']) {
+				$eeSFL_Headers .= PHP_EOL . "CC:" . $eeSFL_Settings['NotifyCc'];
 			}
 				
-			if($eeSFL_Settings_1['NotifyBcc']) {
-				$eeSFL_Headers .= PHP_EOL . "BCC:" . $eeSFL_Settings_1['NotifyBcc'];
+			if($eeSFL_Settings['NotifyBcc']) {
+				$eeSFL_Headers .= PHP_EOL . "BCC:" . $eeSFL_Settings['NotifyBcc'];
 			}
 			
-			if($eeSFL_Settings_1['NotifySubject']) {
-				$eeSFL_Subject = stripslashes( $eeSFL_Settings_1['NotifySubject'] );
+			if($eeSFL_Settings['NotifySubject']) {
+				$eeSFL_Subject = stripslashes( $eeSFL_Settings['NotifySubject'] );
 			} else {
 				$eeSFL_Subject = __('File Upload Notice', 'ee-simple-file-list');
 			}
