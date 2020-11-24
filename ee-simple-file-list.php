@@ -814,7 +814,7 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 			delete_option('eeSFL-FileList-1'); // Out with the old
 			
 			$eeArray = get_option('eeSFL-Log');
-			add_option('eeSFL_Log', $eeArray);
+			add_option('eeSFL_FREE_Log', $eeArray);
 			delete_option('eeSFL-Log'); // Out with the old
 			
 			delete_transient('eeSFL-1-FileListDirCheck');

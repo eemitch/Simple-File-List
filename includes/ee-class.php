@@ -953,7 +953,7 @@ class eeSFL_FREE_MainClass {
 		
 		$eeDate = date('Y-m-d:h:m');
 		
-		$eeLogNow = get_option('eeSFL_Log'); // Stored as an array
+		$eeLogNow = get_option('eeSFL_FREE_Log'); // Stored as an array
 		
 		// Log Size Management
 		$eeSizeCheck = serialize($eeLogNow);
