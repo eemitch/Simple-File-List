@@ -998,6 +998,10 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 		copy($eeCopyFrom, $eeCopyTo);
 	}
 	
+	// Cache Format Update
+	if( $eeConfigDefault['ExpireTime'] === 0 ) { $eeConfigDefault['ExpireTime'] = 'NO'; } 
+		else { $eeConfigDefault['ExpireTime'] = 'YES'; }
+	
 	
 	// Create Settings Array --------------
 	
