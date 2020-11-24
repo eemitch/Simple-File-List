@@ -21,7 +21,7 @@ $eeSFL_FREE_Log['SFL'][] = 'Loaded: ee-list-display';
 // echo '<pre>'; print_r($_POST); echo '</pre>';
 
 // Get the File List
-if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR @$eeSFL_Settings_1['ExpireTime']) { // Only admins can force a rescan
+if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR @$eeSFL_Settings_1['ExpireTime'] == 'NO') { // Only admins can force a rescan
 	
 	$eeSFL_Files = $eeSFL_FREE->eeSFL_UpdateFileListArray();
 	
@@ -139,7 +139,7 @@ if($eeAdmin) {
 	
 		<a href="#" class="button eeButton" id="eeSFL_UploadFilesButton">' . __('Upload Files', 'ee-simple-file-list') . '</a>';
 	 					
-	if($eeSFL_Settings_1['ExpireTime']) {
+	if($eeSFL_Settings_1['ExpireTime'] != 'NO') {
 		$eeOutput .= '<a href="#" class="button eeButton" id="eeSFL_ReScanButton">' . __('Re-Scan Files', 'ee-simple-file-list') . '</a>';
 	}
 	

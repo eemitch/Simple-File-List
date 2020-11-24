@@ -47,7 +47,7 @@ class eeSFL_FREE_MainClass {
 		// List Settings
 		'ListTitle' => 'Simple File List', // List Title (Not currently used)
 		'FileListDir' => 'wp-content/uploads/simple-file-list/', // List Directory Name (relative to ABSPATH)
-		'ExpireTime' => 0, // Hours before next re-scan
+		'ExpireTime' => 'NO', // To cache or not to cache
 		'ShowList' => 'YES', // Show the File List (YES, ADMIN, USER, NO)
 		'AdminRole' => 5, // Who can access settings, based on WP role (5 = Admin ... 1 = Subscriber)
 		'ShowFileThumb' => 'YES', // Display the File Thumbnail Column (YES or NO)
