@@ -29,7 +29,7 @@ class eeSFL_FREE_MainClass {
 		'txt', 'wav', 'wma', 'wmv', 'htm', 'html');
     
     public $eeExcludedFileNames = array('error_log', 'index.html');
-    public $eeForbiddenTypes = array('php', 'exe', 'js', 'com', 'wsh', 'vbs');
+    public $eeForbiddenTypes = array('php','phar','pl','py','com','cgi','asp','exe','js','html','htm','phtml', 'wsh','vbs');
     
     private $eeExcludedFiles = array('index.html');
     
