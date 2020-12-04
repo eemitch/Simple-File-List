@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2020-11-24 13:31-0600\n"
-"PO-Revision-Date: 2020-11-24 13:41-0600\n"
+"POT-Creation-Date: 2020-12-04 14:06-0600\n"
+"PO-Revision-Date: 2020-12-04 14:20-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_CA\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "DEVELOPMENT MODE ON"
 msgstr "MODE DE DÉVELOPPEMENT SUR"
 
-#: ee-admin-page.php:43
+#: ee-admin-page.php:43 includes/ee-shortcode-builder.php:10
 msgid "File List"
 msgstr "Liste des fichiers"
 
@@ -37,7 +37,7 @@ msgstr "Auteur"
 msgid "Get Help"
 msgstr "Obtenir de l'aide"
 
-#: ee-admin-page.php:58 ee-simple-file-list.php:706
+#: ee-admin-page.php:58 ee-simple-file-list.php:716
 msgid "Settings"
 msgstr "Paramètres"
 
@@ -65,110 +65,113 @@ msgstr "Paramètres de notification"
 msgid "No File List Found. Please Re-Scan"
 msgstr "Aucune liste de fichiers n'a été trouvée. S'il vous plaît re-scan"
 
-#: ee-list-display.php:140 includes/ee-upload-form.php:46
+#: ee-list-display.php:140
+msgid "Cancel Upload"
+msgstr "Annuler le téléchargement"
+
+#: ee-list-display.php:141 includes/ee-upload-form.php:46
 msgid "Upload Files"
 msgstr "Téléverser les fichiers"
 
-#: ee-list-display.php:143
+#: ee-list-display.php:144
 msgid "Re-Scan Files"
 msgstr "Re-scan des fichiers"
 
-#: ee-list-display.php:146
+#: ee-list-display.php:147
 msgid "Create Folder"
 msgstr "Créer un dossier"
 
-#: ee-list-display.php:155 ee-list-display.php:188
+#: ee-list-display.php:156 ee-list-display.php:189
 msgid "Back to the Files"
 msgstr "Revenir aux fichiers"
 
-#: ee-list-display.php:172
+#: ee-list-display.php:173
 msgid "Files"
 msgstr "Fichiers"
 
-#: ee-list-display.php:173
+#: ee-list-display.php:174
 msgid "Sorted by"
 msgstr "Triés par"
 
-#: ee-list-display.php:174
+#: ee-list-display.php:175
 msgid "Last Changed"
 msgstr "Dernière modification"
 
-#: ee-list-display.php:215 includes/ee-list-settings.php:193
+#: ee-list-display.php:216
 msgid "Thumb"
 msgstr "Pouce"
 
-#: ee-list-display.php:224 includes/ee-class.php:929
-#: includes/ee-list-settings.php:201
+#: ee-list-display.php:225 includes/ee-class.php:929
 msgid "Name"
 msgstr "Nom"
 
-#: ee-list-display.php:234 ee-list-display.php:522
-#: includes/ee-list-settings.php:221
+#: ee-list-display.php:235 ee-list-display.php:523
 msgid "Size"
 msgstr "Taille"
 
-#: ee-list-display.php:245 includes/ee-list-settings.php:211
+#: ee-list-display.php:246
 msgid "Date"
 msgstr "Date"
 
-#: ee-list-display.php:453
+#: ee-list-display.php:454
 msgid "Submitted by"
 msgstr "Soumis par"
 
-#: ee-list-display.php:467
+#: ee-list-display.php:468
 msgid "Open"
 msgstr "Ouvrir"
 
-#: ee-list-display.php:471
+#: ee-list-display.php:472
 msgid "Download"
 msgstr "Télécharger"
 
-#: ee-list-display.php:479
+#: ee-list-display.php:480 ee-simple-file-list.php:365
+#: ee-simple-file-list.php:398
 msgid "Edit"
 msgstr "Modifier"
 
-#: ee-list-display.php:480
+#: ee-list-display.php:481
 msgid "Delete"
 msgstr "Supprimer"
 
-#: ee-list-display.php:485
+#: ee-list-display.php:486
 msgid "Move"
 msgstr "Déplacer"
 
-#: ee-list-display.php:486
+#: ee-list-display.php:487
 msgid "Users"
 msgstr "Utilisateurs"
 
-#: ee-list-display.php:487
+#: ee-list-display.php:488
 msgid "Send"
 msgstr "Envoyer"
 
-#: ee-list-display.php:506
+#: ee-list-display.php:507
 msgid "Edit Details"
 msgstr "Modifier les détails"
 
-#: ee-list-display.php:508 includes/ee-list-settings.php:198
+#: ee-list-display.php:509 includes/ee-list-settings.php:198
 #: includes/ee-list-settings.php:287
 msgid "File Name"
 msgstr "Nom du fichier"
 
-#: ee-list-display.php:510 ee-list-display.php:515
+#: ee-list-display.php:511 ee-list-display.php:516
 msgid "Save"
 msgstr "Sauvegarder"
 
-#: ee-list-display.php:512 includes/ee-class.php:943
+#: ee-list-display.php:513 includes/ee-class.php:935
 msgid "Description"
 msgstr "Description"
 
-#: ee-list-display.php:517
+#: ee-list-display.php:518
 msgid "Added"
 msgstr "Ajouté"
 
-#: ee-list-display.php:520
+#: ee-list-display.php:521
 msgid "Modified"
 msgstr "Modifié"
 
-#: ee-list-display.php:580
+#: ee-list-display.php:581
 msgid "Upload some files and they will appear here."
 msgstr "Téléchargez des fichiers et ils apparaîtront ici."
 
@@ -191,11 +194,28 @@ msgstr "Veuillez passer à la version Pro."
 msgid "Free Upgrade"
 msgstr "Mise à jour gratuite"
 
-#: ee-simple-file-list.php:661
+#: ee-simple-file-list.php:366 ee-simple-file-list.php:399
+msgid "Are you sure you want to delete this?"
+msgstr "Êtes-vous sûr de vouloir supprimer ceci?"
+
+#: ee-simple-file-list.php:367 ee-simple-file-list.php:400
+msgid "Cancel"
+msgstr "Annuler"
+
+#: ee-simple-file-list.php:403 includes/ee-list-settings.php:181
+#: includes/ee-shortcode-builder.php:157
+msgid "Show"
+msgstr "Afficher"
+
+#: ee-simple-file-list.php:404 includes/ee-shortcode-builder.php:157
+msgid "Hide"
+msgstr "Masquer"
+
+#: ee-simple-file-list.php:671
 msgid "File Delete Failed"
 msgstr "Échec de la suppression de fichier"
 
-#: ee-simple-file-list.php:705
+#: ee-simple-file-list.php:715
 msgid "Admin List"
 msgstr "Liste d’administration"
 
@@ -260,9 +280,17 @@ msgstr "Avis de téléchargement de fichier"
 msgid "This is not a valid email address."
 msgstr "Il ne s'agit pas d'une adresse e-mail valide."
 
-#: includes/ee-class.php:933
+#: includes/ee-class.php:931
 msgid "Email"
 msgstr "Courriel"
+
+#: includes/ee-class.php:937
+msgid "Add a description (optional)"
+msgstr "Ajouter une description (facultatif)"
+
+#: includes/ee-class.php:939
+msgid "Submitter:"
+msgstr "Déposant :"
 
 #: includes/ee-email-settings.php:46 includes/ee-list-settings.php:69
 #: includes/ee-upload-settings.php:78
@@ -578,10 +606,6 @@ msgstr "Informations sur le tableau des listes de fichiers"
 msgid "Item"
 msgstr "Article"
 
-#: includes/ee-list-settings.php:181
-msgid "Show"
-msgstr "Afficher"
-
 #: includes/ee-list-settings.php:182
 msgid "Label"
 msgstr "Étiquette"
@@ -591,10 +615,12 @@ msgid "File Thumbnail"
 msgstr "Thumbnail de fichier"
 
 #: includes/ee-list-settings.php:206 includes/ee-list-settings.php:292
+#: includes/ee-shortcode-builder.php:13
 msgid "File Date"
 msgstr "Date du fichier"
 
 #: includes/ee-list-settings.php:216 includes/ee-list-settings.php:297
+#: includes/ee-shortcode-builder.php:14
 msgid "File Size"
 msgstr "Taille du fichier"
 
@@ -646,7 +672,7 @@ msgstr "Afficher le nom de l'utilisateur qui a téléchargé le fichier."
 msgid "File Sorting and Order"
 msgstr "Tri et commande de fichiers"
 
-#: includes/ee-list-settings.php:279
+#: includes/ee-list-settings.php:279 includes/ee-shortcode-builder.php:17
 msgid "Sort By"
 msgstr "Trier par"
 
@@ -739,7 +765,7 @@ msgid "Use the File List Cache"
 msgstr "Utiliser le cache des listes de fichiers"
 
 #: includes/ee-list-settings.php:379
-msgid "Reduce server load by only scannng the hard disk occasionally."
+msgid "Reduce server load by only scanning the hard disk occasionally."
 msgstr ""
 "Réduire la charge du serveur en ne scannant le disque dur "
 "qu'occasionnellement."
@@ -795,6 +821,26 @@ msgstr "Contributeurs"
 msgid "Thanks to"
 msgstr "Remerciements"
 
+#: includes/ee-shortcode-builder.php:11
+msgid "Uploader"
+msgstr "Uploader"
+
+#: includes/ee-shortcode-builder.php:12
+msgid "File Thumbnails"
+msgstr "Vignettes des fichiers"
+
+#: includes/ee-shortcode-builder.php:15
+msgid "Table Header"
+msgstr "En-tête de table"
+
+#: includes/ee-shortcode-builder.php:16
+msgid "File Actions"
+msgstr "Actions sur les dossiers"
+
+#: includes/ee-shortcode-builder.php:18
+msgid "Sort Order"
+msgstr "Ordre de tri"
+
 #: includes/ee-shortcode-builder.php:22
 msgid "Default"
 msgstr "Défaut"
@@ -836,6 +882,10 @@ msgstr "Créer une page avec shortcode"
 #: includes/ee-shortcode-builder.php:52
 msgid "Create Post with Shortcode"
 msgstr "Créer un message avec shortcode"
+
+#: includes/ee-shortcode-builder.php:55
+msgid "Go"
+msgstr "Aller"
 
 #: includes/ee-shortcode-builder.php:65
 msgid "Shortcode Builder"
@@ -1058,9 +1108,6 @@ msgstr "Mitchell Bennis"
 
 #~ msgid "Display Settings"
 #~ msgstr "Paramètres d'affichage"
-
-#~ msgid "Cancel"
-#~ msgstr "Annuler"
 
 #~ msgid "Error"
 #~ msgstr "Erreur"

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2020-12-04 13:22-0600\n"
-"PO-Revision-Date: 2020-12-04 13:23-0600\n"
+"POT-Creation-Date: 2020-12-04 14:06-0600\n"
+"PO-Revision-Date: 2020-12-04 14:06-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -97,20 +97,19 @@ msgstr "Triés par"
 msgid "Last Changed"
 msgstr "Dernière modification"
 
-#: ee-list-display.php:216 ee-simple-file-list.php:1047
+#: ee-list-display.php:216
 msgid "Thumb"
 msgstr "Vignette"
 
-#: ee-list-display.php:225 ee-simple-file-list.php:1048
-#: includes/ee-class.php:929
+#: ee-list-display.php:225 includes/ee-class.php:929
 msgid "Name"
 msgstr "Nom"
 
-#: ee-list-display.php:235 ee-list-display.php:523 ee-simple-file-list.php:1050
+#: ee-list-display.php:235 ee-list-display.php:523
 msgid "Size"
 msgstr "Taille"
 
-#: ee-list-display.php:246 ee-simple-file-list.php:1049
+#: ee-list-display.php:246
 msgid "Date"
 msgstr "Date"
 

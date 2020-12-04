@@ -245,6 +245,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 * Redesigned the Edit Details dialog.
 * Reorganized the List Settings tabs.
 * Under-the-hood efficiency and security improvements.
+* Improved translations
 
 = 4.2.13 =
 * Extensive under-the-hood changes so this version and the Pro version can run at the same time.
