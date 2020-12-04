@@ -47,7 +47,7 @@ if(@$eeSFL_Settings['FileListDir']) {
 		
 		<div id="eeSFL_FileDropZone" ondrop="eeSFL_DropHandler(event);" ondragover="eeSFL_DragOverHandler(event);">';
 		
-		if($eeSFL_Settings['GetUploaderInfo'] == 'YES' AND !$eeAdmin) { $eeOutput .= $eeSFL_FREE->eeSFL_UploadInfoForm(); }
+		if($eeSFL_Settings['GetUploaderInfo'] == 'YES' OR $eeAdmin) { $eeOutput .= $eeSFL_FREE->eeSFL_UploadInfoForm(); }
 		
 		$eeSFL_FileFormats = str_replace(' ' , '', $eeSFL_Settings['FileFormats']); // Strip spaces
 	    

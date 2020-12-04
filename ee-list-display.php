@@ -137,6 +137,7 @@ if($eeAdmin) {
 	
 	<p class="eeRight">
 	
+		<span class="eeHide" id="eeSFL_UploadFilesButtonSwap">' . __('Cancel Upload', 'ee-simple-file-list') . '</span>
 		<a href="#" class="button eeButton" id="eeSFL_UploadFilesButton">' . __('Upload Files', 'ee-simple-file-list') . '</a>';
 	 					
 	if($eeSFL_Settings['ExpireTime'] != 'NO') {

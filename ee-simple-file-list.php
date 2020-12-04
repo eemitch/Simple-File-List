@@ -361,7 +361,10 @@ function eeSFL_FREE_Enqueue() {
 	
 	$protocol = isset( $_SERVER['HTTPS'] ) ? 'https://' : 'http://';
 	$params = array(
-		'ajaxurl' => admin_url( 'admin-ajax.php', $protocol )
+		'ajaxurl' => admin_url( 'admin-ajax.php', $protocol ),
+		'eeEditText' => __('Edit', 'ee-simple-file-list'), // Edit link text
+		'eeConfirmDeleteText' => __('Are you sure you want to delete this?', 'ee-simple-file-list'), // Delete confirmation
+		'eeCancelText' => __('Cancel', 'ee-simple-file-list')
 	);
 	
 	// Register Scripts
@@ -391,7 +394,14 @@ function eeSFL_FREE_AdminHead($eeHook) {
 	
 	$protocol = isset( $_SERVER['HTTPS'] ) ? 'https://' : 'http://';
 	$params = array(
-		'ajaxurl' => admin_url( 'admin-ajax.php', $protocol )
+		'ajaxurl' => admin_url( 'admin-ajax.php', $protocol ),
+		'eeEditText' => __('Edit', 'ee-simple-file-list'), // Edit link text
+		'eeConfirmDeleteText' => __('Are you sure you want to delete this?', 'ee-simple-file-list'), // Delete confirmation
+		'eeCancelText' => __('Cancel', 'ee-simple-file-list'),
+		
+		// Shortcode Builder
+		'eeShowText' => __('Show', 'ee-simple-file-list'), 
+		'eeHideText' => __('Hide', 'ee-simple-file-list')
 	);
 	
 	// wp_die($eeHook);
@@ -1017,6 +1027,11 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 		'ShowFileSize' => $eeShowFileSize,
 		'SortBy' => $eeSortBy,
 		'SortOrder' => $eeSortOrder,
+		
+		'LabelThumb' => $eeConfigDefault['LabelThumb'],
+		'LabelName' => $eeConfigDefault['LabelName'],
+		'LabelDate' => $eeConfigDefault['LabelDate'],
+		'LabelSize' => $eeConfigDefault['LabelSize'],
 		
 		'AllowUploads' => $eeAllowUploads,
 		'UploadLimit' => $eeUploadLimit,

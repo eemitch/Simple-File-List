@@ -7,15 +7,15 @@ $eeSFL_FREE_Log['SFL'][] = 'Loaded: ee-plugin-instructions';
 
 // All the shortcodes we have
 $eeSFL_ShortcodeArray = array(
-	'ShowList' => array('showlist', 'File List', 'YES|ADMIN|USER|NO'), 
-	'AllowUploads' => array('allowuploads',  'Uploader', 'YES|ADMIN|USER|NO'),
-	'ShowFileThumb' => array('showthumb', 'File Thumbnails', 'YES|NO'), 
-	'ShowFileDate' => array('showdate', 'File Date', 'YES|NO'), 
-	'ShowFileSize' => array('showsize', 'File Size', 'YES|NO'), 
-	'ShowHeader' => array('showheader', 'Table Header', 'YES|NO'), 
-	'ShowFileActions' => array('showactions', 'File Actions', 'YES|NO'),
-	'SortBy' => array('sortby', 'Sort By', 'Name|Date|Size|Random'),
-	'SortOrder' => array('sortorder', 'Sort Order', 'Descending|Ascending')
+	'ShowList' => array('showlist', __('File List', 'ee-simple-file-list') , 'YES|ADMIN|USER|NO'), 
+	'AllowUploads' => array('allowuploads',  __('Uploader', 'ee-simple-file-list'), 'YES|ADMIN|USER|NO'),
+	'ShowFileThumb' => array('showthumb', __('File Thumbnails', 'ee-simple-file-list'), 'YES|NO'), 
+	'ShowFileDate' => array('showdate', __('File Date', 'ee-simple-file-list'), 'YES|NO'), 
+	'ShowFileSize' => array('showsize', __('File Size', 'ee-simple-file-list'), 'YES|NO'), 
+	'ShowHeader' => array('showheader', __('Table Header', 'ee-simple-file-list'), 'YES|NO'), 
+	'ShowFileActions' => array('showactions', __('File Actions', 'ee-simple-file-list'), 'YES|NO'),
+	'SortBy' => array('sortby', __('Sort By', 'ee-simple-file-list'), 'Name|Date|Size|Random'),
+	'SortOrder' => array('sortorder', __('Sort Order', 'ee-simple-file-list'), 'Descending|Ascending')
 );
 
 $eeChecked = '';
@@ -52,7 +52,7 @@ $eeOutput .= '
 				<option value="Post">' . __('Create Post with Shortcode', 'ee-simple-file-list') . '</option>
 			</select>
 	
-			<input type="submit" name="eeGo" value="Go" class="button" />
+			<input type="submit" name="eeGo" value="' . __('Go', 'ee-simple-file-list') . '" class="button" />
 		
 		</form>
 		
@@ -154,7 +154,7 @@ $eeOutput .= '
 			if($eeSFL_Settings[$eeSetting]) {
 			
 				$eeSettingNewValue = ($eeSFL_Settings[$eeSetting] == 'YES' ? 'NO' : 'YES'); // Alternate
-				if($eeSFL_Settings[$eeSetting] == 'YES') { $eeSettingShowValue ='Hide'; } else { $eeSettingShowValue ='Show'; }
+				if($eeSFL_Settings[$eeSetting] == 'YES') { $eeSettingShowValue = __('Hide', 'ee-simple-file-list'); } else { $eeSettingShowValue = __('Show', 'ee-simple-file-list'); }
 				
 				$eeOutput .= eeSFL_FREE_ShortcodeOptionButton($eeSettingSet[0], $eeSettingNewValue, '<b>' . $eeSettingShowValue . '</b>' . $eeSettingSet[1]);
 				

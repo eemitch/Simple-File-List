@@ -190,7 +190,7 @@ $eeOutput .= '
 		if($eeSFL_Settings['ShowFileThumb'] == 'YES') { $eeOutput .= ' checked'; }
 		$eeOutput .= ' /></td>
 		     <td><input type="text" name="eeLabelThumb" value="';
-		if(@$eeSFL_Settings['LabelThumb']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelThumb']); } else { $eeOutput .= __('Thumb', 'ee-simple-file-list'); }
+		if(@$eeSFL_Settings['LabelThumb']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelThumb']); } else { $eeOutput .= $eeSFL_FREE->DefaultListSettings['LabelThumb']; }
 		$eeOutput .= '" size="16" /></td>
 		  </tr>
 		  
@@ -198,7 +198,7 @@ $eeOutput .= '
 		     <td>' . __('File Name', 'ee-simple-file-list') . '</td>
 		     <td><input type="checkbox" name="eeShowFileName" value="YES" id="eeLabelName" checked="checked" disabled /></td>
 		     <td><input type="text" name="eeLabelName" value="';
-		if(@$eeSFL_Settings['LabelName']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelName']); } else { $eeOutput .= __('Name', 'ee-simple-file-list'); }
+		if(@$eeSFL_Settings['LabelName']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelName']); } else { $eeOutput .= $eeSFL_FREE->DefaultListSettings['LabelName']; }
 		$eeOutput .= '" size="16" /></td>
 		  </tr>
 		  
@@ -208,7 +208,7 @@ $eeOutput .= '
 		if($eeSFL_Settings['ShowFileDate'] == 'YES') { $eeOutput .= ' checked'; }
 		$eeOutput .= ' /></td>
 		     <td><input type="text" name="eeLabelDate" value="';
-		if(@$eeSFL_Settings['LabelDate']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelDate']); } else { $eeOutput .= __('Date', 'ee-simple-file-list'); }
+		if(@$eeSFL_Settings['LabelDate']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelDate']); } else { $eeOutput .= $eeSFL_FREE->DefaultListSettings['LabelDate']; }
 		$eeOutput .= '" size="16" /></td>
 		  </tr>
 		  
@@ -218,7 +218,7 @@ $eeOutput .= '
 		if($eeSFL_Settings['ShowFileSize'] == 'YES') { $eeOutput .= ' checked'; }
 		$eeOutput .= ' /></td>
 		     <td><input type="text" name="eeLabelSize" value="';
-		if(@$eeSFL_Settings['LabelSize']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelSize']); } else { $eeOutput .= __('Size', 'ee-simple-file-list'); }
+		if(@$eeSFL_Settings['LabelSize']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelSize']); } else { $eeOutput .= $eeSFL_FREE->DefaultListSettings['LabelSize']; }
 		$eeOutput .= '" size="16" /></td>
 		  </tr>
 		 

@@ -70,6 +70,45 @@ p.eeTitle {
 
 
 
+
+.eeSFL_Admin #eeUploadInfoForm label {
+	display: inline-block;
+	width: 30%;
+	text-align: right;
+	height: 50px;
+	margin: 0 10px 0 0;
+	padding: 5px 5px 0 0;
+}
+.eeSFL_Admin #eeUploadInfoForm textarea {
+	display: inline-block;
+	width: 65%;
+	height: 90px;
+	margin: 0;
+	padding: 4px;
+}
+.eeSFL_Admin #eeUploadInfoForm p {
+	display: block;
+	text-align: right;
+	clear: both;
+	margin-right: 5%;
+}
+.eeSFL_Admin .eeSFL input[type="file"],
+#eeSFL_FilesDrug {
+	display: block;
+	width: 96%;
+	margin-bottom: 20px;
+	text-align: center;
+	font-weight: bold;
+}
+.eeSFL_Admin #eeSFL_UploadGo {
+	margin-left: 10%;
+	font-size: 150%;
+}
+
+
+
+
+
 .eeSFL_Admin .eeAlignLeftTwoThirds {
 	float: left;
 	width: 66%;
@@ -551,6 +590,7 @@ p.eeAlert {
 	width: 100%;
 	margin-top: 10px;
 	margin-bottom: 20px;
+	text-align: center;
 }
 
 .eeShortcodeBuilderBottom p {
@@ -572,7 +612,7 @@ p.eeAlert {
 .eeShortcodeBuilderBottom p b {
 	display: inline-block;
 	text-align: center;
-	width: 40px;
+	width: auto;
 	height: 100%;
 	padding: 0 5px;
 	margin-right: 5px;

@@ -26,12 +26,12 @@ function eeSFL_FREE_EditFile(eeSFL_FileID) {
 	if( jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).is(':visible') ) {
 		
 		jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).slideUp();
-		jQuery('#eeSFL_EditFile_' + eeSFL_FileID).text('Edit');
+		jQuery('#eeSFL_EditFile_' + eeSFL_FileID).text(eesfl_vars['eeEditText']);
 	
 	} else {
 		
 		jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).slideDown();
-		jQuery('#eeSFL_EditFile_' + eeSFL_FileID).text('Cancel');
+		jQuery('#eeSFL_EditFile_' + eeSFL_FileID).text( eesfl_vars['eeCancelText'] );
 	}
 }
 
@@ -61,11 +61,7 @@ function eeSFL_FREE_EditDesc(eeSFL_FileID) {
 		
 		eeSFL_FREE_FileAction(eeSFL_FileID, 'UpdateDesc');
 	}
-	
-	jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).slideUp();
-	jQuery('#eeSFL_EditFile_' + eeSFL_FileID).text('Edit');
 }
-
 
 
 
@@ -83,7 +79,7 @@ function eeSFL_FREE_Delete(eeSFL_FileID) {
     
     console.log(eeSFL_FileName);
 	
-	if( confirm("Confirm Delete...\r\n" + eeSFL_FileName) ) {
+	if( confirm( eesfl_vars['eeConfirmDeleteText'] + "\r\n\r\n" + eeSFL_FileName ) ) {
 	
 		eeSFL_FREE_FileAction(eeSFL_FileID, 'Delete');
 	

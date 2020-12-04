@@ -26,11 +26,11 @@ function eeSFL_FREE_ShortcodeBuilder(eeNewOption, eeInputType) {
 		
 		eeNewSetTo = jQuery('#eeShortcodeBuilder_' + eeNewOption).val();
 	
-	} else if(eeInputType == 'toggle' && jQuery('#' + eeNewOption + ' b').text() == 'Show') {
+	} else if(eeInputType == 'toggle' && jQuery('#' + eeNewOption + ' b').text() == eesfl_vars['eeShowText'] ) {
 		
 		eeNewSetTo = 'YES';
 		
-	} else if(eeInputType == 'toggle' && jQuery('#' + eeNewOption + ' b').text() == 'Hide') {
+	} else if(eeInputType == 'toggle' && jQuery('#' + eeNewOption + ' b').text() == eesfl_vars['eeHideText']) {
 		
 		eeNewSetTo = 'NO';
 	}
@@ -123,13 +123,13 @@ function eeSFL_FREE_ShortcodeBuilder(eeNewOption, eeInputType) {
 	console.log('Updating the Display');
 	
 	
-	if(jQuery('#' + eeNewOption + ' b').text() == 'Show') {
+	if(jQuery('#' + eeNewOption + ' b').text() == eesfl_vars['eeShowText']) {
 		
-		jQuery('#' + eeNewOption + ' b').text('Hide');
+		jQuery('#' + eeNewOption + ' b').text(eesfl_vars['eeHideText']);
 	
 	} else {
 		
-		jQuery('#' + eeNewOption + ' b').text('Show');
+		jQuery('#' + eeNewOption + ' b').text(eesfl_vars['eeShowText']);
 	}
 	
 	if(jQuery('#' + eeNewOption).hasClass('eeOn')) {
@@ -198,6 +198,9 @@ function eeSFL_FREE_ShortcodeBuilder(eeNewOption, eeInputType) {
 
 
 
+
+
+
 jQuery(function() {
    
    // Copy the Shortcode to the clipboard
@@ -257,15 +260,21 @@ jQuery(document).ready(function() {
 		
 		event.preventDefault();
 		
-		if ( jQuery('#uploadFilesDiv').is(':visible') ) {
+		if ( jQuery('#uploadFilesDiv').is(':visible') ) { // Canceling
 		
 			jQuery('#uploadFilesDiv').slideUp();
-			jQuery(this).text('Upload Files');
+			var eeString1 = jQuery(this).text(); // Showing Cancel
+			var eeString2 = jQuery('#eeSFL_UploadFilesButtonSwap').text();
+			jQuery(this).text(eeString2);
+			jQuery('#eeSFL_UploadFilesButtonSwap').text(eeString1);
 			
-		} else {
+		} else { // Showing
 			
 			jQuery('#uploadFilesDiv').slideDown();
-			jQuery(this).text('Hide Uploader');
+			var eeString1 = jQuery(this).text(); // Showing Upload
+			var eeString2 = jQuery('#eeSFL_UploadFilesButtonSwap').text(); // Cancel
+			jQuery(this).text(eeString2);
+			jQuery('#eeSFL_UploadFilesButtonSwap').text(eeString1);
 			
 		}
 	});
