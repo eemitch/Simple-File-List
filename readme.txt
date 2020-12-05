@@ -228,7 +228,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.14 - Bug Fixes and Improvements
+* 4.3.3 - Major Improvements
 
 
 == Screenshots ==
@@ -240,12 +240,11 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
-= 4.2.14 =
-* Bug Fix: Editing file name and description at the same time fails to the affect the description.
+= 4.3.3 =
 * Redesigned the Edit Details dialog.
 * Reorganized the List Settings tabs.
-* Under-the-hood efficiency and security improvements.
-* Improved translations
+* Many under-the-hood efficiency and security improvements.
+* Improved translations and accounted for missing translations within javascript.
 
 = 4.2.13 =
 * Extensive under-the-hood changes so this version and the Pro version can run at the same time.
