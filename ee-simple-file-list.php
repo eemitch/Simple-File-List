@@ -15,7 +15,7 @@ Text Domain: ee-simple-file-list
 Domain Path: /languages
 */
 
-$eeSFL_FREE_DevMode = FALSE; // Enables visible logging
+$eeSFL_FREE_DevMode = TRUE; // TRUE/FALSE = Enables visible logging or not
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -678,7 +678,7 @@ function eeSFL_FREE_FileEditor() {
 				
 				if(unlink($eeFilePath)) {
 					
-					delete_transient('eeSFL_FileList-1');
+					delete_transient('eeSFL_FileList_1');
 					
 					return 'SUCCESS';
 					
@@ -844,16 +844,13 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 			
 			delete_transient('eeSFL-1-FileListDirCheck');
 		
-		}
-		
-		if(update_option('eeSFL_FREE_DB_Version', eeSFL_FREE_DB_Version)) { // NOTE - We changed to all underscores in option names in 4.3
-			return TRUE;
-		} else {
-			return FALSE;
+			if(update_option('eeSFL_FREE_DB_Version', eeSFL_FREE_DB_Version)) { // NOTE - We changed to all underscores in option names in 4.3
+				return TRUE;
+			} else {
+				return FALSE;
+			}
 		}
 	}
-	
-	
 	
 	
 	// New install or update from an old version, the older the better.
@@ -1022,10 +1019,6 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 		$eeCopyTo = ABSPATH . '/' . $eeFileListDir . 'Simple-File-List.pdf';
 		copy($eeCopyFrom, $eeCopyTo);
 	}
-	
-	// Cache Format Update
-	if( $eeConfigDefault['ExpireTime'] === 0 ) { $eeConfigDefault['ExpireTime'] = 'NO'; } 
-		else { $eeConfigDefault['ExpireTime'] = 'YES'; }
 	
 	
 	// Create Settings Array --------------

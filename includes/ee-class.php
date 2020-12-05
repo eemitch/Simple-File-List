@@ -64,7 +64,7 @@ class eeSFL_FREE_MainClass {
 		'AllowUploads' => 'USER', // Allow File Uploads (YES, ADMIN, USER, NO)
 		'UploadLimit' => 10, // Limit Files Per Upload Job (Quantity)
 		'UploadMaxFileSize' => 1, // Maximum Size per File (MB)
-		'FileFormats' => 'gif, jpg, jpeg, png, tif, pdf, wav, wmv, wma, avi, mov, mp4, m4v, mp3, zip', // Allowed Formats
+		'FileFormats' => 'jpg, jpeg, png, tif, pdf, mov, mp4, mp3, zip', // Allowed Formats
 		'AllowOverwrite' => 'NO', // Number new files with same name, or just overwrite.
 		
 		// Display Settings
@@ -80,7 +80,7 @@ class eeSFL_FREE_MainClass {
 		'AllowFrontManage' => 'NO', // Allow front-side users to manage files (YES or NO)
 		
 		// Notifications
-		'Notify' => 'YES', // Send Notifications (YES or NO)
+		'Notify' => 'NO', // Send Notifications (YES or NO)
 		'NotifyTo' => '', // Send Notification Email Here (Defaults to WP Admin Email)
 		'NotifyCc' => '', // Send Copies of Notification Emails Here
 		'NotifyBcc' => '', // Send Blind Copies of Notification Emails Here
@@ -361,14 +361,19 @@ class eeSFL_FREE_MainClass {
 				}
 		    }
 		    
+		    if(is_numeric($eeSFL_Settings['ExpireTime'])) {
+				if($eeSFL_Settings['ExpireTime'] >= 1) { $eeSFL_Settings['ExpireTime'] = 'YES'; } 
+					else { $eeSFL_Settings['ExpireTime'] = 'NO'; } // Legacy 12/20 (v4.3)
+			}
+		    
 		    // Set the transient
-		    if(@$eeSFL_Settings['ExpireTime'] >= 1) {
+		    if(@$eeSFL_Settings['ExpireTime'] != 'NO') {
 			
 				$eeExpiresIn = $this->eeExpireTime * HOUR_IN_SECONDS;
 				
 				$eeSFL_FREE_Log['SFL'][] = 'Setting transient to expire in ' . $eeSFL_Settings['ExpireTime'] . ' hours.';
 				
-				set_transient('eeSFL_FileList-1', 'Good', $eeExpiresIn);
+				set_transient('eeSFL_FileList_1', 'Good', $eeExpiresIn);
 			}
 		
 

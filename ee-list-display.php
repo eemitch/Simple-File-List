@@ -20,15 +20,20 @@ $eeSFL_FREE_Log['SFL'][] = 'Loaded: ee-list-display';
 
 // echo '<pre>'; print_r($_POST); echo '</pre>';
 
+if(is_numeric($eeSFL_Settings['ExpireTime'])) {
+	if($eeSFL_Settings['ExpireTime'] >= 1) { $eeSFL_Settings['ExpireTime'] = 'YES'; } 
+		else { $eeSFL_Settings['ExpireTime'] = 'NO'; } // Legacy 12/20 (v4.3)
+}
+
 // Get the File List
-if( (@$_GET['eeSFL_Scan'] === 'true' AND $eeAdmin) OR @$eeSFL_Settings['ExpireTime'] == 'NO') { // Only admins can force a rescan
+if( (isset($_GET['eeSFL_Scan']) AND $eeAdmin) OR $eeSFL_Settings['ExpireTime'] == 'NO') {
 	
 	$eeSFL_Files = $eeSFL_FREE->eeSFL_UpdateFileListArray();
 	
 } else {
 	
 	$eeSFL_FREE_Log['SFL'][] = 'Checking List Freshness...';
-	$eeCheckFreshness = get_transient('eeSFL_FileList-1'); // Get the File List Transient
+	$eeCheckFreshness = get_transient('eeSFL_FileList_1'); // Get the File List Transient
 	
 	if($eeCheckFreshness == 'Good') { // Get the list
 		
@@ -140,7 +145,7 @@ if($eeAdmin) {
 		<span class="eeHide" id="eeSFL_UploadFilesButtonSwap">' . __('Cancel Upload', 'ee-simple-file-list') . '</span>
 		<a href="#" class="button eeButton" id="eeSFL_UploadFilesButton">' . __('Upload Files', 'ee-simple-file-list') . '</a>';
 	 					
-	if($eeSFL_Settings['ExpireTime'] != 'NO') {
+	if($eeSFL_Settings['ExpireTime'] == 'YES') {
 		$eeOutput .= '<a href="#" class="button eeButton" id="eeSFL_ReScanButton">' . __('Re-Scan Files', 'ee-simple-file-list') . '</a>';
 	}
 	
