@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2020-12-04 14:06-0600\n"
-"PO-Revision-Date: 2020-12-04 14:24-0600\n"
+"POT-Creation-Date: 2020-12-05 14:13-0600\n"
+"PO-Revision-Date: 2020-12-05 14:14-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -37,7 +37,7 @@ msgstr "Autor"
 msgid "Get Help"
 msgstr "Obtener ayuda"
 
-#: ee-admin-page.php:58 ee-simple-file-list.php:716
+#: ee-admin-page.php:58 ee-simple-file-list.php:731
 msgid "Settings"
 msgstr "Ajuste de carga de Archivos"
 
@@ -212,11 +212,11 @@ msgstr "Mostrar"
 msgid "Hide"
 msgstr "Ocultar"
 
-#: ee-simple-file-list.php:671
+#: ee-simple-file-list.php:686
 msgid "File Delete Failed"
 msgstr "Error al eliminar archivos"
 
-#: ee-simple-file-list.php:715
+#: ee-simple-file-list.php:730
 msgid "Admin List"
 msgstr "Lista de administradores"
 
@@ -419,41 +419,46 @@ msgstr "Carga de archivos completada"
 msgid "Upgrade to Pro Now"
 msgstr "Actualizar a Pro Now"
 
-#: includes/ee-get-pro.php:25
+#: includes/ee-get-pro.php:28
 msgid "Upgrade to Simple File List Pro"
 msgstr "Actualizar a Simple File List Pro"
 
-#: includes/ee-get-pro.php:29
-msgid ""
-"The Pro version allows folder listing, navigation and management "
-"capabilities among other features not available in the free version."
+#: includes/ee-get-pro.php:30
+msgid "The Pro version adds features not available in the free version."
 msgstr ""
-"La versión Pro permite el listado de carpetas, la navegación y las "
-"capacidades de gestión entre otras características no disponibles en la "
-"versión gratuita."
+"La versión Pro añade características que no están disponibles en la versión "
+"gratuita."
 
-#: includes/ee-get-pro.php:29
+#: includes/ee-get-pro.php:30
 msgid ""
-"The Pro version is also extendable, with extensions for search and "
-"pagination and file access management."
+"The Pro version is also extendable, allowing you to add more specific "
+"functionality as needed."
 msgstr ""
-"La versión Pro también es extensible, con extensiones para la búsqueda y la "
-"paginación y la gestión de acceso a los archivos."
+"La versión Pro también se puede ampliar, lo que permite añadir más funciones "
+"específicas según sea necesario."
 
 #: includes/ee-get-pro.php:32
+msgid "Create Unlimited Folders"
+msgstr "Crear carpetas ilimitadas"
+
+#: includes/ee-get-pro.php:35
 msgid "Create folders and unlimited levels of sub-folders."
 msgstr "Crea carpetas y niveles ilimitados de subcarpetas."
 
-#: includes/ee-get-pro.php:33
+#: includes/ee-get-pro.php:36
 msgid "Use this shortcode attribute to display specific folders: "
 msgstr ""
 "Utilice este atributo de código abreviado para mostrar carpetas específicas "
 
-#: includes/ee-get-pro.php:34
+#: includes/ee-get-pro.php:39
 msgid "Display different folders in different places on your site."
 msgstr "Mostrar diferentes carpetas en diferentes lugares de su sitio."
 
-#: includes/ee-get-pro.php:36
+#: includes/ee-get-pro.php:40
+msgid "Breadcrumb navigation indicates where you are."
+msgstr "La navegación de breadcrumb indica dónde se encuentran."
+
+#: includes/ee-get-pro.php:41
 msgid ""
 "You can even show several different folders on the same page and within "
 "widgets."
@@ -461,66 +466,79 @@ msgstr ""
 "Incluso puede mostrar varias carpetas diferentes en la misma página y dentro "
 "de los widgets."
 
-#: includes/ee-get-pro.php:37
+#: includes/ee-get-pro.php:42
 msgid "Front-side users cannot navigate above the folder you specify."
 msgstr ""
 "Los usuarios del lado frontal no pueden desplazarse por encima de la carpeta "
 "que especifique."
 
-#: includes/ee-get-pro.php:40
-msgid "Breadcrumb navigation indicates where you are."
-msgstr "La navegación de breadcrumb indica dónde se encuentran."
+#: includes/ee-get-pro.php:43
+msgid "Choose to sort folders first or sort along with the files."
+msgstr "Elija ordenar las carpetas primero u ordenar junto con los archivos."
 
-#: includes/ee-get-pro.php:41
-msgid "Move, rename and delete entire folders."
-msgstr "Mover, renombrar y borrar carpetas enteras."
+#: includes/ee-get-pro.php:44
+msgid "Choose to display folder sizes or the count of items within."
+msgstr ""
+"Elija mostrar los tamaños de las carpetas o el recuento de los elementos que "
+"contiene."
 
-#: includes/ee-get-pro.php:42
+#: includes/ee-get-pro.php:51
+msgid "More Pro Features"
+msgstr "Más características profesionales"
+
+#: includes/ee-get-pro.php:55
+msgid ""
+"Bulk file editing allows you to download, move, delete or add descriptions "
+"to many files or folders at once."
+msgstr ""
+"La edición masiva de archivos permite descargar, mover, eliminar o añadir "
+"descripciones a muchos archivos o carpetas a la vez."
+
+#: includes/ee-get-pro.php:56
+msgid "Download multiple files or folders at once as a zip file."
+msgstr "Descargue varios archivos o carpetas a la vez como un archivo zip."
+
+#: includes/ee-get-pro.php:57
 msgid "Share files by sending emails containing file links to others."
 msgstr ""
 "Compartir archivos enviando correos electrónicos con enlaces de archivos a "
 "otros."
 
-#: includes/ee-get-pro.php:43
-msgid "Easily delete any folder, along with all contents."
-msgstr "Elimine fácilmente cualquier carpeta, junto con todos los contenidos."
-
-#: includes/ee-get-pro.php:44
-msgid "Choose to sort folders first or sort along with the files."
-msgstr "Elija ordenar las carpetas primero u ordenar junto con los archivos."
-
-#: includes/ee-get-pro.php:45
-msgid "Optionally display folder sizes."
-msgstr "Opcionalmente Mostrar tamaños de carpeta."
-
-#: includes/ee-get-pro.php:46
+#: includes/ee-get-pro.php:58
 msgid "Optionally define a custom directory for your file list."
 msgstr ""
 "Opcionalmente, defina un directorio personalizado para su lista de archivos."
 
-#: includes/ee-get-pro.php:47
-msgid "Optionally add extensions to add further features:"
-msgstr "Opcionalmente, añadir extensiones para añadir más características:"
+#: includes/ee-get-pro.php:59
+msgid ""
+"The Tools Tab allows you to reset settings, the file list array and more."
+msgstr ""
+"La pestaña de herramientas le permite restablecer la configuración, la "
+"matriz de la lista de archivos y más."
 
-#: includes/ee-get-pro.php:49
+#: includes/ee-get-pro.php:63
+msgid "Pro is Extendable"
+msgstr "Pro es extensible"
+
+#: includes/ee-get-pro.php:67
+msgid "Optionally add extensions to add further functionality."
+msgstr "Opcionalmente, añadir extensiones para añadir más funcionalidad."
+
+#: includes/ee-get-pro.php:69
 msgid "File Access Manager"
 msgstr "Administrador de acceso a archivos"
 
-#: includes/ee-get-pro.php:50
+#: includes/ee-get-pro.php:70
 msgid "Search and Pagination"
 msgstr "Búsqueda y paginación"
 
-#: includes/ee-get-pro.php:52
+#: includes/ee-get-pro.php:72
 msgid "Updating to newer versions is just like the free plugin."
 msgstr "La actualización a versiones más nuevas es como el plugin gratuito."
 
-#: includes/ee-get-pro.php:53
-msgid "How to Organize Your Files into Folders"
-msgstr "Cómo organizar sus archivos en carpetas"
-
-#: includes/ee-get-pro.php:54
-msgid "See the Demo"
-msgstr "Ver la demostración"
+#: includes/ee-get-pro.php:73
+msgid "Try the Demo"
+msgstr "Pruebe la demostración"
 
 #: includes/ee-list-settings.php:94
 msgid "List Settings"
@@ -1091,6 +1109,19 @@ msgstr "Un administrador básico de listas de archivos con cargador de archivos"
 msgid "Mitchell Bennis"
 msgstr "Mitchell Bennis"
 
+#~ msgid "Move, rename and delete entire folders."
+#~ msgstr "Mover, renombrar y borrar carpetas enteras."
+
+#~ msgid "Easily delete any folder, along with all contents."
+#~ msgstr ""
+#~ "Elimine fácilmente cualquier carpeta, junto con todos los contenidos."
+
+#~ msgid "Optionally display folder sizes."
+#~ msgstr "Opcionalmente Mostrar tamaños de carpeta."
+
+#~ msgid "How to Organize Your Files into Folders"
+#~ msgstr "Cómo organizar sus archivos en carpetas"
+
 #~ msgid "Display Settings"
 #~ msgstr "Ajustes de visualización"
 
@@ -1246,9 +1277,6 @@ msgstr "Mitchell Bennis"
 #~ "Un administrador básico de listas de archivos | <a href=\"https://"
 #~ "simplefilelist.com/donations/simple-file-list-project/\">Donaciones</a> | "
 #~ "<a href=\"admin.php?page=ee-simple-file-list&tab=pro\">Get Pro</a>"
-
-#~ msgid "Add Features"
-#~ msgstr "Agregar características"
 
 #~ msgid "List Access Settings"
 #~ msgstr "Ajustes de acceso a listas"

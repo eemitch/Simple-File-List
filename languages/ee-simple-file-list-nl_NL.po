@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2020-12-04 14:06-0600\n"
-"PO-Revision-Date: 2020-12-04 14:19-0600\n"
+"POT-Creation-Date: 2020-12-05 14:13-0600\n"
+"PO-Revision-Date: 2020-12-05 14:21-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -37,7 +37,7 @@ msgstr "Auteur"
 msgid "Get Help"
 msgstr "Hulp vragen"
 
-#: ee-admin-page.php:58 ee-simple-file-list.php:716
+#: ee-admin-page.php:58 ee-simple-file-list.php:731
 msgid "Settings"
 msgstr "Instellingen"
 
@@ -211,11 +211,11 @@ msgstr "Toon"
 msgid "Hide"
 msgstr "Verberg"
 
-#: ee-simple-file-list.php:671
+#: ee-simple-file-list.php:686
 msgid "File Delete Failed"
 msgstr "Bestand verwijderen mislukt"
 
-#: ee-simple-file-list.php:715
+#: ee-simple-file-list.php:730
 msgid "Admin List"
 msgstr "Beheerderslijst"
 
@@ -417,104 +417,121 @@ msgstr "Bestand uploaden voltooid"
 msgid "Upgrade to Pro Now"
 msgstr "Upgrade naar Pro Now"
 
-#: includes/ee-get-pro.php:25
+#: includes/ee-get-pro.php:28
 msgid "Upgrade to Simple File List Pro"
 msgstr "Upgrade naar Simple File List Pro"
 
-#: includes/ee-get-pro.php:29
-msgid ""
-"The Pro version allows folder listing, navigation and management "
-"capabilities among other features not available in the free version."
+#: includes/ee-get-pro.php:30
+msgid "The Pro version adds features not available in the free version."
 msgstr ""
-"De Pro-versie maakt het mogelijk om mappen te vermelden, te navigeren en te "
-"beheren, naast andere functies die niet beschikbaar zijn in de gratis versie."
+"De Pro-versie voegt functies toe die niet beschikbaar zijn in de gratis "
+"versie."
 
-#: includes/ee-get-pro.php:29
+#: includes/ee-get-pro.php:30
 msgid ""
-"The Pro version is also extendable, with extensions for search and "
-"pagination and file access management."
+"The Pro version is also extendable, allowing you to add more specific "
+"functionality as needed."
 msgstr ""
-"De Pro-versie is ook uitbreidbaar, met extensies voor het zoeken en "
-"pagineren en het beheer van de bestandstoegang."
+"De Pro-versie is ook uitbreidbaar, zodat u meer specifieke functionaliteit "
+"kunt toevoegen als dat nodig is."
 
 #: includes/ee-get-pro.php:32
+msgid "Create Unlimited Folders"
+msgstr "Onbeperkte mappen aanmaken"
+
+#: includes/ee-get-pro.php:35
 msgid "Create folders and unlimited levels of sub-folders."
 msgstr "Maak mappen en onbeperkte niveaus van sub-mappen."
 
-#: includes/ee-get-pro.php:33
+#: includes/ee-get-pro.php:36
 msgid "Use this shortcode attribute to display specific folders: "
 msgstr "Gebruik dit shortcode-attribuut om specifieke mappen weer te geven "
 
-#: includes/ee-get-pro.php:34
+#: includes/ee-get-pro.php:39
 msgid "Display different folders in different places on your site."
 msgstr "Geef verschillende mappen op verschillende plaatsen weer op uw site."
-
-#: includes/ee-get-pro.php:36
-msgid ""
-"You can even show several different folders on the same page and within "
-"widgets."
-msgstr ""
-"U kunt zelfs verschillende mappen op dezelfde pagina en in widgets weergeven."
-
-#: includes/ee-get-pro.php:37
-msgid "Front-side users cannot navigate above the folder you specify."
-msgstr ""
-"Front-side gebruikers kunnen niet navigeren boven de map die u opgeeft."
 
 #: includes/ee-get-pro.php:40
 msgid "Breadcrumb navigation indicates where you are."
 msgstr "Kruimelpad navigatie geeft aan waar je bent."
 
 #: includes/ee-get-pro.php:41
-msgid "Move, rename and delete entire folders."
-msgstr "Verplaats, hernoem en verwijder hele mappen."
+msgid ""
+"You can even show several different folders on the same page and within "
+"widgets."
+msgstr ""
+"U kunt zelfs verschillende mappen op dezelfde pagina en in widgets weergeven."
 
 #: includes/ee-get-pro.php:42
-msgid "Share files by sending emails containing file links to others."
-msgstr "Deel bestanden door e-mails met bestandslinks naar anderen te sturen."
+msgid "Front-side users cannot navigate above the folder you specify."
+msgstr ""
+"Front-side gebruikers kunnen niet navigeren boven de map die u opgeeft."
 
 #: includes/ee-get-pro.php:43
-msgid "Easily delete any folder, along with all contents."
-msgstr "Verwijder willekeurig welke map, samen met alle inhoud."
-
-#: includes/ee-get-pro.php:44
 msgid "Choose to sort folders first or sort along with the files."
 msgstr ""
 "Kies om eerst mappen te sorteren of samen met de bestanden te sorteren."
 
-#: includes/ee-get-pro.php:45
-msgid "Optionally display folder sizes."
-msgstr "Toon optioneel map-groottes."
+#: includes/ee-get-pro.php:44
+msgid "Choose to display folder sizes or the count of items within."
+msgstr "Kies om de mappen of het aantal items in de map weer te geven."
 
-#: includes/ee-get-pro.php:46
+#: includes/ee-get-pro.php:51
+msgid "More Pro Features"
+msgstr "Meer Pro-functies"
+
+#: includes/ee-get-pro.php:55
+msgid ""
+"Bulk file editing allows you to download, move, delete or add descriptions "
+"to many files or folders at once."
+msgstr ""
+"Met het bewerken van bulkbestanden kunt u veel bestanden of mappen tegelijk "
+"downloaden, verplaatsen, verwijderen of beschrijvingen toevoegen."
+
+#: includes/ee-get-pro.php:56
+msgid "Download multiple files or folders at once as a zip file."
+msgstr "Download meerdere bestanden of mappen tegelijk als zip-bestand."
+
+#: includes/ee-get-pro.php:57
+msgid "Share files by sending emails containing file links to others."
+msgstr "Deel bestanden door e-mails met bestandslinks naar anderen te sturen."
+
+#: includes/ee-get-pro.php:58
 msgid "Optionally define a custom directory for your file list."
 msgstr "Optioneel kunt u een aangepaste map voor uw bestandslijst definiëren."
 
-#: includes/ee-get-pro.php:47
-msgid "Optionally add extensions to add further features:"
+#: includes/ee-get-pro.php:59
+msgid ""
+"The Tools Tab allows you to reset settings, the file list array and more."
 msgstr ""
-"Optioneel kunnen er uitbreidingen worden toegevoegd om verdere functies toe "
-"te voegen:"
+"Met het tabblad Gereedschap kunt u de instellingen, de bestandslijst-array "
+"en meer resetten."
 
-#: includes/ee-get-pro.php:49
+#: includes/ee-get-pro.php:63
+msgid "Pro is Extendable"
+msgstr "Pro is verlengbaar"
+
+#: includes/ee-get-pro.php:67
+msgid "Optionally add extensions to add further functionality."
+msgstr ""
+"Optioneel kunt u uitbreidingen toevoegen om verdere functionaliteit toe te "
+"voegen."
+
+#: includes/ee-get-pro.php:69
 msgid "File Access Manager"
 msgstr "Bestandstoegangsbeheer"
 
-#: includes/ee-get-pro.php:50
+#: includes/ee-get-pro.php:70
 msgid "Search and Pagination"
 msgstr "Zoeken en pagineren"
 
-#: includes/ee-get-pro.php:52
+#: includes/ee-get-pro.php:72
 msgid "Updating to newer versions is just like the free plugin."
 msgstr "Het updaten naar nieuwere versies is net als de gratis plugin."
 
-#: includes/ee-get-pro.php:53
-msgid "How to Organize Your Files into Folders"
-msgstr "Uw bestanden indelen in mappen"
-
-#: includes/ee-get-pro.php:54
-msgid "See the Demo"
-msgstr "Bekijk de demo"
+#: includes/ee-get-pro.php:73
+msgid "Try the Demo"
+msgstr "Probeer de demo"
 
 #: includes/ee-list-settings.php:94
 msgid "List Settings"
@@ -1085,6 +1102,18 @@ msgstr "Een Basic File List Manager met File Uploader"
 msgid "Mitchell Bennis"
 msgstr "Mitchell Bennis"
 
+#~ msgid "Move, rename and delete entire folders."
+#~ msgstr "Verplaats, hernoem en verwijder hele mappen."
+
+#~ msgid "Easily delete any folder, along with all contents."
+#~ msgstr "Verwijder willekeurig welke map, samen met alle inhoud."
+
+#~ msgid "Optionally display folder sizes."
+#~ msgstr "Toon optioneel map-groottes."
+
+#~ msgid "How to Organize Your Files into Folders"
+#~ msgstr "Uw bestanden indelen in mappen"
+
 #~ msgid "Display Settings"
 #~ msgstr "Weergave instellingen"
 
@@ -1239,9 +1268,6 @@ msgstr "Mitchell Bennis"
 #~ "Een Basic File List Manager | <a href=\"https://simplefilelist.com/"
 #~ "donations/simple-file-list-project/\">Donate</a> | <a href=\"admin.php?"
 #~ "page=ee-simple-file-list&tab=pro\">Get Pro</a>"
-
-#~ msgid "Add Features"
-#~ msgstr "Kenmerken Toevoegen"
 
 #~ msgid "List Access Settings"
 #~ msgstr "Instellingen voor lijsttoegang"

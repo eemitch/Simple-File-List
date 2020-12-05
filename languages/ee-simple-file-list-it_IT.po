@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2020-12-04 14:06-0600\n"
-"PO-Revision-Date: 2020-12-04 14:14-0600\n"
+"POT-Creation-Date: 2020-12-05 14:13-0600\n"
+"PO-Revision-Date: 2020-12-05 14:20-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: it_IT\n"
@@ -37,7 +37,7 @@ msgstr "Autore"
 msgid "Get Help"
 msgstr "Chiedi Supporto"
 
-#: ee-admin-page.php:58 ee-simple-file-list.php:716
+#: ee-admin-page.php:58 ee-simple-file-list.php:731
 msgid "Settings"
 msgstr "Impostazioni"
 
@@ -212,11 +212,11 @@ msgstr "Mostra"
 msgid "Hide"
 msgstr "Nascondi"
 
-#: ee-simple-file-list.php:671
+#: ee-simple-file-list.php:686
 msgid "File Delete Failed"
 msgstr "Eliminazione file non riuscita"
 
-#: ee-simple-file-list.php:715
+#: ee-simple-file-list.php:730
 msgid "Admin List"
 msgstr "Elenco amministratori"
 
@@ -420,41 +420,46 @@ msgstr "Caricamento file completato"
 msgid "Upgrade to Pro Now"
 msgstr "Aggiornamento a Pro Now"
 
-#: includes/ee-get-pro.php:25
+#: includes/ee-get-pro.php:28
 msgid "Upgrade to Simple File List Pro"
 msgstr "Aggiornamento a Simple File List Pro"
 
-#: includes/ee-get-pro.php:29
-msgid ""
-"The Pro version allows folder listing, navigation and management "
-"capabilities among other features not available in the free version."
+#: includes/ee-get-pro.php:30
+msgid "The Pro version adds features not available in the free version."
 msgstr ""
-"La versione Pro permette l'elencazione delle cartelle, la navigazione e le "
-"capacità di gestione tra le altre caratteristiche non disponibili nella "
-"versione gratuita."
+"La versione Pro aggiunge caratteristiche non disponibili nella versione "
+"gratuita."
 
-#: includes/ee-get-pro.php:29
+#: includes/ee-get-pro.php:30
 msgid ""
-"The Pro version is also extendable, with extensions for search and "
-"pagination and file access management."
+"The Pro version is also extendable, allowing you to add more specific "
+"functionality as needed."
 msgstr ""
-"Anche la versione Pro è estendibile, con estensioni per la ricerca e "
-"l'impaginazione e la gestione degli accessi ai file."
+"Anche la versione Pro è estendibile, consentendo di aggiungere funzionalità "
+"più specifiche a seconda delle necessità."
 
 #: includes/ee-get-pro.php:32
+msgid "Create Unlimited Folders"
+msgstr "Creare cartelle illimitate"
+
+#: includes/ee-get-pro.php:35
 msgid "Create folders and unlimited levels of sub-folders."
 msgstr "Creare cartelle e livelli illimitati di sottocartelle."
 
-#: includes/ee-get-pro.php:33
+#: includes/ee-get-pro.php:36
 msgid "Use this shortcode attribute to display specific folders: "
 msgstr ""
 "Utilizzare questo attributo shortcode per visualizzare cartelle specifiche "
 
-#: includes/ee-get-pro.php:34
+#: includes/ee-get-pro.php:39
 msgid "Display different folders in different places on your site."
 msgstr "Visualizza cartelle diverse in luoghi diversi del tuo sito."
 
-#: includes/ee-get-pro.php:36
+#: includes/ee-get-pro.php:40
+msgid "Breadcrumb navigation indicates where you are."
+msgstr "Navigazione breadcrumb indica dove ti trovi."
+
+#: includes/ee-get-pro.php:41
 msgid ""
 "You can even show several different folders on the same page and within "
 "widgets."
@@ -462,66 +467,79 @@ msgstr ""
 "È anche possibile visualizzare diverse cartelle sulla stessa pagina e "
 "all'interno di widget."
 
-#: includes/ee-get-pro.php:37
+#: includes/ee-get-pro.php:42
 msgid "Front-side users cannot navigate above the folder you specify."
 msgstr ""
 "Gli utenti sul lato anteriore non possono spostarsi sopra la cartella "
 "specificata."
 
-#: includes/ee-get-pro.php:40
-msgid "Breadcrumb navigation indicates where you are."
-msgstr "Navigazione breadcrumb indica dove ti trovi."
-
-#: includes/ee-get-pro.php:41
-msgid "Move, rename and delete entire folders."
-msgstr "Spostare, rinominare e cancellare intere cartelle."
-
-#: includes/ee-get-pro.php:42
-msgid "Share files by sending emails containing file links to others."
-msgstr "Condividere i file inviando e-mail contenenti link di file ad altri."
-
 #: includes/ee-get-pro.php:43
-msgid "Easily delete any folder, along with all contents."
-msgstr "Elimina facilmente qualsiasi cartella, insieme a tutti i contenuti."
-
-#: includes/ee-get-pro.php:44
 msgid "Choose to sort folders first or sort along with the files."
 msgstr "Scegliere se ordinare prima le cartelle o contemporaneamente ai file."
 
-#: includes/ee-get-pro.php:45
-msgid "Optionally display folder sizes."
-msgstr "Facoltativamente, visualizzare le dimensioni delle cartelle."
+#: includes/ee-get-pro.php:44
+msgid "Choose to display folder sizes or the count of items within."
+msgstr ""
+"Scegliere di visualizzare le dimensioni delle cartelle o il conteggio degli "
+"articoli all'interno."
 
-#: includes/ee-get-pro.php:46
+#: includes/ee-get-pro.php:51
+msgid "More Pro Features"
+msgstr "Altre caratteristiche Pro"
+
+#: includes/ee-get-pro.php:55
+msgid ""
+"Bulk file editing allows you to download, move, delete or add descriptions "
+"to many files or folders at once."
+msgstr ""
+"La modifica di file in blocco consente di scaricare, spostare, cancellare o "
+"aggiungere descrizioni a molti file o cartelle contemporaneamente."
+
+#: includes/ee-get-pro.php:56
+msgid "Download multiple files or folders at once as a zip file."
+msgstr "Scaricare più file o cartelle contemporaneamente come file zip."
+
+#: includes/ee-get-pro.php:57
+msgid "Share files by sending emails containing file links to others."
+msgstr "Condividere i file inviando e-mail contenenti link di file ad altri."
+
+#: includes/ee-get-pro.php:58
 msgid "Optionally define a custom directory for your file list."
 msgstr ""
 "Definire opzionalmente una directory personalizzata per l'elenco dei file."
 
-#: includes/ee-get-pro.php:47
-msgid "Optionally add extensions to add further features:"
+#: includes/ee-get-pro.php:59
+msgid ""
+"The Tools Tab allows you to reset settings, the file list array and more."
 msgstr ""
-"Opzionalmente aggiungere estensioni per aggiungere ulteriori funzionalità:"
+"La scheda Tools consente di ripristinare le impostazioni, l'array di liste "
+"di file e altro ancora."
 
-#: includes/ee-get-pro.php:49
+#: includes/ee-get-pro.php:63
+msgid "Pro is Extendable"
+msgstr "Pro è estendibile"
+
+#: includes/ee-get-pro.php:67
+msgid "Optionally add extensions to add further functionality."
+msgstr ""
+"Opzionalmente aggiungere estensioni per aggiungere ulteriori funzionalità."
+
+#: includes/ee-get-pro.php:69
 msgid "File Access Manager"
 msgstr "Gestione accesso ai file"
 
-#: includes/ee-get-pro.php:50
+#: includes/ee-get-pro.php:70
 msgid "Search and Pagination"
 msgstr "Ricerca e impaginazione"
 
-#: includes/ee-get-pro.php:52
+#: includes/ee-get-pro.php:72
 msgid "Updating to newer versions is just like the free plugin."
 msgstr ""
 "L'aggiornamento alle versioni più recenti è proprio come il plugin gratuito."
 
-#: includes/ee-get-pro.php:53
-msgid "How to Organize Your Files into Folders"
-msgstr "Come organizzare i file in cartelle"
-
-#: includes/ee-get-pro.php:54
-msgid "See the Demo"
-msgstr "Guarda la Demo"
+#: includes/ee-get-pro.php:73
+msgid "Try the Demo"
+msgstr "Prova la demo"
 
 #: includes/ee-list-settings.php:94
 msgid "List Settings"
@@ -1094,6 +1112,18 @@ msgstr "Un File List Manager di base con File Uploader"
 msgid "Mitchell Bennis"
 msgstr "Mitchell Bennis"
 
+#~ msgid "Move, rename and delete entire folders."
+#~ msgstr "Spostare, rinominare e cancellare intere cartelle."
+
+#~ msgid "Easily delete any folder, along with all contents."
+#~ msgstr "Elimina facilmente qualsiasi cartella, insieme a tutti i contenuti."
+
+#~ msgid "Optionally display folder sizes."
+#~ msgstr "Facoltativamente, visualizzare le dimensioni delle cartelle."
+
+#~ msgid "How to Organize Your Files into Folders"
+#~ msgstr "Come organizzare i file in cartelle"
+
 #~ msgid "Display Settings"
 #~ msgstr "Visuale"
 
@@ -1250,9 +1280,6 @@ msgstr "Mitchell Bennis"
 #~ "A Basic File List Manager | <a href=\"https://simplefilelist.com/"
 #~ "donations/simple-file-list-project/\">Donare</a> | <a href=\"admin.php?"
 #~ "page=ee-simple-file-list&tab=pro\">Ottenere Pro</a>"
-
-#~ msgid "Add Features"
-#~ msgstr "Aggiungi Servizi"
 
 #~ msgid "List Access Settings"
 #~ msgstr "Impostazioni di accesso all'elenco"

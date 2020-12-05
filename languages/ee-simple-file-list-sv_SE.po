@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2020-12-04 14:06-0600\n"
-"PO-Revision-Date: 2020-12-04 14:15-0600\n"
+"POT-Creation-Date: 2020-12-05 14:13-0600\n"
+"PO-Revision-Date: 2020-12-05 14:23-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -37,7 +37,7 @@ msgstr "Författare"
 msgid "Get Help"
 msgstr "Skaffa hjälp"
 
-#: ee-admin-page.php:58 ee-simple-file-list.php:716
+#: ee-admin-page.php:58 ee-simple-file-list.php:731
 msgid "Settings"
 msgstr "Inställningar"
 
@@ -210,11 +210,11 @@ msgstr "Visa"
 msgid "Hide"
 msgstr "Dölj"
 
-#: ee-simple-file-list.php:671
+#: ee-simple-file-list.php:686
 msgid "File Delete Failed"
 msgstr "Det gick inte att ta bort filen"
 
-#: ee-simple-file-list.php:715
+#: ee-simple-file-list.php:730
 msgid "Admin List"
 msgstr "Administratörslista"
 
@@ -415,103 +415,119 @@ msgstr "Fil överföring slutförd"
 msgid "Upgrade to Pro Now"
 msgstr "Uppgradera till Pro nu"
 
-#: includes/ee-get-pro.php:25
+#: includes/ee-get-pro.php:28
 msgid "Upgrade to Simple File List Pro"
 msgstr "Uppgradera till Simple File List Pro"
 
-#: includes/ee-get-pro.php:29
-msgid ""
-"The Pro version allows folder listing, navigation and management "
-"capabilities among other features not available in the free version."
+#: includes/ee-get-pro.php:30
+msgid "The Pro version adds features not available in the free version."
 msgstr ""
-"Pro-versionen tillåter mapplista, navigering och hanteringsfunktioner bland "
-"andra funktioner som inte är tillgängliga i gratisversionen."
+"Pro-versionen lägger till funktioner som inte är tillgängliga i "
+"gratisversionen."
 
-#: includes/ee-get-pro.php:29
+#: includes/ee-get-pro.php:30
 msgid ""
-"The Pro version is also extendable, with extensions for search and "
-"pagination and file access management."
+"The Pro version is also extendable, allowing you to add more specific "
+"functionality as needed."
 msgstr ""
-"Pro-versionen är också utbyggbar, med tillägg för sökning och pagination och "
-"hantering av filåtkomst."
+"Pro-versionen kan också utökas, så att du kan lägga till mer specifik "
+"funktionalitet efter behov."
 
 #: includes/ee-get-pro.php:32
+msgid "Create Unlimited Folders"
+msgstr "Skapa obegränsade mappar"
+
+#: includes/ee-get-pro.php:35
 msgid "Create folders and unlimited levels of sub-folders."
 msgstr "Skapa mappar och obegränsade nivåer av undermappar."
 
-#: includes/ee-get-pro.php:33
+#: includes/ee-get-pro.php:36
 msgid "Use this shortcode attribute to display specific folders: "
 msgstr "Använd detta kortkodsattribut för att visa specifika mappar: "
 
-#: includes/ee-get-pro.php:34
+#: includes/ee-get-pro.php:39
 msgid "Display different folders in different places on your site."
 msgstr "Visa olika mappar på olika platser på webbplatsen."
-
-#: includes/ee-get-pro.php:36
-msgid ""
-"You can even show several different folders on the same page and within "
-"widgets."
-msgstr "Du kan även Visa flera olika mappar på samma sida och inom widgets."
-
-#: includes/ee-get-pro.php:37
-msgid "Front-side users cannot navigate above the folder you specify."
-msgstr "Användare på fram sidan kan inte navigera ovanför den mapp du anger."
 
 #: includes/ee-get-pro.php:40
 msgid "Breadcrumb navigation indicates where you are."
 msgstr "Navigerings Sök väg anger var du befinner dig."
 
 #: includes/ee-get-pro.php:41
-msgid "Move, rename and delete entire folders."
-msgstr "Flytta, byta namn på och ta bort hela mappar."
+msgid ""
+"You can even show several different folders on the same page and within "
+"widgets."
+msgstr "Du kan även Visa flera olika mappar på samma sida och inom widgets."
 
 #: includes/ee-get-pro.php:42
+msgid "Front-side users cannot navigate above the folder you specify."
+msgstr "Användare på fram sidan kan inte navigera ovanför den mapp du anger."
+
+#: includes/ee-get-pro.php:43
+msgid "Choose to sort folders first or sort along with the files."
+msgstr "Välj att sortera mapparna först eller sortera tillsammans med filerna."
+
+#: includes/ee-get-pro.php:44
+msgid "Choose to display folder sizes or the count of items within."
+msgstr "Välj att visa mappstorlekar eller antalet objekt i."
+
+#: includes/ee-get-pro.php:51
+msgid "More Pro Features"
+msgstr "Fler pro-funktioner"
+
+#: includes/ee-get-pro.php:55
+msgid ""
+"Bulk file editing allows you to download, move, delete or add descriptions "
+"to many files or folders at once."
+msgstr ""
+"Massfilredigering låter dig ladda ner, flytta, ta bort eller lägga till "
+"beskrivningar i många filer eller mappar samtidigt."
+
+#: includes/ee-get-pro.php:56
+msgid "Download multiple files or folders at once as a zip file."
+msgstr "Ladda ner flera filer eller mappar samtidigt som en zip-fil."
+
+#: includes/ee-get-pro.php:57
 msgid "Share files by sending emails containing file links to others."
 msgstr ""
 "Dela filer genom att skicka e-postmeddelanden som innehåller fillänkar till "
 "andra."
 
-#: includes/ee-get-pro.php:43
-msgid "Easily delete any folder, along with all contents."
-msgstr "Ta enkelt bort alla mappar, tillsammans med allt innehåll."
-
-#: includes/ee-get-pro.php:44
-msgid "Choose to sort folders first or sort along with the files."
-msgstr "Välj att sortera mapparna först eller sortera tillsammans med filerna."
-
-#: includes/ee-get-pro.php:45
-msgid "Optionally display folder sizes."
-msgstr "Du kan också Visa Mappstorlekar."
-
-#: includes/ee-get-pro.php:46
+#: includes/ee-get-pro.php:58
 msgid "Optionally define a custom directory for your file list."
 msgstr "Definiera eventuellt en anpassad katalog för din fillista."
 
-#: includes/ee-get-pro.php:47
-msgid "Optionally add extensions to add further features:"
+#: includes/ee-get-pro.php:59
+msgid ""
+"The Tools Tab allows you to reset settings, the file list array and more."
+msgstr ""
+"På fliken Verktyg kan du återställa inställningar, fillistmatrisen och mer."
+
+#: includes/ee-get-pro.php:63
+msgid "Pro is Extendable"
+msgstr "Pro kan utökas"
+
+#: includes/ee-get-pro.php:67
+msgid "Optionally add extensions to add further functionality."
 msgstr ""
 "Alternativt kan du lägga till tillägg för att lägga till ytterligare "
-"funktioner:"
+"funktionalitet."
 
-#: includes/ee-get-pro.php:49
+#: includes/ee-get-pro.php:69
 msgid "File Access Manager"
 msgstr "Hanteraren för filåtkomst"
 
-#: includes/ee-get-pro.php:50
+#: includes/ee-get-pro.php:70
 msgid "Search and Pagination"
 msgstr "Sökning och paginering"
 
-#: includes/ee-get-pro.php:52
+#: includes/ee-get-pro.php:72
 msgid "Updating to newer versions is just like the free plugin."
 msgstr "Uppdatering till nyare versioner är precis som gratis plugin."
 
-#: includes/ee-get-pro.php:53
-msgid "How to Organize Your Files into Folders"
-msgstr "Hur du organiserar dina filer i mappar"
-
-#: includes/ee-get-pro.php:54
-msgid "See the Demo"
-msgstr "Se demon"
+#: includes/ee-get-pro.php:73
+msgid "Try the Demo"
+msgstr "Prova demo"
 
 #: includes/ee-list-settings.php:94
 msgid "List Settings"
@@ -1072,6 +1088,18 @@ msgstr "En grundläggande filhanterare med filöverförare"
 msgid "Mitchell Bennis"
 msgstr "Mitchell Bennis"
 
+#~ msgid "Move, rename and delete entire folders."
+#~ msgstr "Flytta, byta namn på och ta bort hela mappar."
+
+#~ msgid "Easily delete any folder, along with all contents."
+#~ msgstr "Ta enkelt bort alla mappar, tillsammans med allt innehåll."
+
+#~ msgid "Optionally display folder sizes."
+#~ msgstr "Du kan också Visa Mappstorlekar."
+
+#~ msgid "How to Organize Your Files into Folders"
+#~ msgstr "Hur du organiserar dina filer i mappar"
+
 #~ msgid "Display Settings"
 #~ msgstr "Visningsinställningar"
 
@@ -1220,9 +1248,6 @@ msgstr "Mitchell Bennis"
 #~ "En grundläggande filhanterare | <a href=\"https://simplefilelist.com/"
 #~ "donations/simple-file-list-project/\">Donera</a> | <a href=\"admin.php?"
 #~ "page=ee-simple-file-list&tab=pro\">Bli proffs</a>"
-
-#~ msgid "Add Features"
-#~ msgstr "Lägg till funktioner"
 
 #~ msgid "List Access Settings"
 #~ msgstr "Inställningar för lista åtkomst"
