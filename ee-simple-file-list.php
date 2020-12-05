@@ -559,7 +559,22 @@ function eeSFL_FREE_FileUploader() {
 				
 				if(!is_file($eeTarget)) {
 					return 'Error - File System Error.'; // No good.
+				
 				} else {
+					
+					// Check for currupt images
+					if( in_array($eeSFL_Extension, $eeSFL_FREE->eeDynamicImageThumbFormats) ) {
+						
+						$eeString = implode('...', getimagesize($eeTarget) );
+						
+						if(!strpos($eeString, 'width=') OR !strpos($eeString, 'height=')) { // Make sure it's really an image
+							
+							unlink($eeTarget);
+							
+							return 'ERROR 99';
+						}
+					}
+					
 					return 'SUCCESS';
 				}
 				 
