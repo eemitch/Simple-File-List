@@ -45,7 +45,7 @@ if(@$eeSFL_Settings['FileListDir']) {
 		
 		<h2 class="eeSFL_UploadFilesTitle">' . __('Upload Files', 'ee-simple-file-list') . '</h2>
 		
-		<div id="eeSFL_FileDropZone" ondrop="eeSFL_DropHandler(event);" ondragover="eeSFL_DragOverHandler(event);">';
+		<div id="eeSFL_FileDropZone" ondrop="eeSFL_FREE_DropHandler(event);" ondragover="eeSFL_FREE_DragOverHandler(event);">';
 		
 		if($eeSFL_Settings['GetUploaderInfo'] == 'YES' OR $eeAdmin) { $eeOutput .= $eeSFL_FREE->eeSFL_UploadInfoForm(); }
 		

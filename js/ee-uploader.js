@@ -37,7 +37,7 @@ function eeSFL_FREE_DropHandler(eeEvent) {
 }
 
 // Prevent file from being opened in the browser window
-function eeSFL_DragOverHandler(eeEvent) {
+function eeSFL_FREE_DragOverHandler(eeEvent) {
 	eeEvent.preventDefault();
 }
 
