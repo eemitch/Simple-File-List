@@ -243,7 +243,8 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 = 4.3.3 =
 * Redesigned the Edit Details dialog.
 * Reorganized the List Settings tabs.
-* Many under-the-hood efficiency and security improvements.
+* Original file modification date is now preserved for file uploads.
+* Many many under-the-hood efficiency and security improvements.
 * Improved translations and accounted for missing translations within javascript.
 
 = 4.2.13 =

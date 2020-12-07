@@ -367,11 +367,11 @@ class eeSFL_FREE_MainClass {
 			}
 		    
 		    // Set the transient
-		    if(@$eeSFL_Settings['ExpireTime'] != 'NO') {
+		    if(@$eeSFL_Settings['ExpireTime'] == 'YES' OR $eeSFL_Settings['ExpireTime'] >= 1) {
 			
 				$eeExpiresIn = $this->eeExpireTime * HOUR_IN_SECONDS;
 				
-				$eeSFL_FREE_Log['SFL'][] = 'Setting transient to expire in ' . $eeSFL_Settings['ExpireTime'] . ' hours.';
+				$eeSFL_FREE_Log['SFL'][] = 'Setting file list cache transient to expire in ' . $this->eeExpireTime . ' hours.';
 				
 				set_transient('eeSFL_FileList_1', 'Good', $eeExpiresIn);
 			}

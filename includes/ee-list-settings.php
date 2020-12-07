@@ -71,6 +71,8 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	} else {
 		$eeSFL_FREE_Log['SFL'][] = '!!! The database was not updated.';
 	}
+	
+	delete_transient('eeSFL_FileList_1');
 }
 
 // Settings Display =========================================

@@ -575,6 +575,16 @@ function eeSFL_FREE_FileUploader() {
 						}
 					}
 					
+					// Update the File Date
+					$eeDate = sanitize_text_field($_POST['eeSFL_FileDate']);
+					$eeDate = strtotime($eeDate);
+					if($eeDate) {
+						touch($eeTarget, $eeDate);  // Do nothing if bad date
+					}
+					
+					// Update the File Size
+					$eeSFL_FREE->eeSFL_UpdateFileDetail($eeFileName, 'FileSize', $eeSFL_FileSize);
+					
 					return 'SUCCESS';
 				}
 				 
