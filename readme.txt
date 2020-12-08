@@ -244,6 +244,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 * Redesigned the Edit Details dialog.
 * Reorganized the List Settings tabs.
 * Original file modification date is now preserved for file uploads.
+* Sorting options now available for Date Added and Date Changed.
 * Many many under-the-hood efficiency and security improvements.
 * Improved translations and accounted for missing translations within javascript.
 

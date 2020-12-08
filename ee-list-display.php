@@ -34,10 +34,11 @@ if( (isset($_GET['eeSFL_Scan']) AND $eeAdmin) OR $eeSFL_Settings['ExpireTime'] =
 	
 	$eeSFL_FREE_Log['SFL'][] = 'Checking List Freshness...';
 	$eeCheckFreshness = get_transient('eeSFL_FileList_1'); // Get the File List Transient
+	$eeSFL_FREE_Log['SFL'][] = $eeCheckFreshness;
 	
 	if($eeCheckFreshness == 'Good') { // Get the list
 		
-		$eeSFL_FREE_Log['SFL'][] = 'Fresh :-)';
+		$eeSFL_FREE_Log['SFL'][] = 'Good n Fresh :-)';
 		
 		$eeSFL_Files = get_option('eeSFL_FileList_1'); // Get the File List
 		
@@ -50,7 +51,7 @@ if( (isset($_GET['eeSFL_Scan']) AND $eeAdmin) OR $eeSFL_Settings['ExpireTime'] =
 	
 	// If not found, rescan
 	if(!$eeSFL_Files AND $eeAdmin) { 
-		$eeSFL_FREE_Log['errors'][] = __('No File List Found. Please Re-Scan', 'ee-simple-file-list');
+		$eeSFL_FREE_Log['errors'][] = __('No File List Found.', 'ee-simple-file-list');
 	}
 }
 
@@ -203,7 +204,7 @@ if($eeAdmin) {
 
 // TABLE HEAD ==================================================================================================
 
-if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
+if( count($eeSFL_Files) ) {
 	
 	// if(!$eeSFL_Files[0]['FilePath']) { return; }
 	
@@ -279,6 +280,7 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 				$eeFileName = basename($eeFilePath); // Just the name
 				$eeFileDate = date_i18n( $eeDateFormat, strtotime( $eeFileArray['FileDateChanged'] ) ); // The mod date, make nice per WP config
 				$eeFileDateAdded = date_i18n( $eeDateFormat, strtotime( $eeFileArray['FileDateAdded'] ) );
+				if($eeSFL_Settings['SortBy'] == 'Date') { $eeFileDate = $eeFileDateAdded; }
 				$eeFileSize = eeSFL_FREE_FormatFileSize($eeFileArray['FileSize']); // The file size made nice too
 				
 				// Extension Check
@@ -520,10 +522,8 @@ if( strlen( @$eeSFL_Files[0]['FilePath'] ) >= 1 ) {
 										<input type="text" class="eeSFL_NewFileDesc" name="eeSFL_FileID_' . $eeFileKey . '" value="' . @$eeFileArray['FileDescription'] . '" size="32" id="eeSFL_FileDesc_' . $eeRowID . '" />
 											<a class="button" href="#" onclick="eeSFL_FREE_EditDesc(' . $eeRowID . ')">' . __('Save', 'ee-simple-file-list') . '</a></p>
 									
-									<p class="eeCenter"><small>' . __('Added', 'ee-simple-file-list') . ': ' . $eeFileDateAdded . ' — ';
-									
-									// Show Mod Date if different
-									if($eeFileArray['FileDateAdded'] != $eeFileArray['FileDateChanged'] ) { $eeFileActions .= __('Modified', 'ee-simple-file-list') . ': ' . $eeFileDate . ' — '; }
+									<p class="eeCenter"><small>' . __('Added', 'ee-simple-file-list') . ': ' . date_i18n( $eeDateFormat, strtotime( $eeFileArray['FileDateAdded'] ) ) . '<br />
+										' . __('Modified', 'ee-simple-file-list') . ': ' . date_i18n( $eeDateFormat, strtotime( $eeFileArray['FileDateChanged'] ) ) . '<br />';
 									
 									$eeFileActions .= __('Size', 'ee-simple-file-list') . ': ' . $eeFileSize . '</small></p>
 										

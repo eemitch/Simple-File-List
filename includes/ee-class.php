@@ -57,7 +57,7 @@ class eeSFL_FREE_MainClass {
 		'LabelName' => 'Name', // Label for the file name column
 		'LabelDate' => 'Date', // Label for the file date column
 		'LabelSize' => 'Size', // Label for the file size column
-		'SortBy' => 'Date', // Sort By (Name, Date, Size, Random)
+		'SortBy' => 'Date', // Sort By (Name, Date, DateMod, Size, Random) -- DateMod added in 4.3
 		'SortOrder' => 'Descending', // Descending or Ascending
 		
 		// Upload Settings
@@ -243,19 +243,19 @@ class eeSFL_FREE_MainClass {
 			
 			$eeSFL_FREE_Log['SFL'][] = 'No List Found! Creating from scratch...';
 			
-			$eeFilesArray = array();
+			$eeFileArrayWorking = array();
 			
 			foreach( $eeFilePathsArray as $eeKey => $eeFile) {
 				
 				// $eeFilesArray[$eeKey]['FileList'] = $eeSFL_ID;
-				$eeFilesArray[$eeKey]['FilePath'] = $eeFile;
+				$eeFileArrayWorking[$eeKey]['FilePath'] = $eeFile;
 				$eePathParts = pathinfo($eeFile);
 				$eeFileNameAlone = $eePathParts['filename'];
 				$eeExtension = strtolower(@$eePathParts['extension']);
-				$eeFilesArray[$eeKey]['FileExt'] = $eeExtension;
-				$eeFilesArray[$eeKey]['FileSize'] = @filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile);
-				$eeFilesArray[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile));
-				$eeFilesArray[$eeKey]['FileDateChanged'] = $eeFilesArray[$eeKey]['FileDateAdded'];
+				$eeFileArrayWorking[$eeKey]['FileExt'] = $eeExtension;
+				$eeFileArrayWorking[$eeKey]['FileSize'] = @filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile);
+				$eeFileArrayWorking[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile));
+				$eeFileArrayWorking[$eeKey]['FileDateChanged'] = $eeFileArrayWorking[$eeKey]['FileDateAdded'];
 				
 			}
 		
@@ -265,10 +265,10 @@ class eeSFL_FREE_MainClass {
 			
 			if(!$eeFilesArray) { return FALSE; } // No files found
 			
-			$eeFileArrayNew = $eeFilesArray;
+			$eeFileArrayWorking = $eeFilesArray; // Create a "WORKING" array
 			
 			// Check to be sure files are there...
-			foreach( $eeFilesArray as $eeKey => $eeFileSet) {
+			foreach( $eeFileArrayWorking as $eeKey => $eeFileSet) {
 				
 				// Check if file is there
 				$eeFile = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFileSet['FilePath'];
@@ -276,21 +276,16 @@ class eeSFL_FREE_MainClass {
 				if( is_file($eeFile) ) { // Update file particulars
 					
 					// Update file size
-					$eeFileArrayNew[$eeKey]['FileSize'] = @filesize($eeFile);
+					$eeFileArrayWorking[$eeKey]['FileSize'] = filesize($eeFile);
 					
 					// Update modification date
-					$eeFileArrayNew[$eeKey]['FileDateChanged'] = date("Y-m-d H:i:s", @filemtime($eeFile));
+					$eeFileArrayWorking[$eeKey]['FileDateChanged'] = date("Y-m-d H:i:s", @filemtime($eeFile));
 					
 				} else { // Get rid of it
 					
 					$eeSFL_FREE_Log['SFL'][] = 'Removing: ' . $eeFile;
 					
-					unset($eeFileArrayNew[$eeKey]);
-				}
-				
-				// If no file path
-				if(strlen($eeFileSet['FilePath']) === 0) {
-					unset($eeFileArrayNew[$eeKey]);
+					unset($eeFileArrayWorking[$eeKey]);
 				}
 			}
 
@@ -298,12 +293,12 @@ class eeSFL_FREE_MainClass {
 			// Check if any new files have been added
 			foreach( $eeFilePathsArray as $eeKey => $eeFile) {
 				
-				$eeSFL_FREE_Log['SFL'][] = 'Checking...';
+				$eeSFL_FREE_Log['SFL'][] = 'Checking: ' . $eeFile;
 				
 				$eeMatch = FALSE;
 				
 				// Look for this file in our array
-				foreach( $eeFilesArray as $eeKey2 => $eeArray ) {
+				foreach( $eeFileArrayWorking as $eeKey2 => $eeArray ) {
 					
 					if($eeFile == $eeArray['FilePath']) {
 						
@@ -323,45 +318,45 @@ class eeSFL_FREE_MainClass {
 					$eeFileNameAlone = $eePathParts['filename'];
 					$eeExtension = strtolower(@$eePathParts['extension']); // Throws a notice on folders
 					$eeKey .= '_new'; // Make sure the key is unique
-					// $eeFileArrayNew[$eeKey]['FileList'] = $eeSFL_ID;
-					$eeFileArrayNew[$eeKey]['FilePath'] = $eeFile;
-					$eeFileArrayNew[$eeKey]['FileExt'] = $eeExtension;
-					$eeFileArrayNew[$eeKey]['FileSize'] = 0;
-					$eeFileArrayNew[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s", @filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile));
-					$eeFileArrayNew[$eeKey]['FileDateChanged'] = $eeFileArrayNew[$eeKey]['FileDateAdded'];
+					$eeFileArrayWorking[$eeKey]['FilePath'] = $eeFile;
+					$eeFileArrayWorking[$eeKey]['FileExt'] = $eeExtension;
+					$eeFileArrayWorking[$eeKey]['FileSize'] = filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile);
+					$eeFileArrayWorking[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s"); // Today
+					$eeFileArrayWorking[$eeKey]['FileDateChanged'] = date("Y-m-d H:i:s", @filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile)); // Read the modification date
 				}
 			}
-			
-			$eeFilesArray = $eeFileArrayNew;
 		}
 		
 		
-		if( count($eeFilesArray) ) {
+		// If more found, re-process the array 
+		if( count($eeFileArrayWorking) > count($eeFilesArray) ) {
 	    
-		    $eeSFL_FREE_Log['SFL'][] = count($eeFilesArray) . ' New Files Found';
+		    $eeSFL_FREE_Log['SFL'][] = 'New Files Found';
 		    
 		    // Reset the Keys
-		    $eeFilesArray = array_values($eeFilesArray); 
+		    $eeFileArrayWorking = array_values($eeFileArrayWorking); 
 		    
 		    // Sort
-		    $eeFilesArray = $this->eeSFL_SortFiles($eeFilesArray, $eeSFL_Settings['SortBy'], $eeSFL_Settings['SortOrder']);
+		    $eeFileArrayWorking = $this->eeSFL_SortFiles($eeFileArrayWorking, $eeSFL_Settings['SortBy'], $eeSFL_Settings['SortOrder']);
 		    
-		    // Update the DB
-		    update_option('eeSFL_FileList_1', $eeFilesArray);
-		    
-		    foreach($eeFilesArray as $eeKey => $eeFile) {
+		    // Check and create thumbnail if needed...
+		    foreach($eeFileArrayWorking as $eeKey => $eeFile) {
 		    	
-		    	// Check and create thumbnail if needed...
-				$eeExt = $eeFile['FileExt'];
+		    	$eeExt = $eeFile['FileExt'];
 				if( in_array($eeExt, $this->eeDynamicImageThumbFormats) OR in_array($eeExt, $this->eeDynamicVideoThumbFormats) ) {
 					
 					$eeSFL_FREE_Log['SFL'][] = 'Checking thumbnail...';
 					
 					$this->eeSFL_CheckThumbnail($eeFile['FilePath']);
 				}
-		    }
-		    
-		    if(is_numeric($eeSFL_Settings['ExpireTime'])) {
+		    } 
+		}
+		
+		
+		// Update Cache time and DB
+		if(count($eeFileArrayWorking)) {
+			
+			if(is_numeric($eeSFL_Settings['ExpireTime'])) {
 				if($eeSFL_Settings['ExpireTime'] >= 1) { $eeSFL_Settings['ExpireTime'] = 'YES'; } 
 					else { $eeSFL_Settings['ExpireTime'] = 'NO'; } // Legacy 12/20 (v4.3)
 			}
@@ -370,13 +365,13 @@ class eeSFL_FREE_MainClass {
 		    if(@$eeSFL_Settings['ExpireTime'] == 'YES' OR $eeSFL_Settings['ExpireTime'] >= 1) {
 			
 				$eeExpiresIn = $this->eeExpireTime * HOUR_IN_SECONDS;
-				
 				$eeSFL_FREE_Log['SFL'][] = 'Setting file list cache transient to expire in ' . $this->eeExpireTime . ' hours.';
-				
 				set_transient('eeSFL_FileList_1', 'Good', $eeExpiresIn);
+			
+			} else {
+				delete_transient('eeSFL_FileList_1');
 			}
 		
-
 		    // Check for FFmpeg here
 			if(trim(@shell_exec('type -P ffmpeg'))) {
 				update_option('eeSFL_Supported', 'ffMpeg');
@@ -384,10 +379,16 @@ class eeSFL_FREE_MainClass {
 				$eeSFL_FREE_Log['SFL'][] = 'FFMPEG is not supported';
 			}
 			
-			return $eeFilesArray;
+			// Update the DB
+		    update_option('eeSFL_FileList_1', $eeFileArrayWorking);
+			
+			return $eeFileArrayWorking; 
+		
+		} else {
+			return FALSE;
 		}
 	    
-	    return FALSE;
+	    
     }
 	
 	
@@ -631,20 +632,20 @@ class eeSFL_FREE_MainClass {
 		
 		$eeFilesSorted = array();
 			
-		if($eeSortBy == 'Date') { // Files by Date
+		if($eeSortBy == 'Date') { // Files by Date Added (the Original)
 			
 			foreach($eeFiles as $eeKey => $eeFileArray) {
 				
-				if(@$eeFileArray['FileDateChanged']) {
+				$eeFilesSorted[ $eeFileArray['FileDateAdded'] . ' ' . $eeKey ] = $eeFileArray;
+				$eeFilesSorted[ $eeFileArray['FileDateAdded'] . ' ' . $eeKey ]['FileID'] = $eeKey;
+			}
+			
+		} elseif($eeSortBy == 'DateMod') { // Files by Date Modified (By Customer Request)
+			
+			foreach($eeFiles as $eeKey => $eeFileArray) {
 					
-					$eeFilesSorted[ $eeFileArray['FileDateChanged'] . ' ' . $eeKey ] = $eeFileArray; // Add the file key to preserve files with same date or size.
-					$eeFilesSorted[ $eeFileArray['FileDateChanged'] . ' ' . $eeKey ]['FileID'] = $eeKey; // Save the ID in new element
-				
-				} elseif($eeFileArray['FileDateAdded']) {
-					
-					$eeFilesSorted[ $eeFileArray['FileDateAdded'] . ' ' . $eeKey ] = $eeFileArray;
-					$eeFilesSorted[ $eeFileArray['FileDateAdded'] . ' ' . $eeKey ]['FileID'] = $eeKey;
-				}
+				$eeFilesSorted[ $eeFileArray['FileDateChanged'] . ' ' . $eeKey ] = $eeFileArray; // Add the file key to preserve files with same date or size.
+				$eeFilesSorted[ $eeFileArray['FileDateChanged'] . ' ' . $eeKey ]['FileID'] = $eeKey; // Save the ID in new element
 			}
 			
 		} elseif($eeSortBy == 'Size') { // Files by Size

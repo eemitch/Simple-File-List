@@ -287,16 +287,29 @@ $eeOutput .= '
 				if($eeSFL_Settings['SortBy'] == 'Name') { $eeOutput .=  ' selected'; }
 				
 				$eeOutput .= '>' . __('File Name', 'ee-simple-file-list') . '</option>
+				
+				
 				<option value="Date"';
 				
 				if($eeSFL_Settings['SortBy'] == 'Date') { $eeOutput .=  ' selected'; }
 				
-				$eeOutput .= '>' . __('File Date', 'ee-simple-file-list') . '</option>
+				$eeOutput .= '>' . __('Date File Added', 'ee-simple-file-list') . '</option>
+				
+				
+				<option value="DateMod"';
+				
+				if($eeSFL_Settings['SortBy'] == 'DateMod') { $eeOutput .=  ' selected'; }
+				
+				$eeOutput .= '>' . __('Date File Changed', 'ee-simple-file-list') . '</option>
+				
+				
 				<option value="Size"';
 				
 				if($eeSFL_Settings['SortBy'] == 'Size') { $eeOutput .=  ' selected'; }
 				
 				$eeOutput .= '>' . __('File Size', 'ee-simple-file-list') . '</option>
+				
+				
 				<option value="Random"';
 				
 				if($eeSFL_Settings['SortBy'] == 'Random') { $eeOutput .=  ' selected'; }

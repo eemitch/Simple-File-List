@@ -265,7 +265,6 @@ function eeSFL_FREE_UploadFile(eeSFL_File) { // Pass in file object
     var eeDateString = eeDate.toISOString().split('T')[0]; // Get just the y-m-d part
     eeFormData.append("eeSFL_FileDate", eeDateString);
     console.log("Date: " + eeDateString);
-    
         
     // Send the AJAX request...
     eeXhr.send(eeFormData);

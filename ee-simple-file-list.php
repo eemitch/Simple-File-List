@@ -582,9 +582,6 @@ function eeSFL_FREE_FileUploader() {
 						touch($eeTarget, $eeDate);  // Do nothing if bad date
 					}
 					
-					// Update the File Size
-					$eeSFL_FREE->eeSFL_UpdateFileDetail($eeFileName, 'FileSize', $eeSFL_FileSize);
-					
 					return 'SUCCESS';
 				}
 				 
