@@ -34,7 +34,6 @@ if( (isset($_GET['eeSFL_Scan']) AND $eeAdmin) OR $eeSFL_Settings['ExpireTime'] =
 	
 	$eeSFL_FREE_Log['SFL'][] = 'Checking List Freshness...';
 	$eeCheckFreshness = get_transient('eeSFL_FileList_1'); // Get the File List Transient
-	$eeSFL_FREE_Log['SFL'][] = $eeCheckFreshness;
 	
 	if($eeCheckFreshness == 'Good') { // Get the list
 		
@@ -56,7 +55,6 @@ if( (isset($_GET['eeSFL_Scan']) AND $eeAdmin) OR $eeSFL_Settings['ExpireTime'] =
 }
 
 // echo '<pre>'; print_r($eeSFL_Settings); echo '</pre>';
-
 // echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
 
 // Shortcode sorting att used

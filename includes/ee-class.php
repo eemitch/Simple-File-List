@@ -235,11 +235,20 @@ class eeSFL_FREE_MainClass {
 	    
 	    $eeSFL_FREE_Log['SFL'][] = 'Scanning File List...';
 	    
-	    $eeFilesArray = get_option('eeSFL_FileList_1'); // Get the File List Array
+	    // Get the File List Array
+	    $eeFilesArray = get_option('eeSFL_FileList_1');
+	    if(!is_array($eeFilesArray)) { $eeFilesArray = array(); }
 	    
-	    $eeFilePathsArray = $this->eeSFL_IndexFileListDir($eeSFL_Settings['FileListDir']); // Get the real files
+	    // List the actual files on the disk
+	    $eeFilePathsArray = $this->eeSFL_IndexFileListDir($eeSFL_Settings['FileListDir']);
 	    
-	    if ( !is_array($eeFilesArray) OR !@count($eeFilesArray) ) { // Creating New
+	    if(!count($eeFilePathsArray)) {
+		    $eeSFL_Log['SFL'][] = 'No Files Found';
+		    return FALSE; // Quit and leave DB alone
+	    }
+	    
+	    // No List in the DB, Creating New...
+	    if( !count($eeFilesArray) ) {
 			
 			$eeSFL_FREE_Log['SFL'][] = 'No List Found! Creating from scratch...';
 			
@@ -247,15 +256,14 @@ class eeSFL_FREE_MainClass {
 			
 			foreach( $eeFilePathsArray as $eeKey => $eeFile) {
 				
-				// $eeFilesArray[$eeKey]['FileList'] = $eeSFL_ID;
 				$eeFileArrayWorking[$eeKey]['FilePath'] = $eeFile;
 				$eePathParts = pathinfo($eeFile);
-				$eeFileNameAlone = $eePathParts['filename'];
-				$eeExtension = strtolower(@$eePathParts['extension']);
-				$eeFileArrayWorking[$eeKey]['FileExt'] = $eeExtension;
-				$eeFileArrayWorking[$eeKey]['FileSize'] = @filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile);
-				$eeFileArrayWorking[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile));
-				$eeFileArrayWorking[$eeKey]['FileDateChanged'] = $eeFileArrayWorking[$eeKey]['FileDateAdded'];
+				if(!isset($eePathParts['extension'])) { $eeFileArrayWorking[$eeKey]['FileExt'] = 'folder'; }
+						else { $eeFileArrayWorking[$eeKey]['FileExt'] = strtolower($eePathParts['extension']); }
+				$eeFileArrayWorking[$eeKey]['FileSize'] = filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile);
+				$eeFileArrayWorking[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s");
+				$eeFileArrayWorking[$eeKey]['FileDateChanged'] = date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile));
+				
 				
 			}
 		
@@ -263,29 +271,26 @@ class eeSFL_FREE_MainClass {
 			
 			$eeSFL_FREE_Log['SFL'][] = 'Updating existing list...';
 			
-			if(!$eeFilesArray) { return FALSE; } // No files found
-			
 			$eeFileArrayWorking = $eeFilesArray; // Create a "WORKING" array
 			
 			// Check to be sure files are there...
 			foreach( $eeFileArrayWorking as $eeKey => $eeFileSet) {
 				
-				// Check if file is there
+				// Build full path
 				$eeFile = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFileSet['FilePath'];
 				
-				if( is_file($eeFile) ) { // Update file particulars
-					
-					// Update file size
-					$eeFileArrayWorking[$eeKey]['FileSize'] = filesize($eeFile);
-					
-					// Update modification date
-					$eeFileArrayWorking[$eeKey]['FileDateChanged'] = date("Y-m-d H:i:s", @filemtime($eeFile));
-					
-				} else { // Get rid of it
+				if( !is_file($eeFile) ) { // Get rid of it
 					
 					$eeSFL_FREE_Log['SFL'][] = 'Removing: ' . $eeFile;
-					
 					unset($eeFileArrayWorking[$eeKey]);
+				
+				} else {
+				
+					// Update file size
+					$eeFileArrayWorking[$eeKey]['FileSize'] = filesize($eeFile);
+						
+					// Update modification date
+					$eeFileArrayWorking[$eeKey]['FileDateChanged'] = date("Y-m-d H:i:s", @filemtime($eeFile));
 				}
 			}
 
@@ -310,19 +315,15 @@ class eeSFL_FREE_MainClass {
 				
 				if($eeMatch === FALSE) { // New File Found
 					
-					$eeSFL_FREE_Log['SFL'][] = 'Added: ' . $eeFile;
+					$eeSFL_FREE_Log['SFL'][] = '!!! New File Found: ' . $eeFile;
 					
 					$eePathParts = pathinfo($eeFile);
-					$eeDirName = $eePathParts['dirname'];
-					$eeFileName = $eePathParts['basename'];
-					$eeFileNameAlone = $eePathParts['filename'];
-					$eeExtension = strtolower(@$eePathParts['extension']); // Throws a notice on folders
-					$eeKey .= '_new'; // Make sure the key is unique
 					$eeFileArrayWorking[$eeKey]['FilePath'] = $eeFile;
-					$eeFileArrayWorking[$eeKey]['FileExt'] = $eeExtension;
+					if(!isset($eePathParts['extension'])) { $eeFileArrayWorking[$eeKey]['FileExt'] = 'folder'; }
+						else { $eeFileArrayWorking[$eeKey]['FileExt'] = strtolower($eePathParts['extension']); }
 					$eeFileArrayWorking[$eeKey]['FileSize'] = filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile);
-					$eeFileArrayWorking[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s"); // Today
-					$eeFileArrayWorking[$eeKey]['FileDateChanged'] = date("Y-m-d H:i:s", @filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile)); // Read the modification date
+					$eeFileArrayWorking[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s");
+					$eeFileArrayWorking[$eeKey]['FileDateChanged'] = date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile));
 				}
 			}
 		}
@@ -331,7 +332,7 @@ class eeSFL_FREE_MainClass {
 		// If more found, re-process the array 
 		if( count($eeFileArrayWorking) > count($eeFilesArray) ) {
 	    
-		    $eeSFL_FREE_Log['SFL'][] = 'New Files Found';
+		    $eeSFL_FREE_Log['SFL'][] = 'New Files Found...';
 		    
 		    // Reset the Keys
 		    $eeFileArrayWorking = array_values($eeFileArrayWorking); 
@@ -342,11 +343,10 @@ class eeSFL_FREE_MainClass {
 		    // Check and create thumbnail if needed...
 		    foreach($eeFileArrayWorking as $eeKey => $eeFile) {
 		    	
-		    	$eeExt = $eeFile['FileExt'];
-				if( in_array($eeExt, $this->eeDynamicImageThumbFormats) OR in_array($eeExt, $this->eeDynamicVideoThumbFormats) ) {
+		    	if( in_array($eeFile['FileExt'], $this->eeDynamicImageThumbFormats) 
+					OR in_array($eeFile['FileExt'], $this->eeDynamicVideoThumbFormats) ) {
 					
 					$eeSFL_FREE_Log['SFL'][] = 'Checking thumbnail...';
-					
 					$this->eeSFL_CheckThumbnail($eeFile['FilePath']);
 				}
 		    } 
@@ -362,7 +362,7 @@ class eeSFL_FREE_MainClass {
 			}
 		    
 		    // Set the transient
-		    if(@$eeSFL_Settings['ExpireTime'] == 'YES' OR $eeSFL_Settings['ExpireTime'] >= 1) {
+		    if(@$eeSFL_Settings['ExpireTime'] == 'YES') {
 			
 				$eeExpiresIn = $this->eeExpireTime * HOUR_IN_SECONDS;
 				$eeSFL_FREE_Log['SFL'][] = 'Setting file list cache transient to expire in ' . $this->eeExpireTime . ' hours.';

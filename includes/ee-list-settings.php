@@ -282,41 +282,41 @@ $eeOutput .= '
 		
 		<select name="eeSortBy" id="eeSortList">
 		
-				<option value="Name"';
-				
-				if($eeSFL_Settings['SortBy'] == 'Name') { $eeOutput .=  ' selected'; }
-				
-				$eeOutput .= '>' . __('File Name', 'ee-simple-file-list') . '</option>
-				
-				
-				<option value="Date"';
-				
-				if($eeSFL_Settings['SortBy'] == 'Date') { $eeOutput .=  ' selected'; }
-				
-				$eeOutput .= '>' . __('Date File Added', 'ee-simple-file-list') . '</option>
-				
-				
-				<option value="DateMod"';
-				
-				if($eeSFL_Settings['SortBy'] == 'DateMod') { $eeOutput .=  ' selected'; }
-				
-				$eeOutput .= '>' . __('Date File Changed', 'ee-simple-file-list') . '</option>
-				
-				
-				<option value="Size"';
-				
-				if($eeSFL_Settings['SortBy'] == 'Size') { $eeOutput .=  ' selected'; }
-				
-				$eeOutput .= '>' . __('File Size', 'ee-simple-file-list') . '</option>
-				
-				
-				<option value="Random"';
-				
-				if($eeSFL_Settings['SortBy'] == 'Random') { $eeOutput .=  ' selected'; }
-				
-				$eeOutput .= '>' . __('Random', 'ee-simple-file-list') . '</option>
+			<option value="Name"';
 			
-			</select> 
+			if($eeSFL_Settings['SortBy'] == 'Name') { $eeOutput .=  ' selected'; }
+			
+			$eeOutput .= '>' . __('File Name', 'ee-simple-file-list') . '</option>
+			
+			
+			<option value="Date"';
+			
+			if($eeSFL_Settings['SortBy'] == 'Date') { $eeOutput .=  ' selected'; }
+			
+			$eeOutput .= '>' . __('Date File Added', 'ee-simple-file-list') . '</option>
+			
+			
+			<option value="DateMod"';
+			
+			if($eeSFL_Settings['SortBy'] == 'DateMod') { $eeOutput .=  ' selected'; }
+			
+			$eeOutput .= '>' . __('Date File Changed', 'ee-simple-file-list') . '</option>
+			
+			
+			<option value="Size"';
+			
+			if($eeSFL_Settings['SortBy'] == 'Size') { $eeOutput .=  ' selected'; }
+			
+			$eeOutput .= '>' . __('File Size', 'ee-simple-file-list') . '</option>
+			
+			
+			<option value="Random"';
+			
+			if($eeSFL_Settings['SortBy'] == 'Random') { $eeOutput .=  ' selected'; }
+			
+			$eeOutput .= '>' . __('Random', 'ee-simple-file-list') . '</option>
+		
+		</select> 
 		
 		<div class="eeNote">' . __('Sort the list by name, date, file size, or randomly.', 'ee-simple-file-list') . '</div>
 			
