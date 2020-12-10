@@ -57,7 +57,7 @@ class eeSFL_FREE_MainClass {
 		'LabelName' => 'Name', // Label for the file name column
 		'LabelDate' => 'Date', // Label for the file date column
 		'LabelSize' => 'Size', // Label for the file size column
-		'SortBy' => 'Date', // Sort By (Name, Date, DateMod, Size, Random) -- DateMod added in 4.3
+		'SortBy' => 'DateMod', // Sort By (Name, Date, DateMod, Size, Random) -- DateMod added in 4.3
 		'SortOrder' => 'Descending', // Descending or Ascending
 		
 		// Upload Settings
@@ -699,69 +699,6 @@ class eeSFL_FREE_MainClass {
 		$eeFilesSorted = array_values($eeFilesSorted);
 
 		return $eeFilesSorted;
-	}
-	
-	
-	
-	public function eeSFL_SendFilesEmail() {
-		
-		$eePOST = $_POST;
-		
-		global $eeSFL_Settings, $eeSFL_FREE_Env;
-		$eeFiles = '';
-		
-		// Process a raw input of email addresses
-		$eeFrom = sanitize_email(@$eePOST['eeSFL_SendFrom']); // 1 Required
-		if(!$eeFrom) { return FALSE; }
-		
-		$eeTo = eeSFL_FREE_ProcessEmailString(@$eePOST['eeSFL_SendTo']); // Required
-		if(!$eeTo) { return FALSE; }
-		
-		// Optional Inputs
-		$eeCc = eeSFL_FREE_ProcessEmailString(@$eePOST['eeSFL_SendCc']);
-		
-		// Email Headers
-		$eeHeaders = eeSFL_FREE_ReturnHeaderString($eeFrom, $eeCc);
-		
-		// Subject
-		$eeSubject = sanitize_text_field(@$eePOST['eeSFL_SendSubject']);
-		if(!$eeSubject) { $eeSubject = __('File Notification', 'ee-simple-file-list'); }
-		
-		// Message
-		$eeMessage = sanitize_text_field(@$eePOST['eeSFL_SendMessage']);
-		
-		if( is_array($eePOST['eeSFL_SendTheseFiles']) ) { // The files array checkboxes
-			
-			foreach( $eePOST['eeSFL_SendTheseFiles'] as $eeFile) {
-				$eeFiles .= '-> ' . $eeSFL_Settings['FileListURL'] . sanitize_text_field( urldecode($eeFile) ) . PHP_EOL;
-			}
-		}
-		
-		// Footer
-		if(@$eeSFL_Settings['SendFooter']) {
-			$eeFooter = $eeSFL_Settings['SendFooter'];
-		} else {
-			if( is_admin() ) {
-				$eeURL = $eeSFL_FREE_Env['wpSiteURL']; // The main URL
-			} else {
-				$eeURL = eeSFL_GetThisURL();
-			}
-			if($eeURL) {
-				$eeFooter = 'Sent from the file list at ' . $eeURL;
-			} else {
-				$eeFooter = 'Powered by Simple File List';
-			}
-			
-		}
-		
-		// The Body
-		$eeMessage .= PHP_EOL .  PHP_EOL . $eeFiles . PHP_EOL .  PHP_EOL . $eeFooter; // with Custom Footer
-		
-		// TO DO -- Allow files to be attached if less than X MB
-		$eeAttached = array();
-		
-		// Send the Message
-		wp_mail($eeTo, $eeSubject, $eeMessage, $eeHeaders, $eeAttached);
 	}
 	
 	
