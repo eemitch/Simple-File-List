@@ -59,6 +59,7 @@ function eeSFL_FREE_EditDesc(eeSFL_FileID) {
 	
 	if(eeDesc1 != eeDesc2) { // If no match, we update  && !eeRenaming
 		
+		jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).slideUp();
 		eeSFL_FREE_FileAction(eeSFL_FileID, 'UpdateDesc');
 	}
 }

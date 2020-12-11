@@ -23,7 +23,7 @@ $eeSFL_Button = '<a class="button eeGet" target="_blank" href="' . $eeOrderURL .
 $eeOutput .= '<article class="eeSupp eeExtensions">
 	
 	<a href="' . $eeSFL_FREE_Env['pluginURL'] . 'images/Folder-Demo.jpg" target="_blank">
-		<img src="' . $eeSFL_FREE_Env['pluginURL'] . 'images/Folder-Demo.jpg" width="400" height="566" class="eeRight" /></a>
+		<img src="' . $eeSFL_FREE_Env['pluginURL'] . 'images/Folder-Demo.jpg" width="400" height="566" class="eeRight" alt="Screenshot of front-end file list" /></a>
 
 	<h2>' . __('Upgrade to Simple File List Pro', 'ee-simple-file-list') . '</h2>
 	
@@ -46,7 +46,7 @@ $eeOutput .= '<article class="eeSupp eeExtensions">
 	</ul>
 	
 	<a href="' . $eeSFL_FREE_Env['pluginURL'] . 'images/SFL-Pro-Admin.jpg" target="_blank">
-		<img src="' . $eeSFL_FREE_Env['pluginURL'] . 'images/SFL-Pro-Admin.jpg" width="400" height="342" class="eeRight" /></a>
+		<img src="' . $eeSFL_FREE_Env['pluginURL'] . 'images/SFL-Pro-Admin.jpg" width="400" height="342" class="eeRight" alt="Screenshot of back-end file list" /></a>
 	
 	<h3>' . __('More Pro Features', 'ee-simple-file-list') . '</h3>
 	
@@ -64,11 +64,12 @@ $eeOutput .= '<article class="eeSupp eeExtensions">
 	
 	<ul>
 		
-		<li>' . __('Optionally add extensions to add further functionality.', 'ee-simple-file-list') . '</li>
+		<li>' . __('Optionally add extensions to add further functionality.', 'ee-simple-file-list') . '
 			<ul>
 				<li><a href="https://simplefilelist.com/file-access-manager/?pr=free" target="_blank">' . __('File Access Manager', 'ee-simple-file-list') . '</a></li>
 				<li><a href="https://simplefilelist.com/add-search-pagination/?pr=free" target="_blank">' . __('Search and Pagination', 'ee-simple-file-list') . '</a></li>
 			</ul>
+		</li>
 		<li>' . __('Updating to newer versions is just like the free plugin.', 'ee-simple-file-list') . '</li>
 		<li><a target="_blank" href="https://simplefilelist.com/simple-file-list-demo/?pr=free">' . __('Try the Demo', 'ee-simple-file-list') . '</a></li>
 	</ul>

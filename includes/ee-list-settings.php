@@ -45,20 +45,17 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		$eeSFL_Settings[$eeTerm] = eeSFL_FREE_ProcessTextInput($eeTerm);
 	}
 	
+	
 	// Sort by Select Box	
-	if(@$_POST['eeSortBy']) { 
+	if(isset($_POST['eeSortBy'])) { 
 		
-		if($_POST['eeSortBy'] != $eeSFL_Settings['SortBy']) { // Changed
-			
-			$eeSFL_Settings['SortBy'] = sanitize_text_field($_POST['eeSortBy']);
-			
-		} else { $eeSFL_Settings['SortBy'] = 'Name'; }
-		
+		$eeSFL_Settings['SortBy'] = sanitize_text_field($_POST['eeSortBy']);
+		if(!$eeSFL_Settings['SortBy']) { $eeSFL_Settings['SortBy'] = 'Name'; }
 	}
 	
 	// Asc/Desc Checkbox
 	if(@$_POST['eeSortOrder'] == 'Descending') { $eeSFL_Settings['SortOrder'] = 'Descending'; }
-		elseif($_POST['eeSortBy'] AND !@$_POST['eeSortOrder']) { $eeSFL_Settings['SortOrder'] = 'Ascending'; }
+		else { $eeSFL_Settings['SortOrder'] = 'Ascending'; }
 
 	
 	// Sort for Sanity
@@ -104,7 +101,7 @@ $eeOutput .= '
 		<fieldset class="eeSFL_SettingsFull">
 		
 			<h3>' . __('List Location', 'ee-simple-file-list') . '</h3>
-				<p><strong><em>' . ABSPATH . $eeSFL_Settings['FileListDir'] . '</strong></em></p>
+				<p><strong>' . ABSPATH . $eeSFL_Settings['FileListDir'] . '</strong></p>
 				
 				<div class="eeNote"><a href="" title="Get Pro Version">' . __('Get Pro Version', 'ee-simple-file-list') . '</a> &rarr; ' . __('The Pro Version allows you to define a custom file list directory.', 'ee-simple-file-list') . '</div>
 			
@@ -162,7 +159,7 @@ $eeOutput .= '
 		$eeOutput .= ' /> <p><strong>' . __('Allow file deleting, renaming, etc...', 'ee-simple-file-list') . '</strong></p>
 		
 		<div class="eeNote"><a href="https://simplefilelist.com/file-access-manager/" target="_blank">' . __('Get File Access Manager', 'ee-simple-file-list') . '</a> &rarr; ' . 
-			__('The Pro version allows you to add the "File Access Manager" extension.  This gives you improved user access control.', 'ee-simple-file-list') . '</a></div>
+			__('The Pro version allows you to add the "File Access Manager" extension.  This gives you improved user access control.', 'ee-simple-file-list') . '</div>
 	
 		</fieldset>
 		
@@ -388,7 +385,7 @@ $eeOutput .= '
 		<h2>' . __('File List Cache', 'ee-simple-file-list') . '</h2>	
 				
 		<label for="eeExpireTime">' . __('Use the File List Cache', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeExpireTime" value="YES"';
+		<input id="eeExpireTime" type="checkbox" name="eeExpireTime" value="YES"';
 		if( $eeSFL_Settings['ExpireTime'] == 'YES' OR $eeSFL_Settings['ExpireTime'] >= 1 ) { $eeOutput .= ' checked="checked"'; }
 		$eeOutput .= ' /> 
 		<div class="eeNote">' . __('Reduce server load by only scanning the hard disk occasionally.', 'ee-simple-file-list') . ' '  . 

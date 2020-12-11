@@ -40,7 +40,7 @@
 	text-align: center;
 	background: #555;
 	color: #EEE; 
-	cursor: pointer;
+/* 	cursor: pointer; */
 }
 .eeSFL .eeFiles td {
 	padding: .25em 0;
@@ -133,21 +133,32 @@
 	display: none; /* Show with javascript */
 }
 
+
 #eeUploadInfoForm {
 	margin-bottom: 20px;
+}
+#eeUploadInfoForm p {
+	margin: 0;
+	font-size: 80%;
 }
 #eeUploadInfoForm label,
 #eeUploadInfoForm input[type=text],
 #eeUploadInfoForm input[type=email] {
+	width: 100%;
 	float: left;
 	margin-bottom: 5px;
 	max-width: 100%;
 
 }
 #eeUploadInfoForm label {
-	width: auto;
+	width: 100%;
 	clear: left;
-	margin-right: 10px;
+	margin: 0;
+}
+#eeUploadInfoForm textarea {
+	width: 100%;
+	margin: 0;
+	height: 4em;
 }
 
 .eeSFL_UploadingImg,
@@ -189,96 +200,6 @@
 	display: inline-block;
 	width: 55%;
 	margin: 0; 
-}
-
-
-
-
-
-#eeSFL_SendPop {
-	
-	position: fixed; /* Sit on top of the page content */
-	display: none; /* Show with JS */
-	width: 60%;
-	height: 80%;
-	top: 10%; 
-	left: 20%;
-	right: 20%;
-	bottom: 10%;
-	background-color: rgba(245, 245, 245, 1);
-	border: 1px solid #666;
-	z-index: 100;
-	overflow: auto;
-	-webkit-overflow-scroll: touch;
-	
-}
-#eeSFL_SendPop h2,
-#eeSFL_SendPop h3,
-#eeSFL_SendPop p {
-	margin: 0 0 10px 0;
-}
-#eeSFL_SendTheseFilesList {
-	margin-left: 4%;
-}
-#eeSFL_SendPop article {
-	margin: 3%;
-	padding-right: 2%;
-	height: 100%;
-/* 	overflow-y: scroll; */
-}
-#eeSFL_SendPop article p {
-	
-}
-#eeSFL_SendPop #eeSFL_Send_AddFiles {
-	display: block;
-	float: right;
-}
-#eeSFL_SendPop form {
-	border: none;
-	padding: 0;
-}
-#eeSFL_SendPop label {
-	float: left;
-	clear: both;
-	width: 30%;
-	height: 2em;
-	line-height: 2em;
-	margin: 15px 2% 0 0;
-	padding-right: 5px;
-	text-align: right;
-	background-color: #787878;
-	color: #FFF;
-}
-#eeSFL_SendPop note {
-	float: left;
-	clear: both;
-	margin: 0;
-}
-#eeSFL_SendPop input[type=text],
-#eeSFL_SendPop input[type=email],
-#eeSFL_SendPop textarea {
-	float: left;
-	clear: none;
-	width: 60%;
-	height: 2em;
-	margin: 15px 0 0 0;
-	background-color: #FFF;
-}
-#eeSFL_SendPop textarea {
-	height: 5em;
-}
-
-#eeSFL_SendPop p.eeSFL_SendButtons {
-	text-align: center;
-	margin-top: 1em;
-}
-
-#eeSFL_SendPop input[type="submit"],
-#eeSFL_SendPop button {
-	float: none;
-}
-#eeSFL_SendMoreFiles {
-	display: none;
 }
 
 

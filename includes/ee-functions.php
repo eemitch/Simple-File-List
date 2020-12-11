@@ -241,6 +241,7 @@ function eeSFL_FREE_ProcessUpload() {
 						if( isset($_POST['eeSFL_Comments'])) {
 							$eeString = sanitize_text_field(@$_POST['eeSFL_Comments']);
 							if($eeString) {
+								$eeSFL_FREE->eeSFL_UpdateFileDetail($eeFile, 'FileDescription', $eeString);
 								$eeSFL_FREE->eeSFL_UpdateFileDetail($eeFile, 'SubmitterComments', $eeString);
 							}
 						}

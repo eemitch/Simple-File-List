@@ -202,9 +202,9 @@ if($eeAdmin) {
 
 // TABLE HEAD ==================================================================================================
 
-if( count($eeSFL_Files) ) {
+if( isset($eeSFL_Files) ) {
 	
-	// if(!$eeSFL_Files[0]['FilePath']) { return; }
+	if(!is_array($eeSFL_Files) OR !count($eeSFL_Files)) { return; } // Bail if no files
 	
 	$eeRowID = '0'; // Assign an ID number to each row
 	
@@ -259,6 +259,7 @@ if( count($eeSFL_Files) ) {
 	$eeOutput .= '<tbody>';
 					
 	$eeFileCount = 0; // Reset
+	$eeRowID = 0;
 	$eeListPosition = FALSE; // eeSFLS
 	
 	$eeSFL_FREE_Log['SFL'][] = 'Listing Files...';
@@ -268,8 +269,7 @@ if( count($eeSFL_Files) ) {
 		// Loop through array
 		foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<---------------------------- BEGIN FILE LIST LOOP ----------------<<<
 			
-			$eeRowID = @$eeFileArray['FileID']; // Set in sorting method, but not sorted if only one file
-			if(!$eeRowID) { $eeRowID = 0; } // Only one file, set ID to zero
+			$eeRowID ++; // We start with one ...
 			
 			// Go
 			if( is_array($eeFileArray)) {
@@ -391,7 +391,7 @@ if( count($eeSFL_Files) ) {
 						
 						if($eeFileThumbURL) { 
 							
-							$eeOutput .= '<a href="' . $eeFileURL .  '" target="_blank"><img src="' . $eeFileThumbURL . '" width="64" height="64" alt="Thumbnail for ' . $eeFileName . '" /></a>';
+							$eeOutput .= '<a href="' . $eeFileURL .  '" target="_blank"><img src="' . $eeFileThumbURL . '" width="64" height="64" alt="Thumb" /></a>';
 						}
 						
 						$eeOutput .= '</td>';

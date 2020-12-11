@@ -42,14 +42,14 @@ function eeSFL_FREE_ManageLists() {
     $active_tab == 'file_list' ? 'nav-tab-active' : '';
     $eeOutput .= $active_tab . '">' . __('File List', 'ee-simple-file-list') . '</a>';
     
+	// The Help / Email Form Page
+    $eeOutput .= '<a href="https://simplefilelist.com/get-support/" class="nav-tab tabSupport" target="_blank">' . __('Get Help', 'ee-simple-file-list') . ' &rarr;</a>';
+    
     // Author
     $eeOutput .= '<a href="?page=' . $eeSFL_FREE->eePluginSlug . '&tab=author" class="nav-tab tabSupport ';   
 	if($active_tab == 'author') {$eeOutput .= '  eeActiveTab '; }  
     $active_tab == 'author' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Author', 'ee-simple-file-list') . '</a>';
-    
-	// The Help / Email Form Page
-    $eeOutput .= '<a href="https://simplefilelist.com/get-support/" class="nav-tab tabSupport">' . __('Get Help', 'ee-simple-file-list') . '</a>';
     
     // Settings
     $eeOutput .= '<a href="?page=' . $eeSFL_FREE->eePluginSlug . '&tab=settings" class="nav-tab tabSettings ';   

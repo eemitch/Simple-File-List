@@ -231,13 +231,15 @@ class eeSFL_FREE_MainClass {
     // Scan the real files and create or update array as needed.
     public function eeSFL_UpdateFileListArray() {
 	    
+	    // return;
+	    
 	    global $eeSFL_FREE_Log, $eeSFL_Settings, $eeSFL_FREE_Env;
 	    
 	    $eeSFL_FREE_Log['SFL'][] = 'Scanning File List...';
 	    
 	    // Get the File List Array
-	    $eeFilesArray = get_option('eeSFL_FileList_1');
-	    if(!is_array($eeFilesArray)) { $eeFilesArray = array(); }
+	    $eeFilesDBArray = get_option('eeSFL_FileList_1');
+	    if(!is_array($eeFilesDBArray)) { $eeFilesDBArray = array(); }
 	    
 	    // List the actual files on the disk
 	    $eeFilePathsArray = $this->eeSFL_IndexFileListDir($eeSFL_Settings['FileListDir']);
@@ -248,7 +250,7 @@ class eeSFL_FREE_MainClass {
 	    }
 	    
 	    // No List in the DB, Creating New...
-	    if( !count($eeFilesArray) ) {
+	    if( !count($eeFilesDBArray) ) {
 			
 			$eeSFL_FREE_Log['SFL'][] = 'No List Found! Creating from scratch...';
 			
@@ -271,7 +273,7 @@ class eeSFL_FREE_MainClass {
 			
 			$eeSFL_FREE_Log['SFL'][] = 'Updating existing list...';
 			
-			$eeFileArrayWorking = $eeFilesArray; // Create a "WORKING" array
+			$eeFileArrayWorking = $eeFilesDBArray; // Create a "WORKING" array
 			
 			// Check to be sure files are there...
 			foreach( $eeFileArrayWorking as $eeKey => $eeFileSet) {
@@ -298,7 +300,7 @@ class eeSFL_FREE_MainClass {
 			// Check if any new files have been added
 			foreach( $eeFilePathsArray as $eeKey => $eeFile) {
 				
-				$eeSFL_FREE_Log['SFL'][] = 'Checking: ' . $eeFile;
+				$eeSFL_FREE_Log['SFL'][] = 'Checking File: ' . $eeFile;
 				
 				$eeMatch = FALSE;
 				
@@ -309,7 +311,10 @@ class eeSFL_FREE_MainClass {
 						
 						$eeMatch = TRUE;
 						
+						$eeSFL_FREE_Log['SFL'][] = 'File Confirmed: ' . $eeFile;
+						
 						break; // Matched this file
+					
 					}
 				}
 				
@@ -318,26 +323,24 @@ class eeSFL_FREE_MainClass {
 					$eeSFL_FREE_Log['SFL'][] = '!!! New File Found: ' . $eeFile;
 					
 					$eePathParts = pathinfo($eeFile);
-					$eeFileArrayWorking[$eeKey]['FilePath'] = $eeFile;
-					if(!isset($eePathParts['extension'])) { $eeFileArrayWorking[$eeKey]['FileExt'] = 'folder'; }
-						else { $eeFileArrayWorking[$eeKey]['FileExt'] = strtolower($eePathParts['extension']); }
-					$eeFileArrayWorking[$eeKey]['FileSize'] = filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile);
-					$eeFileArrayWorking[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s");
-					$eeFileArrayWorking[$eeKey]['FileDateChanged'] = date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile));
+					
+					// Ad it to the array
+					$eeFileArrayWorking[] = array(
+						'FilePath' => $eeFile
+						,'FileExt' => strtolower($eePathParts['extension'])
+						,'FileSize' => filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile)
+						,'FileDateAdded' => date("Y-m-d H:i:s")
+						,'FileDateChanged' => date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile))
+					);
 				}
 			}
 		}
 		
 		
-		// If more found, re-process the array 
-		if( count($eeFileArrayWorking) > count($eeFilesArray) ) {
-	    
-		    $eeSFL_FREE_Log['SFL'][] = 'New Files Found...';
-		    
-		    // Reset the Keys
-		    $eeFileArrayWorking = array_values($eeFileArrayWorking); 
-		    
-		    // Sort
+		// Sort, Update cache time and DB
+		if(count($eeFileArrayWorking)) {
+			
+			// Sort
 		    $eeFileArrayWorking = $this->eeSFL_SortFiles($eeFileArrayWorking, $eeSFL_Settings['SortBy'], $eeSFL_Settings['SortOrder']);
 		    
 		    // Check and create thumbnail if needed...
@@ -349,19 +352,15 @@ class eeSFL_FREE_MainClass {
 					$eeSFL_FREE_Log['SFL'][] = 'Checking thumbnail...';
 					$this->eeSFL_CheckThumbnail($eeFile['FilePath']);
 				}
-		    } 
-		}
-		
-		
-		// Update Cache time and DB
-		if(count($eeFileArrayWorking)) {
+		    }
 			
+			// Set Cache
 			if(is_numeric($eeSFL_Settings['ExpireTime'])) {
 				if($eeSFL_Settings['ExpireTime'] >= 1) { $eeSFL_Settings['ExpireTime'] = 'YES'; } 
 					else { $eeSFL_Settings['ExpireTime'] = 'NO'; } // Legacy 12/20 (v4.3)
 			}
 		    
-		    // Set the transient
+		    // Set the Transient
 		    if(@$eeSFL_Settings['ExpireTime'] == 'YES') {
 			
 				$eeExpiresIn = $this->eeExpireTime * HOUR_IN_SECONDS;
@@ -637,7 +636,6 @@ class eeSFL_FREE_MainClass {
 			foreach($eeFiles as $eeKey => $eeFileArray) {
 				
 				$eeFilesSorted[ $eeFileArray['FileDateAdded'] . ' ' . $eeKey ] = $eeFileArray;
-				$eeFilesSorted[ $eeFileArray['FileDateAdded'] . ' ' . $eeKey ]['FileID'] = $eeKey;
 			}
 			
 		} elseif($eeSortBy == 'DateMod') { // Files by Date Modified (By Customer Request)
@@ -645,7 +643,6 @@ class eeSFL_FREE_MainClass {
 			foreach($eeFiles as $eeKey => $eeFileArray) {
 					
 				$eeFilesSorted[ $eeFileArray['FileDateChanged'] . ' ' . $eeKey ] = $eeFileArray; // Add the file key to preserve files with same date or size.
-				$eeFilesSorted[ $eeFileArray['FileDateChanged'] . ' ' . $eeKey ]['FileID'] = $eeKey; // Save the ID in new element
 			}
 			
 		} elseif($eeSortBy == 'Size') { // Files by Size
@@ -654,7 +651,6 @@ class eeSFL_FREE_MainClass {
 				
 				// Add the file key to preserve files with same size.
 				$eeFilesSorted[ $eeFileArray['FileSize'] . '.' . $eeKey ] = $eeFileArray;
-				$eeFilesSorted[ $eeFileArray['FileSize'] . '.' . $eeKey ]['FileID'] = $eeKey;
 			}
 	
 		} elseif($eeSortBy == 'Name') { // Alpha
@@ -663,7 +659,6 @@ class eeSFL_FREE_MainClass {
 				
 				$eeFilePathLowerCase = strtolower($eeFileArray['FilePath']); // Make lower case so name sorting works properly
 				$eeFilesSorted[ $eeFilePathLowerCase ] = $eeFileArray; // These keys shall always be unique
-				$eeFilesSorted[ $eeFilePathLowerCase ]['FileID'] = $eeKey;
 			}
 		
 		} else { // Random
@@ -671,7 +666,6 @@ class eeSFL_FREE_MainClass {
 			foreach($eeFiles as $eeKey => $eeFileArray) {
 				
 				$eeFilesSorted[ $eeFileArray['FilePath'] ] = $eeFileArray;
-				$eeFilesSorted[ $eeFileArray['FilePath'] ]['FileID'] = $eeKey;
 			}
 			
 			$eeKeys = array_keys($eeFilesSorted);
