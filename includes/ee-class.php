@@ -231,10 +231,9 @@ class eeSFL_FREE_MainClass {
     // Scan the real files and create or update array as needed.
     public function eeSFL_UpdateFileListArray() {
 	    
-	    // return;
-	    
 	    global $eeSFL_FREE_Log, $eeSFL_Settings, $eeSFL_FREE_Env;
 	    
+	    $eeSFL_Log['SFL'][] = 'Calling Method: eeSFL_UpdateFileListArray()';
 	    $eeSFL_FREE_Log['SFL'][] = 'Scanning File List...';
 	    
 	    // Get the File List Array
@@ -271,7 +270,7 @@ class eeSFL_FREE_MainClass {
 		
 		} else { // Update file info
 			
-			$eeSFL_FREE_Log['SFL'][] = 'Updating existing list...';
+			$eeSFL_FREE_Log['SFL'][] = 'Updating Existing List...';
 			
 			$eeFileArrayWorking = $eeFilesDBArray; // Create a "WORKING" array
 			
@@ -302,37 +301,28 @@ class eeSFL_FREE_MainClass {
 				
 				$eeSFL_FREE_Log['SFL'][] = 'Checking File: ' . $eeFile;
 				
-				$eeMatch = FALSE;
+				// STOP - This is not working !!!
 				
 				// Look for this file in our array
-				foreach( $eeFileArrayWorking as $eeKey2 => $eeArray ) {
+				foreach( $eeFileArrayWorking as $eeKey2 => $eeThisFileArray ) {
 					
-					if($eeFile == $eeArray['FilePath']) {
-						
-						$eeMatch = TRUE;
-						
-						$eeSFL_FREE_Log['SFL'][] = 'File Confirmed: ' . $eeFile;
-						
-						break; // Matched this file
-					
-					}
+					if($eeFile == $eeThisFileArray['FilePath']) { break; } // Matched this file, on to the next.
 				}
 				
-				if($eeMatch === FALSE) { // New File Found
-					
-					$eeSFL_FREE_Log['SFL'][] = '!!! New File Found: ' . $eeFile;
-					
-					$eePathParts = pathinfo($eeFile);
-					
-					// Ad it to the array
-					$eeFileArrayWorking[] = array(
-						'FilePath' => $eeFile
-						,'FileExt' => strtolower($eePathParts['extension'])
-						,'FileSize' => filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile)
-						,'FileDateAdded' => date("Y-m-d H:i:s")
-						,'FileDateChanged' => date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile))
-					);
-				}
+				// New File Found
+				$eeSFL_FREE_Log['SFL'][] = '!!! New File Found: ' . $eeFile;
+				
+				$eePathParts = pathinfo($eeFile);
+				
+				// Add it to the array
+				$eeFileArrayWorking[] = array(
+					'FilePath' => $eeFile
+					,'FileExt' => strtolower($eePathParts['extension'])
+					,'FileSize' => filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile)
+					,'FileDateAdded' => date("Y-m-d H:i:s")
+					,'FileDateChanged' => date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile))
+				);
+				
 			}
 		}
 		
