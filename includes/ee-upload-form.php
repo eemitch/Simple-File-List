@@ -33,6 +33,7 @@ if(@$eeSFL_Settings['FileListDir']) {
 		<form action="' . eeSFL_FREE_GetThisURL() . '" method="POST" enctype="multipart/form-data" name="eeSFL_UploadForm" id="eeSFL_UploadForm">
 		
 			<input type="hidden" name="MAX_FILE_SIZE" value="' .(($eeSFL_Settings['UploadMaxFileSize']*1024)*1024) . '" />
+			<input type="hidden" name="eeScrollToIt" value="TRUE" />
 			<input type="hidden" name="eeSFL_Upload" value="TRUE" />
 			<input type="hidden" name="eeSFL_FileCount" value="" id="eeSFL_FileCount" />
 			<input type="hidden" name="eeSFL_FileList" value="" id="eeSFL_FileList" />';

@@ -47,7 +47,7 @@ class eeSFL_FREE_MainClass {
 		// List Settings
 		'ListTitle' => 'Simple File List', // List Title (Not currently used)
 		'FileListDir' => 'wp-content/uploads/simple-file-list/', // List Directory Name (relative to ABSPATH)
-		'ExpireTime' => 'NO', // To cache or not to cache
+		'ExpireTime' => 'YES', // To cache or not to cache (YES / NO)
 		'ShowList' => 'YES', // Show the File List (YES, ADMIN, USER, NO)
 		'AdminRole' => 5, // Who can access settings, based on WP role (5 = Admin ... 1 = Subscriber)
 		'ShowFileThumb' => 'YES', // Display the File Thumbnail Column (YES or NO)
@@ -85,8 +85,8 @@ class eeSFL_FREE_MainClass {
 		'NotifyCc' => '', // Send Copies of Notification Emails Here
 		'NotifyBcc' => '', // Send Blind Copies of Notification Emails Here
 		'NotifyFrom' => '', // The sender email (reply-to) (Defaults to WP Admin Email)
-		'NotifyFromName' => '', // The nice name of the sender
-		'NotifySubject' => '', // The subject line
+		'NotifyFromName' => 'Simple File List', // The nice name of the sender
+		'NotifySubject' => 'File Upload Notice', // The subject line
 		'NotifyMessage' => '', // The notice message's body
 		
 	);
@@ -248,23 +248,27 @@ class eeSFL_FREE_MainClass {
 		    return FALSE; // Quit and leave DB alone
 	    }
 	    
+	    // Create an array we'll fill with files
+	    $eeFileArrayWorking = array();
+	    
 	    // No List in the DB, Creating New...
 	    if( !count($eeFilesDBArray) ) {
 			
 			$eeSFL_FREE_Log['SFL'][] = 'No List Found! Creating from scratch...';
 			
-			$eeFileArrayWorking = array();
-			
 			foreach( $eeFilePathsArray as $eeKey => $eeFile) {
 				
-				$eeFileArrayWorking[$eeKey]['FilePath'] = $eeFile;
 				$eePathParts = pathinfo($eeFile);
-				if(!isset($eePathParts['extension'])) { $eeFileArrayWorking[$eeKey]['FileExt'] = 'folder'; }
-						else { $eeFileArrayWorking[$eeKey]['FileExt'] = strtolower($eePathParts['extension']); }
-				$eeFileArrayWorking[$eeKey]['FileSize'] = filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile);
-				$eeFileArrayWorking[$eeKey]['FileDateAdded'] = date("Y-m-d H:i:s");
-				$eeFileArrayWorking[$eeKey]['FileDateChanged'] = date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile));
 				
+				// Add it to the array
+				$eeFileArrayWorking[] = array(
+					'FilePath' => $eeFile
+					,'FileExt' => strtolower($eePathParts['extension'])
+					,'FileMIME' => mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile)
+					,'FileSize' => filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile)
+					,'FileDateAdded' => date("Y-m-d H:i:s")
+					,'FileDateChanged' => date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile))
+				);				
 				
 			}
 		
@@ -272,26 +276,26 @@ class eeSFL_FREE_MainClass {
 			
 			$eeSFL_FREE_Log['SFL'][] = 'Updating Existing List...';
 			
-			$eeFileArrayWorking = $eeFilesDBArray; // Create a "WORKING" array
+			$eeFileArrayWorking = $eeFilesDBArray; // Fill it up with current files
 			
-			// Check to be sure files are there...
+			// Check to be sure each file is there...
 			foreach( $eeFileArrayWorking as $eeKey => $eeFileSet) {
 				
 				// Build full path
-				$eeFile = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFileSet['FilePath'];
+				$eeFileFullPath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFileSet['FilePath'];
 				
-				if( !is_file($eeFile) ) { // Get rid of it
+				if( !is_file($eeFileFullPath) ) { // Get rid of it
 					
-					$eeSFL_FREE_Log['SFL'][] = 'Removing: ' . $eeFile;
+					$eeSFL_FREE_Log['SFL'][] = 'Removing: ' . $eeFileFullPath;
 					unset($eeFileArrayWorking[$eeKey]);
 				
 				} else {
 				
 					// Update file size
-					$eeFileArrayWorking[$eeKey]['FileSize'] = filesize($eeFile);
+					$eeFileArrayWorking[$eeKey]['FileSize'] = filesize($eeFileFullPath);
 						
 					// Update modification date
-					$eeFileArrayWorking[$eeKey]['FileDateChanged'] = date("Y-m-d H:i:s", @filemtime($eeFile));
+					$eeFileArrayWorking[$eeKey]['FileDateChanged'] = date("Y-m-d H:i:s", @filemtime($eeFileFullPath));
 				}
 			}
 
@@ -301,28 +305,30 @@ class eeSFL_FREE_MainClass {
 				
 				$eeSFL_FREE_Log['SFL'][] = 'Checking File: ' . $eeFile;
 				
-				// STOP - This is not working !!!
+				$eeFound = FALSE;
 				
 				// Look for this file in our array
 				foreach( $eeFileArrayWorking as $eeKey2 => $eeThisFileArray ) {
 					
-					if($eeFile == $eeThisFileArray['FilePath']) { break; } // Matched this file, on to the next.
+					if($eeFile == $eeThisFileArray['FilePath']) { $eeFound = TRUE; break; } // Found this file, on to the next.
 				}
 				
-				// New File Found
-				$eeSFL_FREE_Log['SFL'][] = '!!! New File Found: ' . $eeFile;
-				
-				$eePathParts = pathinfo($eeFile);
-				
-				// Add it to the array
-				$eeFileArrayWorking[] = array(
-					'FilePath' => $eeFile
-					,'FileExt' => strtolower($eePathParts['extension'])
-					,'FileSize' => filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile)
-					,'FileDateAdded' => date("Y-m-d H:i:s")
-					,'FileDateChanged' => date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile))
-				);
-				
+				if($eeFound === FALSE) {
+					
+					$eeSFL_FREE_Log['SFL'][] = '!!! New File Found: ' . $eeFile;
+					
+					$eePathParts = pathinfo($eeFile);
+					
+					// Add it to the array
+					$eeFileArrayWorking[] = array(
+						'FilePath' => $eeFile
+						,'FileExt' => strtolower($eePathParts['extension'])
+						,'FileMIME' => mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile)
+						,'FileSize' => filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile)
+						,'FileDateAdded' => date("Y-m-d H:i:s")
+						,'FileDateChanged' => date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile))
+					);
+				}
 			}
 		}
 		

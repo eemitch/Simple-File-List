@@ -267,7 +267,7 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	
 	$eeOutput .= '<div class="eeSFL"';
 	
-	if($eeSFL_FREE_ListRun == 1) {$eeOutput .= ' id="eeSFL"'; } // 3/20 - Legacy for user CSS
+	if($eeSFL_FREE_ListRun == 1) { $eeOutput .= ' id="eeSFL"'; } // 3/20 - Legacy for user CSS
 	
 	$eeOutput .= '>';
 	
@@ -319,6 +319,8 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	}
 	
 	$eeOutput .= '</div>'; // Ends .eeSFL block
+	
+	if( isset($_REQUEST['eeScrollToIt']) ) { $eeOutput .= '<script>eeSFL_ScrollToIt();</script>'; }
 	
 	$eeSFL_FREE_ListRun++;
 

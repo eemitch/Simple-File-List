@@ -160,7 +160,18 @@ $eeOutput .= '
 		
 		<div class="eeNote"><a href="https://simplefilelist.com/file-access-manager/" target="_blank">' . __('Get File Access Manager', 'ee-simple-file-list') . '</a> &rarr; ' . 
 			__('The Pro version allows you to add the "File Access Manager" extension.  This gives you improved user access control.', 'ee-simple-file-list') . '</div>
-	
+			
+		<hr />
+			
+		<h2>' . __('File List Cache', 'ee-simple-file-list') . '</h2>	
+				
+		<label for="eeExpireTime">' . __('Use the File List Cache', 'ee-simple-file-list') . ':</label>
+		<input id="eeExpireTime" type="checkbox" name="eeExpireTime" value="YES"';
+		if( $eeSFL_Settings['ExpireTime'] == 'YES' OR $eeSFL_Settings['ExpireTime'] >= 1 ) { $eeOutput .= ' checked="checked"'; }
+		$eeOutput .= ' /> 
+		<div class="eeNote">' . __('Reduce server load by only scanning the hard disk occasionally.', 'ee-simple-file-list') . ' '  . 
+			__('If you use FTP or another method to upload files to your list, turn this off to re-scan the files before each page load.', 'ee-simple-file-list') . '</div>
+		
 		</fieldset>
 		
 		
@@ -340,18 +351,6 @@ $eeOutput .= '
 		
 		<h2>' . __('File Details', 'ee-simple-file-list') . '</h2>	
 		
-		<label for="eePreserveSpaces">' . __('Preserve Spaces', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eePreserveSpaces" value="YES" id="eePreserveSpaces"';
-		
-		if( $eeSFL_Settings['PreserveSpaces'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-		
-		$eeOutput .= ' /> <p>' . __('File Name Spaces', 'ee-simple-file-list') . '</p>
-		
-		<div class="eeNote">' . __('Spaces in file names are replaced with hyphens in order to make the URL legal.', 'ee-simple-file-list') . '<br />' . 
-			__('This setting will revert this action for display.', 'ee-simple-file-list') . '</div>
-		
-		<br class="eeClearFix" />	
-		
 		<label for="eeShowFileDescription">' . __('Show File Description', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eeShowFileDescription" value="YES" id="eeShowFileDescription"';
 		
@@ -372,27 +371,21 @@ $eeOutput .= '
 		
 		<div class="eeNote">' . __('Show or hide the file extension.', 'ee-simple-file-list') . '</div>
 		
+		<br class="eeClearFix" />	
+		
+		<label for="eePreserveSpaces">' . __('Preserve Spaces', 'ee-simple-file-list') . ':</label>
+		<input type="checkbox" name="eePreserveSpaces" value="YES" id="eePreserveSpaces"';
+		
+		if( $eeSFL_Settings['PreserveSpaces'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /> <p>' . __('File Name Spaces', 'ee-simple-file-list') . '</p>
+		
+		<div class="eeNote">' . __('Spaces in file names are replaced with hyphens in order to make the URL legal.', 'ee-simple-file-list') . ' ' . 
+			__('This setting will revert this action for display.', 'ee-simple-file-list') . '</div>
+		
 		<br class="eeClearFix" />
 
 		</fieldset>
-		
-		
-		
-			
-			
-		<fieldset class="eeSFL_SettingsBlock">
-		
-		<h2>' . __('File List Cache', 'ee-simple-file-list') . '</h2>	
-				
-		<label for="eeExpireTime">' . __('Use the File List Cache', 'ee-simple-file-list') . ':</label>
-		<input id="eeExpireTime" type="checkbox" name="eeExpireTime" value="YES"';
-		if( $eeSFL_Settings['ExpireTime'] == 'YES' OR $eeSFL_Settings['ExpireTime'] >= 1 ) { $eeOutput .= ' checked="checked"'; }
-		$eeOutput .= ' /> 
-		<div class="eeNote">' . __('Reduce server load by only scanning the hard disk occasionally.', 'ee-simple-file-list') . ' '  . 
-			__('If you use FTP or another method to upload files to your list, turn this off to always see the most recent files.', 'ee-simple-file-list') . '</div>
-		
-		</fieldset>
-		
 		
 		
 		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" />

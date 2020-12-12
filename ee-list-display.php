@@ -189,7 +189,7 @@ if($eeAdmin) {
 
 } elseif($eeSFL_Uploaded AND $eeSFL_FREE_ListRun == 1) {
 	
-	$eeOutput .= '<p class="eeSFL_ListMeta"><a href="' . $eeURL . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . 
+	$eeOutput .= '<p class="eeSFL_ListMeta"><a href="' . eeSFL_FREE_AppendProperUrlOp($eeURL) . 'eeScrollToIt=YES" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . 
 		__('Back to the Files', 'ee-simple-file-list') . '</a></p>';
 		
 	$eeSendFilesArray = $eeSFL_Files; // Restrict to just what was uploaded
@@ -481,7 +481,9 @@ if( isset($eeSFL_Files) ) {
 							// Append Addition (admin or authorized) Actions
 							if( ($eeAdmin OR $eeSFL_Settings['AllowFrontManage'] == 'YES') AND $eeSFL_FREE_ListRun == 1) {
 								
-								$eeFileActions .= '<br /><a href="" id="eeSFL_EditFile_' . $eeRowID . '" onclick="eeSFL_FREE_EditFile(' . $eeRowID . ')">' . 
+								if($eeAdmin) { $eeFileActions .= '<br />'; } else { $eeFileActions .= ' | '; }								
+								
+								$eeFileActions .= '<a href="" id="eeSFL_EditFile_' . $eeRowID . '" onclick="eeSFL_FREE_EditFile(' . $eeRowID . ')">' . 
 								__('Edit', 'ee-simple-file-list') . '</a> | <a href="#" onclick="eeSFL_FREE_Delete(' . $eeRowID . ')">' . 
 								__('Delete', 'ee-simple-file-list') . '</a>';
 								
