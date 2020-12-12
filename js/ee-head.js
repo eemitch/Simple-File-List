@@ -21,7 +21,7 @@ function eeSFL_FREE_ValidateEmail(eeSFL_CheckEmail) {
 
 
 
-function eeSFL_ScrollToIt() {
+function eeSFL_FREE_ScrollToIt() {
 	
 	jQuery('html, body').animate({ scrollTop: jQuery('.eeSFL').offset().top }, 1000);
 	

@@ -320,7 +320,7 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	
 	$eeOutput .= '</div>'; // Ends .eeSFL block
 	
-	if( isset($_REQUEST['eeScrollToIt']) ) { $eeOutput .= '<script>eeSFL_ScrollToIt();</script>'; }
+	if( isset($_REQUEST['eeScrollToIt']) ) { $eeOutput .= '<script>eeSFL_FREE_ScrollToIt();</script>'; }
 	
 	$eeSFL_FREE_ListRun++;
 
