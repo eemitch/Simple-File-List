@@ -42,7 +42,7 @@ function eeSFL_FREE_ManageLists() {
     $active_tab == 'file_list' ? 'nav-tab-active' : '';
     $eeOutput .= $active_tab . '">' . __('File List', 'ee-simple-file-list') . '</a>';
     
-	// The Help / Email Form Page
+	// Link to Support Form
     $eeOutput .= '<a href="https://simplefilelist.com/get-support/" class="nav-tab tabSupport" target="_blank">' . __('Get Help', 'ee-simple-file-list') . ' &rarr;</a>';
     
     // Author
