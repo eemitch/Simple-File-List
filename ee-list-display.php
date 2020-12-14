@@ -189,7 +189,7 @@ if($eeAdmin) {
 
 } elseif($eeSFL_Uploaded AND $eeSFL_FREE_ListRun == 1) {
 	
-	$eeOutput .= '<p class="eeSFL_ListMeta"><a href="' . eeSFL_FREE_AppendProperUrlOp($eeURL) . 'eeScrollToIt=YES" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . 
+	$eeOutput .= '<p class="eeSFL_ListMeta"><a href="' . eeSFL_FREE_AppendProperUrlOp($eeURL) . 'ee=1" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . 
 		__('Back to the Files', 'ee-simple-file-list') . '</a></p>';
 		
 	$eeSendFilesArray = $eeSFL_Files; // Restrict to just what was uploaded
