@@ -565,7 +565,7 @@ class eeSFL_FREE_MainClass {
 		
 		if(!is_dir($eeThumbsPATH)) {
 			if(!mkdir($eeThumbsPATH)) {
-				$eeSFL_Log['errors'][] = 'Cannot Create the Thumbnails Folder';
+				$eeSFL_Log['SFL'][] = '!!! Cannot Create the Thumbnails Folder';
 				return; 
 			}
 		}
