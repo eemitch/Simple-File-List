@@ -246,8 +246,10 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 * Sorting options now available for Date Added and Date Changed.
 * Redesigned the Edit Details dialog.
 * Reorganized the List Settings tabs.
+* Simplified Re-Scan Interval by changing to an ON/OFF setting. If ON, File List Cache expires in one hour, else the disk is scanned on each page load.
+* Admins can now always add file descriptions when uploading on the back-end.
+* Improved and added translations.
 * Many many under-the-hood efficiency and security improvements.
-* Improved translations and accounted for missing translations within javascript.
 
 = 4.2.13 =
 * Extensive under-the-hood changes so this version and the Pro version can run at the same time.
