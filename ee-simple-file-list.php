@@ -1007,7 +1007,6 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 	if(!@$eeFileListDir) {
 		
 		$eeFileListDir = $eeConfigDefault['FileListDir'];
-		eeSFL_FREE_FileListDirCheck( $eeFileListDir ); // Create the File List Folder
 	
 	} else {
 	
@@ -1017,9 +1016,9 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 		
 		// Check if FileListDir has a leading slash
 		if($eeFileListDir[0] == '/') {  $eeFileListDir = substr($eeFileListDir, 1); } // Omit the slash, required for 4 +
-		
-		eeSFL_FREE_FileListDirCheck( $eeFileListDir ); // Check the File List Folder
 	}
+		
+	eeSFL_FREE_FileListDirCheck( $eeFileListDir ); // Check the File List Folder
 	
 	// Add First File
 	if($eeNewInstall) { // Copy the instructions PDF to the file list folder
@@ -1090,7 +1089,6 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 	// Update the DB Version
 	update_option('eeSFL_FREE_DB_Version', eeSFL_FREE_DB_Version);
 	
-	// TO DO in SFL 4.1 -- Delete ALL old options
 	delete_option('eeSFL-Legacy'); // Don't need this anymore
 
 	$eeSFL_FREE_Log['Updating'][] = 'Plugin Updated to database version: ' . eeSFL_FREE_DB_Version;
