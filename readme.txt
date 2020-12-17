@@ -240,7 +240,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
-= 4.3.4 =
+= 4.3.5 =
 * Added smooth-scrolling down to the file list section after upload. (by popular demand)
 * Original file modification date is now preserved for file uploads. (by popular demand)
 * Sorting options now available for Date Added and Date Changed.
