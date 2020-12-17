@@ -185,17 +185,14 @@ class eeSFL_FREE_MainClass {
 			'FileList' => 1, // The ID of the File List, contained in the above array.
 		    'FilePath' => '', // Path to file, relative to the list root
 		    'FileExt' => '', // The file extension
+		    'FileMIME' => '', // The MIME Type
 			'FileSize' => '', // The size of the file
 			'FileDateAdded' => '', // Date the file was added to the list
 			'FileDateChanged' => '', // Last date the file was renamed or otherwise changed
 			'FileDescription' => '', // A short description of the file
-			
 			'SubmitterName' => '', // Who uploaded the file
 			'SubmitterEmail' => '', // Their email
 			'SubmitterComments' => '', // What they said
-			
-			'FileUserGroup' => '', // (Coming Later)
-			'FileOwner' => '' // (Coming Later)
 		)
     );
     
