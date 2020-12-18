@@ -442,9 +442,7 @@ if( isset($eeSFL_Files) ) {
 						// This is always here because for js access
 						$eeOutput .= '<p class="eeSFL_FileDesc ' . $eeClass . '">';
 						
-						if($eeSFL_Settings['ShowFileDescription'] == 'YES') {
-							$eeOutput .= stripslashes(@$eeFileArray['FileDescription']);
-						}
+						if($eeAdmin OR $eeSFL_Settings['ShowFileDescription'] == 'YES') { $eeOutput .= stripslashes(@$eeFileArray['FileDescription']); }
 						 
 						$eeOutput .= '</p>';
 						
