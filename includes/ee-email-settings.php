@@ -37,9 +37,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		$eeSFL_Settings[$eeTerm] = eeSFL_FREE_ProcessTextInput($eeTerm);
 	}
 	
-	if(@$_POST['eeNotifyMessage']) { // Retain line breaks
-		$eeSFL_Settings['NotifyMessage'] = sanitize_textarea_field($_POST['eeNotifyMessage']);
-	}
+	$eeSFL_Settings['NotifyMessage'] = eeSFL_ProcessTextInput('NotifyMessage', 'textarea');
 	
 	// Update DB
 	if( update_option('eeSFL_Settings_1', $eeSFL_Settings) ) {

@@ -225,7 +225,7 @@ function eeSFL_FREE_ProcessUpload() {
 						
 						if( is_file(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile) ) { // Check to be sure the file is there
 							
-							$eeSFL_FREE_Log['SFL'][] = 'Creating ' . $eeFile . ' Files Array ...';
+							$eeSFL_FREE_Log['SFL'][] = 'Creating File Array: ' . $eeFile;
 							
 							$eePathParts = pathinfo($eeFile);
 							
@@ -413,6 +413,10 @@ function eeSFL_FREE_ProcessTextInput($eeTerm, $eeType = 'text') {
 		
 		$eeValue = filter_var(sanitize_email(@$_POST['ee' . $eeTerm]), FILTER_VALIDATE_EMAIL);
 	
+	} elseif($eeType == 'textarea') {
+		
+		$eeValue = sanitize_textarea_field( @$_POST['ee' . $eeTerm] );
+		
 	} else {
 		
 		$eeValue = strip_tags(@$_POST['ee' . $eeTerm]);

@@ -670,6 +670,8 @@ function eeSFL_FREE_FileEditor() {
 					
 					$eeSFL_FREE->eeSFL_UpdateFileDetail($eeFileName, 'FilePath', $eeNewFileName);
 					
+					$eeSFL_FREE->eeSFL_UpdateThumbnail($eeFileName, $eeNewFileName); // Rename the thumb
+					
 					return 'SUCCESS';
 				}
 			
@@ -687,7 +689,19 @@ function eeSFL_FREE_FileEditor() {
 				
 				if(unlink($eeFilePath)) {
 					
-					delete_transient('eeSFL_FileList_1');
+					// Remove the item from the array
+					$eeAllFilesArray = get_option('eeSFL_FileList_1'); // Get the full list
+					
+					foreach( $eeAllFilesArray as $eeKey => $eeThisFileArray){
+						if($eeThisFileArray['FilePath'] == $eeListFolder . $eeFileName) {
+							unset($eeAllFilesArray[$eeKey]);
+							break;
+						}
+					}
+					
+					update_option('eeSFL_FileList_1', $eeAllFilesArray);
+					
+					$eeSFL_FREE->eeSFL_UpdateThumbnail($eeFileName, FALSE); // Delete the thumb
 					
 					return 'SUCCESS';
 					

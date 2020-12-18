@@ -608,6 +608,54 @@ class eeSFL_FREE_MainClass {
 	
 	
 	
+	// Move, Rename or Delete a thumbnail - Expects path relative to FileListDir
+	public function eeSFL_UpdateThumbnail($eeFileFrom, $eeFileTo = FALSE) {
+		
+		global $eeSFL_Settings;
+		
+		// Move or  the thumbnail if needed
+		$eePathPartsFrom = pathinfo($eeFileFrom);
+		
+		if(isset($eePathPartsFrom['extension'])) { // Files only
+			
+			if( in_array($eePathPartsFrom['extension'], $this->eeDynamicImageThumbFormats) OR in_array($eePathPartsFrom['extension'], $this->eeDynamicVideoThumbFormats) ) {
+				
+				// All thumbs are JPGs
+				if($eePathPartsFrom['extension'] != 'jpg') { 
+					$eeFileFrom = str_replace('.' . $eePathPartsFrom['extension'], '.jpg', $eeFileFrom);
+					$eeFileTo = str_replace('.' . $eePathPartsFrom['extension'], '.jpg', $eeFileTo);
+				}
+				
+				$eeThumbFrom = ABSPATH . $eeSFL_Settings['FileListDir'] . '.thumbnails/thumb_' . basename($eeFileFrom);
+				
+				if( is_file($eeThumbFrom) ) {
+					
+					if($eeFileTo === FALSE) { // Delete the thumb
+					
+						if(unlink($eeThumbFrom)) {
+							
+							return;
+						}
+					
+					} else { // Rename the thumb
+					
+						$eePathPartsTo = pathinfo($eeFileTo);
+						
+						$eeThumbTo = ABSPATH . $eeSFL_Settings['FileListDir'] . '.thumbnails/thumb_' . basename($eeFileTo);
+						
+						if(rename($eeThumbFrom, $eeThumbTo)) { // Do nothing on failure
+						
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	
+	
 	// Move the sort item to the array key and then sort. Preserve the key (File ID) in a new element
 	public function eeSFL_SortFiles($eeFiles, $eeSortBy, $eeSortOrder) {
 		
