@@ -609,7 +609,7 @@ class eeSFL_FREE_MainClass {
 	
 	
 	// Move, Rename or Delete a thumbnail - Expects path relative to FileListDir
-	public function eeSFL_UpdateThumbnail($eeFileFrom, $eeFileTo = FALSE) {
+	public function eeSFL_UpdateThumbnail($eeFileFrom, $eeFileTo) {
 		
 		global $eeSFL_Settings;
 		
@@ -630,7 +630,7 @@ class eeSFL_FREE_MainClass {
 				
 				if( is_file($eeThumbFrom) ) {
 					
-					if($eeFileTo === FALSE) { // Delete the thumb
+					if(!$eeFileTo) { // Delete the thumb
 					
 						if(unlink($eeThumbFrom)) {
 							
