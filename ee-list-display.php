@@ -452,6 +452,15 @@ if( isset($eeSFL_Files) ) {
 								
 							if($eeAdmin OR $eeSFL_Settings['ShowSubmitterInfo'] == 'YES') {
 								
+								if( $eeFileArray['FileOwner'] >= 1 ) {
+									
+									$wpUserData = get_userdata($eeFileArray['FileOwner']);
+									if($wpUserData->user_email) {
+										$eeFileArray['SubmitterEmail'] = $wpUserData->user_email;
+										$eeFileArray['SubmitterName'] = $wpUserData->first_name . ' ' . $wpUserData->last_name;
+									}
+								}
+								
 								$eeOutput .= '<p class="eeSFL_FileSubmitter">
 								
 								' . __('Submitted by', 'ee-simple-file-list') . ': <a href="mailto:' . $eeFileArray['SubmitterEmail'] . '">' . $eeFileArray['SubmitterName'] . '</a></p>';

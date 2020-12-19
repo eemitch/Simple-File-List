@@ -245,25 +245,27 @@ function eeSFL_FREE_ProcessUpload() {
 							if( is_numeric(@$_POST['eeSFL_FileOwner']) ) { // Expecting a number
 								
 								$eeNewFileArray['FileOwner'] = $_POST['eeSFL_FileOwner']; // Logged-in owner
-							}
 							
-							if( isset($_POST['eeSFL_Name'])) {
+							} else {
 								
-								$eeString = sanitize_text_field(@$_POST['eeSFL_Name']);
+								if( isset($_POST['eeSFL_Name'])) {
 								
-								if($eeString) {
+									$eeString = sanitize_text_field(@$_POST['eeSFL_Name']);
 									
-									$eeNewFileArray['SubmitterName'] = $eeString; // Who uploaded the file
+									if($eeString) {
+										
+										$eeNewFileArray['SubmitterName'] = $eeString; // Who uploaded the file
+									}
 								}
-							}
-							
-							if( isset($_POST['eeSFL_Email'])) {
 								
-								$eeString = filter_var( sanitize_email(@$_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL);
-								
-								if($eeString) {
+								if( isset($_POST['eeSFL_Email'])) {
 									
-									$eeNewFileArray['SubmitterEmail'] = $eeString; // Their email
+									$eeString = filter_var( sanitize_email(@$_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL);
+									
+									if($eeString) {
+										
+										$eeNewFileArray['SubmitterEmail'] = $eeString; // Their email
+									}
 								}
 							}
 							
