@@ -52,8 +52,10 @@ $eeOutput .= '<article class="eeSupp eeExtensions">
 	
 	<ul>
 		
+		<li>' . __('Edit the modification date of any file or folder.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Bulk file editing allows you to download, move, delete or add descriptions to many files or folders at once.', 'ee-simple-file-list') . '</li>
-		<li>' . __('Download multiple files or folders at once as a zip file.', 'ee-simple-file-list') . '</li> 
+		<li>' . __('Download multiple files or folders at once as a zip file.', 'ee-simple-file-list') . '</li>
+		<li>' . __('Allow front-end users to download a folder as a zip file.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Share files by sending emails containing file links to others.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Optionally define a custom directory for your file list.', 'ee-simple-file-list') . '</li>
 		<li>' . __('The Tools Tab allows you to reset settings, the file list array and more.', 'ee-simple-file-list') . '</li>
