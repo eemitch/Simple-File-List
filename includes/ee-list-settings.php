@@ -111,8 +111,13 @@ $eeOutput .= '
 		
 		
 		
+		<div class="eeSFL_AdminHalfLeft">
 		
 		<fieldset class="eeSFL_SettingsBlock">
+		
+		<h2>' . __('File List Behaviour', ) . '</h2>
+		
+		<hr />
 		
 		<h3>' . __('File List Access', 'ee-simple-file-list') . '</h3>
 	
@@ -147,10 +152,6 @@ $eeOutput .= '
 		</select>
 		<div class="eeNote">' . __('Determine who you will show the front-side list to.', 'ee-simple-file-list') . '</div> 
 		
-		
-		
-		
-		
 		<label for="eeAllowFrontManage">' . __('Front-End Management', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eeAllowFrontManage" value="YES" id="eeAllowFrontManage"';
 		
@@ -161,9 +162,71 @@ $eeOutput .= '
 		<div class="eeNote"><a href="https://simplefilelist.com/file-access-manager/" target="_blank">' . __('Get File Access Manager', 'ee-simple-file-list') . '</a> &rarr; ' . 
 			__('The Pro version allows you to add the "File Access Manager" extension.  This gives you improved user access control.', 'ee-simple-file-list') . '</div>
 			
-		<hr />
+		</fieldset>
+		
+		
+		<fieldset class="eeSFL_SettingsBlock">
+		
+		<h3>' . __('File Sorting and Order', 'ee-simple-file-list') . '</h3>	
 			
-		<h2>' . __('File List Cache', 'ee-simple-file-list') . '</h2>	
+		<label for="eeSortList">' . __('Sort By', 'ee-simple-file-list') . ':</label>
+		
+		<select name="eeSortBy" id="eeSortList">
+		
+			<option value="Name"';
+			
+			if($eeSFL_Settings['SortBy'] == 'Name') { $eeOutput .=  ' selected'; }
+			
+			$eeOutput .= '>' . __('File Name', 'ee-simple-file-list') . '</option>
+			
+			
+			<option value="Date"';
+			
+			if($eeSFL_Settings['SortBy'] == 'Date') { $eeOutput .=  ' selected'; }
+			
+			$eeOutput .= '>' . __('Date File Added', 'ee-simple-file-list') . '</option>
+			
+			
+			<option value="DateMod"';
+			
+			if($eeSFL_Settings['SortBy'] == 'DateMod') { $eeOutput .=  ' selected'; }
+			
+			$eeOutput .= '>' . __('Date File Changed', 'ee-simple-file-list') . '</option>
+			
+			
+			<option value="Size"';
+			
+			if($eeSFL_Settings['SortBy'] == 'Size') { $eeOutput .=  ' selected'; }
+			
+			$eeOutput .= '>' . __('File Size', 'ee-simple-file-list') . '</option>
+			
+			
+			<option value="Random"';
+			
+			if($eeSFL_Settings['SortBy'] == 'Random') { $eeOutput .=  ' selected'; }
+			
+			$eeOutput .= '>' . __('Random', 'ee-simple-file-list') . '</option>
+		
+		</select> 
+		
+		<div class="eeNote">' . __('Sort the list by name, date, file size, or randomly.', 'ee-simple-file-list') . '</div>
+			
+		<label for="eeSortOrder">' . __('Reverse Order', 'ee-simple-file-list') . ':</label>
+		<input type="checkbox" name="eeSortOrder" value="Descending" id="eeSortOrder"';
+		
+		if( $eeSFL_Settings['SortOrder'] == 'Descending') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /> <p>&darr; ' . __('Descending', 'ee-simple-file-list') . '</p>
+		
+		<div class="eeNote">' . __('Check this box to reverse the default sort order.', 'ee-simple-file-list') . '<br />
+			' . __('The list is sorted Ascending by default', 'ee-simple-file-list') . ': A to Z, ' . __('Small to Large', 'ee-simple-file-list') . ', ' . __('Old to New', 'ee-simple-file-list') . '</div>	
+		
+		</fieldset>
+		
+		
+		<fieldset class="eeSFL_SettingsBlock">
+			
+		<h3>' . __('File List Cache', 'ee-simple-file-list') . '</h3>	
 				
 		<label for="eeExpireTime">' . __('Use the File List Cache', 'ee-simple-file-list') . ':</label>
 		<input id="eeExpireTime" type="checkbox" name="eeExpireTime" value="YES"';
@@ -174,13 +237,19 @@ $eeOutput .= '
 		
 		</fieldset>
 		
+		</div>
 		
 		
 		
 		
 		
+		<div class="eeSFL_AdminHalfRight">
 		
 		<fieldset class="eeSFL_SettingsBlock">
+		
+		<h2>' . __('File List Display', ) . '</h2>
+		
+		<hr />
 		
 		<h3>' . __('File List Table Information', 'ee-simple-file-list') . '</h3>
 
@@ -248,6 +317,21 @@ $eeOutput .= '
 		
 		<div class="eeNote">' . __('Show the table header above the file list or not.', 'ee-simple-file-list') . '</div>
 		
+		</fieldset>
+		
+		
+		<fieldset class="eeSFL_SettingsBlock">
+		
+		<h3>' . __('File Details', 'ee-simple-file-list') . '</h3>	
+		
+		<label for="eeShowFileDescription">' . __('Show File Description', 'ee-simple-file-list') . ':</label>
+		<input type="checkbox" name="eeShowFileDescription" value="YES" id="eeShowFileDescription"';
+		
+		if( $eeSFL_Settings['ShowFileDescription'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /> <p>' . __('Description of the file', 'ee-simple-file-list') . '</p>
+		
+		<div class="eeNote">' . __('Display the file description below the file name.', 'ee-simple-file-list') . '</div>	
 		
 		
 		<label for="eeShowFileActions">' . __('Show File Actions', 'ee-simple-file-list') . ':</label>
@@ -260,7 +344,6 @@ $eeOutput .= '
 		<div class="eeNote">' . __('Show file action links below each file name on the front-end list', 'ee-simple-file-list') . '</div>
 		
 		
-		
 		<label for="eeShowSubmitterInfo">' . __('Show File Owner', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eeShowSubmitterInfo" value="YES" id="eeShowSubmitterInfo"';
 		
@@ -268,99 +351,7 @@ $eeOutput .= '
 		
 		$eeOutput .= ' /> <p>' . __('Show on Front-End', 'ee-simple-file-list') . '</p>
 		
-		<div class="eeNote">' . __('Show the name of the user who uploaded the file.', 'ee-simple-file-list') . '</div>
-			
-		</fieldset>
-		
-		
-			
-		
-			
-		
-			
-			
-			
-			
-			
-		<fieldset class="eeSFL_SettingsBlock">
-		
-		<h2>' . __('File Sorting and Order', 'ee-simple-file-list') . '</h2>	
-			
-		<label for="eeSortList">' . __('Sort By', 'ee-simple-file-list') . ':</label>
-		
-		<select name="eeSortBy" id="eeSortList">
-		
-			<option value="Name"';
-			
-			if($eeSFL_Settings['SortBy'] == 'Name') { $eeOutput .=  ' selected'; }
-			
-			$eeOutput .= '>' . __('File Name', 'ee-simple-file-list') . '</option>
-			
-			
-			<option value="Date"';
-			
-			if($eeSFL_Settings['SortBy'] == 'Date') { $eeOutput .=  ' selected'; }
-			
-			$eeOutput .= '>' . __('Date File Added', 'ee-simple-file-list') . '</option>
-			
-			
-			<option value="DateMod"';
-			
-			if($eeSFL_Settings['SortBy'] == 'DateMod') { $eeOutput .=  ' selected'; }
-			
-			$eeOutput .= '>' . __('Date File Changed', 'ee-simple-file-list') . '</option>
-			
-			
-			<option value="Size"';
-			
-			if($eeSFL_Settings['SortBy'] == 'Size') { $eeOutput .=  ' selected'; }
-			
-			$eeOutput .= '>' . __('File Size', 'ee-simple-file-list') . '</option>
-			
-			
-			<option value="Random"';
-			
-			if($eeSFL_Settings['SortBy'] == 'Random') { $eeOutput .=  ' selected'; }
-			
-			$eeOutput .= '>' . __('Random', 'ee-simple-file-list') . '</option>
-		
-		</select> 
-		
-		<div class="eeNote">' . __('Sort the list by name, date, file size, or randomly.', 'ee-simple-file-list') . '</div>
-			
-		<label for="eeSortOrder">' . __('Reverse Order', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeSortOrder" value="Descending" id="eeSortOrder"';
-		
-		if( $eeSFL_Settings['SortOrder'] == 'Descending') { $eeOutput .= ' checked="checked"'; }
-		
-		$eeOutput .= ' /> <p>&darr; ' . __('Descending', 'ee-simple-file-list') . '</p>
-		
-		<div class="eeNote">' . __('Check this box to reverse the default sort order.', 'ee-simple-file-list') . '<br />
-			' . __('The list is sorted Ascending by default', 'ee-simple-file-list') . ': A to Z, ' . __('Small to Large', 'ee-simple-file-list') . ', ' . __('Old to New', 'ee-simple-file-list') . '</div>	
-		
-		
-		
-		
-		</fieldset>	
-				
-				
-				
-				
-				
-		<fieldset class="eeSFL_SettingsBlock">
-		
-		<h2>' . __('File Details', 'ee-simple-file-list') . '</h2>	
-		
-		<label for="eeShowFileDescription">' . __('Show File Description', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeShowFileDescription" value="YES" id="eeShowFileDescription"';
-		
-		if( $eeSFL_Settings['ShowFileDescription'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-		
-		$eeOutput .= ' /> <p>' . __('Description of the file', 'ee-simple-file-list') . '</p>
-		
-		<div class="eeNote">' . __('Display the file description below the file name.', 'ee-simple-file-list') . '</div>
-		
-		<br class="eeClearFix" />		
+		<div class="eeNote">' . __('Show the name of the user who uploaded the file.', 'ee-simple-file-list') . '</div>	
 		
 		<label for="eeShowFileExtension">' . __('Show Extension', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eeShowFileExtension" value="YES" id="eeShowFileExtension"';
@@ -370,8 +361,7 @@ $eeOutput .= '
 		$eeOutput .= ' /> <p>' . __('File Type', 'ee-simple-file-list') . '</p>
 		
 		<div class="eeNote">' . __('Show or hide the file extension.', 'ee-simple-file-list') . '</div>
-		
-		<br class="eeClearFix" />	
+
 		
 		<label for="eePreserveSpaces">' . __('Preserve Spaces', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eePreserveSpaces" value="YES" id="eePreserveSpaces"';
@@ -382,11 +372,10 @@ $eeOutput .= '
 		
 		<div class="eeNote">' . __('Spaces in file names are replaced with hyphens in order to make the URL legal.', 'ee-simple-file-list') . ' ' . 
 			__('This setting will revert this action for display.', 'ee-simple-file-list') . '</div>
-		
-		<br class="eeClearFix" />
 
 		</fieldset>
 		
+		</div>
 		
 		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" />
 		

@@ -150,18 +150,29 @@ p.eeTitle {
 	background: transparent;
 }
 
-fieldset.eeSFL_SettingsBlock {
-	display: block;
-	width: 45%;
+div.eeSFL_AdminHalfRight,
+div.eeSFL_AdminHalfLeft {
+	width: 49.5%;
 	float: left;
-	clear: none;
-	margin: 0 1% 15px 0;
+	margin: 10px 0;
+	padding: 0;
+}
+div.eeSFL_AdminHalfRight {
+	margin-left: .5%;
+}
+div.eeSFL_AdminHalfLeft {
+	margin-right: .5%;
+}
+
+
+fieldset.eeSFL_SettingsBlock {
+	margin-bottom: 10px;
 	border: 2px solid #CCC;
-	min-height: 400px;
 }
 fieldset.eeSFL_SettingsFull {
-	margin: 0 2.2% 15px 0;
+	/* margin: 0 2.2% 15px 0; */
 	border: 2px solid #CCC;
+	margin-bottom: 10px;
 }
 
 

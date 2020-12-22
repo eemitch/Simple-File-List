@@ -774,32 +774,11 @@ function eeSFL_FREE_AdminMenu() {
 		include_once(WP_PLUGIN_DIR . '/' . $eeSFL_FREE->eePluginNameSlug . '/ee-admin-page.php'); // Admin's List Management Page
 	}
 	
-	// Admin Menu Visability
-	switch ($eeSFL_Settings['AdminRole']) {
-	    case 1:
-	        $eeCapability = 'read';
-	        break;
-	    case 2:
-	        $eeCapability = 'edit_posts';
-	        break;
-	    case 3:
-	        $eeCapability = 'publish_posts';
-	        break;
-	    case 4:
-	        $eeCapability = 'edit_others_pages';
-	        break;
-	    case 5:
-	        $eeCapability = 'activate_plugins';
-	        break;
-		default:
-			$eeCapability = 'edit_posts';
-	}
-	
 	// The Admin Menu
 	add_menu_page(
 		__($eeSFL_FREE->eePluginName, $eeSFL_FREE->eePluginSlug), // Page Title
 		__($eeSFL_FREE->eePluginMenuTitle, $eeSFL_FREE->eePluginSlug), // Menu Title
-		$eeCapability, // User status reguired to see the menu
+		'activate_plugins', // User status required to see the menu
 		$eeSFL_FREE->eePluginSlug, // Slug
 		'eeSFL_FREE_ManageLists', // Function that displays the menu page
 		'dashicons-index-card' // Icon used

@@ -97,8 +97,6 @@ $eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL_FREE->eePluginSl
 	<p class="eeSettingsRight"><a class="eeInstructionsLink" href="https://simplefilelist.com/upload-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list') . '</a>
 	
 	<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" /></p>
-	
-	<br class="eeClearFix" />
 			
 	<h2>' . __('Upload Settings', 'ee-simple-file-list') . '</h2>
 
@@ -106,7 +104,11 @@ $eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL_FREE->eePluginSl
 	
 	$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce', TRUE, FALSE);
 	
-	$eeOutput .= '<fieldset class="eeSFL_SettingsBlock">
+	$eeOutput .= '
+	
+	<div class="eeSFL_AdminHalfLeft">
+	
+	<fieldset class="eeSFL_SettingsBlock">
 	
 		<h3>' . __('File Upload Restrictions', 'ee-simple-file-list') . '</h3>
 		
@@ -169,9 +171,12 @@ $eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL_FREE->eePluginSl
 		
 	</fieldset>
 			
+	</div>		
+	
+	
+	
 			
-			
-			
+	<div class="eeSFL_AdminHalfRight">		
 			
 	<fieldset class="eeSFL_SettingsBlock">
 	
@@ -205,6 +210,8 @@ $eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL_FREE->eePluginSl
 		<div class="eeNote">' . __('Show the user file size, number and file type restrictions.', 'ee-simple-file-list') . '</div>
 		
 	</fieldset>
+	
+	</div>
 		
 	<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" />
 	
