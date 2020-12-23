@@ -212,7 +212,7 @@ if( isset($eeSFL_Files) ) {
 	
 	if($eeSFL_Settings['ShowHeader'] == 'YES' OR $eeAdmin) { $eeOutput .= '<thead><tr>';
 							
-		if($eeSFL_Settings['ShowFileThumb'] == 'YES') { 
+		if($eeAdmin OR $eeSFL_Settings['ShowFileThumb'] == 'YES') { 
 			
 			$eeOutput .= '<th class="eeSFL_Thumbnail">';
 			
@@ -225,13 +225,13 @@ if( isset($eeSFL_Files) ) {
 		
 		$eeOutput .= '<th class="eeSFL_Sortable eeSFL_FileName">';
 			
-		if(@$eeSFL_Settings['LabelName']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelName']); } 
+		if($eeSFL_Settings['LabelName']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelName']); } 
 			else { $eeOutput .= __('Name', 'ee-simple-file-list'); }
 		
 		$eeOutput .= '</th>';
 		
 		
-		if($eeSFL_Settings['ShowFileSize'] == 'YES') { 
+		if($eeAdmin OR $eeSFL_Settings['ShowFileSize'] == 'YES') { 
 			
 			$eeOutput .= '<th class="eeSFL_Sortable eeSFL_FileSize">';
 			
@@ -242,7 +242,7 @@ if( isset($eeSFL_Files) ) {
 		}
 		
 		
-		if($eeSFL_Settings['ShowFileDate'] == 'YES') { 
+		if($eeAdmin OR $eeSFL_Settings['ShowFileDate'] == 'YES') { 
 			
 			$eeOutput .= '<th class="eeSFL_Sortable eeSFL_FileDate">';
 			
@@ -548,14 +548,14 @@ if( isset($eeSFL_Files) ) {
 					
 					
 					// File Size
-					if($eeSFL_Settings['ShowFileSize'] == 'YES') {
+					if($eeAdmin OR $eeSFL_Settings['ShowFileSize'] == 'YES') {
 					
 						$eeOutput .= '<td class="eeSFL_FileSize">' . $eeFileSize . '</td>';
 					}
 					
 					
 					// File Modification Date
-					if($eeSFL_Settings['ShowFileDate'] == 'YES') {
+					if($eeAdmin OR $eeSFL_Settings['ShowFileDate'] == 'YES') {
 						
 						$eeOutput .= '<td class="eeSFL_FileDate">' . $eeFileDate . '</td>';
 					}

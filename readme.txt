@@ -248,6 +248,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 * Reorganized the List Settings tabs.
 * Simplified Re-Scan Interval by changing to an ON/OFF setting. If ON, File List Cache expires in one hour, else the disk is scanned on each page load.
 * Admins can now always add file descriptions when uploading on the back-end.
+* Admins now see all file details on the back-end, regardless of front-side settings.
 * Improved and added translations.
 * Many many under-the-hood efficiency and security improvements.
 
