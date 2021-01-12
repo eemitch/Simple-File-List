@@ -82,6 +82,8 @@ Use shortcode attributes to over-ride the main plugin settings.
 
 ##Internationalized
 
+* cz_CZ - Czech (Czech Republic)
+* da_DK - Danish (Denmark)
 * de_DE - German (Germany)
 * es_ES - Spanish (Spain)
 * es_MX - Spanish (Mexico)
