@@ -5,7 +5,7 @@ Tags: file sharing, file list, file uploader, upload files, share files, exchang
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 5.6
-Stable tag: 4.2.13
+Stable tag: 4.2.15
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -239,6 +239,9 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Changelog ==
+
+= 4.2.15 =
+* Bug fix to prevent SPAM abuse.
 
 = 4.2.13 =
 * Extensive under-the-hood changes so this version and the Pro version can run at the same time.
