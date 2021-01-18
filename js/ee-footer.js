@@ -26,43 +26,43 @@ function eeSFL_FREE_EditFile(eeSFL_FileID) {
 	if( jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).is(':visible') ) {
 		
 		jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).slideUp();
-		jQuery('#eeSFL_EditFile_' + eeSFL_FileID).text('Edit');
+		jQuery('#eeSFL_EditFile_' + eeSFL_FileID).text(eesfl_vars['eeEditText']);
 	
 	} else {
 		
 		jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).slideDown();
-		jQuery('#eeSFL_EditFile_' + eeSFL_FileID).text('Cancel');
+		jQuery('#eeSFL_EditFile_' + eeSFL_FileID).text( eesfl_vars['eeCancelText'] );
 	}
 }
 
 
 
 
-function eeSFL_FREE_EditSave(eeSFL_FileID) {
-	
-	var eeRenaming = false;
+function eeSFL_FREE_EditRename(eeSFL_FileID) {
 	
 	var eeName1 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileLink').text(); // Current File Name
 	var eeName2 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeNewFileName').val(); // New File Name
 	
 	if(eeName1 != eeName2) { // If no match, we rename
 		
-		eeRenaming = true;
 		eeSFL_FREE_FileAction(eeSFL_FileID, 'Rename');
-	}
-	
-	var eeDesc1 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_SavedDesc').text(); // Current Desc
-	var eeDesc2 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeSFL_NewFileDesc').val(); // New Desc
-	
-	if(eeDesc1 != eeDesc2 && !eeRenaming) { // If no match, we update
-		
-		eeSFL_FREE_FileAction(eeSFL_FileID, 'UpdateDesc');
 	}
 	
 	jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).slideUp();
 	jQuery('#eeSFL_EditFile_' + eeSFL_FileID).text('Edit');
 }
 
+function eeSFL_FREE_EditDesc(eeSFL_FileID) {
+	
+	var eeDesc1 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_SavedDesc').text(); // Current Desc
+	var eeDesc2 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeSFL_NewFileDesc').val(); // New Desc
+	
+	if(eeDesc1 != eeDesc2) { // If no match, we update  && !eeRenaming
+		
+		jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).slideUp();
+		eeSFL_FREE_FileAction(eeSFL_FileID, 'UpdateDesc');
+	}
+}
 
 
 
@@ -80,7 +80,7 @@ function eeSFL_FREE_Delete(eeSFL_FileID) {
     
     console.log(eeSFL_FileName);
 	
-	if( confirm("Confirm Delete...\r\n" + eeSFL_FileName) ) {
+	if( confirm( eesfl_vars['eeConfirmDeleteText'] + "\r\n\r\n" + eeSFL_FileName ) ) {
 	
 		eeSFL_FREE_FileAction(eeSFL_FileID, 'Delete');
 	

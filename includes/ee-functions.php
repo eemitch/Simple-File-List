@@ -82,16 +82,10 @@ function eeSFL_FREE_FileListDirCheck($eeFileListDir) {
 		return FALSE;
 	}
 	
-	$eeSFL_FileListDirCheck = get_transient('eeSFL-1-FileListDirCheck');
-	
 	// Check Transient First
-	if( $eeFileListDir == $eeSFL_FileListDirCheck AND is_dir(ABSPATH . $eeFileListDir) ) {
-		
-		return TRUE; // OKAY, No Change
-		
-	} elseif( strlen($eeFileListDir) ) { // Transient Expired, Dir Changed or New Install
+	if( !is_dir(ABSPATH . $eeFileListDir) ) { // Directory Changed or New Install
 	
-		$eeSFL_FREE_Log['SFL'][] = 'No Transient or Directory Change...';
+		$eeSFL_FREE_Log['SFL'][] = 'New Install or Directory Change...';
 		
 		if( !is_writable( ABSPATH . $eeFileListDir ) ) {
 			
@@ -127,8 +121,6 @@ function eeSFL_FREE_FileListDirCheck($eeFileListDir) {
 				$eeSFL_FREE_Log['SFL'][] = '"FileListDir" Has Been Created!';
 				$eeSFL_FREE_Log['SFL'][] = $eeFileListDir;
 			}
-			
-			
 		
 		} else {
 			$eeSFL_FREE_Log['SFL'][] = 'FileListDir Looks Good';
@@ -161,15 +153,11 @@ function eeSFL_FREE_FileListDirCheck($eeFileListDir) {
 			}
 		}
 		
-		
-		// Set Transient
-		set_transient('eeSFL-1-FileListDirCheck', $eeFileListDir, 86400); // 1 Expires in Day
-		
-		return TRUE;
+		return TRUE; // SUCCESS
 		
 	} else {
 		
-		return FALSE;
+		return TRUE; // Looks Good
 	}
 }
 
@@ -178,16 +166,13 @@ function eeSFL_FREE_FileListDirCheck($eeFileListDir) {
 // Post-process an upload job
 function eeSFL_FREE_ProcessUpload() {
 	
-	global $eeSFL_FREE, $eeSFL_FREE_Config, $eeSFL_FREE_Env, $eeSFL_FREE_Log;
+	global $eeSFL_FREE, $eeSFL_Settings, $eeSFL_FREE_Env, $eeSFL_FREE_Log;
 	
 	$eeSFL_FREE_Log['SFL'][] = 'Function Called: eeSFL_ProcessUpload()';
 	
 	$eeFileCount = filter_var(@$_POST['eeSFL_FileCount'], FILTER_VALIDATE_INT);
 	
 	if($eeFileCount) {
-		
-		// Add the new files to the array
-		$eeFiles = $eeSFL_FREE->eeSFL_UpdateFileListArray();
 	
 		$eeSFL_FREE_Log['SFL'][] = $eeFileCount . ' Files Uploaded';
 		
@@ -227,41 +212,95 @@ function eeSFL_FREE_ProcessUpload() {
 				}
 				$eeUploadJob .= ":" . PHP_EOL . PHP_EOL;
 				
+				
+				// Add the file to the existing array
+				$eeFileArrayWorking = get_option('eeSFL_FileList_1');
+				
 				// Loop through the uploaded files
 				if(count($eeArray)) {
 					
 					foreach($eeArray as $eeFile) { 
 						
 						$eeFile = sanitize_text_field($eeFile);
-
-						// Set these if available
-						if( is_numeric(@$_POST['eeSFL_FileOwner']) ) { // Expecting a number
-							$eeSFL_FREE->eeSFL_UpdateFileDetail($eeFile, 'FileOwner', $_POST['eeSFL_FileOwner']);
-						}
-						if( isset($_POST['eeSFL_Name'])) {
-							$eeString = sanitize_text_field(@$_POST['eeSFL_Name']);
-							if($eeString) {
-								$eeSFL_FREE->eeSFL_UpdateFileDetail($eeFile, 'SubmitterName', $eeString);
-							}
-						}
-						if( isset($_POST['eeSFL_Email'])) {
-							$eeString = filter_var( sanitize_email(@$_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL);
-							if($eeString) {
-								$eeSFL_FREE->eeSFL_UpdateFileDetail($eeFile, 'SubmitterEmail', $eeString );
-							}
-						}
-						if( isset($_POST['eeSFL_Comments'])) {
-							$eeString = sanitize_text_field(@$_POST['eeSFL_Comments']);
-							if($eeString) {
-								$eeSFL_FREE->eeSFL_UpdateFileDetail($eeFile, 'SubmitterComments', $eeString);
-							}
-						}
 						
-						// Notification Info (FREE)
-						$eeUploadJob .=  $eeFile . PHP_EOL . 
-							$eeSFL_FREE_Config['FileListURL'] . $eeFile . PHP_EOL . 
-								"(" . eeSFL_FREE_GetFileSize( $eeSFL_FREE_Config['FileListDir'] . $eeFile ) . ")" . PHP_EOL . PHP_EOL;
+						if( is_file(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile) ) { // Check to be sure the file is there
+							
+							$eeSFL_FREE_Log['SFL'][] = 'Creating File Array: ' . $eeFile;
+							
+							$eePathParts = pathinfo($eeFile);
+							
+							$eeSize = filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile);
+						
+							$eeNewFileArray = array(
+								'FileList' => 1, // The ID of the File List, contained in the above array.
+							    'FilePath' => $eeFile, // Path to file, relative to the list root
+							    'FileExt' => strtolower($eePathParts['extension']), // The file extension
+							    'FileMIME' => mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile), // MIME type
+								'FileSize' => $eeSize, // The size of the file
+								'FileDateAdded' => date("Y-m-d H:i:s"), // Date the file was added to the list
+								'FileDateChanged' => date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile)), // Last date the file was renamed or otherwise changed
+							);
+						
+							// Set these if available
+							if( is_numeric(@$_POST['eeSFL_FileOwner']) ) { // Expecting a number
+								
+								$eeNewFileArray['FileOwner'] = $_POST['eeSFL_FileOwner']; // Logged-in owner
+							
+							} else {
+								
+								if( isset($_POST['eeSFL_Name'])) {
+								
+									$eeString = sanitize_text_field(@$_POST['eeSFL_Name']);
+									
+									if($eeString) {
+										
+										$eeNewFileArray['SubmitterName'] = $eeString; // Who uploaded the file
+									}
+								}
+								
+								if( isset($_POST['eeSFL_Email'])) {
+									
+									$eeString = filter_var( sanitize_email(@$_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL);
+									
+									if($eeString) {
+										
+										$eeNewFileArray['SubmitterEmail'] = $eeString; // Their email
+									}
+								}
+							}
+							
+							if( isset($_POST['eeSFL_Comments'])) {
+								
+								$eeString = sanitize_text_field(@$_POST['eeSFL_Comments']);
+								
+								if($eeString) {
+									
+									$eeNewFileArray['FileDescription'] = $eeString; // A short description of the file
+									$eeNewFileArray['SubmitterComments'] = $eeString; // What they said
+								}
+							}
+							
+							$eeSFL_FREE_Log['SFL'][] = '——> Done';
+							$eeSFL_FREE_Log['SFL'][] = $eeNewFileArray;
+							
+							// Append this file array to the big one
+							$eeFileArrayWorking[] = $eeNewFileArray;
+							
+							// Create thumbnail if needed
+							if( in_array($eePathParts['extension'], $eeSFL_FREE->eeDynamicImageThumbFormats) OR in_array($eePathParts['extension'], $eeSFL_FREE->eeDynamicVideoThumbFormats) ) {
+					
+								$eeSFL_FREE->eeSFL_CheckThumbnail($eeFile);
+							}
+							
+							// Notification Info (FREE)
+							$eeUploadJob .=  $eeFile . PHP_EOL . 
+								$eeSFL_Settings['FileListURL'] . $eeFile . PHP_EOL . 
+									"(" . eeSFL_FREE_FormatFileSize($eeSize) . ")" . PHP_EOL . PHP_EOL;
+						}
 					}
+					
+					// Save the new array
+					update_option('eeSFL_FileList_1', $eeFileArrayWorking);
 						
 					$eeSFL_FREE_Log['messages'][] = __('File Upload Complete', 'ee-simple-file-list');
 					
@@ -272,7 +311,7 @@ function eeSFL_FREE_ProcessUpload() {
 					} else  {
 						
 						// Send Email Notice
-						if($eeSFL_FREE_Config['Notify'] == 'YES') {
+						if($eeSFL_Settings['Notify'] == 'YES') {
 							
 							// Send the Email Notification
 							$eeSFL_FREE->eeSFL_NotificationEmail($eeUploadJob);
@@ -376,6 +415,10 @@ function eeSFL_FREE_ProcessTextInput($eeTerm, $eeType = 'text') {
 		
 		$eeValue = filter_var(sanitize_email(@$_POST['ee' . $eeTerm]), FILTER_VALIDATE_EMAIL);
 	
+	} elseif($eeType == 'textarea') {
+		
+		$eeValue = sanitize_textarea_field( @$_POST['ee' . $eeTerm] );
+		
 	} else {
 		
 		$eeValue = strip_tags(@$_POST['ee' . $eeTerm]);
@@ -391,11 +434,9 @@ function eeSFL_FREE_ProcessTextInput($eeTerm, $eeType = 'text') {
 // Check if a file already exists, then number it so file will not be over-written.
 function eeSFL_FREE_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path from WP root
 	
-	global $eeSFL_FREE, $eeSFL_FREE_Log;
+	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_Settings;
 	
-	$eeSFL_FREE_Config = $eeSFL_FREE->eeSFL_Config();
-	
-	if(@$eeSFL_FREE_Config['AllowOverwrite'] == 'YES') { // Overwriting files allowed
+	if(@$eeSFL_Settings['AllowOverwrite'] == 'YES') { // Overwriting files allowed
 		return $eeSFL_FilePathAdded;
 	}
 	
@@ -406,7 +447,7 @@ function eeSFL_FREE_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path f
 	$eeNameOnly = $eePathParts['filename'];
 	$eeExtension = strtolower($eePathParts['extension']);
 	
-	$eeSFL_Files = get_option('eeSFL-FileList-1'); // Our array of file info
+	$eeSFL_Files = get_option('eeSFL_FileList_1'); // Our array of file info
 	
 	if($eeSFL_Files) {
 	
@@ -415,7 +456,7 @@ function eeSFL_FREE_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Full path f
 			$eeFilePath = $eeArray['FilePath']; // Get the name.ext
 			
 			// Check if duplicate
-			if( $eeSFL_FilePathAdded == $eeSFL_FREE_Config['FileListDir'] . $eeFilePath ) { // Duplicate found
+			if( $eeSFL_FilePathAdded == $eeSFL_Settings['FileListDir'] . $eeFilePath ) { // Duplicate found
 			
 				$eeSFL_FREE_Log['SFL'][] = 'Duplicate Item Found: ' . $eeSFL_FilePathAdded;
 				

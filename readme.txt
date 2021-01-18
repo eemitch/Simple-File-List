@@ -5,7 +5,7 @@ Tags: file sharing, file list, file uploader, upload files, share files, exchang
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 5.6
-Stable tag: 4.2.15
+Stable tag: 4.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,8 @@ Use shortcode attributes to over-ride the main plugin settings.
 
 ##Internationalized
 
+* cz_CZ - Czech (Czech Republic)
+* da_DK - Danish (Denmark)
 * de_DE - German (Germany)
 * es_ES - Spanish (Spain)
 * es_MX - Spanish (Mexico)
@@ -162,7 +164,7 @@ Restrict access to all of the files by default. Grant access to specific files t
 * Use a shortcode to place a search form anywhere on your website.
 **[eeSFLS permalink='file-list-url']**
 
-[More Information](htts://simplefilelistcom/) | [Try the Demo](https://simplefilelist.com/simple-file-list-demo/)
+[More Information](htts://simplefilelist.com/) | [Try the Demo](https://simplefilelist.com/simple-file-list-demo/)
 
 
 == Installation ==
@@ -228,7 +230,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.2.13 - Removed Folder Extension Support (Free upgrade to Pro for extension owners)
+* 4.3 - Major Update
 
 
 == Screenshots ==
@@ -240,6 +242,19 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
+
+= 4.3.5 =
+* Added smooth-scrolling down to the file list section after upload. (by popular demand)
+* Original file modification date is now preserved for file uploads. (by popular demand)
+* Sorting options now available for Date Added and Date Changed.
+* Redesigned the Edit Details dialog.
+* Reorganized the List Settings tabs.
+* Simplified Re-Scan Interval by changing to an ON/OFF setting. If ON, File List Cache expires in one hour, else the disk is scanned on each page load.
+* Admins can now always add file descriptions when uploading on the back-end.
+* Admins now see all file details on the back-end, regardless of front-side settings.
+* Improved and added translations.
+* Many many under-the-hood efficiency and security improvements.
+
 = 4.2.15 =
 * Bug fix to prevent SPAM abuse.
 
@@ -247,7 +262,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 * Extensive under-the-hood changes so this version and the Pro version can run at the same time.
 * Now deleting corrupt image files (rather than jut warning) to prevent images disguised as malware being listed.
 * Removed support for extensions and added path to free upgrade to Pro for all extension owners.
-Pages using the showfolder shortcode attribute will show "ERROR 95" where the file list would be.
+Pages using the "showfolder" shortcode attribute will show "ERROR 95" where the file list would be.
 * Removed support for files sending.
 * Added MIDI file type icon
 

@@ -37,7 +37,7 @@ function eeSFL_FREE_DropHandler(eeEvent) {
 }
 
 // Prevent file from being opened in the browser window
-function eeSFL_DragOverHandler(eeEvent) {
+function eeSFL_FREE_DragOverHandler(eeEvent) {
 	eeEvent.preventDefault();
 }
 
@@ -259,6 +259,12 @@ function eeSFL_FREE_UploadFile(eeSFL_File) { // Pass in file object
     eeFormData.append("file", eeSFL_File);
     eeFormData.append("eeSFL_FileUploadDir", eeSFL_FileUploadDir);
     eeFormData.append("ee-simple-file-list-upload", eeSFL_Nonce);
+    
+    // Add the file modification date/time
+    var eeDate = new Date(eeSFL_File.lastModified);
+    var eeDateString = eeDate.toISOString().split('T')[0]; // Get just the y-m-d part
+    eeFormData.append("eeSFL_FileDate", eeDateString);
+    console.log("Date: " + eeDateString);
         
     // Send the AJAX request...
     eeXhr.send(eeFormData);

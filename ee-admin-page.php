@@ -8,7 +8,7 @@ $eeSFL_FREE_Log['SFL'][] = 'Loaded: ee-admin-page';
 // Admin-Side Display
 function eeSFL_FREE_ManageLists() {
 	
-	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_FREE_DevMode, $eeSFL_FREE_Config, $eeSFL_FREE_Env, $eeSFL_FREE_ListRun;
+	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_FREE_DevMode, $eeSFL_Settings, $eeSFL_FREE_Env, $eeSFL_FREE_ListRun;
 	
 	$eeSFL_Files = FALSE;
 	$eeForceSort = FALSE; // Only used in shortcode
@@ -16,7 +16,7 @@ function eeSFL_FREE_ManageLists() {
 	$eeAdmin = is_admin(); // Will be TRUE here
 	
 	// Process the Config Array
-	if(!is_array($eeSFL_FREE_Config) OR !is_array($eeSFL_FREE_Env)) {
+	if(!is_array($eeSFL_Settings) OR !is_array($eeSFL_FREE_Env)) {
 		$eeSFL_FREE_Log['errors'][] = 'No SFL Configuration';
 		return FALSE;
 	}
@@ -42,14 +42,14 @@ function eeSFL_FREE_ManageLists() {
     $active_tab == 'file_list' ? 'nav-tab-active' : '';
     $eeOutput .= $active_tab . '">' . __('File List', 'ee-simple-file-list') . '</a>';
     
+	// Link to Support Form
+    $eeOutput .= '<a href="https://simplefilelist.com/get-support/" class="nav-tab tabSupport" target="_blank">' . __('Get Help', 'ee-simple-file-list') . ' &rarr;</a>';
+    
     // Author
     $eeOutput .= '<a href="?page=' . $eeSFL_FREE->eePluginSlug . '&tab=author" class="nav-tab tabSupport ';   
 	if($active_tab == 'author') {$eeOutput .= '  eeActiveTab '; }  
     $active_tab == 'author' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Author', 'ee-simple-file-list') . '</a>';
-    
-	// The Help / Email Form Page
-    $eeOutput .= '<a href="https://simplefilelist.com/get-support/" class="nav-tab tabSupport">' . __('Get Help', 'ee-simple-file-list') . '</a>';
     
     // Settings
     $eeOutput .= '<a href="?page=' . $eeSFL_FREE->eePluginSlug . '&tab=settings" class="nav-tab tabSettings ';   
@@ -111,12 +111,6 @@ function eeSFL_FREE_ManageLists() {
 	    $active_subtab == 'uploader_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('File Upload Settings', 'ee-simple-file-list') . '</a>';
 	    
-	    // Display Settings
-		$eeOutput .= '<a href="?page=' . $eeSFL_FREE->eePluginSlug . '&tab=settings&subtab=display_settings" class="nav-tab ';  
-		if($active_subtab == 'display_settings') {$eeOutput .= '  eeActiveTab ';}    
-	    $active_subtab == 'display_settings' ? 'nav-tab-active' : '';    
-	    $eeOutput .= $active_subtab . '">' . __('Display Settings', 'ee-simple-file-list') . '</a>';
-	    
 	    // Notifications Settings
 		$eeOutput .= '<a href="?page=' . $eeSFL_FREE->eePluginSlug . '&tab=settings&subtab=email_settings" class="nav-tab ';  
 		if($active_subtab == 'email_settings') {$eeOutput .= '  eeActiveTab ';}    
@@ -129,11 +123,6 @@ function eeSFL_FREE_ManageLists() {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
 			include($eeSFL_FREE_Env['pluginDir'] . 'includes/ee-upload-settings.php'); // The Uploader Settings
-		
-		} elseif($active_subtab == 'display_settings') {
-			
-			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			include($eeSFL_FREE_Env['pluginDir'] . 'includes/ee-list-display-settings.php'); // The List Display Settings
 		
 		} elseif($active_subtab == 'email_settings') {
 			
@@ -191,8 +180,8 @@ function eeSFL_FREE_ManageLists() {
 	if($eeSFL_FREE_DevMode) {
 		if(@$_REQUEST) { $eeOutput .= '<pre>REQUEST ' . print_r($_REQUEST, TRUE) . '</pre>'; array_unshift($eeSFL_FREE_Log, $_REQUEST); }
 		$eeOutput .= '<pre>Display File Array ' . print_r(@$eeSFL_Files, TRUE) . '</pre>';
-		$eeOutput .= '<pre>Display List Settings ' . print_r($eeSFL_FREE_Config, TRUE) . '</pre>';
 		$eeOutput .= '<pre>Environment ' . print_r($eeSFL_FREE_Env, TRUE) . '</pre>';
+		$eeOutput .= '<pre>Display List Settings ' . print_r($eeSFL_Settings, TRUE) . '</pre>';
 		$eeOutput .= '<pre>Runtime Log ' . print_r($eeSFL_FREE_Log, TRUE) . '</pre>';
 		$eeSFL_FREE->eeSFL_WriteLogData($eeSFL_FREE_Log);
 	}
