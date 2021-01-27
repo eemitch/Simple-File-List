@@ -200,7 +200,7 @@ class eeSFL_FREE_MainClass {
     
     public function eeSFL_UpdateFileDetail($eeFile, $eeDetail, $eeValue = FALSE) {
 	    
-	    if($eeValue) {
+	    if($eeValue !== FALSE) {
 	    
 		    // Get the current file array
 			$eeFileArray = get_option('eeSFL_FileList_1');

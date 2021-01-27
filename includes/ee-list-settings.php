@@ -115,7 +115,7 @@ $eeOutput .= '
 		
 		<fieldset class="eeSFL_SettingsBlock">
 		
-		<h2>' . __('File List Behaviour', ) . '</h2>
+		<h2>' . __('File List Behavior', 'ee-simple-file-list') . '</h2>
 		
 		<hr />
 		
@@ -247,7 +247,7 @@ $eeOutput .= '
 		
 		<fieldset class="eeSFL_SettingsBlock">
 		
-		<h2>' . __('File List Display', ) . '</h2>
+		<h2>' . __('File List Display', 'ee-simple-file-list') . '</h2>
 		
 		<hr />
 		

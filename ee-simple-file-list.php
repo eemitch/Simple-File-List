@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 4.3.5
+Version: 4.3.6
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -20,7 +20,7 @@ $eeSFL_FREE_DevMode = FALSE; // TRUE/FALSE = Enables visible logging or not
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
-define('eeSFL_FREE_Version', '4.3.5'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_FREE_Version', '4.3.6'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_FREE_DB_Version', '4.5'); // Database structure version - used for eeSFL_FREE_VersionCheck()
 define('eeSFL_FREE_Cache_Version', eeSFL_FREE_Version); // Cache-Buster version for static files - used when updating CSS/JS
 
@@ -366,7 +366,8 @@ function eeSFL_FREE_Enqueue() {
 		'ajaxurl' => admin_url( 'admin-ajax.php', $protocol ),
 		'eeEditText' => __('Edit', 'ee-simple-file-list'), // Edit link text
 		'eeConfirmDeleteText' => __('Are you sure you want to delete this?', 'ee-simple-file-list'), // Delete confirmation
-		'eeCancelText' => __('Cancel', 'ee-simple-file-list')
+		'eeCancelText' => __('Cancel', 'ee-simple-file-list'),
+		'eeCopyLinkText' => __('The Link Has Been Copied', 'ee-simple-file-list')
 	);
 	
 	// Register Scripts
@@ -403,7 +404,8 @@ function eeSFL_FREE_AdminHead($eeHook) {
 		
 		// Shortcode Builder
 		'eeShowText' => __('Show', 'ee-simple-file-list'), 
-		'eeHideText' => __('Hide', 'ee-simple-file-list')
+		'eeHideText' => __('Hide', 'ee-simple-file-list'),
+		'eeCopyLinkText' => __('The Link Has Been Copied', 'ee-simple-file-list')
 	);
 	
 	// wp_die($eeHook);

@@ -18,6 +18,24 @@ jQuery(document).ready(function($) {
 
 
 
+// Copy File URL to Clipboard
+function eeSFL_FREE_CopyLinkToClipboard(eeSFL_FileURL) {
+	
+	var eeTemp = jQuery('<input name="eeTemp" value="' + eeSFL_FileURL + '" type="url" class="" id="eeTemp" />'); // Create a temporary input
+	jQuery("body").append(eeTemp); // Add it to the bottom of the page
+	
+	var eeTempInput = jQuery('#eeTemp');
+	eeTempInput.focus();
+	eeTempInput.select(); // Select the temp input
+	// eeTempInput.setSelectionRange(0, 99999); /* For mobile devices <<<------------ TO DO */
+	document.execCommand("copy"); // Copy to clipboard
+	eeTemp.remove(); // Remove the temp input
+    
+    alert(eesfl_vars['eeCopyLinkText'] + "\r\n" + eeSFL_FileURL); // Alert the user
+}
+
+
+
 
 function eeSFL_FREE_EditFile(eeSFL_FileID) {
 	

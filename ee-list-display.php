@@ -480,9 +480,10 @@ if( isset($eeSFL_Files) ) {
 								$eeFileActions .= '<a class="eeSFL_FileOpen" href="' . $eeFileURL . '" target="_blank">' . __('Open', 'ee-simple-file-list') . '</a> | ';
 							}
 							
-							if($eeIsFile) {
-								$eeFileActions .= '<a class="eeSFL_FileDownload" href="' . $eeFileURL . '" download="' . basename($eeFileURL) . '">' . __('Download', 'ee-simple-file-list') . '</a>';
-							}
+							$eeFileActions .= '<a class="eeSFL_FileDownload" href="' . $eeFileURL . '" download="' . basename($eeFileURL) . '">' . __('Download', 'ee-simple-file-list') . '</a>';
+							
+							$eeFileActions .= ' | <a class="eeSFL_CopyLinkToClipboard" onclick="eeSFL_FREE_CopyLinkToClipboard(\''  . $eeFileURL .   '\')" href="#">' . __('Copy Link', 'ee-simple-file-list') . '</a>';
+							// if($eeShowOps OR $eeAdmin) { $eeFileActions .= ' | '; }
 														
 							
 							// Append Addition (admin or authorized) Actions

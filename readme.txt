@@ -3,9 +3,9 @@ Contributors: eemitch
 Donate link: http://simplefilelist.com
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
-Requires PHP: 5.6
+Requires PHP: 5.6.40
 Tested up to: 5.6
-Stable tag: 4.3.5
+Stable tag: 4.3.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -242,6 +242,11 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
+= 4.3.6 =
+* Added a "Copy Link" file operation. This copies the file's URL to your clipboard.
+* Bug fix where file description was not removable.
+* Bug fix where fatal error was thrown on settings form submit.
+* Language fixes.
 
 = 4.3.5 =
 * Added smooth-scrolling down to the file list section after upload. (by popular demand)
