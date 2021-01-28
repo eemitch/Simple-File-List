@@ -90,6 +90,61 @@ class eeSFL_FREE_MainClass {
 		'NotifyMessage' => '', // The notice message's body
 		
 	);
+	
+	
+	
+	
+	 // Default File List Definition
+    public $eeSFL_Files = array(
+	    
+		0 => array( // The File ID (We copy this to the array on-the-fly when sorting)
+			'FileList' => 1, // The ID of the File List, contained in the above array.
+		    'FilePath' => '', // Path to file, relative to the list root
+		    'FileExt' => '', // The file extension
+		    'FileMIME' => '', // The MIME Type
+			'FileSize' => '', // The size of the file
+			'FileDateAdded' => '', // Date the file was added to the list
+			'FileDateChanged' => '', // Last date the file was renamed or otherwise changed
+			'FileDescription' => '', // A short description of the file
+			'SubmitterName' => '', // Who uploaded the file
+			'SubmitterEmail' => '', // Their email
+			'SubmitterComments' => '', // What they said
+		)
+    );
+	
+	
+	
+	// Build a New File/Folder Array (for an upload or new file found)
+	public function eeSFL_BuildFileArray($eeFilePath) { // Path relative to ABSPATH
+		
+		global $eeSFL_Settings;
+		
+		$eePathParts = pathinfo($eeFilePath);
+		
+		if( is_readable(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath) ) {
+		
+			$eeNewFileArray = $this->eeSFL_Files[0]; // Get the file array template
+			$eeNewFileArray['FilePath'] = $eeFilePath; // Path to file, relative to the list root
+			
+			if(isset($eePathParts['extension'])) { $eeExt = strtolower($eePathParts['extension']); } else { $eeExt = 'folder'; }
+			$eeNewFileArray['FileExt'] = $eeExt; // The file extension 
+			
+			if(function_exists('mime_content_type')) {
+				$eeNewFileArray['FileMIME'] = mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath); // MIME Type
+			}
+			
+			$eeNewFileArray['FileSize'] = filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath);
+			
+			$eeNewFileArray['FileDateAdded'] = date("Y-m-d H:i:s");
+			$eeNewFileArray['FileDateChanged'] = date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath));
+			
+			return $eeNewFileArray;
+		
+		}
+		
+		return FALSE;
+	}
+	
     
     
     // Get Environment
@@ -176,25 +231,6 @@ class eeSFL_FREE_MainClass {
 			return $this->DefaultListSettings;
 		}
 	}
-	    
-    
-    // Default File List Definition
-    public $eeSFL_Files = array(
-	    
-		0 => array( // The File ID (We copy this to the array on-the-fly when sorting)
-			'FileList' => 1, // The ID of the File List, contained in the above array.
-		    'FilePath' => '', // Path to file, relative to the list root
-		    'FileExt' => '', // The file extension
-		    'FileMIME' => '', // The MIME Type
-			'FileSize' => '', // The size of the file
-			'FileDateAdded' => '', // Date the file was added to the list
-			'FileDateChanged' => '', // Last date the file was renamed or otherwise changed
-			'FileDescription' => '', // A short description of the file
-			'SubmitterName' => '', // Who uploaded the file
-			'SubmitterEmail' => '', // Their email
-			'SubmitterComments' => '', // What they said
-		)
-    );
     
     
     

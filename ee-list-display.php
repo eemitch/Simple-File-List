@@ -87,7 +87,7 @@ foreach( $eeSFL_Files as $eeKey => $eeFileArray) {
 }
 
 // Only show files just uploaded
-if(@$eeSFL_FREE_Env['UploadedFiles']) {
+if(isset($eeSFL_FREE_Env['UploadedFiles'])) {
 	
 	$eeUploadedFiles = array();
 	

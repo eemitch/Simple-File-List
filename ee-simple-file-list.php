@@ -30,6 +30,7 @@ if( !defined('eeSFL_Version') ) { define('eeSFL_Version', eeSFL_FREE_Version); }
 // Our Core
 $eeSFL_FREE = FALSE; // Our main class
 $eeSFL_Settings = array(); // All List Info
+$eeSFL_VarsForJS = array(); // Strings for JS
 $eeSFL_FREE_Env = array(); // Environment
 $eeSFL_FREE_ListRun = 1; // Count of lists per page
 $eeSFL_FREE_UploadFormRun = FALSE; // Check if uploader form has run
@@ -81,9 +82,27 @@ add_action( 'admin_notices', 'eeSFL_FREE_ALERT' );
 // Plugin Setup
 function eeSFL_FREE_Setup() {
 	
-	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_Settings, $eeSFL_FREE_Env;
+	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_Settings, $eeSFL_FREE_Env, $eeSFL_VarsForJS;
 	
 	$eeSFL_FREE_Log['SFL'][] = 'Running Setup...';
+	
+	// Translation strings to pass to javascript as eesfl_vars
+	$eeProtocol = isset( $_SERVER['HTTPS'] ) ? 'https://' : 'http://';
+	$eeSFL_VarsForJS = array(
+		'ajaxurl' => admin_url( 'admin-ajax.php', $eeProtocol ),
+		'eeEditText' => __('Edit', 'ee-simple-file-list'), // Edit link text
+		'eeConfirmDeleteText' => __('Are you sure you want to delete this?', 'ee-simple-file-list'), // Delete confirmation
+		'eeCancelText' => __('Cancel', 'ee-simple-file-list'),
+		'eeCopyLinkText' => __('The Link Has Been Copied', 'ee-simple-file-list'),
+		'eeUploadLimitText' => __('Upload Limit', 'ee-simple-file-list'),
+		'eeFileTooLargeText' => __('This file is too large', 'ee-simple-file-list'),
+		'eeFileNotAllowedText' => __('This file type is not allowed', 'ee-simple-file-list'),
+		'eeUploadErrorText' => __('Upload Failed', 'ee-simple-file-list'),
+		
+		// Back-End Only
+		'eeShowText' => __('Show', 'ee-simple-file-list'), // Shortcode Builder
+		'eeHideText' => __('Hide', 'ee-simple-file-list')
+	);
 	
 	// Get Functions
 	$eeSFL_Nonce = wp_create_nonce('eeSFL_Functions'); // Security
@@ -352,7 +371,7 @@ add_shortcode( 'eeSFL', 'eeSFL_FREE_Shortcode' );
 // Load Front-side <head>
 function eeSFL_FREE_Enqueue() {
 	
-	global $eeSFL_Settings;
+	global $eeSFL_VarsForJS;
 	
 	// Register the style like this for a theme:
     wp_register_style( 'ee-simple-file-list-css', plugin_dir_url(__FILE__) . 'css/eeStyles.css', '', eeSFL_FREE_Cache_Version);
@@ -361,14 +380,7 @@ function eeSFL_FREE_Enqueue() {
 	// Javascript
 	$deps = array('jquery'); // Requires jQuery
 	
-	$protocol = isset( $_SERVER['HTTPS'] ) ? 'https://' : 'http://';
-	$params = array(
-		'ajaxurl' => admin_url( 'admin-ajax.php', $protocol ),
-		'eeEditText' => __('Edit', 'ee-simple-file-list'), // Edit link text
-		'eeConfirmDeleteText' => __('Are you sure you want to delete this?', 'ee-simple-file-list'), // Delete confirmation
-		'eeCancelText' => __('Cancel', 'ee-simple-file-list'),
-		'eeCopyLinkText' => __('The Link Has Been Copied', 'ee-simple-file-list')
-	);
+	
 	
 	// Register Scripts
 	wp_register_script( 'ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js' );
@@ -383,7 +395,7 @@ function eeSFL_FREE_Enqueue() {
 	wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_FREE_Cache_Version, TRUE);
 	
 	// Pass variables
-	wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $params ); // Footer
+	wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $eeSFL_VarsForJS ); // Footer
 
 }
 add_action( 'wp_enqueue_scripts', 'eeSFL_FREE_Enqueue' );
@@ -393,20 +405,9 @@ add_action( 'wp_enqueue_scripts', 'eeSFL_FREE_Enqueue' );
 // Admin <head>
 function eeSFL_FREE_AdminHead($eeHook) {
 
-	$deps = array('jquery');
+	global $eeSFL_VarsForJS;
 	
-	$protocol = isset( $_SERVER['HTTPS'] ) ? 'https://' : 'http://';
-	$params = array(
-		'ajaxurl' => admin_url( 'admin-ajax.php', $protocol ),
-		'eeEditText' => __('Edit', 'ee-simple-file-list'), // Edit link text
-		'eeConfirmDeleteText' => __('Are you sure you want to delete this?', 'ee-simple-file-list'), // Delete confirmation
-		'eeCancelText' => __('Cancel', 'ee-simple-file-list'),
-		
-		// Shortcode Builder
-		'eeShowText' => __('Show', 'ee-simple-file-list'), 
-		'eeHideText' => __('Hide', 'ee-simple-file-list'),
-		'eeCopyLinkText' => __('The Link Has Been Copied', 'ee-simple-file-list')
-	);
+	$deps = array('jquery');
 	
 	// wp_die($eeHook);
     
@@ -432,7 +433,7 @@ function eeSFL_FREE_AdminHead($eeHook) {
 		wp_localize_script('ee-simple-file-list-js-head', 'eeSFL_JS', array( 'pluginsUrl' => plugins_url() ) ); // Needs expanding for alert boxes
 		
 		// Pass variables
-		wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $params ); // Footer
+		wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $eeSFL_VarsForJS ); // Footer
     }  
 }
 add_action('admin_enqueue_scripts', 'eeSFL_FREE_AdminHead');
@@ -540,15 +541,12 @@ function eeSFL_FREE_FileUploader() {
 				return 'File type not allowed: (' . $eeSFL_Extension . ')';	
 			}
 			
-			// Assemble FilePath
-			$eeSFL_TargetFile = $eeSFL_FileUploadDir . $eeSFL_FileNameAlone . '.' . $eeSFL_Extension;
-			
-			// Check if it already exists
-			$eeSFL_TargetFile = eeSFL_FREE_CheckForDuplicateFile($eeSFL_TargetFile);
-
+			// Assemble full path, checking if it already exists
+			$eeSFL_FileName = eeSFL_FREE_CheckForDuplicateFile($eeSFL_FileName);
+			$eeSFL_TargetFile = $eeSFL_FileUploadDir . $eeSFL_FileName;
 
 			// Check if the name has changed
-			if($_FILES['file']['name'] != basename($eeSFL_TargetFile)) {
+			if($_FILES['file']['name'] != $eeSFL_FileName) {
 				
 				// Set a transient with the new name so we can get it in ProcessUpload() after the form is submitted
 				$eeOldFilePath = str_replace($eeSFL_Settings['FileListDir'], '', $eeSFL_FileUploadDir . $_FILES['file']['name']); // Strip the FileListDir
@@ -659,10 +657,10 @@ function eeSFL_FREE_FileEditor() {
 				
 				eeSFL_FREE_DetectUpwardTraversal($eeSFL_Settings['FileListDir'] . $eeNewFileName); // Die if foolishness
 				
-				$eeNewFileName = eeSFL_FREE_CheckForDuplicateFile($eeSFL_Settings['FileListDir'] . $eeNewFileName); // Don't over-write
+				$eeNewFileName = eeSFL_FREE_CheckForDuplicateFile($eeNewFileName); // Don't over-write
 				
 				$eeOldFilePath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFileName;
-				$eeNewFilePath = ABSPATH . $eeNewFileName;
+				$eeNewFilePath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeNewFileName;
 				
 				if( !rename($eeOldFilePath, $eeNewFilePath) ) {
 					
@@ -695,7 +693,7 @@ function eeSFL_FREE_FileEditor() {
 					$eeAllFilesArray = get_option('eeSFL_FileList_1'); // Get the full list
 					
 					foreach( $eeAllFilesArray as $eeKey => $eeThisFileArray){
-						if($eeThisFileArray['FilePath'] == $eeListFolder . $eeFileName) {
+						if($eeThisFileArray['FilePath'] == $eeFileName) {
 							unset($eeAllFilesArray[$eeKey]);
 							break;
 						}

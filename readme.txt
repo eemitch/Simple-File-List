@@ -246,6 +246,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 * Added a "Copy Link" file operation. This copies the file's URL to your clipboard.
 * Bug fix where file description was not removable.
 * Bug fix where fatal error was thrown on settings form submit.
+* Bug fix where a duplicate file array was created even if over-writing was allowed.
 * Language fixes.
 
 = 4.3.5 =

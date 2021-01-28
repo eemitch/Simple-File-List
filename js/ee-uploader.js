@@ -55,7 +55,7 @@ function eeSFL_FREE_ProcessFileInput(eeSFL_Files) { // The files object
 	    eeSFL_Error = false;
 	    eeSFL_File = false;
 	    jQuery("#eeSFL_FileInput").val("");
-	    alert("Upload Limit: " + eeSFL_FileLimit);
+	    alert(eesfl_vars['eeUploadLimitText'] + ': ' + eeSFL_FileLimit);
 	    return false;   
 	}
     
@@ -74,7 +74,7 @@ function eeSFL_FREE_ProcessFileInput(eeSFL_Files) { // The files object
 	        console.log("Size: " + eeSFL_File.size);
 	        
 	        if(eeSFL_File.size > eeSFL_UploadMaxFileSize) {
-		        eeSFL_Error = eeSFL_File.name + " is too large to upload.";
+		        eeSFL_Error = eesfl_vars['eeFileTooLargeText'] + ': ' + eeSFL_File.name;
 	        }
 	        
 	        // Type
@@ -82,7 +82,7 @@ function eeSFL_FREE_ProcessFileInput(eeSFL_Files) { // The files object
 	        eeSFL_Extension = eeSFL_Extension.toLowerCase();
 	        
 	        if(eeSFL_FormatsArray.indexOf(eeSFL_Extension) == -1) {
-		        eeSFL_Error = "This file type (" + eeSFL_Extension + ") is not allowed.";
+		        eeSFL_Error = eesfl_vars['eeFileNotAllowedText'] + ': ' + eeSFL_Extension;
 	        }
 	        
 	        console.log("Extension: " + eeSFL_Extension);
@@ -234,7 +234,7 @@ function eeSFL_FREE_UploadFile(eeSFL_File) { // Pass in file object
 			    	
 			    	var n = eeXhr.responseText.search("<"); // Error condition
 			    	if(n === 0) {
-				    	alert("Upload Error: " + eeSFL_File.name);
+				    	alert(eesfl_vars['eeUploadErrorText'] + ': ' + eeSFL_File.name);
 				    	jQuery( "#eeUploadingNow" ).fadeOut();
 				    }
 				    return false;
