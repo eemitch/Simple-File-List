@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2021-01-12 14:04-0600\n"
-"PO-Revision-Date: 2021-01-12 14:09-0600\n"
+"POT-Creation-Date: 2021-01-28 15:27-0600\n"
+"PO-Revision-Date: 2021-01-28 15:34-0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_MX\n"
@@ -101,11 +101,11 @@ msgstr "Ultima modificación"
 msgid "Thumb"
 msgstr "Miniatura"
 
-#: ee-list-display.php:229 includes/ee-class.php:907
+#: ee-list-display.php:229 includes/ee-class.php:943
 msgid "Name"
 msgstr "Nombre"
 
-#: ee-list-display.php:239 ee-list-display.php:535
+#: ee-list-display.php:239 ee-list-display.php:536
 msgid "Size"
 msgstr "Tamaño"
 
@@ -121,93 +121,116 @@ msgstr "Presentado por"
 msgid "Open"
 msgstr "Abierto"
 
-#: ee-list-display.php:484
+#: ee-list-display.php:483
 msgid "Download"
 msgstr "Descargar"
 
-#: ee-list-display.php:494 ee-simple-file-list.php:367
-#: ee-simple-file-list.php:400
+#: ee-list-display.php:485
+msgid "Copy Link"
+msgstr "Copiar enlace"
+
+#: ee-list-display.php:495 ee-simple-file-list.php:93
 msgid "Edit"
 msgstr "Editar"
 
-#: ee-list-display.php:495
+#: ee-list-display.php:496
 msgid "Delete"
 msgstr "Borrar"
 
-#: ee-list-display.php:500
+#: ee-list-display.php:501
 msgid "Move"
 msgstr "Mover"
 
-#: ee-list-display.php:501
+#: ee-list-display.php:502
 msgid "Users"
 msgstr "Usuarios"
 
-#: ee-list-display.php:502
+#: ee-list-display.php:503
 msgid "Send"
 msgstr "Enviar"
 
-#: ee-list-display.php:521
+#: ee-list-display.php:522
 msgid "Edit Details"
 msgstr "Editar detalles"
 
-#: ee-list-display.php:523 includes/ee-list-settings.php:180
+#: ee-list-display.php:524 includes/ee-list-settings.php:180
 #: includes/ee-list-settings.php:277
 msgid "File Name"
 msgstr "Nombre del archivo"
 
-#: ee-list-display.php:525 ee-list-display.php:530
+#: ee-list-display.php:526 ee-list-display.php:531
 msgid "Save"
 msgstr "Guardar"
 
-#: ee-list-display.php:527 includes/ee-class.php:913
+#: ee-list-display.php:528 includes/ee-class.php:949
 msgid "Description"
 msgstr "Descripción"
 
-#: ee-list-display.php:532
+#: ee-list-display.php:533
 msgid "Added"
 msgstr "Agregado"
 
-#: ee-list-display.php:533
+#: ee-list-display.php:534
 msgid "Modified"
 msgstr "Modificado"
 
-#: ee-list-display.php:593
+#: ee-list-display.php:594
 msgid "Upload some files and they will appear here."
 msgstr "Sube algunos archivos y aparecerán aquí."
 
-#: ee-simple-file-list.php:68
+#: ee-simple-file-list.php:69
 msgid "IMPORTANT"
 msgstr "Importante"
 
-#: ee-simple-file-list.php:69
+#: ee-simple-file-list.php:70
 msgid ""
 "Extensions are no longer supported for the free version of Simple File List."
 msgstr ""
 "Las extensiones ya no son compatibles con la versión gratuita de Simple File "
 "List."
 
-#: ee-simple-file-list.php:70
+#: ee-simple-file-list.php:71
 msgid "Please upgrade to the Pro version."
 msgstr "Por favor, actualice a la versión Pro."
 
-#: ee-simple-file-list.php:70
+#: ee-simple-file-list.php:71
 msgid "Free Upgrade"
 msgstr "Actualización gratuita"
 
-#: ee-simple-file-list.php:368 ee-simple-file-list.php:401
+#: ee-simple-file-list.php:94
 msgid "Are you sure you want to delete this?"
 msgstr "¿Estás seguro que quieres eliminar esto?"
 
-#: ee-simple-file-list.php:369 ee-simple-file-list.php:402
+#: ee-simple-file-list.php:95
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ee-simple-file-list.php:405 includes/ee-list-settings.php:260
+#: ee-simple-file-list.php:96
+msgid "The Link Has Been Copied"
+msgstr "El enlace ha sido copiado"
+
+#: ee-simple-file-list.php:97 includes/ee-upload-settings.php:185
+msgid "Upload Limit"
+msgstr "Límite de carga"
+
+#: ee-simple-file-list.php:98
+msgid "This file is too large"
+msgstr "Este archivo es demasiado grande"
+
+#: ee-simple-file-list.php:99
+msgid "This file type is not allowed"
+msgstr "Este tipo de archivo no está permitido"
+
+#: ee-simple-file-list.php:100
+msgid "Upload Failed"
+msgstr "Carga fallida"
+
+#: ee-simple-file-list.php:103 includes/ee-list-settings.php:260
 #: includes/ee-shortcode-builder.php:157
 msgid "Show"
 msgstr "Mostrar"
 
-#: ee-simple-file-list.php:406 includes/ee-shortcode-builder.php:157
+#: ee-simple-file-list.php:104 includes/ee-shortcode-builder.php:157
 msgid "Hide"
 msgstr "Ocultar"
 
@@ -259,31 +282,31 @@ msgstr "Precaución"
 msgid "Plugin Version"
 msgstr "Version del plugin"
 
-#: includes/ee-class.php:759
+#: includes/ee-class.php:795
 msgid "Uploader Information"
 msgstr "Información del cargador"
 
-#: includes/ee-class.php:764
+#: includes/ee-class.php:800
 msgid "Uploaded By"
 msgstr "Subido por"
 
-#: includes/ee-class.php:813
+#: includes/ee-class.php:849
 msgid "File Upload Notice"
 msgstr "Aviso de carga de archivos"
 
-#: includes/ee-class.php:857 includes/ee-class.php:874
+#: includes/ee-class.php:893 includes/ee-class.php:910
 msgid "This is not a valid email address."
 msgstr "Esta no es una dirección de correo electrónico válida."
 
-#: includes/ee-class.php:909
+#: includes/ee-class.php:945
 msgid "Email"
 msgstr "Email"
 
-#: includes/ee-class.php:915
+#: includes/ee-class.php:951
 msgid "Add a description (optional)"
 msgstr "Añadir una descripción (opcional)"
 
-#: includes/ee-class.php:917
+#: includes/ee-class.php:953
 msgid "Submitter:"
 msgstr "Presentador:"
 
@@ -406,7 +429,7 @@ msgstr "Archivos subidos"
 msgid "File uploaded"
 msgstr "Archivo subido"
 
-#: includes/ee-functions.php:305
+#: includes/ee-functions.php:316
 msgid "File Upload Complete"
 msgstr "Carga de archivos completada"
 
@@ -564,8 +587,8 @@ msgstr ""
 "personalizados."
 
 #: includes/ee-list-settings.php:118
-msgid "File List Behaviour"
-msgstr "Lista de archivos de comportamiento"
+msgid "File List Behavior"
+msgstr "Comportamiento de la lista de archivos"
 
 #: includes/ee-list-settings.php:122
 msgid "File List Access"
@@ -1074,10 +1097,6 @@ msgstr "Esta información del usuario puede mostrarse junto con el archivo."
 msgid "Upload Job Limits"
 msgstr "Límites de trabajo de la carga"
 
-#: includes/ee-upload-settings.php:185
-msgid "Upload Limit"
-msgstr "Límite de carga"
-
 #: includes/ee-upload-settings.php:187
 msgid "The maximum number of files that may be uploaded per submission."
 msgstr "El número máximo de archivos que se pueden cargar por envío."
@@ -1298,9 +1317,6 @@ msgstr "Mitchell Bennis"
 
 #~ msgid "List Access Settings"
 #~ msgstr "Ajustes de acceso a listas"
-
-#~ msgid "Copy to List"
-#~ msgstr "Copiar a lista"
 
 #~ msgid "Grant Access"
 #~ msgstr "Acceso permitido"
