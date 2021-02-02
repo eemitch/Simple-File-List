@@ -224,6 +224,31 @@ $eeOutput .= '
 		</fieldset>
 		
 		
+		
+		
+		
+		<fieldset class="eeSFL_SettingsBlock">
+		
+		<h3>' . __('Thumbnail Generation', 'ee-simple-file-list') . '</h3>
+		
+		<label for="eeExpireTime">' . __('Generate Thumbnails', 'ee-simple-file-list') . ':</label>
+		
+		<input id="eeExpireTime" type="checkbox" name="eeExpireTime" value="YES"';
+		if( $eeSFL_Settings['ExpireTime'] == 'YES' OR $eeSFL_Settings['ExpireTime'] >= 1 ) { $eeOutput .= ' checked="checked"'; }
+		$eeOutput .= ' /> 
+		<div class="eeNote">' . __('Read the file and create a representative thumbnail image.', 'ee-simple-file-list') . '</div>
+		
+		
+		
+		
+		
+		
+		</fieldset>
+		
+		
+		
+		
+		
 		<fieldset class="eeSFL_SettingsBlock">
 			
 		<h3>' . __('File List Cache', 'ee-simple-file-list') . '</h3>	
