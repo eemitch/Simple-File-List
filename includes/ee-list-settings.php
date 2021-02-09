@@ -239,7 +239,9 @@ $eeOutput .= '
 		<div class="eeNote">' . __('Read the file and create a representative thumbnail image.', 'ee-simple-file-list') . '</div>
 		
 		
+		<label for="eeExpireTime">' . __('Generate Thumbnails', 'ee-simple-file-list') . ':</label>
 		
+		<input type="number" name="" value="' . $eeSFL_Settings['GenerateThumbs'] . '" />
 		
 		
 		
