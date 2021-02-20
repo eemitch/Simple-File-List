@@ -230,7 +230,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.3 - Major Update
+* 4.3.7 - PDF Thumbnails & Code Updates
 
 
 == Screenshots ==
@@ -241,6 +241,10 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Changelog ==
+
+= 4.3.7 =
+* Added ability to generate thumbnails for PDF files. (by popular demand)
+* jQuery code updates
 
 = 4.3.6 =
 * Added a "Copy Link" file operation. This copies the file's URL to your clipboard.

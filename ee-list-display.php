@@ -357,24 +357,24 @@ if( isset($eeSFL_Files) ) {
 					// Thumbnail
 					if($eeSFL_Settings['ShowFileThumb'] == 'YES') {
 						
-						// Create Thumbnail Path
-						$eeIsImage = in_array($eeFileExt,  $eeSFL_FREE->eeDynamicImageThumbFormats);
+						$eeShowThumbImage = FALSE;
 						
-						// Do we have FFmpeg ?
-						if($eeSFL_FREE_Env['supported']) {
-							$eeIsVideo = in_array($eeFileExt,  $eeSFL_FREE->eeDynamicVideoThumbFormats);
-						} else {
-							$eeIsVideo = FALSE; // Nope
+						if( in_array($eeFileExt,  $eeSFL_FREE->eeDynamicImageThumbFormats) ) {
+							$eeShowThumbImage = TRUE;
+						}
+						if( in_array($eeFileExt,  $eeSFL_FREE->eeDynamicVideoThumbFormats) AND isset($eeSFL_FREE_Env['ffMpeg']) ) {
+							$eeShowThumbImage = TRUE;
+						}
+						if( $eeFileExt == 'pdf' AND isset($eeSFL_FREE_Env['ImkGs']) ) {
+							$eeShowThumbImage = TRUE;
 						}
 						
 						// Check Type
-						if($eeIsImage OR $eeIsVideo) { // Images use .jpg files
+						if($eeShowThumbImage) { // Images use .jpg files
 							
-							$eePathParts = pathinfo($eeSFL_Settings['FileListDir'] . $eeFilePath);
+							$eePathParts = pathinfo($eeFilePath);
 							$eeFileNameOnly = $eePathParts['filename'];
-							
-							$eeFileThumbURL = $eeSFL_Settings['FileListURL'];
-							$eeFileThumbURL .= '.thumbnails/thumb_' . $eeFileNameOnly . '.jpg';
+							$eeFileThumbURL = $eeSFL_Settings['FileListURL'] . '.thumbnails/thumb_' . $eeFileNameOnly . '.jpg';
 						
 						} else { // Others use our own .svg files
 							

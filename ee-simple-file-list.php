@@ -15,7 +15,7 @@ Text Domain: ee-simple-file-list
 Domain Path: /languages
 */
 
-$eeSFL_FREE_DevMode = FALSE; // TRUE/FALSE = Enables visible logging or not
+$eeSFL_FREE_DevMode = TRUE; // TRUE/FALSE = Enables visible logging or not
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -145,15 +145,6 @@ function eeSFL_FREE_UploadCompleted() {
 function eeSFL_FREE_UploadCompletedAdmin() {
     do_action('eeSFL_FREE_UploadCompletedAdmin'); // To be fired post-upload
 }
-
-
-// Log Failed Emails
-function eeSFL_FREE_action_wp_mail_failed($wp_error) {
-    
-    return error_log(print_r($wp_error, true));
-}
-add_action('wp_mail_failed', 'eeSFL_FREE_action_wp_mail_failed', 10, 1);
-
 
 
 // Language Enabler

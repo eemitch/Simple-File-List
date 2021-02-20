@@ -296,10 +296,7 @@ function eeSFL_FREE_ProcessUpload() {
 							}
 							
 							// Create thumbnail if needed
-							if( in_array($eeNewFileArray['FileExt'], $eeSFL_FREE->eeDynamicImageThumbFormats) OR in_array($eePathParts['extension'], $eeSFL_FREE->eeDynamicVideoThumbFormats) ) {
-					
-								$eeSFL_FREE->eeSFL_CheckThumbnail($eeFile);
-							}
+							$eeSFL_FREE->eeSFL_CheckThumbnail($eeFile);
 							
 							// Notification Info (FREE)
 							$eeUploadJob .=  $eeFile . PHP_EOL . 

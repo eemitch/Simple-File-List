@@ -230,11 +230,13 @@ fieldset.eeSFL_SettingsFull {
 	font-size: 130%;
 	margin-bottom: .5em;
 }
+/*
 button.eeDeleteCheckedButton {
 	float: right;
 	display: inline-block;
 	width: auto;
 }
+*/
 
 .eeSFL_Admin p {
 	margin: 0;

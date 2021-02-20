@@ -204,7 +204,7 @@ function eeSFL_FREE_ShortcodeBuilder(eeNewOption, eeInputType) {
 jQuery(function() {
    
    // Copy the Shortcode to the clipboard
-   jQuery('#eeCopytoClipboard').click(function() {  
+   jQuery('#eeCopytoClipboard').on('click', function() {  
 	
 	var eeShortCode = jQuery('#eeSFL_ShortCode').val();
     jQuery('#eeSFL_ShortCode').focus();
@@ -214,9 +214,9 @@ jQuery(function() {
    });
    
    
-   
+/*   
    // Select or deselect all the checkboxes
-   jQuery('#eeSFL_SelectAll').click(function() {
+   jQuery('#eeSFL_SelectAll').on('click', function() {
 	   
 	   var eeState = jQuery('#eeSFL_SelectAll').prop("checked"); 
 	   
@@ -229,11 +229,13 @@ jQuery(function() {
 	
 	
 	// Show or Hide the Delete Files Button
-	jQuery('input[type=checkbox]').click(function( event ) { 
+
+	jQuery('input[type=checkbox]').on('click', function( event ) { 
 		
 		jQuery('.eeDeleteCheckedButton').fadeIn();
 		
 	});
+*/
 	
 });
 
@@ -256,7 +258,7 @@ jQuery(document).ready(function() {
 	jQuery('#eeSFL_ShortCode').val('[' + eeBaseShortcode + ']');
 	jQuery('input[name="eeShortcode"]').val('[' + eeBaseShortcode + ']');
 	
-	jQuery('#eeSFL_UploadFilesButton').click(function( event ) { 
+	jQuery('#eeSFL_UploadFilesButton').on('click', function( event ) { 
 		
 		event.preventDefault();
 		
@@ -281,7 +283,7 @@ jQuery(document).ready(function() {
 	
 	
 	
-	jQuery('#eeSFL_ReScanButton').click(function( event ) { 
+	jQuery('#eeSFL_ReScanButton').on('click', function( event ) { 
 		
 		event.preventDefault();
 		
@@ -295,31 +297,16 @@ jQuery(document).ready(function() {
 	
 
 	// Admin side file deletion
-	jQuery('.eeDeleteCheckedButton').hide();
+	// jQuery('.eeDeleteCheckedButton').hide();
 	
 	
 	
 
-	jQuery('#eeFooterImportantLink').click(function() {
+	jQuery('#eeFooterImportantLink').on('click', function() {
 		
 		var eeImportant = jQuery('#eeFooterImportant').text();
 		
 		alert(eeImportant);
-	});
-	
-	
-	
-	// List Settings
-	jQuery('#eeExpireTime').change(function( event ) {
-	
-		let eeNum = jQuery('#eeExpireTime').val();
-		
-		if(eeNum === 0) {
-			eeNum = 'Refresh each time';
-		}
-		
-		jQuery('#eeExpireTimeValue').html( eeNum );
-	
 	});	
 	
 		

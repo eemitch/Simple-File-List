@@ -29,7 +29,7 @@ class eeSFL_FREE_MainClass {
 		'txt', 'wav', 'wma', 'wmv', 'htm', 'html');
     
     public $eeExcludedFileNames = array('error_log', 'index.html');
-    public $eeForbiddenTypes = array('php','phar','pl','py','com','cgi','asp','exe','js','html','htm','phtml', 'wsh','vbs');
+    public $eeForbiddenTypes = array('php','phar','pl','py','com','cgi','asp','exe','js','phtml', 'wsh','vbs');
     
     private $eeExcludedFiles = array('index.html');
     
@@ -68,6 +68,7 @@ class eeSFL_FREE_MainClass {
 		'AllowOverwrite' => 'NO', // Number new files with same name, or just overwrite.
 		
 		// Display Settings
+		'GenerateThumbs' => 'YES', // Create thumbnail images for images, videos and PDFs if possible.
 		'PreserveSpaces' => 'NO', // Replace ugly hyphens with spaces
 		'ShowFileDescription' => 'YES', // Display the File Description (YES or NO)
 		'ShowFileActions' => 'YES', // Display the File Action Links Section (below each file name) (YES or NO)
@@ -123,22 +124,24 @@ class eeSFL_FREE_MainClass {
 		
 		if( is_readable(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath) ) {
 		
-			$eeNewFileArray = $this->eeSFL_Files[0]; // Get the file array template
-			$eeNewFileArray['FilePath'] = $eeFilePath; // Path to file, relative to the list root
+			$eeFileArray = $this->eeSFL_Files[0]; // Get the file array template
+			$eeFileArray['FilePath'] = $eeFilePath; // Path to file, relative to the list root
 			
 			if(isset($eePathParts['extension'])) { $eeExt = strtolower($eePathParts['extension']); } else { $eeExt = 'folder'; }
-			$eeNewFileArray['FileExt'] = $eeExt; // The file extension 
+			$eeFileArray['FileExt'] = $eeExt; // The file extension 
 			
 			if(function_exists('mime_content_type')) {
-				$eeNewFileArray['FileMIME'] = mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath); // MIME Type
+				$eeFileArray['FileMIME'] = mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath); // MIME Type
 			}
 			
-			$eeNewFileArray['FileSize'] = filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath);
+			$eeFileArray['FileSize'] = filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath);
 			
-			$eeNewFileArray['FileDateAdded'] = date("Y-m-d H:i:s");
-			$eeNewFileArray['FileDateChanged'] = date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath));
+			$eeFileArray['FileDateAdded'] = date("Y-m-d H:i:s");
+			$eeFileArray['FileDateChanged'] = date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath));
 			
-			return $eeNewFileArray;
+			if( strlen($eeFileArray['FilePath']) ) { // 02/21 - If FilePath is empty, sort doesn't work? But why would that be empty.
+				return $eeFileArray;
+			}
 		
 		}
 		
@@ -150,50 +153,63 @@ class eeSFL_FREE_MainClass {
     // Get Environment
     public function eeSFL_GetEnv() {
 	    
-	    $eeSFL_Env = array();
+	    $eeEnv = array();
 	    
 	    // Detect OS
 		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-		    $eeSFL_Env['eeOS'] = 'WINDOWS';
+		    $eeEnv['eeOS'] = 'WINDOWS';
 		} else {
-		    $eeSFL_Env['eeOS'] = 'LINUX';
+		    $eeEnv['eeOS'] = 'LINUX';
 		}
 		
 		// Detect Web Server
 		if(!function_exists('apache_get_version')) {
-		    $eeSFL_Env['eeWebServer'] = $_SERVER["SERVER_SOFTWARE"];
+		    $eeEnv['eeWebServer'] = $_SERVER["SERVER_SOFTWARE"];
 		} else {
-			$eeSFL_Env['eeWebServer'] = 'Apache';
+			$eeEnv['eeWebServer'] = 'Apache';
 		}
 		
-		$eeSFL_Env['wpSiteURL'] = get_site_url() . '/'; // This Wordpress Website
-		$eeSFL_Env['wpPluginsURL'] = plugins_url() . '/'; // The Wordpress Plugins Location
+		$eeEnv['wpSiteURL'] = get_site_url() . '/'; // This Wordpress Website
+		$eeEnv['wpPluginsURL'] = plugins_url() . '/'; // The Wordpress Plugins Location
 		
-		$eeSFL_Env['pluginURL'] = plugins_url() . '/' . $this->eePluginNameSlug . '/';
-		$eeSFL_Env['pluginDir'] = WP_PLUGIN_DIR . '/' . $this->eePluginNameSlug . '/';
+		$eeEnv['pluginURL'] = plugins_url() . '/' . $this->eePluginNameSlug . '/';
+		$eeEnv['pluginDir'] = WP_PLUGIN_DIR . '/' . $this->eePluginNameSlug . '/';
 		
 		$wpUploadArray = wp_upload_dir();
 		$wpUploadDir = $wpUploadArray['basedir'];
-		$eeSFL_Env['wpUploadDir'] = $wpUploadDir . '/'; // The Wordpress Uploads Location
-		$eeSFL_Env['wpUploadURL'] = $wpUploadArray['baseurl'] . '/';
+		$eeEnv['wpUploadDir'] = $wpUploadDir . '/'; // The Wordpress Uploads Location
+		$eeEnv['wpUploadURL'] = $wpUploadArray['baseurl'] . '/';
 
-		$eeSFL_Env['FileListDefaultDir'] = str_replace(ABSPATH, '', $eeSFL_Env['wpUploadDir'] . 'simple-file-list/'); // The default file list location
+		$eeEnv['FileListDefaultDir'] = str_replace(ABSPATH, '', $eeEnv['wpUploadDir'] . 'simple-file-list/'); // The default file list location
 		
-		$eeSFL_Env['upload_max_upload_size'] = substr(ini_get('upload_max_filesize'), 0, -1); // PHP Limit (Strip off the "M")
-		$eeSFL_Env['post_max_size'] = substr(ini_get('post_max_size'), 0, -1); // PHP Limit (Strip off the "M")
+		$eeEnv['upload_max_upload_size'] = substr(ini_get('upload_max_filesize'), 0, -1); // PHP Limit (Strip off the "M")
+		$eeEnv['post_max_size'] = substr(ini_get('post_max_size'), 0, -1); // PHP Limit (Strip off the "M")
 		
 		// Check which is smaller, upload size or post size.
-		if ($eeSFL_Env['upload_max_upload_size'] <= $eeSFL_Env['post_max_size']) { 
-			$eeSFL_Env['the_max_upload_size'] = $eeSFL_Env['upload_max_upload_size'];
+		if ($eeEnv['upload_max_upload_size'] <= $eeEnv['post_max_size']) { 
+			$eeEnv['the_max_upload_size'] = $eeEnv['upload_max_upload_size'];
 		} else {
-			$eeSFL_Env['the_max_upload_size'] = $eeSFL_Env['post_max_size'];
+			$eeEnv['the_max_upload_size'] = $eeEnv['post_max_size'];
 		}
 		
-		$eeSFL_Env['supported'] = get_option('eeSFL_Supported'); // Server technologies available (i.e. FFMPEG)
+		$eeEnv['wpUserID'] = get_current_user_id();
 		
-		$eeSFL_Env['wpUserID'] = get_current_user_id();
+		// Check Server technologies available (i.e. ffMpeg)
+		$eeSupported = get_option('eeSFL_Supported');
 		
-		return $eeSFL_Env;
+		if(is_array($eeSupported)) {
+			
+			if( in_array('ImageMagick', $eeSupported) AND in_array('GhostScript', $eeSupported) ) { 
+				$eeEnv['ImkGs'] = 'YES';
+			}
+			if( in_array('ffMpeg', $eeSupported) ) {
+				$eeEnv['ffMpeg'] = 'YES';
+			}
+		}
+		
+		ksort($eeEnv);
+		
+		return $eeEnv;
     }
     
     
@@ -371,17 +387,6 @@ class eeSFL_FREE_MainClass {
 			
 			// Sort
 		    $eeFileArrayWorking = $this->eeSFL_SortFiles($eeFileArrayWorking, $eeSFL_Settings['SortBy'], $eeSFL_Settings['SortOrder']);
-		    
-		    // Check and create thumbnail if needed...
-		    foreach($eeFileArrayWorking as $eeKey => $eeFile) {
-		    	
-		    	if( in_array($eeFile['FileExt'], $this->eeDynamicImageThumbFormats) 
-					OR in_array($eeFile['FileExt'], $this->eeDynamicVideoThumbFormats) ) {
-					
-					$eeSFL_FREE_Log['SFL'][] = 'Checking thumbnail...';
-					$this->eeSFL_CheckThumbnail($eeFile['FilePath']);
-				}
-		    }
 			
 			// Set Cache
 			if(is_numeric($eeSFL_Settings['ExpireTime'])) {
@@ -399,24 +404,64 @@ class eeSFL_FREE_MainClass {
 			} else {
 				delete_transient('eeSFL_FileList_1');
 			}
-		
-		    // Check for FFmpeg here
-			if(trim(@shell_exec('type -P ffmpeg'))) {
-				update_option('eeSFL_Supported', 'ffMpeg');
-			} else {
-				$eeSFL_FREE_Log['SFL'][] = 'FFMPEG is not supported';
-			}
+			
 			
 			// Update the DB
 		    update_option('eeSFL_FileList_1', $eeFileArrayWorking);
+		    
+		    
+		    // Generate Thumbnails if possible
+		    if(@$eeSFL_Settings['GenerateThumbs'] == 'YES') { // NOTE - We can remove the error suppression after a while. Only needed for current user updates.
+		    
+			    // Check for supported technologies
+				$eeSupported = array();
+			
+			    // Check for ffMpeg
+				if(@shell_exec('type -P ffmpeg')) {
+					$eeSupported[] = 'ffMpeg';
+					$eeSFL_FREE_Log['Supported'][] = 'Supported: ffMpeg';
+				}
+				
+				// Check for ImageMagick
+				$phpExt = 'imagick'; 
+				if(extension_loaded($phpExt)) {
+					$eeSupported[] = 'ImageMagick';
+					$eeSFL_FREE_Log['Supported'][] = 'Supported: ImageMagick';
+				}
+				
+				// Check for GhostScript
+				if($eeSFL_FREE_Env['eeOS'] == 'LINUX') { // TO DO - Make it work for IIS
+				
+					$phpExt = 'gs'; // <<<---- This will be different for Windows
+					if(shell_exec($phpExt . ' --version') >= 1.0) { // <<<---- This will be different for Windows too
+						$eeSupported[] = 'GhostScript';
+						$eeSFL_FREE_Log['Supported'][] = 'Supported: GhostScript';
+					}
+				}
+				
+				if(count($eeSupported)) {
+					update_option('eeSFL_Supported', $eeSupported);
+				}
+				
+			    
+			    // Check for and create thumbnail if needed...
+			    foreach($eeFileArrayWorking as $eeKey => $eeFile) {
+			    	
+			    	if($eeFile['FileExt'] == 'pdf' 
+			    		OR in_array($eeFile['FileExt'], $this->eeDynamicImageThumbFormats) 
+						OR in_array($eeFile['FileExt'], $this->eeDynamicVideoThumbFormats) ) {
+						
+						$eeSFL_FREE_Log['SFL'][] = 'Checking thumbnail...';
+						$this->eeSFL_CheckThumbnail($eeFile['FilePath']);
+					}
+			    }
+		    }
 			
 			return $eeFileArrayWorking; 
 		
 		} else {
 			return FALSE;
 		}
-	    
-	    
     }
 	
 	
@@ -501,7 +546,7 @@ class eeSFL_FREE_MainClass {
 		// Video Files
 		if(in_array($eeExt, $this->eeDynamicVideoThumbFormats)) { // Check for FFMPEG
 			
-			if($eeSFL_FREE_Env['supported']) {
+			if( isset($eeSFL_FREE_Env['ffMpeg']) ) {
 				
 				// FFmpeg won't create the thumbs dir, so we need to do it here if needed.
 				if(!is_dir($eeThumbsPATH)) { mkdir($eeThumbsPATH); }
@@ -564,6 +609,15 @@ class eeSFL_FREE_MainClass {
 				
 			return TRUE;
 		}
+		
+		if($eeExt == 'pdf') {
+			
+			if($this->eeSFL_CreatePDFThumbnail($eeFilePath)) {
+				return TRUE;
+			}
+		}
+		
+		return FALSE;
 	}
 	
 	
@@ -688,6 +742,95 @@ class eeSFL_FREE_MainClass {
 			}
 		}
 	}
+	
+	
+	
+	
+	// Generate PDF Thumbnails
+	private function eeSFL_CreatePDFThumbnail($eeInputFile) { // Expects FilePath
+		
+		global $eeSFL_Settings, $eeSFL_FREE_Env, $eeSFL_FREE_Log;
+		
+		$eeSFL_FREE_Log['SFL'][] = 'Generating PDF Thumbnail...';
+		
+		$eeInputFileParts = pathinfo($eeInputFile);
+		$eeInputFileName = $eeInputFileParts['filename'];
+		$eeInputFileExt = strtolower($eeInputFileParts['extension']);
+		$eeInputDirName = $eeInputFileParts['dirname'];
+		if($eeInputFileExt != 'pdf') { return FALSE; }
+		
+		if( isset($eeSFL_FREE_Env['ImkGs']) ) {
+		
+			// $eeSFL_FREE_Log['SFL'][] = 'ImageMagik & GhostScript is Installed';
+			
+			$eeInputPath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeInputDirName . '/'; // Input folder
+			$eeOutputPath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeInputDirName . '/.thumbnails/'; // Output folder
+			$eeTempFile = $eeInputFileName . '.png'; // The converted pdf file - A temporary file
+			$eeOutputFile = 'thumb_' . $eeInputFileName . '.jpg'; // The final thumb
+			
+			// The command. AVOID LINE BREAKS
+			$eeCommand = 'gs -dNOPAUSE -sDEVICE=png16m -dGraphicsAlphaBits=4 -dTextAlphaBits=4 -r600 -dFirstPage=1 -dLastPage=1 -sOutputFile=' . $eeOutputPath . $eeTempFile . ' ' . $eeInputPath . $eeInputFile;
+			
+			// Run the Command. Drum roll please
+			exec( $eeCommand, $eeCommandOutput, $eeReturnVal );
+			
+			// Get the Size
+			$eeImageSize = getimagesize($eeOutputPath . $eeTempFile);
+			
+			// Create Image Resource
+			$eeImageResource = imagecreatefrompng($eeOutputPath . $eeTempFile); 
+			
+			if($eeImageSize[0] < $eeImageSize[1]) { // Landscape
+				$eeCrop = $eeImageSize[0];
+			} else {
+				$eeCrop = $eeImageSize[1];
+			}
+			
+			// Crop image to square
+			$eeImageResource = imagecrop($eeImageResource, ['x' => 0, 'y' => 0, 'width' => $eeCrop, 'height' => $eeCrop]);
+
+			
+			// Resize a few times to increase quality
+			if($eeCrop > 1200) {
+	
+				$eeScaleTo = $eeCrop / 2;
+				$eeThumbFileResource = imagescale($eeImageResource, $eeScaleTo);
+				$eeScaleTo = $eeScaleTo / 2;
+				$eeThumbFileResource = imagescale($eeImageResource, $eeScaleTo);
+				
+				if($eeScaleTo > 1200) {
+					
+					$eeScaleTo = $eeScaleTo / 2;
+					$eeThumbFileResource = imagescale($eeImageResource, $eeScaleTo);
+					$eeScaleTo = $eeScaleTo / 2;
+					$eeThumbFileResource = imagescale($eeImageResource, $eeScaleTo);
+				}
+			} // Outputs an image at least 300px
+			
+			
+			// Final resize and write to a file.
+			$eeThumbFileResource = imagescale($eeImageResource, 256); // Resize to 200px wide
+			$eeThumbFileResourceCropped = imagecrop($eeThumbFileResource, ['x' => 0, 'y' => 0, 'width' => 256, 'height' => 256]);
+			imagejpeg($eeThumbFileResourceCropped, $eeOutputPath . $eeOutputFile, 90); // Write to file, 90% quality
+			imagedestroy($eeThumbFileResource); // Free up memory
+			imagedestroy($eeThumbFileResourceCropped); // Free up memory
+			unlink($eeOutputPath . $eeTempFile); // Delete the temp PNG file
+			
+			// Confirm the file is there
+			if(is_readable($eeOutputPath . $eeOutputFile)) {
+				$eeSFL_FREE_Log['SFL'][] = 'Created the PDF Thumbnail for ' . $eeInputFile;
+				return TRUE;
+			} else {
+				$eeSFL_FREE_Log['SFL'][] = '!!!! FAILED to Create the PDF Thumbnail for ' . $eeInputFile;
+			}
+			
+			// Failed
+			return FALSE;
+		}
+	}
+	
+	
+	
 	
 	
 	

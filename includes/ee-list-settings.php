@@ -56,7 +56,9 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	// Asc/Desc Checkbox
 	if(@$_POST['eeSortOrder'] == 'Descending') { $eeSFL_Settings['SortOrder'] = 'Descending'; }
 		else { $eeSFL_Settings['SortOrder'] = 'Ascending'; }
-
+		
+	// Always On for the free version	
+	$eeSFL_Settings['GenerateThumbs'] = 'YES';
 	
 	// Sort for Sanity
 	ksort($eeSFL_Settings);
@@ -220,30 +222,6 @@ $eeOutput .= '
 		
 		<div class="eeNote">' . __('Check this box to reverse the default sort order.', 'ee-simple-file-list') . '<br />
 			' . __('The list is sorted Ascending by default', 'ee-simple-file-list') . ': A to Z, ' . __('Small to Large', 'ee-simple-file-list') . ', ' . __('Old to New', 'ee-simple-file-list') . '</div>	
-		
-		</fieldset>
-		
-		
-		
-		
-		
-		<fieldset class="eeSFL_SettingsBlock">
-		
-		<h3>' . __('Thumbnail Generation', 'ee-simple-file-list') . '</h3>
-		
-		<label for="eeExpireTime">' . __('Generate Thumbnails', 'ee-simple-file-list') . ':</label>
-		
-		<input id="eeExpireTime" type="checkbox" name="eeExpireTime" value="YES"';
-		if( $eeSFL_Settings['ExpireTime'] == 'YES' OR $eeSFL_Settings['ExpireTime'] >= 1 ) { $eeOutput .= ' checked="checked"'; }
-		$eeOutput .= ' /> 
-		<div class="eeNote">' . __('Read the file and create a representative thumbnail image.', 'ee-simple-file-list') . '</div>
-		
-		
-		<label for="eeExpireTime">' . __('Generate Thumbnails', 'ee-simple-file-list') . ':</label>
-		
-		<input type="number" name="" value="' . $eeSFL_Settings['GenerateThumbs'] . '" />
-		
-		
 		
 		</fieldset>
 		
