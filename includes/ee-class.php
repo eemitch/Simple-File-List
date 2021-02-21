@@ -313,12 +313,14 @@ class eeSFL_FREE_MainClass {
 				$eeFileArrayWorking[] = array(
 					'FilePath' => $eeFile
 					,'FileExt' => strtolower($eePathParts['extension'])
-					,'FileMIME' => mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile)
 					,'FileSize' => filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile)
 					,'FileDateAdded' => date("Y-m-d H:i:s")
 					,'FileDateChanged' => date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile))
-				);				
+				);
 				
+				if(function_exists('mime_content_type')) {
+					$eeFileArrayWorking['FileMIME'] = mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath); // MIME Type
+				}				
 			}
 		
 		} else { // Update file info
@@ -372,11 +374,14 @@ class eeSFL_FREE_MainClass {
 					$eeFileArrayWorking[] = array(
 						'FilePath' => $eeFile
 						,'FileExt' => strtolower($eePathParts['extension'])
-						,'FileMIME' => mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile)
 						,'FileSize' => filesize(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile)
 						,'FileDateAdded' => date("Y-m-d H:i:s")
 						,'FileDateChanged' => date("Y-m-d H:i:s", filemtime(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile))
 					);
+				
+					if(function_exists('mime_content_type')) {
+						$eeFileArrayWorking['FileMIME'] = mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath); // MIME Type
+					}
 				}
 			}
 		}
