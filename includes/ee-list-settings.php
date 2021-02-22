@@ -28,6 +28,9 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		,'PreserveSpaces'
 		,'ShowFileExtension'
 		,'ExpireTime'
+		,'GenerateImgThumbs'
+		,'GeneratePDFThumbs'
+		,'GenerateVideoThumbs'
 	);
 		
 	foreach( $eeCheckboxes as $eeTerm){ // "ee" is added in the function
@@ -239,6 +242,73 @@ $eeOutput .= '
 		$eeOutput .= ' /> 
 		<div class="eeNote">' . __('Reduce server load by only scanning the hard disk occasionally.', 'ee-simple-file-list') . ' '  . 
 			__('If you use FTP or another method to upload files to your list, turn this off to re-scan the files before each page load.', 'ee-simple-file-list') . '</div>
+			
+			
+		<h3>' . __('Thumbnail Generation', 'ee-simple-file-list-pro') . '</h3>
+		
+		<p>' . __('You can choose to generate small representative images of large images, PDF files and videos files.', 'ee-simple-file-list-pro') . '</p>
+		
+		<label for="eeGenerateImgThumbs">' . __('Image Thumbnails', 'ee-simple-file-list-pro') . ':</label>
+		
+		<input id="eeGenerateImgThumbs" type="checkbox" name="eeGenerateImgThumbs" value="YES"';
+		if( $eeSFL_Settings['GenerateImgThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
+		
+		$eeSupported = get_option('eeSFL_Supported');
+		
+		$eeOutput .= ' /> <p>' . __('Using', 'ee-simple-file-list-pro') . ': <a href="https://developer.wordpress.org/reference/functions/wp_get_image_editor/" target="_blank">Wordpress</a></p>
+		<div class="eeNote">' . __('Read an image file and create a small thumbnail image.', 'ee-simple-file-list-pro') . '</div>
+		
+		
+		<label for="eeGeneratePDFThumbs">' . __('PDF Thumbnails', 'ee-simple-file-list-pro') . ':</label>
+		
+		<input id="eeGeneratePDFThumbs" type="checkbox" name="eeGeneratePDFThumbs" value="YES"';
+		if( $eeSFL_Settings['GeneratePDFThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
+		if( !isset($eeSFL_Env['ImkGs']) OR $eeSFL_Env['eeOS'] == 'WINDOWS' ) { $eeOutput .= ' disabled="disabled"'; }
+		$eeOutput .= ' /> <p>';
+		
+		$eeMissing = array();
+		
+		if( !in_array('ImageMagick' , $eeSupported) ) { 
+			$eeOutput .='<strong>' . __('Missing', 'ee-simple-file-list-pro') . ': <a href="https://imagemagick.org/index.php" target="_blank">Image Magick</a></strong><br />';
+			$eeMissing[] = 'Image Magick';
+		} else {
+			$eeOutput .= __('Using', 'ee-simple-file-list-pro') . ': <a href="https://imagemagick.org/index.php" target="_blank">Image Magick</a><br />';
+		}
+		if( !in_array('GhostScript' , $eeSupported) ) { 
+			$eeOutput .=' <strong>' . __('Missing: ', 'ee-simple-file-list-pro') . ' <a href="https://www.ghostscript.com/" target="_blank">GhostScript</a></strong>';
+			$eeMissing[] = 'GhostScript';
+		} else {
+			$eeOutput .= __('Using', 'ee-simple-file-list-pro') . ': <a href="https://www.ghostscript.com/" target="_blank">GhostScript</a>';
+		}
+		if( $eeSFL_Env['eeOS'] == 'WINDOWS' ) { $eeOutput .=' <em>Windows ' . __('not yet supported', 'ee-simple-file-list-pro') . '</em>'; }
+		
+		$eeOutput .= '</p>
+		<div class="eeNote">' . __('Read a PDF file and create a representative thumbnail image based on the first page.', 'ee-simple-file-list-pro');
+		
+		$eeOutput .= '</div>
+		
+		
+		<label for="eeGenerateVideoThumbs">' . __('Video Thumbnails', 'ee-simple-file-list-pro') . ':</label>
+		
+		<input id="eeGenerateVideoThumbs" type="checkbox" name="eeGenerateVideoThumbs" value="YES"';
+		if( $eeSFL_Settings['GenerateVideoThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
+		if( !isset($eeSFL_Env['ffMpeg']) ) { $eeOutput .= ' disabled="disabled"'; }
+		$eeOutput .= ' />'; 
+		
+		if( !isset($eeSFL_Env['ffMpeg']) ) { 
+			$eeMissing[] = 'FFmpeg';
+			$eeOutput .= '<p><strong>' . __('Missing', 'ee-simple-file-list-pro') . ': <a href="https://ffmpeg.org/" target="_blank">FFmpeg</a></strong></p>';
+		} else {
+			$eeOutput .= '<p>' . __('Using', 'ee-simple-file-list-pro') . ' <a href="https://ffmpeg.org/" target="_blank">FFmpeg</a></p>';
+		}
+				 	 
+		$eeOutput .= '<div class="eeNote">' . __('Read a video file and create a representative thumbnail image at the 1 second mark .', 'ee-simple-file-list-pro') . '</div>';
+		
+		if(count($eeMissing)) {
+			$eeOutput .= '<p><strong><em>' . __('Please install the missing PHP extensions to activate the disabled features.', 'ee-simple-file-list-pro') . '</em></strong></p>';
+		}	
+			
+			
 		
 		</fieldset>
 		
