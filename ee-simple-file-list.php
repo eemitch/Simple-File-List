@@ -814,11 +814,9 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 	
 	if($eeInstalled) {
 		
-		if( version_compare( $eeInstalled, '4.2', '<') ) { 
-			
-			delete_transient('eeSFL_FileList-1'); // Force a re-scan because now we're storing a sorted file array.
-		} 
+		delete_transient('eeSFL_FileList-1'); // Out with the Old ...
 		
+		// In with the New!
 		if(version_compare( $eeInstalled, '4.3', '<')) { // Renamed the DB option name: eeSFL-Settings to eeSFL_Settings_1 
 	
 			$eeSettings = get_option('eeSFL-Settings');
@@ -838,6 +836,23 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 			delete_transient('eeSFL-1-FileListDirCheck');
 		
 			if(update_option('eeSFL_FREE_DB_Version', eeSFL_FREE_DB_Version)) { // NOTE - We changed to all underscores in option names in 4.3
+				return TRUE;
+			} else {
+				return FALSE;
+			}
+		}
+		
+		// SFL 4.3.7 Brings new thumb generation options
+		if( version_compare( $eeInstalled, '4.6', '<') ) { 
+			
+			// Adding Thumbnail generation options
+			$eeSettings = get_option('eeSFL_Settings_1');
+			$eeSettings['GenerateImgThumbs'] = 'YES';
+			$eeSettings['GeneratePDFThumbs'] = 'YES';
+			$eeSettings['GenerateVideoThumbs'] = 'YES';
+			update_option('eeSFL_Settings_1', $eeSettings);
+			
+			if(update_option('eeSFL_FREE_DB_Version', eeSFL_FREE_DB_Version)) {
 				return TRUE;
 			} else {
 				return FALSE;

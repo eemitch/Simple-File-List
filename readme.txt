@@ -244,6 +244,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 = 4.3.7 =
 * Added ability to generate thumbnails for PDF files. (by popular demand)
+* Added options for generating image, PDF and video thumbnails.
 * jQuery code updates
 
 = 4.3.6 =

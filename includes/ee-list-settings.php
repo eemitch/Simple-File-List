@@ -59,9 +59,6 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	// Asc/Desc Checkbox
 	if(@$_POST['eeSortOrder'] == 'Descending') { $eeSFL_Settings['SortOrder'] = 'Descending'; }
 		else { $eeSFL_Settings['SortOrder'] = 'Ascending'; }
-		
-	// Always On for the free version	
-	$eeSFL_Settings['GenerateThumbs'] = 'YES';
 	
 	// Sort for Sanity
 	ksort($eeSFL_Settings);
@@ -254,6 +251,7 @@ $eeOutput .= '
 		if( $eeSFL_Settings['GenerateImgThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
 		
 		$eeSupported = get_option('eeSFL_Supported');
+		if(!$eeSupported) { $eeSupported = array(); }
 		
 		$eeOutput .= ' /> <p>' . __('Using', 'ee-simple-file-list-pro') . ': <a href="https://developer.wordpress.org/reference/functions/wp_get_image_editor/" target="_blank">Wordpress</a></p>
 		<div class="eeNote">' . __('Read an image file and create a small thumbnail image.', 'ee-simple-file-list-pro') . '</div>
@@ -263,7 +261,7 @@ $eeOutput .= '
 		
 		<input id="eeGeneratePDFThumbs" type="checkbox" name="eeGeneratePDFThumbs" value="YES"';
 		if( $eeSFL_Settings['GeneratePDFThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
-		if( !isset($eeSFL_Env['ImkGs']) OR $eeSFL_Env['eeOS'] == 'WINDOWS' ) { $eeOutput .= ' disabled="disabled"'; }
+		if( !isset($eeSFL_FREE_Env['ImkGs']) OR $eeSFL_FREE_Env['eeOS'] == 'WINDOWS' ) { $eeOutput .= ' disabled="disabled"'; }
 		$eeOutput .= ' /> <p>';
 		
 		$eeMissing = array();
@@ -280,7 +278,7 @@ $eeOutput .= '
 		} else {
 			$eeOutput .= __('Using', 'ee-simple-file-list-pro') . ': <a href="https://www.ghostscript.com/" target="_blank">GhostScript</a>';
 		}
-		if( $eeSFL_Env['eeOS'] == 'WINDOWS' ) { $eeOutput .=' <em>Windows ' . __('not yet supported', 'ee-simple-file-list-pro') . '</em>'; }
+		if( $eeSFL_FREE_Env['eeOS'] == 'WINDOWS' ) { $eeOutput .=' <em>Windows ' . __('not yet supported', 'ee-simple-file-list-pro') . '</em>'; }
 		
 		$eeOutput .= '</p>
 		<div class="eeNote">' . __('Read a PDF file and create a representative thumbnail image based on the first page.', 'ee-simple-file-list-pro');
@@ -292,17 +290,17 @@ $eeOutput .= '
 		
 		<input id="eeGenerateVideoThumbs" type="checkbox" name="eeGenerateVideoThumbs" value="YES"';
 		if( $eeSFL_Settings['GenerateVideoThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
-		if( !isset($eeSFL_Env['ffMpeg']) ) { $eeOutput .= ' disabled="disabled"'; }
+		if( !isset($eeSFL_FREE_Env['ffMpeg']) ) { $eeOutput .= ' disabled="disabled"'; }
 		$eeOutput .= ' />'; 
 		
-		if( !isset($eeSFL_Env['ffMpeg']) ) { 
+		if( !isset($eeSFL_FREE_Env['ffMpeg']) ) { 
 			$eeMissing[] = 'FFmpeg';
 			$eeOutput .= '<p><strong>' . __('Missing', 'ee-simple-file-list-pro') . ': <a href="https://ffmpeg.org/" target="_blank">FFmpeg</a></strong></p>';
 		} else {
 			$eeOutput .= '<p>' . __('Using', 'ee-simple-file-list-pro') . ' <a href="https://ffmpeg.org/" target="_blank">FFmpeg</a></p>';
 		}
 				 	 
-		$eeOutput .= '<div class="eeNote">' . __('Read a video file and create a representative thumbnail image at the 1 second mark .', 'ee-simple-file-list-pro') . '</div>';
+		$eeOutput .= '<div class="eeNote">' . __('Read a video file and create a representative thumbnail image at the 1 second mark.', 'ee-simple-file-list-pro') . '</div>';
 		
 		if(count($eeMissing)) {
 			$eeOutput .= '<p><strong><em>' . __('Please install the missing PHP extensions to activate the disabled features.', 'ee-simple-file-list-pro') . '</em></strong></p>';
@@ -310,7 +308,7 @@ $eeOutput .= '
 			
 			
 		
-		</fieldset>
+		$eeOutput .= '</fieldset>
 		
 		</div>
 		

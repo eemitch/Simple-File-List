@@ -355,28 +355,29 @@ if( isset($eeSFL_Files) ) {
 					
 					
 					// Thumbnail
-					if($eeSFL_Settings['ShowFileThumb'] == 'YES') {
+					if($eeAdmin OR $eeSFL_Settings['ShowFileThumb'] == 'YES') {
 						
 						$eeShowThumbImage = FALSE;
 						
-						if( in_array($eeFileExt,  $eeSFL_FREE->eeDynamicImageThumbFormats) ) {
+						if( in_array($eeFileExt,  $eeSFL_FREE->eeDynamicImageThumbFormats) AND $eeSFL_Settings['GenerateImgThumbs'] == 'YES' ) {
 							$eeShowThumbImage = TRUE;
 						}
-						if( in_array($eeFileExt,  $eeSFL_FREE->eeDynamicVideoThumbFormats) AND isset($eeSFL_FREE_Env['ffMpeg']) ) {
+						if( in_array($eeFileExt,  $eeSFL_FREE->eeDynamicVideoThumbFormats) AND isset($eeSFL_FREE_Env['ffMpeg']) AND $eeSFL_Settings['GenerateVideoThumbs'] == 'YES' ) {
 							$eeShowThumbImage = TRUE;
 						}
-						if( $eeFileExt == 'pdf' AND isset($eeSFL_FREE_Env['ImkGs']) ) {
+						if( $eeFileExt == 'pdf' AND isset($eeSFL_FREE_Env['ImkGs']) AND $eeSFL_Settings['GeneratePDFThumbs'] == 'YES' ) {
 							$eeShowThumbImage = TRUE;
 						}
 						
 						// Check Type
 						if($eeShowThumbImage) { // Images use .jpg files
-							
+
 							$eePathParts = pathinfo($eeFilePath);
-							$eeFileNameOnly = $eePathParts['filename'];
-							$eeFileThumbURL = $eeSFL_Settings['FileListURL'] . '.thumbnails/thumb_' . $eeFileNameOnly . '.jpg';
-						
-						} else { // Others use our own .svg files
+							$eeFileThumbURL = $eeSFL_Settings['FileListURL'];
+							if($eePathParts['dirname']) { $eeFileThumbURL .= $eePathParts['dirname'] . '/'; }
+							$eeFileThumbURL .= '.thumbnails/thumb_' . $eePathParts['filename'] . '.jpg';
+
+						} else { // Others use our awesome .svg files
 							
 							if( !in_array($eeFileExt, $eeSFL_FREE->eeDefaultThumbFormats) ) {
 								$eeDefaultThumb = '!default.svg'; // What the heck is this?
@@ -384,15 +385,14 @@ if( isset($eeSFL_Files) ) {
 								$eeDefaultThumb = $eeFileExt . '.svg';
 							}
 							
-							$eeFileThumbURL = $eeSFL_FREE_Env['wpPluginsURL'] . $eeSFL_FREE->eePluginNameSlug . '/images/thumbnails/' . $eeDefaultThumb;
+							$eeFileThumbURL = $eeSFL_FREE_Env['pluginURL'] . 'images/thumbnails/' . $eeDefaultThumb;
 						}
 					
 						$eeOutput .= '<td class="eeSFL_Thumbnail">';
 						
-						if($eeFileThumbURL) { 
-							
-							$eeOutput .= '<a href="' . $eeFileURL .  '" target="_blank"><img src="' . $eeFileThumbURL . '" width="64" height="64" alt="Thumb" /></a>';
-						}
+						if($eeFileThumbURL) { $eeOutput .= '<a href="' . $eeFileURL .  '"';
+								
+							$eeOutput .= '><img src="' . $eeFileThumbURL . '" width="64" height="64" alt="Thumb" /></a>'; }
 						
 						$eeOutput .= '</td>';
 					}

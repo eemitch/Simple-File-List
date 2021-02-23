@@ -177,7 +177,8 @@ fieldset.eeSFL_SettingsFull {
 
 
 .eeSFL_Admin .eeSFL #eeSFL_Settings p {
-	display: inline;
+	display: inline-block;
+	margin-bottom: 12px;
 }
 
 

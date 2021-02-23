@@ -68,7 +68,9 @@ class eeSFL_FREE_MainClass {
 		'AllowOverwrite' => 'NO', // Number new files with same name, or just overwrite.
 		
 		// Display Settings
-		'GenerateThumbs' => 'YES', // Create thumbnail images for images, videos and PDFs if possible.
+		'GenerateImgThumbs' => 'YES', // Create thumbnail images for images if possible.
+		'GeneratePDFThumbs' => 'NO', // Create thumbnail images for PDFs if possible.
+		'GenerateVideoThumbs' => 'YES', // Create thumbnail images for videos if possible.
 		'PreserveSpaces' => 'NO', // Replace ugly hyphens with spaces
 		'ShowFileDescription' => 'YES', // Display the File Description (YES or NO)
 		'ShowFileActions' => 'YES', // Display the File Action Links Section (below each file name) (YES or NO)
@@ -415,23 +417,25 @@ class eeSFL_FREE_MainClass {
 		    update_option('eeSFL_FileList_1', $eeFileArrayWorking);
 		    
 		    
-		    // Generate Thumbnails if possible
-		    if(@$eeSFL_Settings['GenerateThumbs'] == 'YES') { // NOTE - We can remove the error suppression after a while. Only needed for current user updates.
+		    // Check for supported technologies
+			$eeSupported = array();
+		
+		    if($eeSFL_Settings['GenerateVideoThumbs'] == 'YES') {
 		    
-			    // Check for supported technologies
-				$eeSupported = array();
-			
 			    // Check for ffMpeg
 				if(@shell_exec('type -P ffmpeg')) {
 					$eeSupported[] = 'ffMpeg';
-					$eeSFL_FREE_Log['Supported'][] = 'Supported: ffMpeg';
+					$eeSFL_Log['Supported'][] = 'Supported: ffMpeg';
 				}
+		    }
+		    
+		    if($eeSFL_Settings['GeneratePDFThumbs'] == 'YES' AND $eeSFL_FREE_Env['eeOS'] != 'WINDOWS') {
 				
 				// Check for ImageMagick
 				$phpExt = 'imagick'; 
 				if(extension_loaded($phpExt)) {
 					$eeSupported[] = 'ImageMagick';
-					$eeSFL_FREE_Log['Supported'][] = 'Supported: ImageMagick';
+					$eeSFL_Log['Supported'][] = 'Supported: ImageMagick';
 				}
 				
 				// Check for GhostScript
@@ -440,26 +444,25 @@ class eeSFL_FREE_MainClass {
 					$phpExt = 'gs'; // <<<---- This will be different for Windows
 					if(shell_exec($phpExt . ' --version') >= 1.0) { // <<<---- This will be different for Windows too
 						$eeSupported[] = 'GhostScript';
-						$eeSFL_FREE_Log['Supported'][] = 'Supported: GhostScript';
+						$eeSFL_Log['Supported'][] = 'Supported: GhostScript';
 					}
 				}
-				
-				if(count($eeSupported)) {
-					update_option('eeSFL_Supported', $eeSupported);
+			}
+			
+			if(count($eeSupported)) {
+				update_option('eeSFL_Supported', $eeSupported);
+			}
+			
+		    
+		    // Check for and create thumbnail if needed...
+		    foreach($eeFileArrayWorking as $eeKey => $eeFile) {
+		    	
+		    	if( ($eeFile['FileExt'] == 'pdf' AND $eeSFL_Settings['GeneratePDFThumbs'] == 'YES')
+		    		OR (in_array($eeFile['FileExt'], $this->eeDynamicImageThumbFormats) AND $eeSFL_Settings['GenerateImgThumbs'] == 'YES')
+						OR (in_array($eeFile['FileExt'], $this->eeDynamicVideoThumbFormats) AND $eeSFL_Settings['GenerateVideoThumbs'] == 'YES') ) {
+					
+					$this->eeSFL_CheckThumbnail($eeFile['FilePath']);
 				}
-				
-			    
-			    // Check for and create thumbnail if needed...
-			    foreach($eeFileArrayWorking as $eeKey => $eeFile) {
-			    	
-			    	if($eeFile['FileExt'] == 'pdf' 
-			    		OR in_array($eeFile['FileExt'], $this->eeDynamicImageThumbFormats) 
-						OR in_array($eeFile['FileExt'], $this->eeDynamicVideoThumbFormats) ) {
-						
-						$eeSFL_FREE_Log['SFL'][] = 'Checking thumbnail...';
-						$this->eeSFL_CheckThumbnail($eeFile['FilePath']);
-					}
-			    }
 		    }
 			
 			return $eeFileArrayWorking; 
