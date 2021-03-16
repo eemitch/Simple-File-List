@@ -362,7 +362,7 @@ if( isset($eeSFL_Files) ) {
 						if( in_array($eeFileExt,  $eeSFL_FREE->eeDynamicImageThumbFormats) AND $eeSFL_Settings['GenerateImgThumbs'] == 'YES' ) {
 							$eeShowThumbImage = TRUE;
 						}
-						if( in_array($eeFileExt,  $eeSFL_FREE->eeDynamicVideoThumbFormats) AND isset($eeSFL_FREE_Env['ffMpeg']) AND $eeSFL_Settings['GenerateVideoThumbs'] == 'YES' ) {
+						if( in_array($eeFileExt,  $eeSFL_FREE->eeDynamicVideoThumbFormats) AND isset($eeSFL_FREE_Env['FFmpeg']) AND $eeSFL_Settings['GenerateVideoThumbs'] == 'YES' ) {
 							$eeShowThumbImage = TRUE;
 						}
 						if( $eeFileExt == 'pdf' AND isset($eeSFL_FREE_Env['ImkGs']) AND $eeSFL_Settings['GeneratePDFThumbs'] == 'YES' ) {

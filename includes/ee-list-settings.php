@@ -290,10 +290,10 @@ $eeOutput .= '
 		
 		<input id="eeGenerateVideoThumbs" type="checkbox" name="eeGenerateVideoThumbs" value="YES"';
 		if( $eeSFL_Settings['GenerateVideoThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
-		if( !isset($eeSFL_FREE_Env['ffMpeg']) ) { $eeOutput .= ' disabled="disabled"'; }
+		if( !isset($eeSFL_FREE_Env['FFmpeg']) ) { $eeOutput .= ' disabled="disabled"'; }
 		$eeOutput .= ' />'; 
 		
-		if( !isset($eeSFL_FREE_Env['ffMpeg']) ) { 
+		if( !isset($eeSFL_FREE_Env['FFmpeg']) ) { 
 			$eeMissing[] = 'FFmpeg';
 			$eeOutput .= '<p><strong>' . __('Missing', 'ee-simple-file-list-pro') . ': <a href="https://ffmpeg.org/" target="_blank">FFmpeg</a></strong></p>';
 		} else {

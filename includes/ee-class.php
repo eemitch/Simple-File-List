@@ -196,7 +196,7 @@ class eeSFL_FREE_MainClass {
 		
 		$eeEnv['wpUserID'] = get_current_user_id();
 		
-		// Check Server technologies available (i.e. ffMpeg)
+		// Check Server technologies available (i.e. FFmpeg)
 		$eeSupported = get_option('eeSFL_Supported');
 		
 		if(is_array($eeSupported)) {
@@ -204,8 +204,8 @@ class eeSFL_FREE_MainClass {
 			if( in_array('ImageMagick', $eeSupported) AND in_array('GhostScript', $eeSupported) ) { 
 				$eeEnv['ImkGs'] = 'YES';
 			}
-			if( in_array('ffMpeg', $eeSupported) ) {
-				$eeEnv['ffMpeg'] = 'YES';
+			if( in_array('FFmpeg', $eeSupported) ) {
+				$eeEnv['FFmpeg'] = 'YES';
 			}
 		}
 		
@@ -321,7 +321,7 @@ class eeSFL_FREE_MainClass {
 				);
 				
 				if(function_exists('mime_content_type')) {
-					$eeFileArrayWorking['FileMIME'] = mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath); // MIME Type
+					$eeFileArrayWorking[]['FileMIME'] = mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile); // MIME Type
 				}				
 			}
 		
@@ -382,7 +382,7 @@ class eeSFL_FREE_MainClass {
 					);
 				
 					if(function_exists('mime_content_type')) {
-						$eeFileArrayWorking['FileMIME'] = mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath); // MIME Type
+						$eeFileArrayWorking['FileMIME'][] = mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath); // MIME Type
 					}
 				}
 			}
@@ -413,6 +413,11 @@ class eeSFL_FREE_MainClass {
 			}
 			
 			
+			
+			
+			
+			
+			
 			// Update the DB
 		    update_option('eeSFL_FileList_1', $eeFileArrayWorking);
 		    
@@ -422,10 +427,10 @@ class eeSFL_FREE_MainClass {
 		
 		    if($eeSFL_Settings['GenerateVideoThumbs'] == 'YES') {
 		    
-			    // Check for ffMpeg
-				if(@shell_exec('type -P ffmpeg')) {
-					$eeSupported[] = 'ffMpeg';
-					$eeSFL_Log['Supported'][] = 'Supported: ffMpeg';
+			    // Check for FFmpeg
+				if(@shell_exec('ffmpeg -version')) {
+					$eeSupported[] = 'FFmpeg';
+					$eeSFL_Log['Supported'][] = 'Supported: FFmpeg';
 				}
 		    }
 		    
@@ -554,7 +559,7 @@ class eeSFL_FREE_MainClass {
 		// Video Files
 		if(in_array($eeExt, $this->eeDynamicVideoThumbFormats)) { // Check for FFMPEG
 			
-			if( isset($eeSFL_FREE_Env['ffMpeg']) ) {
+			if( isset($eeSFL_FREE_Env['FFmpeg']) ) {
 				
 				// FFmpeg won't create the thumbs dir, so we need to do it here if needed.
 				if(!is_dir($eeThumbsPATH)) { mkdir($eeThumbsPATH); }
@@ -848,8 +853,17 @@ class eeSFL_FREE_MainClass {
 		
 		global $eeSFL_FREE_Log, $eeSFL_Settings;
 		
+		// echo '<pre>'; print_r($eeFiles); echo '</pre>'; exit;
+		
 		if(is_array($eeFiles)) {
+			
 			if( count($eeFiles) <= 1 ) { return $eeFiles; } // No point if none or one
+			
+			// Clean the Array
+			foreach( $eeFiles as $eeKey => $eeFileArray) {
+				if( !isset($eeFileArray['FilePath']) ) { unset($eeFiles[$eeKey]); } // Get rid of bad arrays.
+			}
+			
 		} else {
 			return FALSE;
 		}

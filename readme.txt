@@ -47,7 +47,7 @@ Simple File List is also a good alternative for creative people using clumsy FTP
 * Show columns for file date, size and a thumbnail for images and videos.
 * Add descriptions to files and optionally show them in your list.
 * Sort file by name, date or file size ... ascending or descending.
-* Thumbnail images are generated automatically for images and videos (ffMpeg required).
+* Thumbnail images are generated automatically for images and videos (FFmpeg required).
 * Files are kept separate from the media library
 
 
