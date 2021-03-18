@@ -4,8 +4,8 @@ Donate link: http://simplefilelist.com
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
 Requires PHP: 5.6.40
-Tested up to: 5.6
-Stable tag: 4.3.6
+Tested up to: 5.7
+Stable tag: 4.3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,7 +47,7 @@ Simple File List is also a good alternative for creative people using clumsy FTP
 * Show columns for file date, size and a thumbnail for images and videos.
 * Add descriptions to files and optionally show them in your list.
 * Sort file by name, date or file size ... ascending or descending.
-* Thumbnail images are generated automatically for images and videos (FFmpeg required).
+* Thumbnail images are generated automatically for images and videos (ffMpeg required).
 * Files are kept separate from the media library
 
 
@@ -340,12 +340,12 @@ Pages using the "showfolder" shortcode attribute will show "ERROR 95" where the 
 ** [eeSFL paged="(YES/NO)" filecount="25" search="(YES/NO)"]
 
 = 4.1.2 =
-* Fixed missing thumbnails when FFmpeg is installed, but fails to read the source video format.
+* Fixed missing thumbnails when ffMpeg is installed, but fails to read the source video format.
 
 = 4.1.1 =
 
 * Added new admin-side action hook: eeSFL_UploadCompletedAdmin
-* Video thumbnails were not being created via FFmpeg
+* Video thumbnails were not being created via ffMpeg
 * Thumbnail images were not following proper path
 * Addressed Error 99 issue on Windows installations
 * Various bug fixes and code improvements
@@ -478,7 +478,7 @@ Pages using the "showfolder" shortcode attribute will show "ERROR 95" where the 
 = 3.1.1 =
 
 * Thumbnails - Optionally show thumbnails for videos and image files, or file type icons for documents.
-* FFmpeg Support - Allows automatic thumbnail creation for videos.
+* ffMpeg Support - Allows automatic thumbnail creation for videos.
 * File List Table Sorting - Built-in file list table sorting. Click on a column heading to sort it.
 * Forced Download Link - Allows for forced downloading of a file, rather than relying on the default browser action.
 * Choose File Types - Fully customize the types of files you want users to be able to upload.

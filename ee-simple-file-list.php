@@ -15,13 +15,13 @@ Text Domain: ee-simple-file-list
 Domain Path: /languages
 */
 
-$eeSFL_FREE_DevMode = TRUE; // TRUE/FALSE = Enables visible logging or not
+$eeSFL_FREE_DevMode = FALSE; // TRUE/FALSE = Enables visible logging or not
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
 define('eeSFL_FREE_Version', '4.3.7'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
-define('eeSFL_FREE_DB_Version', '4.5'); // Database structure version - used for eeSFL_FREE_VersionCheck()
+define('eeSFL_FREE_DB_Version', '4.6'); // Database structure version - used for eeSFL_FREE_VersionCheck()
 define('eeSFL_FREE_Cache_Version', eeSFL_FREE_Version); // Cache-Buster version for static files - used when updating CSS/JS
 
 // LEGACY
@@ -84,7 +84,7 @@ function eeSFL_FREE_Setup() {
 	
 	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_Settings, $eeSFL_FREE_Env, $eeSFL_VarsForJS;
 	
-	$eeSFL_FREE_Log['SFL'][] = 'Running Setup...';
+	$eeSFL_FREE_Log['RunTime'][] = 'Running Setup...';
 	
 	// Translation strings to pass to javascript as eesfl_vars
 	$eeProtocol = isset( $_SERVER['HTTPS'] ) ? 'https://' : 'http://';
@@ -338,14 +338,7 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	$eeSFL_Time = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
 	$eeSFL_FREE_Log[] = 'Execution Time: ' . round($eeSFL_Time,3);
 	
-	if($eeSFL_FREE_DevMode) {
-		if(@$_REQUEST) { $eeOutput .= '<pre>REQUEST ' . print_r($_REQUEST, TRUE) . '</pre>'; array_unshift($eeSFL_FREE_Log, $_REQUEST); }
-		$eeOutput .= '<pre>Display File Array ' . print_r(@$eeSFL_Files, TRUE) . '</pre>';
-		$eeOutput .= '<pre>Display List Settings ' . print_r($eeSFL_Settings, TRUE) . '</pre>';
-		$eeOutput .= '<pre>Environment ' . print_r($eeSFL_FREE_Env, TRUE) . '</pre>';
-		$eeOutput .= '<pre>Runtime Log ' . print_r($eeSFL_FREE_Log, TRUE) . '</pre>';
-		$eeSFL_FREE->eeSFL_WriteLogData($eeSFL_FREE_Log);
-	}
+	$eeOutput .= $eeSFL_FREE->eeSFL_WriteLogData(); // Only adds output if DevMode is ON
 	
 	// Give it back
 	unset($eeSFL_Files);
@@ -759,7 +752,7 @@ function eeSFL_FREE_AdminMenu() {
 	if(@$_GET['page'] == $eeSFL_FREE->eePluginSlug) {
 		
 		$eeOutput = '<!-- Simple File List Admin -->';
-		$eeSFL_FREE_Log['SFL'][] = 'Admin Menu Loading ...';
+		$eeSFL_FREE_Log['RunTime'][] = 'Admin Menu Loading ...';
 		
 		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
 		include_once(WP_PLUGIN_DIR . '/' . $eeSFL_FREE->eePluginNameSlug . '/ee-admin-page.php'); // Admin's List Management Page
@@ -786,7 +779,7 @@ function eeSFL_FREE_VersionCheck() {
 		
 	global $eeSFL_FREE_Log;
 	
-	$eeSFL_FREE_Log['SFL'][] = 'Checking DB Version...';
+	$eeSFL_FREE_Log['RunTime'][] = 'Checking DB Version...';
 	
 	$eeInstalled = get_option('eeSFL-FREE-DB-Version'); // Legacy
 	if(!$eeInstalled ) { $eeInstalled = get_option('eeSFL_FREE_DB_Version'); } // Hip, now, and in-with-the-times.
@@ -797,7 +790,7 @@ function eeSFL_FREE_VersionCheck() {
 	
 	} else {
 		
-		$eeSFL_FREE_Log['SFL'][] = 'Database OK';
+		$eeSFL_FREE_Log['RunTime'][] = 'Database OK';
 		
 		return TRUE;
 	}
@@ -810,7 +803,7 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 	
 	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_FREE_Env;
 		
-	$eeSFL_FREE_Log['SFL'][] = 'Updating the Database...';
+	$eeSFL_FREE_Log['RunTime'][] = 'Updating the Database...';
 	
 	if($eeInstalled) {
 		
@@ -851,6 +844,11 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 			$eeSettings['GeneratePDFThumbs'] = 'YES';
 			$eeSettings['GenerateVideoThumbs'] = 'YES';
 			update_option('eeSFL_Settings_1', $eeSettings);
+			
+			// Migrate to new setting name
+			$eeSettings['UseCache'] = $eeSettings['ExpireTime'];
+			unset($eeSettings['ExpireTime']);
+			if(is_numeric($eeSettings['UseCache'])) { $eeSettings['UseCache'] = 'YES'; }
 			
 			if(update_option('eeSFL_FREE_DB_Version', eeSFL_FREE_DB_Version)) {
 				return TRUE;
@@ -1034,7 +1032,7 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 		
 		'ListTitle' => 'Simple File List',
 		'FileListDir' => $eeFileListDir,
-		'ExpireTime' => $eeConfigDefault['ExpireTime'],
+		'UseCache' => $eeConfigDefault['UseCache'],
 		'ShowList' => $eeShowList,
 		'AdminRole' => $eeConfigDefault['AdminRole'],
 		'ShowFileThumb' => $eeShowFileThumb,

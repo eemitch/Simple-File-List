@@ -1480,8 +1480,8 @@ msgstr "Mitchell Bennis"
 #~ msgid "Move to Folder"
 #~ msgstr "Passare alla cartella"
 
-#~ msgid "FFmpeg Error - File Not Created"
-#~ msgstr "Errore FFmpeg-file non creato"
+#~ msgid "ffMpeg Error - File Not Created"
+#~ msgstr "Errore ffMpeg-file non creato"
 
 #~ msgid "Send Notification"
 #~ msgstr "Invia notifica"

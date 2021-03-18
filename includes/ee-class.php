@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Class' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_FREE_Log['SFL'][] = 'Loaded: ee-class';
+$eeSFL_FREE_Log['RunTime'][] = 'Loaded: ee-class';
 
 class eeSFL_FREE_MainClass {
 			
@@ -16,8 +16,6 @@ class eeSFL_FREE_MainClass {
 	public $eeAllFilesSorted = array();
 	public $eeDefaultUploadLimit = 99;
 	public $eeFileThumbSize = 64;
-	// public $eeSFL_FileScanArray = array(); // Temporary holder
-	private $eeExpireTime = 1; // Hours until the disk is rescanned;
     
     // File Types
     public $eeDynamicImageThumbFormats = array('gif', 'jpg', 'jpeg', 'png');
@@ -47,7 +45,7 @@ class eeSFL_FREE_MainClass {
 		// List Settings
 		'ListTitle' => 'Simple File List', // List Title (Not currently used)
 		'FileListDir' => 'wp-content/uploads/simple-file-list/', // List Directory Name (relative to ABSPATH)
-		'ExpireTime' => 'YES', // To cache or not to cache (YES / NO)
+		'UseCache' => 'YES', // To cache or not to cache (YES / NO)
 		'ShowList' => 'YES', // Show the File List (YES, ADMIN, USER, NO)
 		'AdminRole' => 5, // Who can access settings, based on WP role (5 = Admin ... 1 = Subscriber)
 		'ShowFileThumb' => 'YES', // Display the File Thumbnail Column (YES or NO)
@@ -196,7 +194,7 @@ class eeSFL_FREE_MainClass {
 		
 		$eeEnv['wpUserID'] = get_current_user_id();
 		
-		// Check Server technologies available (i.e. FFmpeg)
+		// Check Server technologies available (i.e. ffMpeg)
 		$eeSupported = get_option('eeSFL_Supported');
 		
 		if(is_array($eeSupported)) {
@@ -204,8 +202,8 @@ class eeSFL_FREE_MainClass {
 			if( in_array('ImageMagick', $eeSupported) AND in_array('GhostScript', $eeSupported) ) { 
 				$eeEnv['ImkGs'] = 'YES';
 			}
-			if( in_array('FFmpeg', $eeSupported) ) {
-				$eeEnv['FFmpeg'] = 'YES';
+			if( in_array('ffMpeg', $eeSupported) ) {
+				$eeEnv['ffMpeg'] = 'YES';
 			}
 		}
 		
@@ -221,7 +219,7 @@ class eeSFL_FREE_MainClass {
 	    
 	    global $eeSFL_FREE_Log, $eeSFL_FREE_Env;
 		
-		$eeSFL_FREE_Log['SFL'][] = 'Getting List 1 Settings...'; // One is the only number that you ever will...
+		$eeSFL_FREE_Log['RunTime'][] = 'Getting List 1 Settings...'; // One is the only number that you ever will...
 	    
 	    // Getting the settings array
 	    $eeSettings = get_option('eeSFL_Settings_1');
@@ -244,7 +242,7 @@ class eeSFL_FREE_MainClass {
 		
 		} else {
 			
-			$eeSFL_FREE_Log['SFL'][] = '!!! MISSING SETTINGS, BACK TO DEFAULT...';
+			$eeSFL_FREE_Log['RunTime'][] = '!!! MISSING SETTINGS, BACK TO DEFAULT...';
 			update_option('eeSFL_Settings_1', $this->DefaultListSettings); // The settings are gone, so reset to defaults.
 			return $this->DefaultListSettings;
 		}
@@ -284,8 +282,8 @@ class eeSFL_FREE_MainClass {
 	    
 	    global $eeSFL_FREE_Log, $eeSFL_Settings, $eeSFL_FREE_Env;
 	    
-	    $eeSFL_Log['SFL'][] = 'Calling Method: eeSFL_UpdateFileListArray()';
-	    $eeSFL_FREE_Log['SFL'][] = 'Scanning File List...';
+	    $eeSFL_FREE_Log['RunTime'][] = 'Calling Method: eeSFL_UpdateFileListArray()';
+	    $eeSFL_FREE_Log['RunTime'][] = 'Scanning File List...';
 	    
 	    // Get the File List Array
 	    $eeFilesDBArray = get_option('eeSFL_FileList_1');
@@ -295,7 +293,7 @@ class eeSFL_FREE_MainClass {
 	    $eeFilePathsArray = $this->eeSFL_IndexFileListDir($eeSFL_Settings['FileListDir']);
 	    
 	    if(!count($eeFilePathsArray)) {
-		    $eeSFL_Log['SFL'][] = 'No Files Found';
+		    $eeSFL_FREE_Log['RunTime'][] = 'No Files Found';
 		    return FALSE; // Quit and leave DB alone
 	    }
 	    
@@ -305,7 +303,7 @@ class eeSFL_FREE_MainClass {
 	    // No List in the DB, Creating New...
 	    if( !count($eeFilesDBArray) ) {
 			
-			$eeSFL_FREE_Log['SFL'][] = 'No List Found! Creating from scratch...';
+			$eeSFL_FREE_Log['RunTime'][] = 'No List Found! Creating from scratch...';
 			
 			foreach( $eeFilePathsArray as $eeKey => $eeFile) {
 				
@@ -327,7 +325,7 @@ class eeSFL_FREE_MainClass {
 		
 		} else { // Update file info
 			
-			$eeSFL_FREE_Log['SFL'][] = 'Updating Existing List...';
+			$eeSFL_FREE_Log['RunTime'][] = 'Updating Existing List...';
 			
 			$eeFileArrayWorking = $eeFilesDBArray; // Fill it up with current files
 			
@@ -339,7 +337,7 @@ class eeSFL_FREE_MainClass {
 				
 				if( !is_file($eeFileFullPath) ) { // Get rid of it
 					
-					$eeSFL_FREE_Log['SFL'][] = 'Removing: ' . $eeFileFullPath;
+					$eeSFL_FREE_Log['RunTime'][] = 'Removing: ' . $eeFileFullPath;
 					unset($eeFileArrayWorking[$eeKey]);
 				
 				} else {
@@ -356,7 +354,7 @@ class eeSFL_FREE_MainClass {
 			// Check if any new files have been added
 			foreach( $eeFilePathsArray as $eeKey => $eeFile) {
 				
-				$eeSFL_FREE_Log['SFL'][] = 'Checking File: ' . $eeFile;
+				$eeSFL_FREE_Log['RunTime'][] = 'Checking File: ' . $eeFile;
 				
 				$eeFound = FALSE;
 				
@@ -368,7 +366,7 @@ class eeSFL_FREE_MainClass {
 				
 				if($eeFound === FALSE) {
 					
-					$eeSFL_FREE_Log['SFL'][] = '!!! New File Found: ' . $eeFile;
+					$eeSFL_FREE_Log['RunTime'][] = '!!! New File Found: ' . $eeFile;
 					
 					$eePathParts = pathinfo($eeFile);
 					
@@ -396,16 +394,16 @@ class eeSFL_FREE_MainClass {
 		    $eeFileArrayWorking = $this->eeSFL_SortFiles($eeFileArrayWorking, $eeSFL_Settings['SortBy'], $eeSFL_Settings['SortOrder']);
 			
 			// Set Cache
-			if(is_numeric($eeSFL_Settings['ExpireTime'])) {
-				if($eeSFL_Settings['ExpireTime'] >= 1) { $eeSFL_Settings['ExpireTime'] = 'YES'; } 
-					else { $eeSFL_Settings['ExpireTime'] = 'NO'; } // Legacy 12/20 (v4.3)
+			if(is_numeric($eeSFL_Settings['UseCache'])) {
+				if($eeSFL_Settings['UseCache'] >= 1) { $eeSFL_Settings['UseCache'] = 'YES'; } 
+					else { $eeSFL_Settings['UseCache'] = 'NO'; } // Legacy 12/20 (v4.3)
 			}
 		    
 		    // Set the Transient
-		    if(@$eeSFL_Settings['ExpireTime'] == 'YES') {
+		    if(@$eeSFL_Settings['UseCache'] == 'YES') {
 			
-				$eeExpiresIn = $this->eeExpireTime * HOUR_IN_SECONDS;
-				$eeSFL_FREE_Log['SFL'][] = 'Setting file list cache transient to expire in ' . $this->eeExpireTime . ' hours.';
+				$eeExpiresIn = $this->eeUseCache * HOUR_IN_SECONDS;
+				$eeSFL_FREE_Log['RunTime'][] = 'Setting file list cache transient to expire in ' . $this->eeUseCache . ' hours.';
 				set_transient('eeSFL_FileList_1', 'Good', $eeExpiresIn);
 			
 			} else {
@@ -427,10 +425,10 @@ class eeSFL_FREE_MainClass {
 		
 		    if($eeSFL_Settings['GenerateVideoThumbs'] == 'YES') {
 		    
-			    // Check for FFmpeg
+			    // Check for ffMpeg
 				if(@shell_exec('ffmpeg -version')) {
-					$eeSupported[] = 'FFmpeg';
-					$eeSFL_Log['Supported'][] = 'Supported: FFmpeg';
+					$eeSupported[] = 'ffMpeg';
+					$eeSFL_FREE_Log['Supported'][] = 'Supported: ffMpeg';
 				}
 		    }
 		    
@@ -440,7 +438,7 @@ class eeSFL_FREE_MainClass {
 				$phpExt = 'imagick'; 
 				if(extension_loaded($phpExt)) {
 					$eeSupported[] = 'ImageMagick';
-					$eeSFL_Log['Supported'][] = 'Supported: ImageMagick';
+					$eeSFL_FREE_Log['Supported'][] = 'Supported: ImageMagick';
 				}
 				
 				// Check for GhostScript
@@ -449,7 +447,7 @@ class eeSFL_FREE_MainClass {
 					$phpExt = 'gs'; // <<<---- This will be different for Windows
 					if(shell_exec($phpExt . ' --version') >= 1.0) { // <<<---- This will be different for Windows too
 						$eeSupported[] = 'GhostScript';
-						$eeSFL_Log['Supported'][] = 'Supported: GhostScript';
+						$eeSFL_FREE_Log['Supported'][] = 'Supported: GhostScript';
 					}
 				}
 			}
@@ -460,14 +458,61 @@ class eeSFL_FREE_MainClass {
 			
 		    
 		    // Check for and create thumbnail if needed...
-		    foreach($eeFileArrayWorking as $eeKey => $eeFile) {
-		    	
-		    	if( ($eeFile['FileExt'] == 'pdf' AND $eeSFL_Settings['GeneratePDFThumbs'] == 'YES')
-		    		OR (in_array($eeFile['FileExt'], $this->eeDynamicImageThumbFormats) AND $eeSFL_Settings['GenerateImgThumbs'] == 'YES')
-						OR (in_array($eeFile['FileExt'], $this->eeDynamicVideoThumbFormats) AND $eeSFL_Settings['GenerateVideoThumbs'] == 'YES') ) {
-					
-					$this->eeSFL_CheckThumbnail($eeFile['FilePath']);
+		    if( $eeCrons[$eeSFL_ID]['GenerateThumbs'] != 'YES' AND $eeSFL_Settings['ShowFileThumb'] == 'YES' ) { // Don't do thumbnails if that Cron is running
+						
+				$eeSFL_Log['RunTime'][] = 'Checking thumbnails ...';
+		    
+			    // Check for supported technologies
+				$eeSupported = array();
+			
+			    // Check for ffMpeg
+				if(shell_exec('ffmpeg -version')) {
+					$eeSupported[] = 'ffMpeg';
+					$eeSFL_Log['Supported'][] = 'Supported: ffMpeg';
 				}
+			    
+			    if($eeSFL_FREE_Env['eeOS'] != 'WINDOWS') {
+					
+					// Check for ImageMagick
+					$phpExt = 'imagick'; 
+					if(extension_loaded($phpExt)) {
+						$eeSupported[] = 'ImageMagick';
+						$eeSFL_Log['Supported'][] = 'Supported: ImageMagick';
+					}
+					
+					// Check for GhostScript
+					if($eeSFL_FREE_Env['eeOS'] == 'LINUX') { // TO DO - Make it work for IIS
+					
+						$phpExt = 'gs'; // <<<---- This will be different for Windows
+						if(shell_exec($phpExt . ' --version') >= 1.0) { // <<<---- This will be different for Windows too
+							$eeSupported[] = 'GhostScript';
+							$eeSFL_Log['Supported'][] = 'Supported: GhostScript';
+						}
+					}
+				}
+				
+				// echo '<pre>'; print_r($eeSupported); echo '</pre>'; exit;
+				
+				if(count($eeSupported)) {
+					update_option('eeSFL_Supported', $eeSupported);
+				}
+				
+			    
+			    // Check for and create thumbnail if needed...
+			    foreach($eeFileArrayWorking as $eeKey => $eeFile) {
+			    	
+			    	if( ($eeFile['FileExt'] == 'pdf' AND $eeSFL_Settings['GeneratePDFThumbs'] == 'YES')
+			    		OR (in_array($eeFile['FileExt'], $this->eeDynamicImageThumbFormats) AND $eeSFL_Settings['GenerateImgThumbs'] == 'YES')
+							OR (in_array($eeFile['FileExt'], $this->eeDynamicVideoThumbFormats) AND $eeSFL_Settings['GenerateVideoThumbs'] == 'YES') ) {
+						
+								$this->eeSFL_CheckThumbnail($eeFile['FilePath'], $eeSFL_Settings);
+						
+					}
+			    }
+			    
+		    } else {
+			    $eeSFL_Log['RunTime'][] = 'Skipped Thumbnail Checks';
+			    
 		    }
 			
 			return $eeFileArrayWorking; 
@@ -495,7 +540,7 @@ class eeSFL_FREE_MainClass {
 		    return $eeFilesArray;
 	    }
 		    
-	    $eeSFL_FREE_Log['SFL'][] = 'Getting files from: ' . $eeFileListDir; 
+	    $eeSFL_FREE_Log['RunTime'][] = 'Getting files from: ' . $eeFileListDir; 
 	    
 	    $eeFileNameOnlyArray = scandir(ABSPATH . $eeFileListDir);
 	    
@@ -524,7 +569,7 @@ class eeSFL_FREE_MainClass {
 	    }
 	    
 	    if(!count($eeFilesArray)) {
-		    $eeSFL_FREE_Log['SFL'][] = 'No Files Found';
+		    $eeSFL_FREE_Log['RunTime'][] = 'No Files Found';
 	    }
 
 		return $eeFilesArray;
@@ -532,145 +577,114 @@ class eeSFL_FREE_MainClass {
 	
 	
 	
-	// Check thumbnail
-	public function eeSFL_CheckThumbnail($eeFilePath) { // File Path relative to FileListDir
+	// Check Thumbnail and Create if Needed
+	public function eeSFL_CheckThumbnail($eeFilePath, $eeSFL_Settings) { // Expects FilePath relative to FileListDir & the List's Settings Array
 		
-		global $eeSFL_FREE_Log, $eeSFL_Settings, $eeSFL_FREE_Env;
-		
-		$eeExt = FALSE;
-		$eeScreenshot = FALSE;
-		$eeThumbURL = FALSE;
+		global $eeSFL_FREE_Log, $eeSFL_FREE_Env;
 		
 		$eePathParts = pathinfo($eeFilePath);
-		$eeBaseName = $eePathParts['basename'];
 		$eeFileNameOnly = $eePathParts['filename'];
-		$eeExt = strtolower(@$eePathParts['extension']);
-		
+		$eeFileExt = $eePathParts['extension'];
+		$eeFileSubPath = $eePathParts['dirname'] . '/';
 		$eeFileFullPath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath;
-		$eeFileFullPath = str_replace('//', '/', $eeFileFullPath);
+		$eeThumbsPath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFileSubPath . '.thumbnails/';
+		$eeThumbFileToCheck = 'thumb_' . $eeFileNameOnly . '.jpg';
 		
-		$eeThumbsPATH = ABSPATH . $eeSFL_Settings['FileListDir'] . '.thumbnails/';
-		
-		// Is there already a thumb?
-		if(is_file($eeThumbsPATH . 'thumb_' . $eeFileNameOnly . '.jpg')) { return TRUE; } // Checked Okay
-		
-		// Else...
-		
-		// Video Files
-		if(in_array($eeExt, $this->eeDynamicVideoThumbFormats)) { // Check for FFMPEG
-			
-			if( isset($eeSFL_FREE_Env['FFmpeg']) ) {
-				
-				// FFmpeg won't create the thumbs dir, so we need to do it here if needed.
-				if(!is_dir($eeThumbsPATH)) { mkdir($eeThumbsPATH); }
-				
-				$eeExt = 'png'; // Set the extension
-				$eeScreenshot = $eeThumbsPATH . 'eeScreenshot_' . $eeFileNameOnly . '.' . $eeExt; // Create a temporary file
-				
-				// Create a full-sized image at the one-second mark
-				$eeCommand = 'ffmpeg -i ' . $eeFileFullPath . ' -ss 00:00:01.000 -vframes 1 ' . $eeScreenshot;
-				
-				$eeFFmpeg = trim(shell_exec($eeCommand));
-				
-				$eeSFL_FREE_Log['SFL'][] = $eeCommand;
-				
-				if(is_file($eeScreenshot)) { // <<<------------------------ TO DO - Resize down to $this->eeFileThumbSize
-					
-					$this->eeSFL_CreateThumbnailImage($eeScreenshot);
-					
-					unlink($eeScreenshot); // Delete the screeshot file
-					
-					return TRUE;
-				
-				} else {
-					
-					// FFmpeg FAILED !!!
-					$eeSFL_FREE_Log['SFL'][] = 'FFmpeg could not read ' . $eeFileNameOnly . '. Using the default thumbnail.';
-					
-					// Create a default thumb, as if there was no FFmpeg <<<--------- TO DO - Try to improve the command above / How can we do this on the fly in the list?
-					$eeFrom = $eeSFL_FREE_Env['pluginDir'] . 'images/thumbnails/!default_video.jpg';
-					$eeTo = $eeThumbsPATH . 'thumb_' . $eeFileNameOnly . '.jpg';
-					
-					if(!copy($eeFrom, $eeTo)) {
-						$eeSFL_FREE_Log['SFL'][] = 'FFmpeg could not create the default thumbnail.';
-						return FALSE;
-					}
-					
-					return TRUE;
-				}
-					
-			} else {
-				$eeSFL_FREE_Log['SFL'][] = 'FFmpeg Not Installed';
-			}
-		}
-		
-		// Image Files
-		if(in_array($eeExt, $this->eeDynamicImageThumbFormats)) { // Just for known image files... 
-		
-			// Make sure it's really an image
-			if(!@getimagesize($eeFileFullPath)) {
-				
-				$eeSFL_FREE_Log['errors'][] = 'Corrupt File Deleted: ' . basename($eeFileFullPath);
-				
-				unlink($eeFileFullPath);
-				
+		// Check for the .thumbnails directory
+		if( !is_dir($eeThumbsPath) ) {
+			if( !mkdir($eeThumbsPath) ) { 
+				$eeSFL_FREE_Log['RunTime'][] = '!!!! Cannot create the .thumbnails directory: ' . $eeThumbsPath;
 				return FALSE;
 			}
-			
-			// Generate an Image Thumbnail
-			$this->eeSFL_CreateThumbnailImage($eeFileFullPath);
-				
-			return TRUE;
 		}
 		
-		if($eeExt == 'pdf') {
+		// Is there already a thumb?
+		if(is_file($eeThumbsPath . $eeThumbFileToCheck)) {
+			return TRUE; // Checked Okay
+		}
+		
+		
+		
+		// Else We Generate ...
+		$eeSFL_FREE_Log['RunTime'][] = 'Missing: thumb_' . $eeFileNameOnly . '.jpg';
+		
+		// Image Files
+		if(in_array($eeFileExt, $this->eeDynamicImageThumbFormats) AND $eeSFL_Settings['GenerateImgThumbs'] == 'YES') { // Just for known image files... 
 			
-			if($this->eeSFL_CreatePDFThumbnail($eeFilePath)) {
+			// Make sure it's really an image
+			if( getimagesize($eeFileFullPath) ) {
+				
+				if(strpos($eeFileFullPath, '.')) {
+					if( $this->eeSFL_CreateThumbnailImage($eeFileFullPath) ) {
+						return TRUE;
+					} else {
+						return FALSE;
+					}
+				}
+				
+			} else { // Not an image, be gone with you!
+				
+				unlink($eeFileFullPath);
+				$eeSFL_FREE_Log['errors'][] = '!!!! ' . __('Corrupt Image File Deleted', 'ee-simple-file-list-pro') . ': ' . basename($eeFileFullPath);
+				return FALSE;
+			}
+		}
+		
+		
+		// Video Files
+		if(in_array($eeFileExt, $this->eeDynamicVideoThumbFormats) AND $eeSFL_Settings['GenerateVideoThumbs'] == 'YES' AND isset($eeSFL_FREE_Env['ffMpeg']) ) {
+			
+			$this->eeSFL_CreateVideoThumbnail($eeFileFullPath); // Create a temp image, then a thumb from that using $this->eeSFL_CreateThumbnailImage()
+		}
+		
+		
+		// PDF Files
+		if($eeFileExt == 'pdf' AND $eeSFL_Settings['GeneratePDFThumbs'] == 'YES' AND isset($eeSFL_FREE_Env['ImkGs']) ) {
+			
+			if($this->eeSFL_CreatePDFThumbnail($eeFileFullPath)) {
 				return TRUE;
 			}
 		}
-		
-		return FALSE;
 	}
 	
 	
 	
 	
-	// Create thumbnail image
-	private function eeSFL_CreateThumbnailImage($eeFileFullPath) { // Requires full path 
+	// Create Image Thumbnail
+	private function eeSFL_CreateThumbnailImage($eeInputFileCompletePath) { // Expects Full Path
 		
-		global $eeSFL_FREE_Log, $eeSFL_Settings, $eeSFL_FREE_Env;
+		// exit($eeInputFileCompletePath);
 		
-		$eeFileSize = filesize($eeFileFullPath);
+		global $eeSFL_FREE_Log, $eeSFL_FREE_Env;
 		
-		$eeFilePath = str_replace(ABSPATH . $eeSFL_Settings['FileListDir'], '', $eeFileFullPath); // Strip path thru FileListDir
+		if(!is_file($eeInputFileCompletePath)) {
+			$eeSFL_FREE_Log['RunTime'][] = '!!!! Source File Not Found';
+			return FALSE;
+		}
 		
-		$eePathParts = pathinfo($eeFilePath);
+		$eeSFL_FREE_Log['RunTime'][] = 'Creating Thumbnail Image for ' . basename($eeInputFileCompletePath);
 		
-		if( !is_array($eePathParts) ) { 
-	        $eeSFL_FREE_Log['errors'][] = 'No Path Parts';
-	        $eeSFL_FREE_Log['errors'][] = $eeFileFullPath;
-	        return FALSE;
-	    }
-		
+		// All The Path Parts
+		$eePathParts = pathinfo($eeInputFileCompletePath);
 		$eeFileNameOnly = $eePathParts['filename'];
 		$eeFileExt = $eePathParts['extension'];
-		$eeDir = $eePathParts['dirname']; // Get this path location
-		if($eeDir) { $eeDir .= '/'; } // Add the slash
-		$eeDir = str_replace('.thumbnails/', '', $eeDir); // Remove if .thumbnails/ is part of the path (video thumbs)
-
-		// Dynamicly created thumbnails are here
-		$eeThumbsURL = $eeSFL_FREE_Env['wpSiteURL'] . '/' . $eeSFL_Settings['FileListURL'] . $eeDir . '.thumbnails/'; 
-		$eeThumbsPATH = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeDir . '.thumbnails/'; // Path to them
 		
-		if(!is_dir($eeThumbsPATH)) {
-			if(!mkdir($eeThumbsPATH)) {
-				$eeSFL_Log['SFL'][] = '!!! Cannot Create the Thumbnails Folder';
-				return; 
-			}
+		// Sub-Directory Path
+		$eeCompleteDir = $eePathParts['dirname'] . '/';
+		
+		// The Destination
+		// PDF and Video temp files are created in the .thumbnails dir - Strip that part of the path so it's not doubled.
+		if(!strpos($eeCompleteDir, '.thumbnails/')) {
+			$eeThumbsPath = $eeCompleteDir . '.thumbnails/';
+		} else {
+			$eeThumbsPath = $eeCompleteDir;
 		}
-        
-        $eeSizeCheck = @getimagesize($eeFileFullPath);
+		
+		
+		
+		// The Source
+		$eeFileSize = filesize($eeInputFileCompletePath);
+		$eeSizeCheck = getimagesize($eeInputFileCompletePath);
         
         $eeSizeCheck['memory-limit'] = preg_replace("/[^0-9]/", "", ini_get('memory_limit') ) * 1048576;
         $eeSizeCheck['memory-usage'] = memory_get_usage();
@@ -679,167 +693,209 @@ class eeSFL_FREE_MainClass {
         
         $eeImageSizeLimit = ( $eeSizeCheck['memory-limit'] - $eeSizeCheck['memory-usage'] ) * .2;
         
-        if($eeImageMemoryNeeded >  $eeImageSizeLimit) { // It's too big for Wordpress
+        if($eeImageMemoryNeeded > $eeImageSizeLimit) { // It's too big for Wordpress
 			
-			$eeDefaultThumbIcon = $eeSFL_FREE_Env['pluginDir'] . 'images/thumbnails/!default_image.jpg';
-			$eeNewThumb = $eeThumbsPATH . 'thumb_' . $eeFileNameOnly . '.jpg';
+			if( strpos($eeFileNameOnly, 'temp_') === 0 ) { // These are PDF thumbs
+				$eeDefaultThumbIcon = $eeSFL_FREE_Env['pluginDir'] . 'images/thumbnails/!default_pdf.jpg';
+			} else {
+				$eeDefaultThumbIcon = $eeSFL_FREE_Env['pluginDir'] . 'images/thumbnails/!default_image.jpg';
+			}
+			
+			$eeFileNameOnly = str_replace('temp_', '', $eeFileNameOnly); // Strip the temp term if needed
+			$eeNewThumb = $eeThumbsPath . 'thumb_' . $eeFileNameOnly . '.jpg';
 		
 			copy($eeDefaultThumbIcon, $eeNewThumb); // Use our default image file icon
+			
+			$eeSFL_FREE_Log['warnings'][] = 'Image was too large. Default thumbnail will be used for: ' . basename($eeInputFileCompletePath);
+			
+			return TRUE;
 		
 		} else { // Create thumbnail
-			
+
 			// Thank Wordpress for this easyness.
-			$eeFileImage = wp_get_image_editor($eeFileFullPath); // Try to open the file
+			$eeFileImage = wp_get_image_editor($eeInputFileCompletePath); // Try to open the file
 	        
 	        if (!is_wp_error($eeFileImage)) { // Image File Opened
 	            
 	            $eeFileImage->resize($this->eeFileThumbSize, $this->eeFileThumbSize, TRUE); // Create the thumbnail
 	            
-	            $eeFileNameOnly = str_replace('eeScreenshot_', '', $eeFileNameOnly); // Strip the temp term from video screenshots
-			
-				$eeSFL_FREE_Log['SFL'][] = $eeThumbsPATH . 'thumb_' . $eeFileNameOnly . '.jpg'; 
+	            $eeFileNameOnly = str_replace('temp_', '', $eeFileNameOnly); // Strip the temp term 
 	            
-	            $eeFileImage->save($eeThumbsPATH . 'thumb_' . $eeFileNameOnly . '.jpg'); // Save the file
+	            $eeFileImage->save($eeThumbsPath . 'thumb_' . $eeFileNameOnly . '.jpg'); // Save the file
+			
+				$eeSFL_FREE_Log['RunTime'][] = 'Thumbnail Created.';
+	            
+	            return TRUE;
 	        
 	        } else { // Cannot open
 		        
-		        $eeSFL_Log['SFL'][] = '!!! Bad Image File Deleted: ' . basename($eeFileFullPath);   
+		        $eeSFL_FREE_Log['warnings'][] = 'Bad Image File Deleted: ' . basename($eeInputFileCompletePath);
+		        
+		        return FALSE;
 	        }
 		}
+		
+		return FALSE;
 	}
 	
 	
 	
 	
-	// Move, Rename or Delete a thumbnail - Expects path relative to FileListDir
-	public function eeSFL_UpdateThumbnail($eeFileFrom, $eeFileTo) {
+	private function eeSFL_CreateVideoThumbnail($eeFileFullPath) { // Expects Full Path
 		
-		global $eeSFL_Settings;
+		global $eeSFL_FREE_Log, $eeSFL_FREE_Env;
 		
-		// Move or  the thumbnail if needed
-		$eePathPartsFrom = pathinfo($eeFileFrom);
+		// All The Path Parts
+		$eePathParts = pathinfo($eeFileFullPath);
+		$eeFileNameOnly = $eePathParts['filename'];
+		$eeFileExt = $eePathParts['extension'];
+		$eeCompleteDir = $eePathParts['dirname'] . '/';
+		$eeThumbsPath = $eeCompleteDir . '.thumbnails/';
 		
-		if(isset($eePathPartsFrom['extension'])) { // Files only
+		if(is_dir($eeThumbsPath)) {
 			
-			if( in_array($eePathPartsFrom['extension'], $this->eeDynamicImageThumbFormats) OR in_array($eePathPartsFrom['extension'], $this->eeDynamicVideoThumbFormats) ) {
+			// Create a temporary file
+			$eeScreenshot = $eeThumbsPath . 'temp_' . $eeFileNameOnly . '.png';
+			
+			// Create a full-sized image at the one-second mark
+			$eeCommand = 'ffmpeg -i ' . $eeFileFullPath . ' -ss 00:00:01.000 -vframes 1 ' . $eeScreenshot;
+			
+			$eeffMpeg = trim(shell_exec($eeCommand));
+			
+			if(is_file($eeScreenshot)) { // Resize down to $this->eeFileThumbSize
 				
-				// All thumbs are JPGs
-				if($eePathPartsFrom['extension'] != 'jpg') { 
-					$eeFileFrom = str_replace('.' . $eePathPartsFrom['extension'], '.jpg', $eeFileFrom);
-					$eeFileTo = str_replace('.' . $eePathPartsFrom['extension'], '.jpg', $eeFileTo);
+				if( $this->eeSFL_CreateThumbnailImage($eeScreenshot) ) {
+					unlink($eeScreenshot); // Delete the screeshot file
+					return TRUE;
+				} else {
+					unlink($eeScreenshot); // Delete the screeshot file anyway
+					return FALSE;
 				}
+			
+			} else {
 				
-				$eeThumbFrom = ABSPATH . $eeSFL_Settings['FileListDir'] . '.thumbnails/thumb_' . basename($eeFileFrom);
-				
-				if( is_file($eeThumbFrom) ) {
-					
-					if(!$eeFileTo) { // Delete the thumb
-					
-						if(unlink($eeThumbFrom)) {
-							
-							return;
-						}
-					
-					} else { // Rename the thumb
-					
-						$eePathPartsTo = pathinfo($eeFileTo);
-						
-						$eeThumbTo = ABSPATH . $eeSFL_Settings['FileListDir'] . '.thumbnails/thumb_' . basename($eeFileTo);
-						
-						if(rename($eeThumbFrom, $eeThumbTo)) { // Do nothing on failure
-						
-							return;
-						}
-					}
-				}
+				// ffMpeg FAILED !!!
+				$eeSFL_FREE_Log['warnings'][] = 'ffMpeg could not create a screenshot for ' . basename($eeScreenshot);
+				return FALSE;
 			}
 		}
+		
+		$eeSFL_FREE_Log['RunTime'][] = '!!!! There is no .thumbnails directory: ' . $eeThumbsPath;
+		
+		return FALSE;
 	}
 	
 	
-	
+		
 	
 	// Generate PDF Thumbnails
-	private function eeSFL_CreatePDFThumbnail($eeInputFile) { // Expects FilePath
+	private function eeSFL_CreatePDFThumbnail($eeFileFullPath) { // Expects Full Path
 		
-		global $eeSFL_Settings, $eeSFL_FREE_Env, $eeSFL_FREE_Log;
+		global $eeSFL_FREE_Env, $eeSFL_FREE_Log;
 		
-		$eeSFL_FREE_Log['SFL'][] = 'Generating PDF Thumbnail...';
+		$eeSFL_FREE_Log['RunTime'][] = 'Generating PDF Thumbnail...';
 		
-		$eeInputFileParts = pathinfo($eeInputFile);
-		$eeInputFileName = $eeInputFileParts['filename'];
-		$eeInputFileExt = strtolower($eeInputFileParts['extension']);
-		$eeInputDirName = $eeInputFileParts['dirname'];
-		if($eeInputFileExt != 'pdf') { return FALSE; }
+		$eePathParts = pathinfo($eeFileFullPath);
+		$eeFileNameOnly = $eePathParts['filename'];
+		$eeFileExt = $eePathParts['extension'];
+		$eeCompleteDir = $eePathParts['dirname'] . '/';
+		$eeThumbsPath = $eeCompleteDir . '.thumbnails/';
+		$eeTempFile = 'temp_' . $eeFileNameOnly . '.jpg'; // The converted pdf file - A temporary file
+		$eeTempFileFullPath = $eeThumbsPath . $eeTempFile;
+		
+		if($eeFileExt != 'pdf') { return FALSE; }
 		
 		if( isset($eeSFL_FREE_Env['ImkGs']) ) {
 		
-			// $eeSFL_FREE_Log['SFL'][] = 'ImageMagik & GhostScript is Installed';
+			// $eeSFL_FREE_Log['RunTime'][] = 'ImageMagik & GhostScript is Installed';
 			
-			$eeInputPath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeInputDirName . '/'; // Input folder
-			$eeOutputPath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeInputDirName . '/.thumbnails/'; // Output folder
-			$eeTempFile = $eeInputFileName . '.png'; // The converted pdf file - A temporary file
-			$eeOutputFile = 'thumb_' . $eeInputFileName . '.jpg'; // The final thumb
-			
-			// The command. AVOID LINE BREAKS
-			$eeCommand = 'gs -dNOPAUSE -sDEVICE=png16m -dGraphicsAlphaBits=4 -dTextAlphaBits=4 -r600 -dFirstPage=1 -dLastPage=1 -sOutputFile=' . $eeOutputPath . $eeTempFile . ' ' . $eeInputPath . $eeInputFile;
-			
-			// Run the Command. Drum roll please
-			exec( $eeCommand, $eeCommandOutput, $eeReturnVal );
-			
-			// Get the Size
-			$eeImageSize = getimagesize($eeOutputPath . $eeTempFile);
-			
-			// Create Image Resource
-			$eeImageResource = imagecreatefrompng($eeOutputPath . $eeTempFile); 
-			
-			if($eeImageSize[0] < $eeImageSize[1]) { // Landscape
-				$eeCrop = $eeImageSize[0];
-			} else {
-				$eeCrop = $eeImageSize[1];
+			// Check Size and set image resolution higher for smaller sizes.
+			$eeFileSize = filesize($eeFileFullPath);
+			if($eeFileSize >= 8388608) { // Greater than 8 MB
+				$eeResolution = '72';
+				$eeBits = '2';
+				$eeQuality = '60';
+				$eeQFactor = '.25';
+			} elseif($eeFileSize < 8388608 AND $eeFileSize > 2097152) { // Less than 8MB but larger than 2 MB 
+				$eeResolution = '150';
+				$eeBits = '2';
+				$eeQuality = '75';
+				$eeQFactor = '.5';
+			} else { // Less than 2 MB
+				$eeResolution = '300';
+				$eeBits = '4';
+				$eeQuality = '90';
+				$eeQFactor = '.75';
 			}
 			
-			// Crop image to square
-			$eeImageResource = imagecrop($eeImageResource, ['x' => 0, 'y' => 0, 'width' => $eeCrop, 'height' => $eeCrop]);
-
+			// GhostScript Operations
+			if( !is_readable($eeTempFileFullPath) ) { // Might be there already.
 			
-			// Resize a few times to increase quality
-			if($eeCrop > 1200) {
-	
-				$eeScaleTo = $eeCrop / 2;
-				$eeThumbFileResource = imagescale($eeImageResource, $eeScaleTo);
-				$eeScaleTo = $eeScaleTo / 2;
-				$eeThumbFileResource = imagescale($eeImageResource, $eeScaleTo);
+				// Check PDF Validity
+				$eeCommand = 'gs -dNOPAUSE -dBATCH -sDEVICE=nullpage ' . $eeFileFullPath;
 				
-				if($eeScaleTo > 1200) {
+				// Run the Command. Drum roll please
+				exec( $eeCommand, $eeCommandOutput, $eeReturnVal );
+				
+				$eeSFL_FREE_Log['GhostScript'][] = $eeCommand;
+				$eeSFL_FREE_Log['GhostScript'][] = $eeCommandOutput;
+				$eeSFL_FREE_Log['GhostScript'][] = $eeReturnVal;
+				
+				if($eeReturnVal === 0) { // Zero == No Errors
 					
-					$eeScaleTo = $eeScaleTo / 2;
-					$eeThumbFileResource = imagescale($eeImageResource, $eeScaleTo);
-					$eeScaleTo = $eeScaleTo / 2;
-					$eeThumbFileResource = imagescale($eeImageResource, $eeScaleTo);
+					// The command. AVOID LINE BREAKS
+					$eeCommand = 'gs -dNOPAUSE -sDEVICE=jpeg -dJPEGQ=' . $eeQuality . ' -dQFactor=' . $eeQFactor . ' -r' . $eeResolution . ' -dFirstPage=1 -dLastPage=1 -sOutputFile=' . $eeTempFileFullPath . ' ' . $eeFileFullPath;
+
+					// Run the Command. Drum roll please
+					exec( $eeCommand, $eeCommandOutput, $eeReturnVal );
+					
+					$eeSFL_FREE_Log['GhostScript'][] = $eeCommand;
+					$eeSFL_FREE_Log['GhostScript'][] = $eeCommandOutput;
+					$eeSFL_FREE_Log['GhostScript'][] = $eeReturnVal;
+				
+				} else {
+					
+					$eeSFL_FREE_Log['warnings'][] = __('FILE NOT READABLE', 'ee-simple-file-list-pro') . ': ' . basename($eeFileFullPath);
+					$eeSFL_FREE_Log['RunTime'][] = '!!!! PDF NOT READABLE: ' . basename($eeFileFullPath);
+					return FALSE;
 				}
-			} // Outputs an image at least 300px
-			
-			
-			// Final resize and write to a file.
-			$eeThumbFileResource = imagescale($eeImageResource, 256); // Resize to 200px wide
-			$eeThumbFileResourceCropped = imagecrop($eeThumbFileResource, ['x' => 0, 'y' => 0, 'width' => 256, 'height' => 256]);
-			imagejpeg($eeThumbFileResourceCropped, $eeOutputPath . $eeOutputFile, 90); // Write to file, 90% quality
-			imagedestroy($eeThumbFileResource); // Free up memory
-			imagedestroy($eeThumbFileResourceCropped); // Free up memory
-			unlink($eeOutputPath . $eeTempFile); // Delete the temp PNG file
-			
-			// Confirm the file is there
-			if(is_readable($eeOutputPath . $eeOutputFile)) {
-				$eeSFL_FREE_Log['SFL'][] = 'Created the PDF Thumbnail for ' . $eeInputFile;
-				return TRUE;
-			} else {
-				$eeSFL_FREE_Log['SFL'][] = '!!!! FAILED to Create the PDF Thumbnail for ' . $eeInputFile;
 			}
+				
+			// Confirm the file is there
+			if(is_readable($eeTempFileFullPath)) {
+				
+				if($this->eeSFL_CreateThumbnailImage($eeTempFileFullPath)) {
+					
+					$eeSFL_FREE_Log['RunTime'][] = 'Created the PDF Thumbnail for ' . basename($eeFileFullPath);
+					
+					unlink($eeTempFileFullPath); // Delete the temp PNG file
+					
+					return TRUE;
+					
+				} else {
+					
+					$eeSFL_FREE_Log['RunTime'][] = '!!!! FAILED to Create the PDF Thumbnail for ' . basename($eeFileFullPath);
+					
+					unlink($eeTempFileFullPath);
+					
+					return FALSE;
+				}
 			
-			// Failed
-			return FALSE;
+			} elseif(is_file($eeTempFileFullPath)) {
+				
+				unlink($eeTempFileFullPath); // Delete the corrupt temp file;
+				
+				return FALSE;
+			
+			} else {
+				
+				$eeSFL_FREE_Log['RunTime'][] = '!!!! PDF to PNG FAILED for ' . basename($eeFileFullPath);
+				
+				return FALSE;
+			}		
 		}
+		
+		return FALSE;
 	}
 	
 	
@@ -868,8 +924,8 @@ class eeSFL_FREE_MainClass {
 			return FALSE;
 		}
 		
-		$eeSFL_FREE_Log['SFL'][] = 'Sorting by...';
-		$eeSFL_FREE_Log['SFL'][] = $eeSortBy . ' > ' . $eeSortOrder;
+		$eeSFL_FREE_Log['RunTime'][] = 'Sorting by...';
+		$eeSFL_FREE_Log['RunTime'][] = $eeSortBy . ' > ' . $eeSortOrder;
 		
 		$eeFilesSorted = array();
 			
@@ -947,7 +1003,7 @@ class eeSFL_FREE_MainClass {
 		
 		if($eeSFL_UploadJob) {
 		
-			$eeSFL_FREE_Log['SFL'][] = 'Sending Notification Email...';
+			$eeSFL_FREE_Log['RunTime'][] = 'Sending Notification Email...';
 			
 			// Build the Message Body
 			$eeSFL_Body = $eeSFL_Settings['NotifyMessage']; // Get the template
@@ -1018,7 +1074,7 @@ class eeSFL_FREE_MainClass {
 				
 				if(wp_mail($eeTo, $eeSFL_Subject, $eeSFL_Body, $eeSFL_Headers)) { // SEND IT
 					
-					$eeSFL_FREE_Log['SFL'][] = 'Notification Email Sent';
+					$eeSFL_FREE_Log['RunTime'][] = 'Notification Email Sent';
 					return 'SUCCESS';
 					
 				} else {
@@ -1130,7 +1186,9 @@ class eeSFL_FREE_MainClass {
 		
 	
 	
-	public function eeSFL_WriteLogData($eeSFL_ThisLog) {
+	public function eeSFL_WriteLogData() {
+		
+		global $eeSFL_FREE_Log, $eeSFL_FREE_DevMode, $eeSFL_FREE_Env, $eeSFL_Settings, $eeSFL_Files;
 		
 		$eeDate = date('Y-m-d:h:m');
 		
@@ -1146,7 +1204,24 @@ class eeSFL_FREE_MainClass {
 		
 		update_option('eeSFL_FREE_Log', $eeLogNow, FALSE);
 		
-		return TRUE;
+		// Add development info for display
+		if($eeSFL_FREE_DevMode AND current_user_can('administrator') ) {
+			
+			$eeOutput .= '<hr /><pre>Runtime Log ' . print_r($eeSFL_FREE_Log, TRUE) . '</pre><hr />';
+			
+			if(@$_REQUEST) { $eeOutput .= '<pre>REQUEST ' . print_r($_REQUEST, TRUE) . '</pre><hr />'; }
+			
+			$eeOutput .= '<pre>Environment ' . print_r($eeSFL_FREE_Env, TRUE) . '</pre><hr />';
+			
+			if( isset($eeSFL_Settings['NotifyMessage']) ) {
+				$eeSFL_Settings['NotifyMessage'] = substr($eeSFL_Settings['NotifyMessage'], 0, 9) . ' ...' ; // For Readability
+			}
+			$eeOutput .= '<pre>Settings ' . print_r($eeSFL_Settings, TRUE) . '</pre><hr />';
+			
+			if(isset($eeSFL_Files)) { $eeOutput .= '<pre>Files ' . print_r($eeSFL_Files, TRUE) . '</pre><hr />'; } // Items that were displayed
+		}
+		
+		return $eeOutput;
 	}
 
 	

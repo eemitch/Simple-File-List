@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_FREE_Log['SFL'][] = 'Loading List Settings Page ...';
+$eeSFL_FREE_Log['RunTime'][] = 'Loading List Settings Page ...';
 
 // Check for POST and Nonce
 if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {	
@@ -27,7 +27,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		,'ShowSubmitterInfo'
 		,'PreserveSpaces'
 		,'ShowFileExtension'
-		,'ExpireTime'
+		,'UseCache'
 		,'GenerateImgThumbs'
 		,'GeneratePDFThumbs'
 		,'GenerateVideoThumbs'
@@ -66,9 +66,9 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	// Update DB
 	if( update_option('eeSFL_Settings_1', $eeSFL_Settings) ) {
 		$eeSFL_Confirm = __('Settings Saved', 'ee-simple-file-list');
-		$eeSFL_FREE_Log['SFL'][] = $eeSFL_Confirm;
+		$eeSFL_FREE_Log['RunTime'][] = $eeSFL_Confirm;
 	} else {
-		$eeSFL_FREE_Log['SFL'][] = '!!! The database was not updated.';
+		$eeSFL_FREE_Log['RunTime'][] = '!!! The database was not updated.';
 	}
 	
 	delete_transient('eeSFL_FileList_1');
@@ -233,9 +233,9 @@ $eeOutput .= '
 			
 		<h3>' . __('File List Cache', 'ee-simple-file-list') . '</h3>	
 				
-		<label for="eeExpireTime">' . __('Use the File List Cache', 'ee-simple-file-list') . ':</label>
-		<input id="eeExpireTime" type="checkbox" name="eeExpireTime" value="YES"';
-		if( $eeSFL_Settings['ExpireTime'] == 'YES' OR $eeSFL_Settings['ExpireTime'] >= 1 ) { $eeOutput .= ' checked="checked"'; }
+		<label for="eeUseCache">' . __('Use the File List Cache', 'ee-simple-file-list') . ':</label>
+		<input id="eeUseCache" type="checkbox" name="eeUseCache" value="YES"';
+		if( $eeSFL_Settings['UseCache'] == 'YES' OR $eeSFL_Settings['UseCache'] >= 1 ) { $eeOutput .= ' checked="checked"'; }
 		$eeOutput .= ' /> 
 		<div class="eeNote">' . __('Reduce server load by only scanning the hard disk occasionally.', 'ee-simple-file-list') . ' '  . 
 			__('If you use FTP or another method to upload files to your list, turn this off to re-scan the files before each page load.', 'ee-simple-file-list') . '</div>
@@ -290,14 +290,14 @@ $eeOutput .= '
 		
 		<input id="eeGenerateVideoThumbs" type="checkbox" name="eeGenerateVideoThumbs" value="YES"';
 		if( $eeSFL_Settings['GenerateVideoThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
-		if( !isset($eeSFL_FREE_Env['FFmpeg']) ) { $eeOutput .= ' disabled="disabled"'; }
+		if( !isset($eeSFL_FREE_Env['ffMpeg']) ) { $eeOutput .= ' disabled="disabled"'; }
 		$eeOutput .= ' />'; 
 		
-		if( !isset($eeSFL_FREE_Env['FFmpeg']) ) { 
-			$eeMissing[] = 'FFmpeg';
-			$eeOutput .= '<p><strong>' . __('Missing', 'ee-simple-file-list-pro') . ': <a href="https://ffmpeg.org/" target="_blank">FFmpeg</a></strong></p>';
+		if( !isset($eeSFL_FREE_Env['ffMpeg']) ) { 
+			$eeMissing[] = 'ffMpeg';
+			$eeOutput .= '<p><strong>' . __('Missing', 'ee-simple-file-list-pro') . ': <a href="https://ffmpeg.org/" target="_blank">ffMpeg</a></strong></p>';
 		} else {
-			$eeOutput .= '<p>' . __('Using', 'ee-simple-file-list-pro') . ' <a href="https://ffmpeg.org/" target="_blank">FFmpeg</a></p>';
+			$eeOutput .= '<p>' . __('Using', 'ee-simple-file-list-pro') . ' <a href="https://ffmpeg.org/" target="_blank">ffMpeg</a></p>';
 		}
 				 	 
 		$eeOutput .= '<div class="eeNote">' . __('Read a video file and create a representative thumbnail image at the 1 second mark.', 'ee-simple-file-list-pro') . '</div>';

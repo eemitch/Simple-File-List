@@ -1461,8 +1461,8 @@ msgstr "Mitchell Bennis"
 #~ msgid "Move to Folder"
 #~ msgstr "Naar map verplaatsen"
 
-#~ msgid "FFmpeg Error - File Not Created"
-#~ msgstr "FFmpeg fout - Bestand niet gemaakt"
+#~ msgid "ffMpeg Error - File Not Created"
+#~ msgstr "ffMpeg fout - Bestand niet gemaakt"
 
 #~ msgid "Send Notification"
 #~ msgstr "Stuur notificatie"

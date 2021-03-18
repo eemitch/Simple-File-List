@@ -6,9 +6,9 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit 
 
 $eeSFL_UploadNonce = wp_create_nonce('ee-simple-file-list-upload'); // Checked in the upload engine.
 global $eeSFL_FREE_ListRun;
-$eeSFL_FREE_Log['SFL'][] = 'Loaded: ee-uploader';
-$eeSFL_FREE_Log['SFL'][] = 'Uploading to...';
-$eeSFL_FREE_Log['SFL'][] = $eeSFL_Settings['FileListDir'];
+$eeSFL_FREE_Log['RunTime'][] = 'Loaded: ee-uploader';
+$eeSFL_FREE_Log['RunTime'][] = 'Uploading to...';
+$eeSFL_FREE_Log['RunTime'][] = $eeSFL_Settings['FileListDir'];
 
 // File limit fallback
 if(!$eeSFL_Settings['UploadLimit']) { $eeSFL_Settings['UploadLimit'] = $eeSFL_FREE->eeDefaultUploadLimit; }

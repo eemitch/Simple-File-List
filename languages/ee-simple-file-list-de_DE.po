@@ -1500,8 +1500,8 @@ msgstr ""
 #~ msgid "Move to Folder"
 #~ msgstr "Verschieben in Ordner"
 
-#~ msgid "FFmpeg Error - File Not Created"
-#~ msgstr "FFmpeg-Fehler-Datei nicht erstellt"
+#~ msgid "ffMpeg Error - File Not Created"
+#~ msgstr "ffMpeg-Fehler-Datei nicht erstellt"
 
 #~ msgid "Send Notification"
 #~ msgstr "Benachrichtigung verschicken"

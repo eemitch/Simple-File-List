@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Functions' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_FREE_Log['SFL'][] = 'Loaded: ee-functions';
+$eeSFL_FREE_Log['RunTime'][] = 'Loaded: ee-functions';
 
 
 // Detect upward path traversal
@@ -85,12 +85,12 @@ function eeSFL_FREE_FileListDirCheck($eeFileListDir) {
 	// Check Transient First
 	if( !is_dir(ABSPATH . $eeFileListDir) ) { // Directory Changed or New Install
 	
-		$eeSFL_FREE_Log['SFL'][] = 'New Install or Directory Change...';
+		$eeSFL_FREE_Log['RunTime'][] = 'New Install or Directory Change...';
 		
 		if( !is_writable( ABSPATH . $eeFileListDir ) ) {
 			
-			$eeSFL_FREE_Log['SFL'][] = 'No Directory Found';
-			$eeSFL_FREE_Log['SFL'][] = 'Creating new file list directory ...';
+			$eeSFL_FREE_Log['RunTime'][] = 'No Directory Found';
+			$eeSFL_FREE_Log['RunTime'][] = 'Creating new file list directory ...';
 			
 			if ($eeSFL_FREE_Env['eeOS'] == 'WINDOWS') {
 			    
@@ -118,12 +118,12 @@ function eeSFL_FREE_FileListDirCheck($eeFileListDir) {
 			
 			} else {
 				
-				$eeSFL_FREE_Log['SFL'][] = '"FileListDir" Has Been Created!';
-				$eeSFL_FREE_Log['SFL'][] = $eeFileListDir;
+				$eeSFL_FREE_Log['RunTime'][] = '"FileListDir" Has Been Created!';
+				$eeSFL_FREE_Log['RunTime'][] = $eeFileListDir;
 			}
 		
 		} else {
-			$eeSFL_FREE_Log['SFL'][] = 'FileListDir Looks Good';
+			$eeSFL_FREE_Log['RunTime'][] = 'FileListDir Looks Good';
 		}
 		
 		// Check index.html, create if needed.	
@@ -168,13 +168,13 @@ function eeSFL_FREE_ProcessUpload() {
 	
 	global $eeSFL_FREE, $eeSFL_Settings, $eeSFL_FREE_Env, $eeSFL_FREE_Log;
 	
-	$eeSFL_FREE_Log['SFL'][] = 'Function Called: eeSFL_ProcessUpload()';
+	$eeSFL_FREE_Log['RunTime'][] = 'Function Called: eeSFL_ProcessUpload()';
 	
 	$eeFileCount = filter_var(@$_POST['eeSFL_FileCount'], FILTER_VALIDATE_INT);
 	
 	if($eeFileCount) {
 	
-		$eeSFL_FREE_Log['SFL'][] = $eeFileCount . ' Files Uploaded';
+		$eeSFL_FREE_Log['RunTime'][] = $eeFileCount . ' Files Uploaded';
 		
 		$eeFileList = sanitize_text_field( stripslashes($_POST['eeSFL_FileList'] )); // Expecting a comma delimited list
 		
@@ -284,8 +284,8 @@ function eeSFL_FREE_ProcessUpload() {
 								}
 							}
 							
-							$eeSFL_FREE_Log['SFL'][] = '——> Done';
-							$eeSFL_FREE_Log['SFL'][] = $eeNewFileArray;
+							$eeSFL_FREE_Log['RunTime'][] = '——> Done';
+							$eeSFL_FREE_Log['RunTime'][] = $eeNewFileArray;
 							
 							// To add or modify
 							if($eeFound) { 

@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_FREE_Log['SFL'][] = 'Loading Email Settings Page ...';
+$eeSFL_FREE_Log['RunTime'][] = 'Loading Email Settings Page ...';
 
 // Check for POST and Nonce
 if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {
@@ -42,9 +42,9 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	// Update DB
 	if( update_option('eeSFL_Settings_1', $eeSFL_Settings) ) {
 		$eeSFL_Confirm = __('Settings Saved', 'ee-simple-file-list');
-		$eeSFL_FREE_Log['SFL'][] = 'Settings Saved';
+		$eeSFL_FREE_Log['RunTime'][] = 'Settings Saved';
 	} else {
-		$eeSFL_FREE_Log['SFL'][] = '!!! The database was not updated.';
+		$eeSFL_FREE_Log['RunTime'][] = '!!! The database was not updated.';
 	}
 }
 

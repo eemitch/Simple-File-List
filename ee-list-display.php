@@ -16,34 +16,34 @@ $eeDateFormat = get_option('date_format');
 $eeSFL_ActionNonce = wp_create_nonce('eeSFL_ActionNonce'); // Security for Ajax
 global $eeSFL_FREE_ListRun;
 
-$eeSFL_FREE_Log['SFL'][] = 'Loaded: ee-list-display';
+$eeSFL_FREE_Log['RunTime'][] = 'Loaded: ee-list-display';
 
 // echo '<pre>'; print_r($_POST); echo '</pre>';
 
-if(is_numeric($eeSFL_Settings['ExpireTime'])) {
-	if($eeSFL_Settings['ExpireTime'] >= 1) { $eeSFL_Settings['ExpireTime'] = 'YES'; } 
-		else { $eeSFL_Settings['ExpireTime'] = 'NO'; } // Legacy 12/20 (v4.3)
+if(is_numeric($eeSFL_Settings['UseCache'])) {
+	if($eeSFL_Settings['UseCache'] >= 1) { $eeSFL_Settings['UseCache'] = 'YES'; } 
+		else { $eeSFL_Settings['UseCache'] = 'NO'; } // Legacy 12/20 (v4.3)
 }
 
 // Get the File List
-if( (isset($_GET['eeSFL_Scan']) AND $eeAdmin) OR $eeSFL_Settings['ExpireTime'] == 'NO') {
+if( (isset($_GET['eeSFL_Scan']) AND $eeAdmin) OR $eeSFL_Settings['UseCache'] == 'NO') {
 	
 	$eeSFL_Files = $eeSFL_FREE->eeSFL_UpdateFileListArray();
 	
 } else {
 	
-	$eeSFL_FREE_Log['SFL'][] = 'Checking List Freshness...';
+	$eeSFL_FREE_Log['RunTime'][] = 'Checking List Freshness...';
 	$eeCheckFreshness = get_transient('eeSFL_FileList_1'); // Get the File List Transient
 	
 	if($eeCheckFreshness == 'Good') { // Get the list
 		
-		$eeSFL_FREE_Log['SFL'][] = 'Good n Fresh :-)';
+		$eeSFL_FREE_Log['RunTime'][] = 'Good n Fresh :-)';
 		
 		$eeSFL_Files = get_option('eeSFL_FileList_1'); // Get the File List
 		
 	} else { // Update the list
 		
-		$eeSFL_FREE_Log['SFL'][] = 'Expired :-(';
+		$eeSFL_FREE_Log['RunTime'][] = 'Expired :-(';
 		
 		$eeSFL_Files = $eeSFL_FREE->eeSFL_UpdateFileListArray(); // Stale, so Re-Scan
 	}
@@ -79,28 +79,24 @@ if( !empty($eeSFL_Files) ) {
 $eeSFL_ListNumber = $eeSFL_FREE_ListRun; // Legacy 04/20
 
 
-// Send Files List
-foreach( $eeSFL_Files as $eeKey => $eeFileArray) { 
-	if(!strpos($eeFileArray['FilePath'], '/')) { // Omit folders
-		$eeSendFilesArray[] = $eeFileArray;
-	}
-}
-
 // Only show files just uploaded
 if(isset($eeSFL_FREE_Env['UploadedFiles'])) {
 	
-	$eeUploadedFiles = array();
+	if(is_array($eeSFL_FREE_Env['UploadedFiles'])) {
 	
-	foreach( $eeSFL_Files as $eeKey => $eeFileArray) {
+		$eeUploadedFiles = array();
 		
-		if( in_array($eeFileArray['FilePath'], $eeSFL_FREE_Env['UploadedFiles']) ) {
-			$eeUploadedFiles[] = $eeFileArray;
-		}
-		
-		if(count($eeUploadedFiles)) {
-			$eeSFL_Files = $eeUploadedFiles;
-		} else {
-			$eeSFL_Files = FALSE;
+		foreach( $eeSFL_Files as $eeKey => $eeFileArray) {
+			
+			if( in_array($eeFileArray['FilePath'], $eeSFL_FREE_Env['UploadedFiles']) ) {
+				$eeUploadedFiles[] = $eeFileArray;
+			}
+			
+			if(count($eeUploadedFiles)) {
+				$eeSFL_Files = $eeUploadedFiles;
+			} else {
+				$eeSFL_Files = FALSE;
+			}
 		}
 	}
 	
@@ -144,7 +140,7 @@ if($eeAdmin) {
 		<span class="eeHide" id="eeSFL_UploadFilesButtonSwap">' . __('Cancel Upload', 'ee-simple-file-list') . '</span>
 		<a href="#" class="button eeButton" id="eeSFL_UploadFilesButton">' . __('Upload Files', 'ee-simple-file-list') . '</a>';
 	 					
-	if($eeSFL_Settings['ExpireTime'] == 'YES') {
+	if($eeSFL_Settings['UseCache'] == 'YES') {
 		$eeOutput .= '<a href="#" class="button eeButton" id="eeSFL_ReScanButton">' . __('Re-Scan Files', 'ee-simple-file-list') . '</a>';
 	}
 	
@@ -262,7 +258,7 @@ if( isset($eeSFL_Files) ) {
 	$eeRowID = 0;
 	$eeListPosition = FALSE; // eeSFLS
 	
-	$eeSFL_FREE_Log['SFL'][] = 'Listing Files...';
+	$eeSFL_FREE_Log['RunTime'][] = 'Listing Files...';
 	
 	if(is_array($eeSFL_Files)) {
 							
@@ -362,7 +358,7 @@ if( isset($eeSFL_Files) ) {
 						if( in_array($eeFileExt,  $eeSFL_FREE->eeDynamicImageThumbFormats) AND $eeSFL_Settings['GenerateImgThumbs'] == 'YES' ) {
 							$eeShowThumbImage = TRUE;
 						}
-						if( in_array($eeFileExt,  $eeSFL_FREE->eeDynamicVideoThumbFormats) AND isset($eeSFL_FREE_Env['FFmpeg']) AND $eeSFL_Settings['GenerateVideoThumbs'] == 'YES' ) {
+						if( in_array($eeFileExt,  $eeSFL_FREE->eeDynamicVideoThumbFormats) AND isset($eeSFL_FREE_Env['ffMpeg']) AND $eeSFL_Settings['GenerateVideoThumbs'] == 'YES' ) {
 							$eeShowThumbImage = TRUE;
 						}
 						if( $eeFileExt == 'pdf' AND isset($eeSFL_FREE_Env['ImkGs']) AND $eeSFL_Settings['GeneratePDFThumbs'] == 'YES' ) {
@@ -588,7 +584,7 @@ if( isset($eeSFL_Files) ) {
 	
 } else {
 	
-	$eeSFL_FREE_Log['SFL'][] = 'There are no files here :-(';
+	$eeSFL_FREE_Log['RunTime'][] = 'There are no files here :-(';
 	
 	if($eeAdmin) {
 		$eeOutput .= '<div id="eeSFL_noFiles"><p>&#8593; ' . __('Upload some files and they will appear here.', 'ee-simple-file-list') . '</p></div>';
