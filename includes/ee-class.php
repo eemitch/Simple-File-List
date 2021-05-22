@@ -16,6 +16,7 @@ class eeSFL_FREE_MainClass {
 	public $eeAllFilesSorted = array();
 	public $eeDefaultUploadLimit = 99;
 	public $eeFileThumbSize = 64;
+	public $eeUseCache = 1;
     
     // File Types
     public $eeDynamicImageThumbFormats = array('gif', 'jpg', 'jpeg', 'png');
@@ -410,12 +411,6 @@ class eeSFL_FREE_MainClass {
 				delete_transient('eeSFL_FileList_1');
 			}
 			
-			
-			
-			
-			
-			
-			
 			// Update the DB
 		    update_option('eeSFL_FileList_1', $eeFileArrayWorking);
 		    
@@ -458,7 +453,7 @@ class eeSFL_FREE_MainClass {
 			
 		    
 		    // Check for and create thumbnail if needed...
-		    if( $eeCrons[$eeSFL_ID]['GenerateThumbs'] != 'YES' AND $eeSFL_Settings['ShowFileThumb'] == 'YES' ) { // Don't do thumbnails if that Cron is running
+		    if( $eeSFL_Settings['ShowFileThumb'] == 'YES' ) {
 						
 				$eeSFL_Log['RunTime'][] = 'Checking thumbnails ...';
 		    
@@ -1200,14 +1195,14 @@ class eeSFL_FREE_MainClass {
 			$eeLogNow = array(); // Clear
 		}
 		
-		$eeLogNow[$eeDate][] = $eeSFL_ThisLog;
+		$eeLogNow[$eeDate][] = $eeSFL_FREE_Log;
 		
 		update_option('eeSFL_FREE_Log', $eeLogNow, FALSE);
 		
 		// Add development info for display
 		if($eeSFL_FREE_DevMode AND current_user_can('administrator') ) {
 			
-			$eeOutput .= '<hr /><pre>Runtime Log ' . print_r($eeSFL_FREE_Log, TRUE) . '</pre><hr />';
+			$eeOutput = '<hr /><pre>Runtime Log ' . print_r($eeSFL_FREE_Log, TRUE) . '</pre><hr />';
 			
 			if(@$_REQUEST) { $eeOutput .= '<pre>REQUEST ' . print_r($_REQUEST, TRUE) . '</pre><hr />'; }
 			

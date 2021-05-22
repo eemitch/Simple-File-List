@@ -296,7 +296,7 @@ function eeSFL_FREE_ProcessUpload() {
 							}
 							
 							// Create thumbnail if needed
-							$eeSFL_FREE->eeSFL_CheckThumbnail($eeFile);
+							$eeSFL_FREE->eeSFL_CheckThumbnail($eeNewFileArray['FilePath'], $eeSFL_Settings);
 							
 							// Notification Info (FREE)
 							$eeUploadJob .=  $eeFile . PHP_EOL . 
