@@ -105,7 +105,7 @@ $eeOutput .= '
 			<h3>' . __('List Location', 'ee-simple-file-list') . '</h3>
 				<p><strong>' . ABSPATH . $eeSFL_Settings['FileListDir'] . '</strong></p>
 				
-				<div class="eeNote"><a href="" title="Get Pro Version">' . __('Get Pro Version', 'ee-simple-file-list') . '</a> &rarr; ' . __('The Pro Version allows you to define a custom file list directory.', 'ee-simple-file-list') . '</div>
+				<div class="eeNote"><a href="' . admin_url() . '?page=ee-simple-file-list&tab=pro" title="Get Pro Version">' . __('Get Pro Version', 'ee-simple-file-list') . '</a> &rarr; ' . __('The Pro Version allows you to define a custom file list directory.', 'ee-simple-file-list') . '</div>
 			
 		</fieldset>
 		

@@ -326,7 +326,6 @@ Pages using the "showfolder" shortcode attribute will show "ERROR 95" where the 
 * Fixed a bug where some had a bad experience upon updating.
 
 = 4.2.1 =
-* File Access Manager (coming soon) integration
 * Improved flexibility when using multiple shortcodes per page.
 * Now auto-detecting a logged-in user and auto-populating the name and email fields on the upload form.
 * Added option to allow uploaded files to over-write existing files, rather than numbering new files with the same name.
@@ -353,7 +352,6 @@ Pages using the "showfolder" shortcode attribute will show "ERROR 95" where the 
 = 4.1.0 =
 
 * Improved the uploader with a drag-and-drop zone, plus a file upload progress bar.
-* Added Send File overlay to optionally allow sharing links to a file, or files, via email.
 * Added file descriptions with option to show on front-side or not.
 * Added saving of upload info form inputs which can optionally be displayed as the file description on the front-side.
 * Created a new after-upload view which shows only the file(s) uploaded.

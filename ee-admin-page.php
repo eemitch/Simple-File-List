@@ -80,7 +80,7 @@ function eeSFL_FREE_ManageLists() {
 		
 		// Upload Check
 		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-		include($eeSFL_FREE_Env['pluginDir'] . '/includes/ee-upload-check.php');
+		include($eeSFL_FREE_Env['pluginDir'] . 'includes/ee-upload-check.php');
 		
 		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
 		include($eeSFL_FREE_Env['pluginDir'] . 'includes/ee-upload-form.php'); // The Uploader

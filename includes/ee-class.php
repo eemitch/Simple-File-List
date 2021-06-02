@@ -16,7 +16,7 @@ class eeSFL_FREE_MainClass {
 	public $eeAllFilesSorted = array();
 	public $eeDefaultUploadLimit = 99;
 	public $eeFileThumbSize = 64;
-	public $eeUseCache = 1;
+	public $eeUseCache = 1; // Hours
     
     // File Types
     public $eeDynamicImageThumbFormats = array('gif', 'jpg', 'jpeg', 'png');
@@ -62,13 +62,13 @@ class eeSFL_FREE_MainClass {
 		// Upload Settings
 		'AllowUploads' => 'USER', // Allow File Uploads (YES, ADMIN, USER, NO)
 		'UploadLimit' => 10, // Limit Files Per Upload Job (Quantity)
-		'UploadMaxFileSize' => 1, // Maximum Size per File (MB)
+		'UploadMaxFileSize' => 8, // Maximum Size per File (MB)
 		'FileFormats' => 'jpg, jpeg, png, tif, pdf, mov, mp4, mp3, zip', // Allowed Formats
 		'AllowOverwrite' => 'NO', // Number new files with same name, or just overwrite.
 		
 		// Display Settings
 		'GenerateImgThumbs' => 'YES', // Create thumbnail images for images if possible.
-		'GeneratePDFThumbs' => 'NO', // Create thumbnail images for PDFs if possible.
+		'GeneratePDFThumbs' => 'YES', // Create thumbnail images for PDFs if possible.
 		'GenerateVideoThumbs' => 'YES', // Create thumbnail images for videos if possible.
 		'PreserveSpaces' => 'NO', // Replace ugly hyphens with spaces
 		'ShowFileDescription' => 'YES', // Display the File Description (YES or NO)
@@ -193,7 +193,11 @@ class eeSFL_FREE_MainClass {
 			$eeEnv['the_max_upload_size'] = $eeEnv['post_max_size'];
 		}
 		
+		$eeEnv['supported'] = get_option('eeSFL_Supported'); // Server technologies available (i.e. FFMPEG)
+		
 		$eeEnv['wpUserID'] = get_current_user_id();
+		
+		$eeEnv['UploadedFiles'] = array(); // Holder for upload job
 		
 		// Check Server technologies available (i.e. ffMpeg)
 		$eeSupported = get_option('eeSFL_Supported');
@@ -415,93 +419,27 @@ class eeSFL_FREE_MainClass {
 		    update_option('eeSFL_FileList_1', $eeFileArrayWorking);
 		    
 		    
-		    // Check for supported technologies
-			$eeSupported = array();
-		
-		    if($eeSFL_Settings['GenerateVideoThumbs'] == 'YES') {
 		    
-			    // Check for ffMpeg
-				if(@shell_exec('ffmpeg -version')) {
-					$eeSupported[] = 'ffMpeg';
-					$eeSFL_FREE_Log['Supported'][] = 'Supported: ffMpeg';
-				}
-		    }
 		    
-		    if($eeSFL_Settings['GeneratePDFThumbs'] == 'YES' AND $eeSFL_FREE_Env['eeOS'] != 'WINDOWS') {
-				
-				// Check for ImageMagick
-				$phpExt = 'imagick'; 
-				if(extension_loaded($phpExt)) {
-					$eeSupported[] = 'ImageMagick';
-					$eeSFL_FREE_Log['Supported'][] = 'Supported: ImageMagick';
-				}
-				
-				// Check for GhostScript
-				if($eeSFL_FREE_Env['eeOS'] == 'LINUX') { // TO DO - Make it work for IIS
-				
-					$phpExt = 'gs'; // <<<---- This will be different for Windows
-					if(shell_exec($phpExt . ' --version') >= 1.0) { // <<<---- This will be different for Windows too
-						$eeSupported[] = 'GhostScript';
-						$eeSFL_FREE_Log['Supported'][] = 'Supported: GhostScript';
-					}
-				}
-			}
 			
-			if(count($eeSupported)) {
-				update_option('eeSFL_Supported', $eeSupported);
-			}
 			
 		    
 		    // Check for and create thumbnail if needed...
 		    if( $eeSFL_Settings['ShowFileThumb'] == 'YES' ) {
+			    
+			    // Check for supported technologies
+				eeSFL_FREE_CheckSupported();
 						
 				$eeSFL_Log['RunTime'][] = 'Checking thumbnails ...';
 		    
-			    // Check for supported technologies
-				$eeSupported = array();
-			
-			    // Check for ffMpeg
-				if(shell_exec('ffmpeg -version')) {
-					$eeSupported[] = 'ffMpeg';
-					$eeSFL_Log['Supported'][] = 'Supported: ffMpeg';
-				}
-			    
-			    if($eeSFL_FREE_Env['eeOS'] != 'WINDOWS') {
-					
-					// Check for ImageMagick
-					$phpExt = 'imagick'; 
-					if(extension_loaded($phpExt)) {
-						$eeSupported[] = 'ImageMagick';
-						$eeSFL_Log['Supported'][] = 'Supported: ImageMagick';
-					}
-					
-					// Check for GhostScript
-					if($eeSFL_FREE_Env['eeOS'] == 'LINUX') { // TO DO - Make it work for IIS
-					
-						$phpExt = 'gs'; // <<<---- This will be different for Windows
-						if(shell_exec($phpExt . ' --version') >= 1.0) { // <<<---- This will be different for Windows too
-							$eeSupported[] = 'GhostScript';
-							$eeSFL_Log['Supported'][] = 'Supported: GhostScript';
-						}
-					}
-				}
-				
-				// echo '<pre>'; print_r($eeSupported); echo '</pre>'; exit;
-				
-				if(count($eeSupported)) {
-					update_option('eeSFL_Supported', $eeSupported);
-				}
-				
-			    
-			    // Check for and create thumbnail if needed...
+				// Check for and create thumbnail if needed...
 			    foreach($eeFileArrayWorking as $eeKey => $eeFile) {
 			    	
 			    	if( ($eeFile['FileExt'] == 'pdf' AND $eeSFL_Settings['GeneratePDFThumbs'] == 'YES')
 			    		OR (in_array($eeFile['FileExt'], $this->eeDynamicImageThumbFormats) AND $eeSFL_Settings['GenerateImgThumbs'] == 'YES')
 							OR (in_array($eeFile['FileExt'], $this->eeDynamicVideoThumbFormats) AND $eeSFL_Settings['GenerateVideoThumbs'] == 'YES') ) {
 						
-								$this->eeSFL_CheckThumbnail($eeFile['FilePath'], $eeSFL_Settings);
-						
+								$this->eeSFL_CheckThumbnail($eeFile['FilePath'], $eeSFL_Settings);	
 					}
 			    }
 			    

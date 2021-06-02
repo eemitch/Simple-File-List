@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_Files = FALSE;
+$eeSFL_Files = array();
 $eeFileArray = FALSE;
 $eeReScan = FALSE;
 $eeSFL_ListClass = 'eeSFL'; // The basic list's CSS class. Extensions might change this.
@@ -71,8 +71,6 @@ if( !empty($eeSFL_Files) ) {
 	foreach( $eeSFL_Files as $eeKey => $eeFileArray ) {
 		$eeSFL_FileTotalCount++;
 	}
-} else {
-	$eeSFL_Files = array();
 }
 
 
@@ -82,7 +80,7 @@ $eeSFL_ListNumber = $eeSFL_FREE_ListRun; // Legacy 04/20
 // Only show files just uploaded
 if(isset($eeSFL_FREE_Env['UploadedFiles'])) {
 	
-	if(is_array($eeSFL_FREE_Env['UploadedFiles'])) {
+	if(count($eeSFL_FREE_Env['UploadedFiles'])) {
 	
 		$eeUploadedFiles = array();
 		
@@ -95,7 +93,7 @@ if(isset($eeSFL_FREE_Env['UploadedFiles'])) {
 			if(count($eeUploadedFiles)) {
 				$eeSFL_Files = $eeUploadedFiles;
 			} else {
-				$eeSFL_Files = FALSE;
+				$eeSFL_Files = array();
 			}
 		}
 	}
@@ -154,8 +152,6 @@ if($eeAdmin) {
 		$eeOutput .= '
 		
 		<p class="eeSFL_ListMeta"><a href="' . eeSFL_FREE_AppendProperUrlOp($eeURL) . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . __('Back to the Files', 'ee-simple-file-list') . '</a></p>';
-		
-		$eeSendFilesArray = $eeSFL_Files; // Restrict to just what was uploaded
 	
 	} else {
 		
@@ -187,8 +183,6 @@ if($eeAdmin) {
 	
 	$eeOutput .= '<p class="eeSFL_ListMeta"><a href="' . eeSFL_FREE_AppendProperUrlOp($eeURL) . 'ee=1" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . 
 		__('Back to the Files', 'ee-simple-file-list') . '</a></p>';
-		
-	$eeSendFilesArray = $eeSFL_Files; // Restrict to just what was uploaded
 }
 
 // $eeSFL_Files = array_values($eeSFL_Files);

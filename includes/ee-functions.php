@@ -6,6 +6,49 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Functions' ) ) exit('ERROR 98'); //
 $eeSFL_FREE_Log['RunTime'][] = 'Loaded: ee-functions';
 
 
+function eeSFL_FREE_CheckSupported() {
+	
+	global $eeSFL_FREE_Log, $eeSFL_FREE_Env;
+	
+	// Check for supported technologies
+	$eeSupported = array();
+
+    // Check for ffMpeg
+	if(shell_exec('ffmpeg -version')) {
+		$eeSupported[] = 'ffMpeg';
+		$eeSFL_FREE_Log['Supported'][] = 'Supported: ffMpeg';
+	}
+    
+    if($eeSFL_FREE_Env['eeOS'] != 'WINDOWS') {
+		
+		// Check for ImageMagick
+		$phpExt = 'imagick'; 
+		if(extension_loaded($phpExt)) {
+			$eeSupported[] = 'ImageMagick';
+			$eeSFL_FREE_Log['Supported'][] = 'Supported: ImageMagick';
+		}
+		
+		// Check for GhostScript
+		if($eeSFL_FREE_Env['eeOS'] == 'LINUX') { // TO DO - Make it work for IIS
+		
+			$phpExt = 'gs'; // <<<---- This will be different for Windows
+			if(shell_exec($phpExt . ' --version') >= 1.0) { // <<<---- This will be different for Windows too
+				$eeSupported[] = 'GhostScript';
+				$eeSFL_FREE_Log['Supported'][] = 'Supported: GhostScript';
+			}
+		}
+	}
+	
+	if(count($eeSupported)) {
+		update_option('eeSFL_Supported', $eeSupported);
+	}
+	
+	return TRUE;
+	
+	
+}
+
+
 // Detect upward path traversal
 function eeSFL_FREE_DetectUpwardTraversal($eeFilePath) {
 

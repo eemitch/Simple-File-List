@@ -114,15 +114,12 @@ function eeSFL_FREE_Setup() {
 		require_once(plugin_dir_path(__FILE__) . 'includes/ee-class.php'); // Get the main class file
 		$eeSFL_FREE = new eeSFL_FREE_MainClass(); // Initiate the SFL Class
 		$eeSFL_FREE_Env = $eeSFL_FREE->eeSFL_GetEnv(); // Get the Environment Array
-		
-		eeSFL_FREE_VersionCheck(); // Update database if needed.
-		
-		// Get the lists
-		$eeSFL_Settings = $eeSFL_FREE->eeSFL_GetSettings(); // Get this list
 	}
-	
-	// If Sending Files
-	if(@$_POST['eeSFL_Send']) { $eeSFL_FREE->eeSFL_SendFilesEmail(); }
+		
+	eeSFL_FREE_VersionCheck(); // Update database if needed.
+		
+	// Get the Settings
+	$eeSFL_Settings = $eeSFL_FREE->eeSFL_GetSettings(); // Get this list
 	
 	// Check/Create the Upload Folder
 	if( !eeSFL_FREE_FileListDirCheck( $eeSFL_Settings['FileListDir'] ) ) { 
@@ -787,319 +784,185 @@ function eeSFL_FREE_VersionCheck() {
 	if( $eeInstalled < eeSFL_FREE_DB_Version ) { // OR !get_option('eeSFL_Settings_1')
 		
 		eeSFL_FREE_UpdateThisPlugin($eeInstalled); // Run the DB update process
+		
+		update_option('eeSFL_FREE_DB_Version', eeSFL_FREE_DB_Version);
+		
+		return TRUE;
 	
 	} else {
 		
 		$eeSFL_FREE_Log['RunTime'][] = 'Database OK';
 		
-		return TRUE;
+		return FALSE;
 	}
 }
 
 
 
-// Perform DB Update
+// Install or Update to Newer Version
 function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 	
-	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_FREE_Env;
-		
-	$eeSFL_FREE_Log['RunTime'][] = 'Updating the Database...';
+	global $wpdb, $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_FREE_Env;
 	
-	if($eeInstalled) {
-		
-		delete_transient('eeSFL_FileList-1'); // Out with the Old ...
-		
-		// In with the New!
-		if(version_compare( $eeInstalled, '4.3', '<')) { // Renamed the DB option name: eeSFL-Settings to eeSFL_Settings_1 
+	$eeSettings = array();
 	
-			$eeSettings = get_option('eeSFL-Settings');
-			update_option('eeSFL_Settings_1', $eeSettings[1]); // No more arrays inside arrays
-			delete_option('eeSFL-Settings'); // Out with the old
-			delete_option('eeSFL-FREE-DB-Version'); // Out with the old
-			
-			// Rename the File List array's option name
-			$eeFiles = get_option('eeSFL-FileList-1');
-			add_option('eeSFL_FileList_1', $eeFiles); // In with the new ...
-			delete_option('eeSFL-FileList-1'); // Out with the old
-			
-			$eeArray = get_option('eeSFL-Log');
-			add_option('eeSFL_FREE_Log', $eeArray);
-			delete_option('eeSFL-Log'); // Out with the old
-			
-			delete_transient('eeSFL-1-FileListDirCheck');
-		
-			if(update_option('eeSFL_FREE_DB_Version', eeSFL_FREE_DB_Version)) { // NOTE - We changed to all underscores in option names in 4.3
-				return TRUE;
-			} else {
-				return FALSE;
-			}
-		}
-		
-		// SFL 4.3.7 Brings new thumb generation options
-		if( version_compare( $eeInstalled, '4.6', '<') ) { 
-			
-			// Adding Thumbnail generation options
-			$eeSettings = get_option('eeSFL_Settings_1');
-			$eeSettings['GenerateImgThumbs'] = 'YES';
-			$eeSettings['GeneratePDFThumbs'] = 'YES';
-			$eeSettings['GenerateVideoThumbs'] = 'YES';
-			update_option('eeSFL_Settings_1', $eeSettings);
-			
-			// Migrate to new setting name
-			$eeSettings['UseCache'] = $eeSettings['ExpireTime'];
-			unset($eeSettings['ExpireTime']);
-			if(is_numeric($eeSettings['UseCache'])) { $eeSettings['UseCache'] = 'YES'; }
-			
-			if(update_option('eeSFL_FREE_DB_Version', eeSFL_FREE_DB_Version)) {
-				return TRUE;
-			} else {
-				return FALSE;
-			}
-		}
-	}
+	// Things that may or may not be there
+	$eeDefaultSettings = $eeSFL_FREE->DefaultListSettings;
+	$eeOldOldSettings = get_option('eeSFL-1-ShowList'); // SFL 3.x
+	$eeOldSettings = get_option('eeSFL-Settings'); // SFL 4.0
+	$eeSettingsCurrent = get_option('eeSFL_Settings_1'); // SFL 4.1
+	$wpAdminEmail = get_option('admin_email');
 	
-	
-	// New install or update from an old version, the older the better.
-	
-	$eeNewInstall = FALSE;
-	
-	$eeConfigDefault = $eeSFL_FREE->DefaultListSettings; // Get our default config
-	
-	// Look for previous versions
-	$eeSFL_V2 = get_option('eeSFL');
-	$eeSFL_V3 = get_option('eeSFL-1-ShowList');
-	
-	
-	// Upgrade Simple File List ?
-	if($eeSFL_V3) { // Updating from 3.x
+	if($eeOldOldSettings AND !$eeOldSettings) { // Upgrade from Simple File List 3.x
 		
 		$eeSFL_FREE_Log['Updating'][] = 'Version 3.x Detected';
 		
 		// Get Existing Settings
-		$eeShowList = get_option('eeSFL-1-ShowList');
-		$eeShowFileThumb = get_option('eeSFL-1-ShowFileThumb');
-		$eeShowFileDate = get_option('eeSFL-1-ShowFileDate');
-		$eeShowFileOwner = get_option('eeSFL-1-ShowFileOwner');
-		$eeShowFileSize = get_option('eeSFL-1-ShowFileSize');
-		$eeSortBy = get_option('eeSFL-1-SortBy');
-		$eeSortOrder = get_option('eeSFL-1-SortOrder');
-		$eeShowFileActions = get_option('eeSFL-1-ShowFileActions');
-		$eeShowHeader = get_option('eeSFL-1-ShowListHeader');
-		$eeShowFileThumb = get_option('eeSFL-1-ShowFileThumb');
-		$eeAllowFrontDelete = get_option('eeSFL-1-AllowFrontDelete');
-		
-		// Uploading
-		$eeFileListDir = get_option('eeSFL-1-UploadDir'); // Now FileListDir
-		$eeAllowUploads = get_option('eeSFL-1-AllowUploads');
-		$eeFileFormats = get_option('eeSFL-1-FileFormats');
-		$eeUploadLimit = get_option('eeSFL-1-UploadLimit');
-		$eeUploadMaxFileSize = get_option('eeSFL-1-UploadMaxFileSize');
-		$eeGetUploaderInfo = get_option('eeSFL-1-GetUploaderInfo');
+		$eeSettings['ShowList'] = get_option('eeSFL-1-ShowList');
+		delete_option('eeSFL-1-ShowList');
+		$eeSettings['ShowFileThumb'] = get_option('eeSFL-1-ShowFileThumb');
+		delete_option('eeSFL-1-ShowFileThumb');
+		$eeSettings['ShowFileDate'] = get_option('eeSFL-1-ShowFileDate');
+		delete_option('eeSFL-1-ShowFileDate');
+		$eeSettings['ShowFileOwner'] = get_option('eeSFL-1-ShowFileOwner');
+		delete_option('eeSFL-1-ShowFileOwner');
+		$eeSettings['ShowFileSize'] = get_option('eeSFL-1-ShowFileSize');
+		delete_option('eeSFL-1-ShowFileSize');
+		$eeSettings['SortBy'] = get_option('eeSFL-1-SortBy');
+		delete_option('eeSFL-1-SortBy');
+		$eeSettings['SortOrder'] = get_option('eeSFL-1-SortOrder');
+		delete_option('eeSFL-1-SortOrder');
+		$eeSettings['ShowFileActions'] = get_option('eeSFL-1-ShowFileActions');
+		delete_option('eeSFL-1-ShowFileActions');
+		$eeSettings['ShowHeader'] = get_option('eeSFL-1-ShowListHeader');
+		delete_option('eeSFL-1-ShowListHeader');
+		$eeSettings['ShowFileThumb'] = get_option('eeSFL-1-ShowFileThumb');
+		delete_option('eeSFL-1-ShowFileThumb');
+		$eeSettings['AllowFrontDelete'] = get_option('eeSFL-1-AllowFrontDelete');
+		delete_option('eeSFL-1-AllowFrontDelete');
+		$eeSettings['FileListDir'] = get_option('eeSFL-1-UploadDir');
+		delete_option('eeSFL-1-UploadDir');
+		$eeSettings['AllowUploads'] = get_option('eeSFL-1-AllowUploads');
+		delete_option('eeSFL-1-AllowUploads');
+		$eeSettings['FileFormats'] = get_option('eeSFL-1-FileFormats');
+		delete_option('eeSFL-1-FileFormats');
+		$eeSettings['UploadLimit'] = get_option('eeSFL-1-UploadLimit');
+		delete_option('eeSFL-1-UploadLimit');
+		$eeSettings['UploadMaxFileSize'] = get_option('eeSFL-1-UploadMaxFileSize');
+		delete_option('eeSFL-1-UploadMaxFileSize');
+		$eeSettings['GetUploaderInfo'] = get_option('eeSFL-1-GetUploaderInfo');
+		delete_option('eeSFL-1-GetUploaderInfo');
 	
-	} elseif( $eeSFL_V2 ) { // Updating from 1.x or 2.x
+	} elseif( is_array($eeOldSettings) ) { // The Old Way - All lists in one array
 		
-		// SFL Version 1
-		// eeAllowList=Yes|eeAllowUploads=Yes|ee_upload_max_filesize=64|eeFormats=jpg,jpeg,png,pdf,zip|eeAdminTo=name@email.com
-		
-		// SFL Version 2 added...
-		// eeFileOwner=No|eeFileListDir=wp-content/uploads/simple-file-list|eeSortList=Name|eeSortOrder=|eeShowForm=Yes
-		
-		// Get the existing settings, so we can convert them.
-		$eeSettings = explode('|', $eeSFL_V2);
-		
-		// Version 1 settings
-		$eeSetting = @explode('=', $eeSettings[0]); // Show the File List
-		if($eeSetting[1] != 'Yes') { $eeShowList = 'NO'; }
-		
-		$eeSetting = @explode('=', $eeSFL_Settings); // AllowUploads
-		if($eeSetting[1] != 'Yes') { $eeAllowUploads = 'NO'; }
-			else { $eeSFL_AllowUploads = 'YES'; }
-		
-		$eeSetting = @explode('=', $eeSettings[2]); // Upload Max File size
-		if($eeSetting[1]) { $eeUploadMaxFileSize = $eeSetting[1]; } else { $eeUploadMaxFileSize = 8; }
-		
-		$eeSetting = @explode('=', $eeSettings[3]); // Formats
-		if($eeSetting[1]) { $eeFileFormats = $eeSetting[1]; }
-		
-		$eeSetting = @explode('=', $eeSettings[4]); // TO Email
-		if($eeSetting[1]) { $eeNotify = $eeSetting[1]; }
-		
-		
-		if(count($eeSettings) > 5) { // Version 2 Additions
-			
-			$eeSFL_FREE_Log['Updating'][] = 'Version 2.x Detected';
-			
-			$eeSetting = @explode('=', $eeSettings[5]); // Track File Owner
-			if(@$eeSetting[1] != 'Yes') { $eeTrackFileOwner = 'NO'; }
-			
-			$eeSetting = @explode('=', $eeSettings[6]); // Upload Dir
-			if(@$eeSetting[1]) { $eeFileListDir = $eeSetting[1]; }
-			
-			$eeSetting = @explode('=', $eeSettings[7]); // Sort List By...
-			if(@$eeSetting[1]) { $eeSortBy = $eeSetting[1]; }
-			
-			$eeSetting = @explode('=', $eeSettings[8]); // Sort order
-			if(@$eeSetting[1]) { $eeSortOrder = $eeSetting[1]; }
-			
-			$eeSetting = @explode('=', $eeSettings[9]); // Show Uploader Info Form
-			if(@$eeSetting[1] == 'Yes') { $eeGetUploaderInfo = 'YES'; } else { $eeGetUploaderInfo = 'NO'; }
+		$eeSettings = $eeOldSettings[1];
+		add_option('eeSFL_Settings_1', $eeSettings); // Create the new option, if needed.
+		delete_option('eeSFL-Settings'); // Out with the old
+		unset($eeOldSettings);
 	
-		} else {
-			
-			$eeSFL_FREE_Log['Updating'][] = 'Version 1.x Detected';
-		}	
+	} elseif( is_array($eeSettingsCurrent) ) { // The Current Way, 4.1 and up
+		
+		$eeSettings = $eeSettingsCurrent;
 	
 	} else {
 		
-		$eeSFL_FREE_Log['Updating'][] = 'New Installation';
-		$eeNewInstall = TRUE; 
+		// New Install
 	}
 	
+	// If previous settings
+	if( count($eeSettings) >= 1 ) {
+		
+		// Loop through the default settings and add new items
+		foreach( $eeDefaultSettings as $eeKey => $eeValue) { 
+				
+			// Look for new items
+			if( !array_key_exists($eeKey, $eeSettings) ) { 
+			
+				$eeSettings[$eeKey] = $eeValue; // Add the default item
+			}
+		}
+		
+		$eeSFL_FREE_Log['Updating']['List: 1'] = $eeSettings;
+		
+		$eePreCount = count($eeSettings);
+		
+		if(isset($eeSettings['ExpireTime'])) { // Migrate to new cache setting name 
+			$eeSettings['UseCache'] = $eeSettings['ExpireTime'];
+			unset($eeSettings['ExpireTime']);
+			if(is_numeric($eeSettings['UseCache'])) { $eeSettings['UseCache'] = 'YES'; }
+		}
+		
+		// Update File List Option Name, if needed - Rename the file list's option_name value
+		if(get_option('eeSFL-FileList-1')) {
+			$eeQuery = "UPDATE $wpdb->options SET option_name = 'eeSFL_FileList_1' WHERE option_name = 'eeSFL-FileList-1'";
+			$wpdb->query( $eeQuery );
+		}
+		
+		// Check the File List Directory
+		eeSFL_FREE_FileListDirCheck( $eeSettings['FileListDir'] );	
 	
-	// Name Changes
-	if(@$eeAllowFrontDelete == 'YES') { $eeAllowFrontManage = 'YES'; } else { $eeAllowFrontManage = FALSE; }
-
-
-
-	// Notification Changes
-	$eeNotifyOld = get_option('eeSFL-Notify'); // Old way, no ID
-	$eeNotifyNew = get_option('eeSFL-1-Notify'); // New way, with ID
-	
-	if( strpos($eeNotifyOld, '@') ) {
-		$eeNotifyTo = $eeNotifyOld;
-		$eeNotify = 'YES';
-		// delete_option('eeSFL-Notify'); // Out with the old.
-	} elseif( strpos($eeNotifyNew, '@') ) {
-		$eeNotifyTo = $eeNotifyNew; // In with the new.
-		$eeNotify = 'YES';
-	} elseif(@$eeNotify) { // V2
-		$eeNotifyTo = $eeNotify;
-		$eeNotify = 'YES';
+	// New Installation
 	} else {
-		$eeNotify = $eeConfigDefault['Notify'];
-		$eeNotifyTo = get_option('admin_email');
-	}
-	
-	
-	// Assign Default if No Value
-	if(!@$eeShowList) { $eeShowList = $eeConfigDefault['ShowList']; }
-	if(!@$eeShowFileThumb) { $eeShowFileThumb = $eeConfigDefault['ShowFileThumb']; }
-	if(!@$eeShowFileDate) { $eeShowFileDate = $eeConfigDefault['ShowFileDate']; }
-	if(!@$eeShowFileSize) { $eeShowFileSize = $eeConfigDefault['ShowFileSize']; }
-	if(!@$eeShowFileActions) { $eeShowFileActions = $eeConfigDefault['ShowFileActions']; }
-	if(!@$eeSortBy) { $eeSortBy = $eeConfigDefault['SortBy']; }
-	if(!@$eeSortOrder) { $eeSortOrder = $eeConfigDefault['SortOrder']; }
-	if(!@$eeShowHeader) { $eeShowHeader = $eeConfigDefault['ShowHeader']; }
-	if(!@$eeAllowFrontManage) { $eeAllowFrontManage = $eeConfigDefault['AllowFrontManage']; }
-	if(!@$eeFileFormats) { $eeFileFormats = $eeConfigDefault['FileFormats']; }
-	if(!@$eeUploadLimit) { $eeUploadLimit = $eeConfigDefault['UploadLimit']; }
-	if(!@$eeUploadMaxFileSize) { $eeUploadMaxFileSize = $eeSFL_FREE_Env['the_max_upload_size']; }
-	if(!@$eeGetUploaderInfo) { $eeGetUploaderInfo = $eeConfigDefault['GetUploaderInfo']; }
-	if(!@$eeAllowUploads) { $eeAllowUploads = $eeConfigDefault['AllowUploads']; }
-	
-	
-	// The File List Directory ----------------
-	
-	// Create the File List Dir if Needed
-	if(!@$eeFileListDir) {
 		
-		$eeFileListDir = $eeConfigDefault['FileListDir'];
-	
-	} else {
-	
-		// Check if FileListDir has a trailing slash...
-		$eeLastChar = substr($eeSFL_FileListDir, -1);
-		if($eeLastChar != '/') {  $eeFileListDir .= '/'; } // Add the slash, required for 3.1 +
+		$eeSettings = $eeDefaultSettings;
 		
-		// Check if FileListDir has a leading slash
-		if($eeFileListDir[0] == '/') {  $eeFileListDir = substr($eeFileListDir, 1); } // Omit the slash, required for 4 +
-	}
+		// Check the File List Directory
+		eeSFL_FREE_FileListDirCheck( $eeSettings['FileListDir'] );
 		
-	eeSFL_FREE_FileListDirCheck( $eeFileListDir ); // Check the File List Folder
-	
-	// Add First File
-	if($eeNewInstall) { // Copy the instructions PDF to the file list folder
+		// Create first file list array
+		$eeFilesArray = array();
+		update_option('eeSFL_FileList_1', $eeFilesArray);
 		
+		// Add First File
 		$eeCopyFrom = dirname(__FILE__) . '/Simple-File-List.pdf';
-		$eeCopyTo = ABSPATH . '/' . $eeFileListDir . 'Simple-File-List.pdf';
+		$eeCopyTo = ABSPATH . '/' . $eeSettings['FileListDir'] . 'Simple-File-List.pdf';
 		copy($eeCopyFrom, $eeCopyTo);
+	
 	}
-	
-	
-	// Create Settings Array --------------
-	
-	$eeSettings = array( // See $DefaultListSettings within ee-class.php for definitions
 		
-		'ListTitle' => 'Simple File List',
-		'FileListDir' => $eeFileListDir,
-		'UseCache' => $eeConfigDefault['UseCache'],
-		'ShowList' => $eeShowList,
-		'AdminRole' => $eeConfigDefault['AdminRole'],
-		'ShowFileThumb' => $eeShowFileThumb,
-		'ShowFileDate' => $eeShowFileDate,
-		'ShowFileSize' => $eeShowFileSize,
-		'SortBy' => $eeSortBy,
-		'SortOrder' => $eeSortOrder,
-		
-		'LabelThumb' => $eeConfigDefault['LabelThumb'],
-		'LabelName' => $eeConfigDefault['LabelName'],
-		'LabelDate' => $eeConfigDefault['LabelDate'],
-		'LabelSize' => $eeConfigDefault['LabelSize'],
-		
-		'AllowUploads' => $eeAllowUploads,
-		'UploadLimit' => $eeUploadLimit,
-		'UploadMaxFileSize' => $eeUploadMaxFileSize,
-		'FileFormats' => $eeFileFormats,
-		
-		'PreserveSpaces' => $eeConfigDefault['PreserveSpaces'],
-		'ShowFileDescription' => $eeConfigDefault['ShowFileDescription'],
-		'ShowFileActions' => $eeShowFileActions,
-		'ShowFileExtension' => $eeConfigDefault['ShowFileExtension'],
-		'ShowHeader' => $eeShowHeader,
-		'ShowUploadLimits' => $eeConfigDefault['ShowUploadLimits'],
-		'GetUploaderInfo' => $eeGetUploaderInfo,
-		'ShowSubmitterInfo' => $eeConfigDefault['ShowSubmitterInfo'],
-		'AllowFrontSend' => $eeConfigDefault['AllowFrontSend'],
-		'AllowFrontManage' => $eeAllowFrontManage,
-		
-		'Notify' => $eeNotify,
-		'NotifyTo' => $eeNotifyTo,
-		'NotifyCc' => '',
-		'NotifyBcc' => '',
-		'NotifyFrom' => get_option('admin_email'),
-		'NotifyFromName' => '',
-		'NotifySubject' => '',
-		'NotifyMessage' => $eeSFL_FREE->eeNotifyMessageDefault
-	);
-	
-	$eeSFL_FREE_Log['Updating'][] = $eeSettings;
-	
-	ksort($eeSettings); // Sort for sanity
-	
-	// Update the Option		
-	update_option('eeSFL_Settings_1', $eeSettings);
-	
-	// Create first file list array
-	$eeFilesArray = array();
-	update_option('eeSFL_FileList_1', $eeFilesArray);	
-	
-	// Update the DB Version
-	update_option('eeSFL_FREE_DB_Version', eeSFL_FREE_DB_Version);
-	
-	delete_option('eeSFL-Legacy'); // Don't need this anymore
+	// Add if needed
+	if(!$eeSettings['NotifyTo']) {
+		$eeSettings['NotifyTo'] = $wpAdminEmail;
+	}
+	if(!$eeSettings['NotifyFrom']) {
+		$eeSettings['NotifyFrom'] = $wpAdminEmail;
+	}
+	if(!$eeSettings['NotifyMessage']) {
+		$eeSettings['NotifyMessage'] = $eeSFL_FREE->eeNotifyMessageDefault;
+	}
 
-	$eeSFL_FREE_Log['Updating'][] = 'Plugin Updated to database version: ' . eeSFL_FREE_DB_Version;
+	// Update Database
+	ksort($eeSettings); // Sort for sanity
+	update_option('eeSFL_Settings_1' , $eeSettings);
+	
+	$eeLog = get_option('eeSFL-Log');
+	if($eeLog) {
+		add_option('eeSFL_FREE_Log', $eeLog); // In with the new
+		delete_option('eeSFL-Log'); // Out with the old
+	}
+			
+	delete_transient('eeSFL-1-FileListDirCheck');
+	delete_transient('eeSFL_FileList_1');
+	delete_transient('eeSFL_FileList-1'); // DB 4.2 and earlier
+	delete_option('eeSFL-DB-Version'); // Out with the old
+	delete_option('eeSFL-FREE-DB-Version'); // Out with the old
+	delete_option('eeSFL_FREE_DB_Version'); // Out with the old
+	delete_option('eeSFLA-Settings'); // Out with the old
+	delete_option('eeSFL-Legacy'); // Don't need this anymore
+	
+	$eeSFL_FREE_Log['Updating'][] = ' - Plugin database at version ' . eeSFL_FREE_DB_Version;
 	
 	// Write the log file to the Database
 	$eeSFL_FREE->eeSFL_WriteLogData($eeSFL_FREE_Log);
-
+	
+	return TRUE;
 }
+
+
 
 
 // Plugin Activation ==========================================================
 function eeSFL_FREE_Activate() {
-	
-	// TO DO - Check extension versions - Fail unless they are updated first.
 	
 	return TRUE; // All done, nothing to do here.	
 }
