@@ -78,7 +78,6 @@ class eeSFL_FREE_MainClass {
 		'ShowUploadLimits' => 'YES', // Show the upload limitations text.
 		'GetUploaderInfo' => 'NO', // Show the Info Form
 		'ShowSubmitterInfo' => 'NO', // Show who uploaded the file (name linked to their email)
-		'AllowFrontSend' => 'NO', // Allow users to email file links (YES or NO)
 		'AllowFrontManage' => 'NO', // Allow front-side users to manage files (YES or NO)
 		
 		// Notifications
@@ -1152,9 +1151,9 @@ class eeSFL_FREE_MainClass {
 			$eeOutput .= '<pre>Settings ' . print_r($eeSFL_Settings, TRUE) . '</pre><hr />';
 			
 			if(isset($eeSFL_Files)) { $eeOutput .= '<pre>Files ' . print_r($eeSFL_Files, TRUE) . '</pre><hr />'; } // Items that were displayed
-		}
 		
-		return $eeOutput;
+			return $eeOutput;
+		}
 	}
 
 	

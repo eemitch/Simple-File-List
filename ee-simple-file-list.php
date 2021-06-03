@@ -15,7 +15,7 @@ Text Domain: ee-simple-file-list
 Domain Path: /languages
 */
 
-$eeSFL_FREE_DevMode = TRUE; // TRUE/FALSE = Enables visible logging or not
+$eeSFL_FREE_DevMode = FALSE; // TRUE/FALSE = Enables visible logging or not
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -838,7 +838,7 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 		delete_option('eeSFL-1-ShowListHeader');
 		$eeSettings['ShowFileThumb'] = get_option('eeSFL-1-ShowFileThumb');
 		delete_option('eeSFL-1-ShowFileThumb');
-		$eeSettings['AllowFrontDelete'] = get_option('eeSFL-1-AllowFrontDelete');
+		$eeSettings['AllowFrontManage'] = get_option('eeSFL-1-AllowFrontDelete');
 		delete_option('eeSFL-1-AllowFrontDelete');
 		$eeSettings['FileListDir'] = get_option('eeSFL-1-UploadDir');
 		delete_option('eeSFL-1-UploadDir');
@@ -852,6 +852,8 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 		delete_option('eeSFL-1-UploadMaxFileSize');
 		$eeSettings['GetUploaderInfo'] = get_option('eeSFL-1-GetUploaderInfo');
 		delete_option('eeSFL-1-GetUploaderInfo');
+		$eeSettings['NotifyTo'] = get_option('eeSFL-1-Notify');
+		delete_option('eeSFL-1-Notify');
 	
 	} elseif( is_array($eeOldSettings) ) { // The Old Way - All lists in one array
 		
@@ -944,6 +946,7 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 	delete_transient('eeSFL-1-FileListDirCheck');
 	delete_transient('eeSFL_FileList_1');
 	delete_transient('eeSFL_FileList-1'); // DB 4.2 and earlier
+	delete_option('eeSFL-Version'); // Out with the old
 	delete_option('eeSFL-DB-Version'); // Out with the old
 	delete_option('eeSFL-FREE-DB-Version'); // Out with the old
 	delete_option('eeSFL_FREE_DB_Version'); // Out with the old
