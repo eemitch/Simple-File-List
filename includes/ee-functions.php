@@ -258,12 +258,8 @@ function eeSFL_FREE_ProcessUpload() {
 	
 		$eeSFL_FREE_Log['RunTime'][] = $eeFileCount . ' Files Uploaded';
 		
-		// $eeFileList = sanitize_text_field( stripslashes($_POST['eeSFL_FileList'] )); // Expecting a comma delimited list
-		
 		// Check for Nonce
 		if(check_admin_referer( 'ee-simple-file-list-upload', 'ee-simple-file-list-upload-nonce')) {
-			
-			$eeArray = json_decode($eeFileList);
 			
 			// Loop thru and look for any renaming done in the Uploader Engine
 			foreach( $eeFileListArray as $eeKey => $eeFileName) {
