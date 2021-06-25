@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2021-03-19 15:02-0500\n"
-"PO-Revision-Date: 2021-03-19 15:16-0500\n"
+"POT-Creation-Date: 2021-06-25 16:51-0500\n"
+"PO-Revision-Date: 2021-06-25 16:52-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: it_IT\n"
@@ -21,43 +21,71 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: ee-admin-page.php:30
+#: ee-admin-page.php:34
+msgid "Upgrade Now"
+msgstr "Aggiorna Adesso"
+
+#: ee-admin-page.php:38
+msgid "Upgrade to Pro"
+msgstr "Aggiorna a Pro"
+
+#: ee-admin-page.php:38
+msgid ""
+"Add sub-folder support, bulk file editing, send files by email, directory "
+"location customization and more."
+msgstr ""
+"Aggiungete il supporto per le sottocartelle, la modifica di massa dei file, "
+"l'invio di file via e-mail, la personalizzazione della posizione della "
+"directory e altro ancora."
+
+#: ee-admin-page.php:38
+msgid ""
+"Plus, add extensions for larger file lists and flexible user management."
+msgstr ""
+"Inoltre, aggiungi estensioni per liste di file più grandi e una gestione "
+"flessibile degli utenti."
+
+#: ee-admin-page.php:38
+msgid "The low cost is just once per domain."
+msgstr "Il basso costo è solo una volta per dominio."
+
+#: ee-admin-page.php:42
 msgid "DEVELOPMENT MODE ON"
 msgstr "MODALITÀ DI SVILUPPO ON"
 
-#: ee-admin-page.php:43 includes/ee-shortcode-builder.php:10
+#: ee-admin-page.php:55 includes/ee-shortcode-builder.php:10
 msgid "File List"
 msgstr "Elenco file"
 
-#: ee-admin-page.php:46
+#: ee-admin-page.php:58
 msgid "Get Help"
 msgstr "Chiedi Supporto"
 
-#: ee-admin-page.php:52
+#: ee-admin-page.php:64
 msgid "Author"
 msgstr "Autore"
 
-#: ee-admin-page.php:58 ee-simple-file-list.php:738
+#: ee-admin-page.php:70 ee-simple-file-list.php:736
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: ee-admin-page.php:64 includes/ee-shortcode-builder.php:32
+#: ee-admin-page.php:76 includes/ee-shortcode-builder.php:32
 msgid "Create Shortcode"
 msgstr "Creare Shortcode"
 
-#: ee-admin-page.php:70
+#: ee-admin-page.php:82
 msgid "Pro Version"
 msgstr "Versione Pro"
 
-#: ee-admin-page.php:98 ee-admin-page.php:106
+#: ee-admin-page.php:110 ee-admin-page.php:118
 msgid "File List Settings"
 msgstr "Impostazioni elenco file"
 
-#: ee-admin-page.php:112
+#: ee-admin-page.php:124
 msgid "File Upload Settings"
 msgstr "Impostazioni di visualizzazione dei file"
 
-#: ee-admin-page.php:118
+#: ee-admin-page.php:130
 msgid "Notification Settings"
 msgstr "Impostazioni delle notifiche"
 
@@ -65,116 +93,116 @@ msgstr "Impostazioni delle notifiche"
 msgid "No File List Found."
 msgstr "Nessun elenco di file trovato."
 
-#: ee-list-display.php:140
+#: ee-list-display.php:132
 msgid "Cancel Upload"
 msgstr "-Annullato"
 
-#: ee-list-display.php:141 includes/ee-upload-form.php:47
+#: ee-list-display.php:133 includes/ee-upload-form.php:47
 msgid "Upload Files"
 msgstr "Carica file"
 
-#: ee-list-display.php:144
+#: ee-list-display.php:136
 msgid "Re-Scan Files"
 msgstr "Rianalisi dei file"
 
-#: ee-list-display.php:147
+#: ee-list-display.php:139
 msgid "Create Folder"
 msgstr "Crea cartella"
 
-#: ee-list-display.php:156 ee-list-display.php:189
+#: ee-list-display.php:148 ee-list-display.php:179
 msgid "Back to the Files"
 msgstr "Torna ai file"
 
-#: ee-list-display.php:173
+#: ee-list-display.php:163
 msgid "Files"
 msgstr "Files"
 
-#: ee-list-display.php:174
+#: ee-list-display.php:164
 msgid "Sorted by"
 msgstr "Filtrate"
 
-#: ee-list-display.php:175
+#: ee-list-display.php:165
 msgid "Last Changed"
 msgstr "Ultima modifica"
 
-#: ee-list-display.php:216
+#: ee-list-display.php:204
 msgid "Thumb"
 msgstr "Pollice"
 
-#: ee-list-display.php:225 includes/ee-class.php:1159
+#: ee-list-display.php:213 includes/ee-class.php:1146
 msgid "Name"
 msgstr "Nome"
 
-#: ee-list-display.php:235 ee-list-display.php:532
+#: ee-list-display.php:223 ee-list-display.php:520
 msgid "Size"
 msgstr "Dimensione"
 
-#: ee-list-display.php:246
+#: ee-list-display.php:234
 msgid "Date"
 msgstr "Data"
 
-#: ee-list-display.php:462
+#: ee-list-display.php:450
 msgid "Submitted by"
 msgstr "Inviato da"
 
-#: ee-list-display.php:476
+#: ee-list-display.php:464
 msgid "Open"
 msgstr "Apri"
 
-#: ee-list-display.php:479
+#: ee-list-display.php:467
 msgid "Download"
 msgstr "Scarica"
 
-#: ee-list-display.php:481
+#: ee-list-display.php:469
 msgid "Copy Link"
 msgstr "Copia Link"
 
-#: ee-list-display.php:491 ee-simple-file-list.php:93
+#: ee-list-display.php:479 ee-simple-file-list.php:93
 msgid "Edit"
 msgstr "Modifica"
 
-#: ee-list-display.php:492
+#: ee-list-display.php:480
 msgid "Delete"
 msgstr "Elimina"
 
-#: ee-list-display.php:497
+#: ee-list-display.php:485
 msgid "Move"
 msgstr "Sposta"
 
-#: ee-list-display.php:498
+#: ee-list-display.php:486
 msgid "Users"
 msgstr "Utenti"
 
-#: ee-list-display.php:499
+#: ee-list-display.php:487
 msgid "Send"
 msgstr "Invia"
 
-#: ee-list-display.php:518
+#: ee-list-display.php:506
 msgid "Edit Details"
 msgstr "Modifica dettagli"
 
-#: ee-list-display.php:520 includes/ee-list-settings.php:182
+#: ee-list-display.php:508 includes/ee-list-settings.php:182
 #: includes/ee-list-settings.php:350
 msgid "File Name"
 msgstr "Nome File"
 
-#: ee-list-display.php:522 ee-list-display.php:527
+#: ee-list-display.php:510 ee-list-display.php:515
 msgid "Save"
 msgstr "Salva"
 
-#: ee-list-display.php:524 includes/ee-class.php:1165
+#: ee-list-display.php:512 includes/ee-class.php:1152
 msgid "Description"
 msgstr "Descrizione"
 
-#: ee-list-display.php:529
+#: ee-list-display.php:517
 msgid "Added"
 msgstr "Aggiunto"
 
-#: ee-list-display.php:530
+#: ee-list-display.php:518
 msgid "Modified"
 msgstr "Modificato"
 
-#: ee-list-display.php:590
+#: ee-list-display.php:578
 msgid "Upload some files and they will appear here."
 msgstr "Carica alcuni file che appariranno qui."
 
@@ -234,11 +262,11 @@ msgstr "Mostra"
 msgid "Hide"
 msgstr "Nascondi"
 
-#: ee-simple-file-list.php:693
+#: ee-simple-file-list.php:691
 msgid "File Delete Failed"
 msgstr "Eliminazione file non riuscita"
 
-#: ee-simple-file-list.php:737
+#: ee-simple-file-list.php:735
 msgid "Admin List"
 msgstr "Elenco amministratori"
 
@@ -282,39 +310,39 @@ msgstr "Cauzionale"
 msgid "Plugin Version"
 msgstr "Versione plugin"
 
-#: includes/ee-class.php:623
+#: includes/ee-class.php:610
 msgid "Corrupt Image File Deleted"
 msgstr "File immagine corrotto cancellato"
 
-#: includes/ee-class.php:853
+#: includes/ee-class.php:840
 msgid "FILE NOT READABLE"
 msgstr "File non leggibile"
 
-#: includes/ee-class.php:1011
+#: includes/ee-class.php:998
 msgid "Uploader Information"
 msgstr "Informazioni sul caricatore"
 
-#: includes/ee-class.php:1016
+#: includes/ee-class.php:1003
 msgid "Uploaded By"
 msgstr "Caricato da"
 
-#: includes/ee-class.php:1065
+#: includes/ee-class.php:1052
 msgid "File Upload Notice"
 msgstr "Avviso di caricamento file"
 
-#: includes/ee-class.php:1109 includes/ee-class.php:1126
+#: includes/ee-class.php:1096 includes/ee-class.php:1113
 msgid "This is not a valid email address."
 msgstr "Questo non è un indirizzo email valido."
 
-#: includes/ee-class.php:1161
+#: includes/ee-class.php:1148
 msgid "Email"
 msgstr "Email"
 
-#: includes/ee-class.php:1167
+#: includes/ee-class.php:1154
 msgid "Add a description (optional)"
 msgstr "Aggiungere una descrizione (opzionale)"
 
-#: includes/ee-class.php:1169
+#: includes/ee-class.php:1156
 msgid "Submitter:"
 msgstr "Presentatore:"
 
@@ -430,15 +458,15 @@ msgstr ""
 "Per inserire un collegamento che punta all'elenco di file, utilizzare questo "
 "shortcode:"
 
-#: includes/ee-functions.php:209
+#: includes/ee-functions.php:293
 msgid "Files uploaded"
 msgstr "File caricati"
 
-#: includes/ee-functions.php:211
+#: includes/ee-functions.php:295
 msgid "File uploaded"
 msgstr "File caricato"
 
-#: includes/ee-functions.php:313
+#: includes/ee-functions.php:395
 msgid "File Upload Complete"
 msgstr "Caricamento file completato"
 
@@ -753,12 +781,9 @@ msgstr "Legge un file immagine e crea una piccola miniatura dell'immagine."
 msgid "PDF Thumbnails"
 msgstr "Miniature PDF"
 
-#: includes/ee-list-settings.php:270 includes/ee-list-settings.php:298
+#: includes/ee-list-settings.php:270 includes/ee-list-settings.php:276
+#: includes/ee-list-settings.php:298
 msgid "Missing"
-msgstr "Mancante"
-
-#: includes/ee-list-settings.php:276
-msgid "Missing: "
 msgstr "Mancante"
 
 #: includes/ee-list-settings.php:281
@@ -1226,6 +1251,9 @@ msgstr "Un File List Manager di base con File Uploader"
 #. Author of the plugin/theme
 msgid "Mitchell Bennis"
 msgstr "Mitchell Bennis"
+
+#~ msgid "Missing: "
+#~ msgstr "Mancante "
 
 #~ msgid "File Notification"
 #~ msgstr "Notifica file"

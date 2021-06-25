@@ -607,7 +607,7 @@ class eeSFL_FREE_MainClass {
 			} else { // Not an image, be gone with you!
 				
 				unlink($eeFileFullPath);
-				$eeSFL_FREE_Log['errors'][] = '!!!! ' . __('Corrupt Image File Deleted', 'ee-simple-file-list-pro') . ': ' . basename($eeFileFullPath);
+				$eeSFL_FREE_Log['errors'][] = '!!!! ' . __('Corrupt Image File Deleted', 'ee-simple-file-list') . ': ' . basename($eeFileFullPath);
 				return FALSE;
 			}
 		}
@@ -837,7 +837,7 @@ class eeSFL_FREE_MainClass {
 				
 				} else {
 					
-					$eeSFL_FREE_Log['warnings'][] = __('FILE NOT READABLE', 'ee-simple-file-list-pro') . ': ' . basename($eeFileFullPath);
+					$eeSFL_FREE_Log['warnings'][] = __('FILE NOT READABLE', 'ee-simple-file-list') . ': ' . basename($eeFileFullPath);
 					$eeSFL_FREE_Log['RunTime'][] = '!!!! PDF NOT READABLE: ' . basename($eeFileFullPath);
 					return FALSE;
 				}

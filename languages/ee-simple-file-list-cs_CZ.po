@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2021-03-19 15:02-0500\n"
-"PO-Revision-Date: 2021-03-19 15:09-0500\n"
+"POT-Creation-Date: 2021-06-25 16:51-0500\n"
+"PO-Revision-Date: 2021-06-25 16:56-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: cs_CZ\n"
@@ -21,43 +21,70 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: ee-admin-page.php:30
+#: ee-admin-page.php:34
+msgid "Upgrade Now"
+msgstr "Upgradovat nyní"
+
+#: ee-admin-page.php:38
+msgid "Upgrade to Pro"
+msgstr "Povýšit na PRO"
+
+#: ee-admin-page.php:38
+msgid ""
+"Add sub-folder support, bulk file editing, send files by email, directory "
+"location customization and more."
+msgstr ""
+"Přidejte podporu podsložek, hromadné úpravy souborů, odesílání souborů e-"
+"mailem, přizpůsobení umístění adresáře a další funkce."
+
+#: ee-admin-page.php:38
+msgid ""
+"Plus, add extensions for larger file lists and flexible user management."
+msgstr ""
+"Navíc můžete přidat rozšíření pro větší seznamy souborů a flexibilní správu "
+"uživatelů."
+
+#: ee-admin-page.php:38
+msgid "The low cost is just once per domain."
+msgstr "Nízké náklady jsou pouze jednou za doménu."
+
+#: ee-admin-page.php:42
 msgid "DEVELOPMENT MODE ON"
 msgstr "REŽIM ROZVOJE ZAPNUTÝ"
 
-#: ee-admin-page.php:43 includes/ee-shortcode-builder.php:10
+#: ee-admin-page.php:55 includes/ee-shortcode-builder.php:10
 msgid "File List"
 msgstr "Seznam souborů"
 
-#: ee-admin-page.php:46
+#: ee-admin-page.php:58
 msgid "Get Help"
 msgstr "Získejte pomoc"
 
-#: ee-admin-page.php:52
+#: ee-admin-page.php:64
 msgid "Author"
 msgstr "Autor"
 
-#: ee-admin-page.php:58 ee-simple-file-list.php:738
+#: ee-admin-page.php:70 ee-simple-file-list.php:736
 msgid "Settings"
 msgstr "Nastavení"
 
-#: ee-admin-page.php:64 includes/ee-shortcode-builder.php:32
+#: ee-admin-page.php:76 includes/ee-shortcode-builder.php:32
 msgid "Create Shortcode"
 msgstr "Vytvořit zkrácený zápis"
 
-#: ee-admin-page.php:70
+#: ee-admin-page.php:82
 msgid "Pro Version"
 msgstr "Pro verze"
 
-#: ee-admin-page.php:98 ee-admin-page.php:106
+#: ee-admin-page.php:110 ee-admin-page.php:118
 msgid "File List Settings"
 msgstr "Nastavení seznamu souborů"
 
-#: ee-admin-page.php:112
+#: ee-admin-page.php:124
 msgid "File Upload Settings"
 msgstr "Nastavení nahrávání souborů"
 
-#: ee-admin-page.php:118
+#: ee-admin-page.php:130
 msgid "Notification Settings"
 msgstr "Nastavení upozornění"
 
@@ -65,116 +92,116 @@ msgstr "Nastavení upozornění"
 msgid "No File List Found."
 msgstr "Nebyl nalezen žádný seznam souborů."
 
-#: ee-list-display.php:140
+#: ee-list-display.php:132
 msgid "Cancel Upload"
 msgstr "Zrušit nahrávání"
 
-#: ee-list-display.php:141 includes/ee-upload-form.php:47
+#: ee-list-display.php:133 includes/ee-upload-form.php:47
 msgid "Upload Files"
 msgstr "Nahrát soubor(-y)"
 
-#: ee-list-display.php:144
+#: ee-list-display.php:136
 msgid "Re-Scan Files"
 msgstr "Znovu naskenujte soubory"
 
-#: ee-list-display.php:147
+#: ee-list-display.php:139
 msgid "Create Folder"
 msgstr "Vytvořit složku"
 
-#: ee-list-display.php:156 ee-list-display.php:189
+#: ee-list-display.php:148 ee-list-display.php:179
 msgid "Back to the Files"
 msgstr "Zpět do souborů"
 
-#: ee-list-display.php:173
+#: ee-list-display.php:163
 msgid "Files"
 msgstr "Soubory"
 
-#: ee-list-display.php:174
+#: ee-list-display.php:164
 msgid "Sorted by"
 msgstr "Seřazeno podle"
 
-#: ee-list-display.php:175
+#: ee-list-display.php:165
 msgid "Last Changed"
 msgstr "Poslední změna"
 
-#: ee-list-display.php:216
+#: ee-list-display.php:204
 msgid "Thumb"
 msgstr "Náhled"
 
-#: ee-list-display.php:225 includes/ee-class.php:1159
+#: ee-list-display.php:213 includes/ee-class.php:1146
 msgid "Name"
 msgstr "Jméno"
 
-#: ee-list-display.php:235 ee-list-display.php:532
+#: ee-list-display.php:223 ee-list-display.php:520
 msgid "Size"
 msgstr "Velikost"
 
-#: ee-list-display.php:246
+#: ee-list-display.php:234
 msgid "Date"
 msgstr "Datum"
 
-#: ee-list-display.php:462
+#: ee-list-display.php:450
 msgid "Submitted by"
 msgstr "Předložené"
 
-#: ee-list-display.php:476
+#: ee-list-display.php:464
 msgid "Open"
 msgstr "Otevřít"
 
-#: ee-list-display.php:479
+#: ee-list-display.php:467
 msgid "Download"
 msgstr "Stáhnout"
 
-#: ee-list-display.php:481
+#: ee-list-display.php:469
 msgid "Copy Link"
 msgstr "Kopírovat odkaz"
 
-#: ee-list-display.php:491 ee-simple-file-list.php:93
+#: ee-list-display.php:479 ee-simple-file-list.php:93
 msgid "Edit"
 msgstr "Upravit"
 
-#: ee-list-display.php:492
+#: ee-list-display.php:480
 msgid "Delete"
 msgstr "Smazat"
 
-#: ee-list-display.php:497
+#: ee-list-display.php:485
 msgid "Move"
 msgstr "Přesunout"
 
-#: ee-list-display.php:498
+#: ee-list-display.php:486
 msgid "Users"
 msgstr "Uživatelé"
 
-#: ee-list-display.php:499
+#: ee-list-display.php:487
 msgid "Send"
 msgstr "Odeslat"
 
-#: ee-list-display.php:518
+#: ee-list-display.php:506
 msgid "Edit Details"
 msgstr "Upravit podrobnosti"
 
-#: ee-list-display.php:520 includes/ee-list-settings.php:182
+#: ee-list-display.php:508 includes/ee-list-settings.php:182
 #: includes/ee-list-settings.php:350
 msgid "File Name"
 msgstr "Název souboru"
 
-#: ee-list-display.php:522 ee-list-display.php:527
+#: ee-list-display.php:510 ee-list-display.php:515
 msgid "Save"
 msgstr "Uložit"
 
-#: ee-list-display.php:524 includes/ee-class.php:1165
+#: ee-list-display.php:512 includes/ee-class.php:1152
 msgid "Description"
 msgstr "Popis"
 
-#: ee-list-display.php:529
+#: ee-list-display.php:517
 msgid "Added"
 msgstr "Přidáno"
 
-#: ee-list-display.php:530
+#: ee-list-display.php:518
 msgid "Modified"
 msgstr "Změněno"
 
-#: ee-list-display.php:590
+#: ee-list-display.php:578
 msgid "Upload some files and they will appear here."
 msgstr "Nahrajte některé soubory a zobrazí se zde."
 
@@ -234,11 +261,11 @@ msgstr "Zobrazit"
 msgid "Hide"
 msgstr "Skrýt"
 
-#: ee-simple-file-list.php:693
+#: ee-simple-file-list.php:691
 msgid "File Delete Failed"
 msgstr "Smazání souboru se nezdařilo"
 
-#: ee-simple-file-list.php:737
+#: ee-simple-file-list.php:735
 msgid "Admin List"
 msgstr "Seznam administrátorů"
 
@@ -282,39 +309,39 @@ msgstr "Pozor"
 msgid "Plugin Version"
 msgstr "Verze pluginu"
 
-#: includes/ee-class.php:623
+#: includes/ee-class.php:610
 msgid "Corrupt Image File Deleted"
 msgstr "Odstranění poškozeného obrazového souboru"
 
-#: includes/ee-class.php:853
+#: includes/ee-class.php:840
 msgid "FILE NOT READABLE"
 msgstr "Soubor není čitelný"
 
-#: includes/ee-class.php:1011
+#: includes/ee-class.php:998
 msgid "Uploader Information"
 msgstr "Informace o uploaderu"
 
-#: includes/ee-class.php:1016
+#: includes/ee-class.php:1003
 msgid "Uploaded By"
 msgstr "Nahráno uživatelem"
 
-#: includes/ee-class.php:1065
+#: includes/ee-class.php:1052
 msgid "File Upload Notice"
 msgstr "Oznámení o nahrání souboru"
 
-#: includes/ee-class.php:1109 includes/ee-class.php:1126
+#: includes/ee-class.php:1096 includes/ee-class.php:1113
 msgid "This is not a valid email address."
 msgstr "Toto není platná e-mailová adresa."
 
-#: includes/ee-class.php:1161
+#: includes/ee-class.php:1148
 msgid "Email"
 msgstr "Email"
 
-#: includes/ee-class.php:1167
+#: includes/ee-class.php:1154
 msgid "Add a description (optional)"
 msgstr "Přidat popis (volitelný)"
 
-#: includes/ee-class.php:1169
+#: includes/ee-class.php:1156
 msgid "Submitter:"
 msgstr "Zadavatel:"
 
@@ -428,15 +455,15 @@ msgstr ""
 "Chcete-li vložit odkaz směřující na seznam souborů, použijte tento zkrácený "
 "kód:"
 
-#: includes/ee-functions.php:209
+#: includes/ee-functions.php:293
 msgid "Files uploaded"
 msgstr "Soubory byly nahrány"
 
-#: includes/ee-functions.php:211
+#: includes/ee-functions.php:295
 msgid "File uploaded"
 msgstr "Soubor odeslán"
 
-#: includes/ee-functions.php:313
+#: includes/ee-functions.php:395
 msgid "File Upload Complete"
 msgstr "Nahrávání souborů je dokončeno"
 
@@ -736,13 +763,10 @@ msgstr "Přečte soubor s obrázkem a vytvoří malý miniaturní obrázek."
 msgid "PDF Thumbnails"
 msgstr "Miniatury PDF"
 
-#: includes/ee-list-settings.php:270 includes/ee-list-settings.php:298
+#: includes/ee-list-settings.php:270 includes/ee-list-settings.php:276
+#: includes/ee-list-settings.php:298
 msgid "Missing"
 msgstr "Chybějící"
-
-#: includes/ee-list-settings.php:276
-msgid "Missing: "
-msgstr "Chybí"
 
 #: includes/ee-list-settings.php:281
 msgid "not yet supported"
@@ -1200,3 +1224,6 @@ msgstr "Základní správce seznamu souborů s nástrojem pro nahrávání soubo
 #. Author of the plugin/theme
 msgid "Mitchell Bennis"
 msgstr "Mitchell Bennis"
+
+#~ msgid "Missing: "
+#~ msgstr "Chybí"

@@ -35,7 +35,7 @@ function eeSFL_FREE_ManageLists() {
 	
 	<small><a href="https://demo.simple-file-list.com/?pr=free" class="eeRight" target="_blank">Try the Demo</a></small>
 		
-	<p><strong>' . __('Upgrade to Pro', 'ee-simple-file-list') . '</strong> - ' . __('Add sub-folder support, bulk file editing, send files by email, directory location customization and more.', 'ee-simple-file-list') . ' ' . __('Plus, add extensions for larger file lists and flexible user management.', 'ee-simple-file-list') . ' ' . __('The low cost is just once per domain.', 'ee-simple-file-list-pro') . '</p>
+	<p><strong>' . __('Upgrade to Pro', 'ee-simple-file-list') . '</strong> - ' . __('Add sub-folder support, bulk file editing, send files by email, directory location customization and more.', 'ee-simple-file-list') . ' ' . __('Plus, add extensions for larger file lists and flexible user management.', 'ee-simple-file-list') . ' ' . __('The low cost is just once per domain.', 'ee-simple-file-list') . '</p>
 		
 	</div>';
 	

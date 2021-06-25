@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2021-03-19 15:02-0500\n"
-"PO-Revision-Date: 2021-03-19 15:19-0500\n"
+"POT-Creation-Date: 2021-06-25 16:47-0500\n"
+"PO-Revision-Date: 2021-06-25 16:48-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -21,43 +21,70 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: ee-admin-page.php:30
+#: ee-admin-page.php:34
+msgid "Upgrade Now"
+msgstr "Uppgradera nu"
+
+#: ee-admin-page.php:38
+msgid "Upgrade to Pro"
+msgstr "Uppgradera till Pro"
+
+#: ee-admin-page.php:38
+msgid ""
+"Add sub-folder support, bulk file editing, send files by email, directory "
+"location customization and more."
+msgstr ""
+"Lägg till stöd för undermappar, massredigering av filer, skicka filer via e-"
+"post, anpassning av katalogplatser och mycket mer."
+
+#: ee-admin-page.php:38
+msgid ""
+"Plus, add extensions for larger file lists and flexible user management."
+msgstr ""
+"Dessutom kan du lägga till tillägg för större fillistor och flexibel "
+"användarhantering."
+
+#: ee-admin-page.php:38
+msgid "The low cost is just once per domain."
+msgstr "Den låga kostnaden är bara en gång per domän."
+
+#: ee-admin-page.php:42
 msgid "DEVELOPMENT MODE ON"
 msgstr "UTVECKLINGS LÄGE PÅ"
 
-#: ee-admin-page.php:43 includes/ee-shortcode-builder.php:10
+#: ee-admin-page.php:55 includes/ee-shortcode-builder.php:10
 msgid "File List"
 msgstr "Fil förteckning"
 
-#: ee-admin-page.php:46
+#: ee-admin-page.php:58
 msgid "Get Help"
 msgstr "Skaffa hjälp"
 
-#: ee-admin-page.php:52
+#: ee-admin-page.php:64
 msgid "Author"
 msgstr "Författare"
 
-#: ee-admin-page.php:58 ee-simple-file-list.php:738
+#: ee-admin-page.php:70 ee-simple-file-list.php:736
 msgid "Settings"
 msgstr "Inställningar"
 
-#: ee-admin-page.php:64 includes/ee-shortcode-builder.php:32
+#: ee-admin-page.php:76 includes/ee-shortcode-builder.php:32
 msgid "Create Shortcode"
 msgstr "Skapa kortkod"
 
-#: ee-admin-page.php:70
+#: ee-admin-page.php:82
 msgid "Pro Version"
 msgstr "Pro-versionen"
 
-#: ee-admin-page.php:98 ee-admin-page.php:106
+#: ee-admin-page.php:110 ee-admin-page.php:118
 msgid "File List Settings"
 msgstr "Inställningar för fil lista"
 
-#: ee-admin-page.php:112
+#: ee-admin-page.php:124
 msgid "File Upload Settings"
 msgstr "Inställningar för fil uppladdning"
 
-#: ee-admin-page.php:118
+#: ee-admin-page.php:130
 msgid "Notification Settings"
 msgstr "Inställningar för aviseringar"
 
@@ -65,116 +92,116 @@ msgstr "Inställningar för aviseringar"
 msgid "No File List Found."
 msgstr "Ingen fillista hittades."
 
-#: ee-list-display.php:140
+#: ee-list-display.php:132
 msgid "Cancel Upload"
 msgstr "Avbryt uppladdning"
 
-#: ee-list-display.php:141 includes/ee-upload-form.php:47
+#: ee-list-display.php:133 includes/ee-upload-form.php:47
 msgid "Upload Files"
 msgstr "Ladda upp filer"
 
-#: ee-list-display.php:144
+#: ee-list-display.php:136
 msgid "Re-Scan Files"
 msgstr "Återskanna filer"
 
-#: ee-list-display.php:147
+#: ee-list-display.php:139
 msgid "Create Folder"
 msgstr "Skapa mapp"
 
-#: ee-list-display.php:156 ee-list-display.php:189
+#: ee-list-display.php:148 ee-list-display.php:179
 msgid "Back to the Files"
 msgstr "Tillbaka till filerna"
 
-#: ee-list-display.php:173
+#: ee-list-display.php:163
 msgid "Files"
 msgstr "Filer"
 
-#: ee-list-display.php:174
+#: ee-list-display.php:164
 msgid "Sorted by"
 msgstr "Sortera efter"
 
-#: ee-list-display.php:175
+#: ee-list-display.php:165
 msgid "Last Changed"
 msgstr "Senast ändrad"
 
-#: ee-list-display.php:216
+#: ee-list-display.php:204
 msgid "Thumb"
 msgstr "Tumnagel"
 
-#: ee-list-display.php:225 includes/ee-class.php:1159
+#: ee-list-display.php:213 includes/ee-class.php:1146
 msgid "Name"
 msgstr "Namn"
 
-#: ee-list-display.php:235 ee-list-display.php:532
+#: ee-list-display.php:223 ee-list-display.php:520
 msgid "Size"
 msgstr "Storlek"
 
-#: ee-list-display.php:246
+#: ee-list-display.php:234
 msgid "Date"
 msgstr "Datum"
 
-#: ee-list-display.php:462
+#: ee-list-display.php:450
 msgid "Submitted by"
 msgstr "Skickad av"
 
-#: ee-list-display.php:476
+#: ee-list-display.php:464
 msgid "Open"
 msgstr "Öppen"
 
-#: ee-list-display.php:479
+#: ee-list-display.php:467
 msgid "Download"
 msgstr "Ladda ner"
 
-#: ee-list-display.php:481
+#: ee-list-display.php:469
 msgid "Copy Link"
 msgstr "Kopiera länk"
 
-#: ee-list-display.php:491 ee-simple-file-list.php:93
+#: ee-list-display.php:479 ee-simple-file-list.php:93
 msgid "Edit"
 msgstr "Redigera"
 
-#: ee-list-display.php:492
+#: ee-list-display.php:480
 msgid "Delete"
 msgstr "Radera"
 
-#: ee-list-display.php:497
+#: ee-list-display.php:485
 msgid "Move"
 msgstr "Flytta"
 
-#: ee-list-display.php:498
+#: ee-list-display.php:486
 msgid "Users"
 msgstr "Användare"
 
-#: ee-list-display.php:499
+#: ee-list-display.php:487
 msgid "Send"
 msgstr "Skicka"
 
-#: ee-list-display.php:518
+#: ee-list-display.php:506
 msgid "Edit Details"
 msgstr "Redigera info"
 
-#: ee-list-display.php:520 includes/ee-list-settings.php:182
+#: ee-list-display.php:508 includes/ee-list-settings.php:182
 #: includes/ee-list-settings.php:350
 msgid "File Name"
 msgstr "Filnamn"
 
-#: ee-list-display.php:522 ee-list-display.php:527
+#: ee-list-display.php:510 ee-list-display.php:515
 msgid "Save"
 msgstr "Spara"
 
-#: ee-list-display.php:524 includes/ee-class.php:1165
+#: ee-list-display.php:512 includes/ee-class.php:1152
 msgid "Description"
 msgstr "Beskrivning"
 
-#: ee-list-display.php:529
+#: ee-list-display.php:517
 msgid "Added"
 msgstr "Tillagd"
 
-#: ee-list-display.php:530
+#: ee-list-display.php:518
 msgid "Modified"
 msgstr "Ändrad"
 
-#: ee-list-display.php:590
+#: ee-list-display.php:578
 msgid "Upload some files and they will appear here."
 msgstr "Ladda upp några filer och de kommer att visas här."
 
@@ -233,11 +260,11 @@ msgstr "Visa"
 msgid "Hide"
 msgstr "Dölj"
 
-#: ee-simple-file-list.php:693
+#: ee-simple-file-list.php:691
 msgid "File Delete Failed"
 msgstr "Det gick inte att ta bort filen"
 
-#: ee-simple-file-list.php:737
+#: ee-simple-file-list.php:735
 msgid "Admin List"
 msgstr "Administratörslista"
 
@@ -281,39 +308,39 @@ msgstr "Försiktighet"
 msgid "Plugin Version"
 msgstr "Tilläggets version"
 
-#: includes/ee-class.php:623
+#: includes/ee-class.php:610
 msgid "Corrupt Image File Deleted"
 msgstr "Korrupt bildfil raderad"
 
-#: includes/ee-class.php:853
+#: includes/ee-class.php:840
 msgid "FILE NOT READABLE"
 msgstr "Filen är inte läsbar"
 
-#: includes/ee-class.php:1011
+#: includes/ee-class.php:998
 msgid "Uploader Information"
 msgstr "Överförarens information"
 
-#: includes/ee-class.php:1016
+#: includes/ee-class.php:1003
 msgid "Uploaded By"
 msgstr "Uppladdad av"
 
-#: includes/ee-class.php:1065
+#: includes/ee-class.php:1052
 msgid "File Upload Notice"
 msgstr "Meddelande om fil överföring"
 
-#: includes/ee-class.php:1109 includes/ee-class.php:1126
+#: includes/ee-class.php:1096 includes/ee-class.php:1113
 msgid "This is not a valid email address."
 msgstr "Detta är inte en giltig e-postadress."
 
-#: includes/ee-class.php:1161
+#: includes/ee-class.php:1148
 msgid "Email"
 msgstr "E-post"
 
-#: includes/ee-class.php:1167
+#: includes/ee-class.php:1154
 msgid "Add a description (optional)"
 msgstr "Lägg till en beskrivning (valfritt)"
 
-#: includes/ee-class.php:1169
+#: includes/ee-class.php:1156
 msgid "Submitter:"
 msgstr "Leverantör:"
 
@@ -426,15 +453,15 @@ msgid "To insert a link pointing to the file list, use this shortcode:"
 msgstr ""
 "Om du vill infoga en länk som pekar på fillistan använder du denna kortkod:"
 
-#: includes/ee-functions.php:209
+#: includes/ee-functions.php:293
 msgid "Files uploaded"
 msgstr "Filer uppladdade"
 
-#: includes/ee-functions.php:211
+#: includes/ee-functions.php:295
 msgid "File uploaded"
 msgstr "Fil som laddas upp"
 
-#: includes/ee-functions.php:313
+#: includes/ee-functions.php:395
 msgid "File Upload Complete"
 msgstr "Fil överföring slutförd"
 
