@@ -5,7 +5,7 @@ Tags: file sharing, file list, file uploader, upload files, share files, exchang
 Requires at least: 4.0
 Requires PHP: 5.6.40
 Tested up to: 5.7
-Stable tag: 4.4.1
+Stable tag: 4.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -241,6 +241,11 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Changelog ==
+
+= 4.4.2 =
+* Bug fix where generated thumbnails were not getting updated when the main files were renamed or deleted.
+* Bug fix where file names using multiple spaces was causing the post-upload processor to fail.
+* Bug fix where the displayed max upload size was not accurate in some cases.
 
 = 4.4.1 =
 * Added ability to generate thumbnails for PDF files. (by popular demand)

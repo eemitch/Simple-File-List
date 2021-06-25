@@ -182,16 +182,8 @@ class eeSFL_FREE_MainClass {
 
 		$eeEnv['FileListDefaultDir'] = str_replace(ABSPATH, '', $eeEnv['wpUploadDir'] . 'simple-file-list/'); // The default file list location
 		
-		$eeEnv['upload_max_upload_size'] = substr(ini_get('upload_max_filesize'), 0, -1); // PHP Limit (Strip off the "M")
-		$eeEnv['post_max_size'] = substr(ini_get('post_max_size'), 0, -1); // PHP Limit (Strip off the "M")
-		
-		// Check which is smaller, upload size or post size.
-		if ($eeEnv['upload_max_upload_size'] <= $eeEnv['post_max_size']) { 
-			$eeEnv['the_max_upload_size'] = $eeEnv['upload_max_upload_size'];
-		} else {
-			$eeEnv['the_max_upload_size'] = $eeEnv['post_max_size'];
-		}
-		
+		$eeEnv['the_max_upload_size'] = eeSFL_FREE_ActualUploadMax();
+	
 		$eeEnv['supported'] = get_option('eeSFL_Supported'); // Server technologies available (i.e. FFMPEG)
 		
 		$eeEnv['wpUserID'] = get_current_user_id();
@@ -229,15 +221,6 @@ class eeSFL_FREE_MainClass {
 	    $eeSettings = get_option('eeSFL_Settings_1');
 	    
 	    if(is_array($eeSettings)) {
-			
-			// Check for Change in Environment
-			if( isset($eeSettings['UploadMaxFileSize']) ) {
-				if($eeSFL_FREE_Env['the_max_upload_size'] < $eeSettings['UploadMaxFileSize']) {
-					$eeSettings['UploadMaxFileSize'] = $eeSFL_FREE_Env['the_max_upload_size']; // If Env is lower, set to that.
-				}
-			} else {
-				$eeSettings['UploadMaxFileSize'] = $eeSFL_FREE_Env['the_max_upload_size']; // The best we can do
-			}
 			
 			$eeSettings['FileListURL'] = $eeSFL_FREE_Env['wpSiteURL'] . $eeSettings['FileListDir']; // The Full URL
 			
@@ -446,8 +429,15 @@ class eeSFL_FREE_MainClass {
 			    $eeSFL_Log['RunTime'][] = 'Skipped Thumbnail Checks';
 			    
 		    }
-			
-			return $eeFileArrayWorking; 
+		    
+		    // Check for Enviroment Changes
+		    $eeActual = eeSFL_FREE_ActualUploadMax();
+			if( $eeSFL_Settings['UploadMaxFileSize'] > $eeActual ) { 
+				$eeSFL_Settings['UploadMaxFileSize'] = $eeActual;
+				update_option('eeSFL_Settings_' . $eeSFL_ID, $eeSFL_Settings); // Set to Actual Max
+			}
+		    
+		    return $eeFileArrayWorking; 
 		
 		} else {
 			return FALSE;
@@ -506,6 +496,66 @@ class eeSFL_FREE_MainClass {
 
 		return $eeFilesArray;
 	}
+	
+	
+	
+	// Move, Rename or Delete a thumbnail - Expects path relative to FileListDir
+	public function eeSFL_UpdateThumbnail($eeFileFrom, $eeFileTo, $eeSFL_ID = 1) {
+		
+		global $eeSFL_FREE, $eeSFL_Log;
+		
+		$eeSFL_Settings = $eeSFL_FREE->eeSFL_GetSettings($eeSFL_ID); // Get this list
+		
+		$eePathPartsFrom = pathinfo($eeFileFrom);
+		
+		if(isset($eePathPartsFrom['extension'])) { // Files only
+			
+			if($eePathPartsFrom['extension'] = 'pdf' 
+				OR in_array($eePathPartsFrom['extension'], $this->eeDynamicImageThumbFormats) 
+					OR in_array($eePathPartsFrom['extension'], $this->eeDynamicVideoThumbFormats) ) {
+				
+				// All thumbs are JPGs
+				if($eePathPartsFrom['extension'] != 'jpg') { 
+					$eeFileFrom = str_replace('.' . $eePathPartsFrom['extension'], '.jpg', $eeFileFrom);
+					$eeFileTo = str_replace('.' . $eePathPartsFrom['extension'], '.jpg', $eeFileTo);
+				}
+				
+				$eeThumbFrom = ABSPATH . $eeSFL_Settings['FileListDir'];
+				
+				if($eePathPartsFrom['dirname'] != '.') { $eeThumbFrom .= $eePathPartsFrom['dirname']; }
+				
+				$eeThumbFrom .= '/.thumbnails/thumb_' . basename($eeFileFrom);
+				
+				if( is_file($eeThumbFrom) ) {
+					
+					if(!$eeFileTo) { // Delete the thumb
+						
+						if(unlink($eeThumbFrom)) {
+							
+							$eeSFL_Log['RunTime'][] = 'Deleted Thumbnail For: ' . basename($eeFileFrom);
+							
+							return;
+						}
+					
+					} else { // Move / Rename
+						
+						$eePathPartsTo = pathinfo($eeFileTo);
+						
+						$eeThumbTo = ABSPATH . $eeSFL_Settings['FileListDir'] . $eePathPartsTo['dirname'] . '/.thumbnails/thumb_' . basename($eeFileTo);
+						
+						if(rename($eeThumbFrom, $eeThumbTo)) { // Do nothing on failure
+						
+							$eeSFL_Log['RunTime'][] = 'Thumbnail Updated For: ' . basename($eeFileFrom);
+							
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
 	
 	
 	

@@ -6,6 +6,23 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Functions' ) ) exit('ERROR 98'); //
 $eeSFL_FREE_Log['RunTime'][] = 'Loaded: ee-functions';
 
 
+// Get Actual Max Upload Size
+function eeSFL_FREE_ActualUploadMax() {
+	
+	$eeEnv = array();
+	
+	$eeEnv['upload_max_filesize'] = substr(ini_get('upload_max_filesize'), 0, -1); // PHP Limit (Strip off the "M")
+	$eeEnv['post_max_size'] = substr(ini_get('post_max_size'), 0, -1); // PHP Limit (Strip off the "M")
+	
+	// Check which is smaller, upload size or post size.
+	if ($eeEnv['upload_max_filesize'] <= $eeEnv['post_max_size']) { 
+		return $eeEnv['upload_max_filesize'];
+	} else {
+		return $eeEnv['post_max_size'];
+	}
+}
+
+
 function eeSFL_FREE_CheckSupported() {
 	
 	global $eeSFL_FREE_Log, $eeSFL_FREE_Env;
@@ -213,13 +230,35 @@ function eeSFL_FREE_ProcessUpload() {
 	
 	$eeSFL_FREE_Log['RunTime'][] = 'Function Called: eeSFL_ProcessUpload()';
 	
-	$eeFileCount = filter_var(@$_POST['eeSFL_FileCount'], FILTER_VALIDATE_INT);
+	if(strpos($_POST['eeSFL_FileList'], ']')) {
+		
+		$eeFileListString = stripslashes($_POST['eeSFL_FileList']);
+		$eeFileListArray = json_decode($eeFileListString);
+		
+		if(!is_array($eeFileListArray)) { return FALSE; }
+	
+	} else {
+		return FALSE;
+	}
+	
+	if(isset($_POST['eeSFL_FileCount'])) {
+		
+		$eeFileCount = filter_var($_POST['eeSFL_FileCount'], FILTER_VALIDATE_INT);
+		
+		if( $eeFileCount != count($eeFileListArray) ) { return FALSE; }
+		
+	} else {
+		return FALSE;
+	}
+	
+	
+	
 	
 	if($eeFileCount) {
 	
 		$eeSFL_FREE_Log['RunTime'][] = $eeFileCount . ' Files Uploaded';
 		
-		$eeFileList = sanitize_text_field( stripslashes($_POST['eeSFL_FileList'] )); // Expecting a comma delimited list
+		// $eeFileList = sanitize_text_field( stripslashes($_POST['eeSFL_FileList'] )); // Expecting a comma delimited list
 		
 		// Check for Nonce
 		if(check_admin_referer( 'ee-simple-file-list-upload', 'ee-simple-file-list-upload-nonce')) {
@@ -227,23 +266,29 @@ function eeSFL_FREE_ProcessUpload() {
 			$eeArray = json_decode($eeFileList);
 			
 			// Loop thru and look for any renaming done in the Uploader Engine
-			foreach( $eeArray as $eeKey => $eeFileName) {
+			foreach( $eeFileListArray as $eeKey => $eeFileName) {
 				
-				$eeNewName = get_transient('eeSFL-Renamed-' . $eeFileName);
+				$eeFileName = urlencode($eeFileName); // Tack on the sub-folder
+				$eeNewName = get_transient('eeSFL-Renamed-' . $eeFileName); // The value will include the sub-folder
 				
 				if($eeNewName) {
-					$eeArray[$eeKey] = $eeNewName;
+					$eeFileListArray[$eeKey] = urldecode($eeNewName);
 					delete_transient('eeSFL-Renamed-' . $eeFileName);
 				} else {
-					$eeArray[$eeKey] = $eeFileName;
+					$eeFileListArray[$eeKey] = urldecode($eeFileName);
 				}
 			}
 			
-			$eeSFL_FREE_Env['UploadedFiles'] = $eeArray;
+			$eeSFL_FREE_Env['UploadedFiles'] = $eeFileListArray; // Used for the Results Page
+			
+			
+			// echo '<p>Old Name: ' . $eeFileName . '<br />';
+			// echo 'New Name: ' . $eeNewName . '</p>';
+			// echo '<pre>'; print_r($eeSFL_Env['UploadedFiles']); echo '</pre>'; exit;
 			
 			
 			// Notification
-			if( count($eeArray) ) {
+			if( count($eeFileListArray) ) {
 				
 				$eeUploadJob = ''; // This will be what happened
 				
@@ -260,122 +305,115 @@ function eeSFL_FREE_ProcessUpload() {
 				$eeFileArrayWorking = get_option('eeSFL_FileList_1');
 				
 				// Loop through the uploaded files
-				if(count($eeArray)) {
+				foreach($eeFileListArray as $eeKey => $eeFile) { 
 					
-					foreach($eeArray as $eeKey => $eeFile) { 
-						
-						$eeFile = sanitize_text_field($eeFile);
-								
-						$eeFound = FALSE;
-						
-						if( is_file(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile) ) { // Check to be sure the file is there
+					$eeFile = sanitize_text_field($eeFile);
 							
-							if($eeSFL_Settings['AllowOverwrite'] == 'YES') { // Look for existing file array
-								
-								foreach( $eeFileArrayWorking as $eeThisKey => $eeThisFileArray ) {
-									$eeFound = FALSE;
-									if($eeThisFileArray['FilePath'] == $eeFile) { $eeFound = TRUE; break; }
-								}
-								
-								if($eeFound) {
-									$eeNewFileArray = $eeThisFileArray;
-								} else {
-									$eeNewFileArray = $eeSFL_FREE->eeSFL_BuildFileArray($eeFile); // Path relative to FileListDir
-								}
-							} else { // Build a new file array
+					$eeFound = FALSE;
+					
+					if( is_file(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile) ) { // Check to be sure the file is there
+						
+						if($eeSFL_Settings['AllowOverwrite'] == 'YES') { // Look for existing file array
+							
+							foreach( $eeFileArrayWorking as $eeThisKey => $eeThisFileArray ) {
+								$eeFound = FALSE;
+								if($eeThisFileArray['FilePath'] == $eeFile) { $eeFound = TRUE; break; }
+							}
+							
+							if($eeFound) {
+								$eeNewFileArray = $eeThisFileArray;
+							} else {
 								$eeNewFileArray = $eeSFL_FREE->eeSFL_BuildFileArray($eeFile); // Path relative to FileListDir
 							}
-							
-							// echo '<pre>'; print_r($eeNewFileArray); echo '</pre>'; exit;
+						} else { // Build a new file array
+							$eeNewFileArray = $eeSFL_FREE->eeSFL_BuildFileArray($eeFile); // Path relative to FileListDir
+						}
 						
-							// Set these if available
-							if( is_numeric(@$_POST['eeSFL_FileOwner']) ) { // Expecting a number
-								
-								$eeNewFileArray['FileOwner'] = $_POST['eeSFL_FileOwner']; // Logged-in owner
+						// echo '<pre>'; print_r($eeNewFileArray); echo '</pre>'; exit;
+					
+						// Set these if available
+						if( is_numeric(@$_POST['eeSFL_FileOwner']) ) { // Expecting a number
 							
-							} else {
-								
-								if( isset($_POST['eeSFL_Name'])) {
-								
-									$eeString = sanitize_text_field(@$_POST['eeSFL_Name']);
-									
-									if($eeString) {
-										
-										$eeNewFileArray['SubmitterName'] = $eeString; // Who uploaded the file
-									}
-								}
-								
-								if( isset($_POST['eeSFL_Email'])) {
-									
-									$eeString = filter_var( sanitize_email(@$_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL);
-									
-									if($eeString) {
-										
-										$eeNewFileArray['SubmitterEmail'] = $eeString; // Their email
-									}
-								}
-							}
+							$eeNewFileArray['FileOwner'] = $_POST['eeSFL_FileOwner']; // Logged-in owner
+						
+						} else {
 							
-							if( isset($_POST['eeSFL_Comments'])) {
-								
-								$eeString = sanitize_text_field(@$_POST['eeSFL_Comments']);
+							if( isset($_POST['eeSFL_Name'])) {
+							
+								$eeString = sanitize_text_field(@$_POST['eeSFL_Name']);
 								
 								if($eeString) {
 									
-									$eeNewFileArray['FileDescription'] = $eeString; // A short description of the file
-									$eeNewFileArray['SubmitterComments'] = $eeString; // What they said
+									$eeNewFileArray['SubmitterName'] = $eeString; // Who uploaded the file
 								}
 							}
 							
-							$eeSFL_FREE_Log['RunTime'][] = '——> Done';
-							$eeSFL_FREE_Log['RunTime'][] = $eeNewFileArray;
-							
-							// To add or modify
-							if($eeFound) { 
-								$eeFileArrayWorking[$eeKey] = $eeNewFileArray; // Updating current file array
-							} else {
-								$eeFileArrayWorking[] = $eeNewFileArray; // Append this file array to the big one
-								$eeFileArrayWorking = $eeSFL_FREE->eeSFL_SortFiles($eeFileArrayWorking, $eeSFL_Settings['SortBy'], $eeSFL_Settings['SortOrder']);
+							if( isset($_POST['eeSFL_Email'])) {
+								
+								$eeString = filter_var( sanitize_email(@$_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL);
+								
+								if($eeString) {
+									
+									$eeNewFileArray['SubmitterEmail'] = $eeString; // Their email
+								}
 							}
-							
-							// Create thumbnail if needed
-							$eeSFL_FREE->eeSFL_CheckThumbnail($eeNewFileArray['FilePath'], $eeSFL_Settings);
-							
-							// Notification Info (FREE)
-							$eeUploadJob .=  $eeFile . PHP_EOL . 
-								$eeSFL_Settings['FileListURL'] . $eeFile . PHP_EOL . 
-									"(" . eeSFL_FREE_FormatFileSize($eeNewFileArray['FileSize']) . ")" . PHP_EOL . PHP_EOL;
 						}
-					}
-					
-					// Save the new array
-					update_option('eeSFL_FileList_1', $eeFileArrayWorking);
-					
-					// delete_transient('eeSFL_FileList_1'); // Force a re-scan
 						
-					$eeSFL_FREE_Log['messages'][] = __('File Upload Complete', 'ee-simple-file-list');
-					
-					if( is_admin() ) {
-						
-						return TRUE;
-					
-					} else  {
-						
-						// Send Email Notice
-						if($eeSFL_Settings['Notify'] == 'YES') {
+						if( isset($_POST['eeSFL_Comments'])) {
 							
-							// Send the Email Notification
-							$eeSFL_FREE->eeSFL_NotificationEmail($eeUploadJob);
-							return TRUE;
+							$eeString = sanitize_text_field(@$_POST['eeSFL_Comments']);
 							
+							if($eeString) {
+								
+								$eeNewFileArray['FileDescription'] = $eeString; // A short description of the file
+								$eeNewFileArray['SubmitterComments'] = $eeString; // What they said
+							}
+						}
+						
+						$eeSFL_FREE_Log['RunTime'][] = '——> Done';
+						$eeSFL_FREE_Log['RunTime'][] = $eeNewFileArray;
+						
+						// To add or modify
+						if($eeFound) { 
+							$eeFileArrayWorking[$eeKey] = $eeNewFileArray; // Updating current file array
 						} else {
-							return TRUE; // No notice wanted
+							$eeFileArrayWorking[] = $eeNewFileArray; // Append this file array to the big one
+							$eeFileArrayWorking = $eeSFL_FREE->eeSFL_SortFiles($eeFileArrayWorking, $eeSFL_Settings['SortBy'], $eeSFL_Settings['SortOrder']);
 						}
+						
+						// Create thumbnail if needed
+						$eeSFL_FREE->eeSFL_CheckThumbnail($eeNewFileArray['FilePath'], $eeSFL_Settings);
+						
+						// Notification Info (FREE)
+						$eeUploadJob .=  $eeFile . PHP_EOL . 
+							$eeSFL_Settings['FileListURL'] . $eeFile . PHP_EOL . 
+								"(" . eeSFL_FREE_FormatFileSize($eeNewFileArray['FileSize']) . ")" . PHP_EOL . PHP_EOL;
 					}
+				}
 					
-				} else {
-					$eeSFL_FREE_Log['errors'][] = 'ERROR 96';
-					return FALSE;
+				// Save the new array
+				update_option('eeSFL_FileList_1', $eeFileArrayWorking);
+				
+				// delete_transient('eeSFL_FileList_1'); // Force a re-scan
+					
+				$eeSFL_FREE_Log['messages'][] = __('File Upload Complete', 'ee-simple-file-list');
+				
+				if( is_admin() ) {
+					
+					return TRUE;
+				
+				} else  {
+					
+					// Send Email Notice
+					if($eeSFL_Settings['Notify'] == 'YES') {
+						
+						// Send the Email Notification
+						$eeSFL_FREE->eeSFL_NotificationEmail($eeUploadJob);
+						return TRUE;
+						
+					} else {
+						return TRUE; // No notice wanted
+					}
 				}
 			}
 			

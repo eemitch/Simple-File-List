@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 4.4.1
+Version: 4.4.2
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -20,7 +20,7 @@ $eeSFL_FREE_DevMode = FALSE; // TRUE/FALSE = Enables visible logging or not
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
-define('eeSFL_FREE_Version', '4.4.1'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_FREE_Version', '4.4.2'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_FREE_DB_Version', '4.6'); // Database structure version - used for eeSFL_FREE_VersionCheck()
 define('eeSFL_FREE_Cache_Version', eeSFL_FREE_Version); // Cache-Buster version for static files - used when updating CSS/JS
 
@@ -530,9 +530,10 @@ function eeSFL_FREE_FileUploader() {
 			if($_FILES['file']['name'] != $eeSFL_FileName) {
 				
 				// Set a transient with the new name so we can get it in ProcessUpload() after the form is submitted
-				$eeOldFilePath = str_replace($eeSFL_Settings['FileListDir'], '', $eeSFL_FileUploadDir . $_FILES['file']['name']); // Strip the FileListDir
+				$eeOldFilePath = 'eeSFL-Renamed-' . str_replace($eeSFL_Settings['FileListDir'], '', $eeSFL_FileUploadDir . $_FILES['file']['name']); // Strip the FileListDir
+				$eeOldFilePath = esc_sql(urlencode($eeOldFilePath));
 				$eeNewFilePath = str_replace($eeSFL_Settings['FileListDir'], '', $eeSFL_TargetFile); // Strip the FileListDir
-				set_transient('eeSFL-Renamed-' . $eeOldFilePath, $eeNewFilePath, 900); // Expires in 15 minutes
+				set_transient($eeOldFilePath, $eeNewFilePath, 900); // Expires in 15 minutes
 			}
 			
 			$eeTarget = ABSPATH . $eeSFL_TargetFile;

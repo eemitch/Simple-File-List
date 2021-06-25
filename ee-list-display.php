@@ -78,28 +78,22 @@ $eeSFL_ListNumber = $eeSFL_FREE_ListRun; // Legacy 04/20
 
 
 // Only show files just uploaded
-if(isset($eeSFL_FREE_Env['UploadedFiles'])) {
+if(count($eeSFL_FREE_Env['UploadedFiles'])) {
 	
-	if(count($eeSFL_FREE_Env['UploadedFiles'])) {
-	
-		$eeUploadedFiles = array();
+	foreach( $eeSFL_Files as $eeThisKey => $eeFileArray ) {
 		
-		foreach( $eeSFL_Files as $eeKey => $eeFileArray) {
-			
-			if( in_array($eeFileArray['FilePath'], $eeSFL_FREE_Env['UploadedFiles']) ) {
-				$eeUploadedFiles[] = $eeFileArray;
-			}
-			
-			if(count($eeUploadedFiles)) {
-				$eeSFL_Files = $eeUploadedFiles;
-			} else {
-				$eeSFL_Files = array();
-			}
+		if( in_array($eeFileArray['FilePath'], $eeSFL_FREE_Env['UploadedFiles']) ) {
+			$eeUploadedFiles[] = $eeFileArray;
 		}
 	}
 	
-} else {
-	$eeSFL_FREE_Env['UploadedFiles'] = '';
+	if(count($eeUploadedFiles)) {
+		$eeSFL_Files = $eeUploadedFiles;
+	} else {
+		$eeSFL_Files = array();
+		$eeSFL_FREE_Log['errors'][] = 'Upload Processing Error.';
+		$eeSFL_FREE_Log['errors'][] = $eeSFL_FREE_Env['UploadedFiles'];
+	}	
 }
 
 
