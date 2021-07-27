@@ -24,7 +24,7 @@ if(@$eeSFL_FREE_Log['errors']) {
 }
 	
 
-if(@$eeSFL_Settings['FileListDir']) {
+if(strlen($eeSFL_Settings['FileListDir']) > 1) {
 	
 	$eeOutput .= '
 	

@@ -8,19 +8,19 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 4.4.2
+Version: 4.4.3
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
 Domain Path: /languages
 */
 
-$eeSFL_FREE_DevMode = FALSE; // TRUE/FALSE = Enables visible logging or not
+$eeSFL_FREE_DevMode = TRUE; // TRUE/FALSE = Enables visible logging or not
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
-define('eeSFL_FREE_Version', '4.4.2'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_FREE_Version', '4.4.3'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_FREE_DB_Version', '4.6'); // Database structure version - used for eeSFL_FREE_VersionCheck()
 define('eeSFL_FREE_Cache_Version', eeSFL_FREE_Version); // Cache-Buster version for static files - used when updating CSS/JS
 
@@ -32,7 +32,7 @@ $eeSFL_FREE = FALSE; // Our main class
 $eeSFL_Settings = array(); // All List Info
 $eeSFL_VarsForJS = array(); // Strings for JS
 $eeSFL_FREE_Env = array(); // Environment
-$eeSFL_FREE_ListRun = 1; // Count of lists per page
+$eeSFL_FREE_ListRun = 0; // Count of lists per page
 $eeSFL_FREE_UploadFormRun = FALSE; // Check if uploader form has run
 
 // The Log - Written to wp_option -> eeSFL_Log
@@ -214,7 +214,7 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	
 	$eeSFL_FREE_Log['L' . $eeSFL_FREE_ListRun][] = 'Shortcode Loading: ' . get_permalink();
 
-	if( $eeSFL_FREE_ListRun > 1 AND @$_GET['eeFront'] ) { return; }
+	if( $eeSFL_FREE_ListRun > 1 AND isset($_GET['eeFront']) ) { return; }
 
     // Over-Riding Shortcode Attributes
 	if($atts) {
@@ -276,7 +276,7 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	
 	if($eeSFL_FREE_ListRun == 1) { $eeOutput .= ' id="eeSFL"'; } // 3/20 - Legacy for user CSS
 	
-	$eeOutput .= '>';
+	$eeOutput .= '>$eeSFL_FREE_ListRun = ' . $eeSFL_FREE_ListRun . '<br />';
 	
 	// Upload Check
 	$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
@@ -297,10 +297,13 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 			$eeSFL_Settings['AllowUploads'] = 'NO'; // Show Nothing
 	}
 	
-	if($eeSFL_Settings['AllowUploads'] != 'NO' AND !$eeSFL_FREE_UploadFormRun) {
-		if(!@$_POST['eeSFL_Upload'] AND !@$_POST['eeSFLS_Searching']) {
+	if($eeSFL_Settings['AllowUploads'] != 'NO' AND $eeSFL_FREE_UploadFormRun === FALSE) {
+		
+		if(!isset($_POST['eeSFL_Upload']) AND !isset($_POST['eeSFLS_Searching'])) {
+			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			include($eeSFL_FREE_Env['pluginDir'] . '/includes/ee-upload-form.php');
+			
+			require_once($eeSFL_FREE_Env['pluginDir'] . 'includes/ee-upload-form.php');
 			$eeSFL_FREE_UploadFormRun = TRUE;
 		}
 	}
@@ -335,13 +338,17 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	$eeSFL_Time = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
 	$eeSFL_FREE_Log[] = 'Execution Time: ' . round($eeSFL_Time,3);
 	
-	$eeOutput .= $eeSFL_FREE->eeSFL_WriteLogData(); // Only adds output if DevMode is ON
+	// $eeOutput .= $eeSFL_FREE->eeSFL_WriteLogData(); // Only adds output if DevMode is ON
 	
 	// Give it back
 	unset($eeSFL_Files);
 	unset($eeSFL_FREE_Env);
 	unset($eeSFL_Settings);
 	unset($eeSFL_FREE_Log);
+	
+	
+	
+	// exit( htmlentities($eeOutput) );
 	
 	return $eeOutput; // Output the page
 }
