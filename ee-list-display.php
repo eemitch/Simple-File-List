@@ -5,7 +5,6 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit 
 
 $eeSFL_Files = array();
 $eeFileArray = FALSE;
-$eeReScan = FALSE;
 $eeSFL_ListClass = 'eeSFL'; // The basic list's CSS class. Extensions might change this.
 $eeClass = ''; // Meaning, CSS class
 $eeSFL_AllowFrontManage = 'NO'; // Front-side freedom
@@ -20,64 +19,16 @@ $eeSFL_FREE_Log['RunTime'][] = 'Loaded: ee-list-display';
 
 // echo '<pre>'; print_r($_POST); echo '</pre>';
 
-if(is_numeric($eeSFL_Settings['UseCache'])) {
-	if($eeSFL_Settings['UseCache'] >= 1) { $eeSFL_Settings['UseCache'] = 'YES'; } 
-		else { $eeSFL_Settings['UseCache'] = 'NO'; } // Legacy 12/20 (v4.3)
-}
-
-// Get the File List
-if( (isset($_GET['eeSFL_Scan']) AND $eeAdmin) OR $eeSFL_Settings['UseCache'] == 'NO') {
-	
-	$eeSFL_Files = $eeSFL_FREE->eeSFL_UpdateFileListArray();
-	
-} else {
-	
-	$eeSFL_FREE_Log['RunTime'][] = 'Checking List Freshness...';
-	$eeCheckFreshness = get_transient('eeSFL_FileList_1'); // Get the File List Transient
-	
-	if($eeCheckFreshness == 'Good') { // Get the list
-		
-		$eeSFL_FREE_Log['RunTime'][] = 'Good n Fresh :-)';
-		
-		$eeSFL_Files = get_option('eeSFL_FileList_1'); // Get the File List
-		
-	} else { // Update the list
-		
-		$eeSFL_FREE_Log['RunTime'][] = 'Expired :-(';
-		
-		$eeSFL_Files = $eeSFL_FREE->eeSFL_UpdateFileListArray(); // Stale, so Re-Scan
-	}
-	
-	// If not found, rescan
-	if(!$eeSFL_Files AND $eeAdmin) { 
-		$eeSFL_FREE_Log['errors'][] = __('No File List Found.', 'ee-simple-file-list');
-	}
-}
-
-// echo '<pre>'; print_r($eeSFL_Settings); echo '</pre>';
-// echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
-
-// Shortcode sorting att used
-if($eeForceSort) { // Sorting is usually only done when the disk is scanned
-	$eeSFL_Files = $eeSFL_FREE->eeSFL_SortFiles($eeSFL_Files, $eeSFL_Settings['SortBy'], $eeSFL_Settings['SortOrder']);
-}
+// Scan the Disk
+$eeSFL_Files = $eeSFL_FREE->eeSFL_UpdateFileListArray();
 
 // Save for later
 $eeSFL_FileTotalCount = 0;
 $eeSFL_ItemTotalCount = $eeSFL_FileTotalCount; //  + $eeSFL_FolderTotalCount
-
-// Total in whole list
-if( !empty($eeSFL_Files) ) {
-	foreach( $eeSFL_Files as $eeKey => $eeFileArray ) {
-		$eeSFL_FileTotalCount++;
-	}
-}
+$eeSFL_FileTotalCount = count($eeSFL_Files,0);
 
 
-$eeSFL_ListNumber = $eeSFL_FREE_ListRun; // Legacy 04/20
-
-
-// Only show files just uploaded
+// Check for Upload Job
 if(count($eeSFL_FREE_Env['UploadedFiles'])) {
 	
 	foreach( $eeSFL_Files as $eeThisKey => $eeFileArray ) {
@@ -97,14 +48,18 @@ if(count($eeSFL_FREE_Env['UploadedFiles'])) {
 }
 
 
-// User Messaging	
-if(@$eeSFL_FREE_Log['messages'] AND $eeSFL_FREE_ListRun == 1) { 
-	$eeOutput .=  eeSFL_FREE_ResultsDisplay($eeSFL_FREE_Log['messages'], 'notice-success');
-	$eeSFL_FREE_Log['messages'] = array(); // Clear
-}	
-if(@$eeSFL_FREE_Log['errors']) { 
-	$eeOutput .=  eeSFL_FREE_ResultsDisplay($eeSFL_FREE_Log['errors'], 'notice-error');
-	$eeSFL_FREE_Log['errors'] = array(); // Clear
+// User Messaging
+if(isset($eeSFL_FREE_Log['messages'])) {	
+	if($eeSFL_FREE_Log['messages'] AND $eeSFL_FREE_ListRun == 1) { 
+		$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_FREE_Log['messages'], 'notice-success');
+		$eeSFL_FREE_Log['messages'] = array(); // Clear
+	}
+}
+if(isset($eeSFL_FREE_Log['errors'])) {		
+	if($eeSFL_FREE_Log['errors']) { 
+		$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_FREE_Log['errors'], 'notice-error');
+		$eeSFL_FREE_Log['errors'] = array(); // Clear
+	}
 }
 
 
@@ -130,13 +85,11 @@ if($eeAdmin) {
 	<p class="eeRight">
 	
 		<span class="eeHide" id="eeSFL_UploadFilesButtonSwap">' . __('Cancel Upload', 'ee-simple-file-list') . '</span>
-		<a href="#" class="button eeButton" id="eeSFL_UploadFilesButton">' . __('Upload Files', 'ee-simple-file-list') . '</a>';
-	 					
-	if($eeSFL_Settings['UseCache'] == 'YES') {
-		$eeOutput .= '<a href="#" class="button eeButton" id="eeSFL_ReScanButton">' . __('Re-Scan Files', 'ee-simple-file-list') . '</a>';
-	}
+		<a href="#" class="button eeButton" id="eeSFL_UploadFilesButton">' . __('Upload Files', 'ee-simple-file-list') . '</a>
+		
+		<a href="#" class="button eeButton" id="eeSFL_ReScanButton">' . __('Re-Scan Files', 'ee-simple-file-list') . '</a>
 	
-	$eeOutput .= '<a href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" class="button eeButton" >' . __('Create Folder', 'ee-simple-file-list') . '</a>
+		<a href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" class="button eeButton" >' . __('Create Folder', 'ee-simple-file-list') . '</a>
 
 	</p>';
 	

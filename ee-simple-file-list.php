@@ -15,7 +15,7 @@ Text Domain: ee-simple-file-list
 Domain Path: /languages
 */
 
-$eeSFL_FREE_DevMode = TRUE; // TRUE/FALSE = Enables visible logging or not
+$eeSFL_FREE_DevMode = FALSE; // TRUE/FALSE = Enables visible logging or not
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -32,8 +32,8 @@ $eeSFL_FREE = FALSE; // Our main class
 $eeSFL_Settings = array(); // All List Info
 $eeSFL_VarsForJS = array(); // Strings for JS
 $eeSFL_FREE_Env = array(); // Environment
-$eeSFL_FREE_ListRun = 0; // Count of lists per page
-$eeSFL_FREE_UploadFormRun = FALSE; // Check if uploader form has run
+$eeSFL_FREE_ListRun = 1; // Count of lists per page
+$eeSFL_FREE_UploadRun = 1; // Count the uploaders per page
 
 // The Log - Written to wp_option -> eeSFL_Log
 $eeSFL_FREE_Log = array('Simple File List is Loading...');
@@ -202,7 +202,7 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	
 	// Basic Usage: [eeSFL]
     
-    global $eeSFL_FREE, $eeSFL_FREE_DevMode, $eeSFL_FREE_Log, $eeSFL_FREE_Env, $eeSFL_Settings, $eeSFL_FREE_ListRun, $eeSFL_FREE_UploadFormRun;
+    global $eeSFL_FREE, $eeSFL_FREE_DevMode, $eeSFL_FREE_Log, $eeSFL_FREE_Env, $eeSFL_Settings, $eeSFL_FREE_ListRun, $eeSFL_FREE_UploadRun;
 	
 	$eeAdmin = is_admin();
 	if($eeAdmin) { return FALSE; } // Don't execute shortcode on page editor
@@ -276,7 +276,7 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	
 	if($eeSFL_FREE_ListRun == 1) { $eeOutput .= ' id="eeSFL"'; } // 3/20 - Legacy for user CSS
 	
-	$eeOutput .= '>$eeSFL_FREE_ListRun = ' . $eeSFL_FREE_ListRun . '<br />';
+	$eeOutput .= '><!-- $eeSFL_FREE_ListRun = ' . $eeSFL_FREE_ListRun . ' -->';
 	
 	// Upload Check
 	$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
@@ -297,14 +297,14 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 			$eeSFL_Settings['AllowUploads'] = 'NO'; // Show Nothing
 	}
 	
-	if($eeSFL_Settings['AllowUploads'] != 'NO' AND $eeSFL_FREE_UploadFormRun === FALSE) {
+	if($eeSFL_Settings['AllowUploads'] != 'NO' AND $eeSFL_FREE_UploadRun == 1) {
 		
 		if(!isset($_POST['eeSFL_Upload']) AND !isset($_POST['eeSFLS_Searching'])) {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
 			
 			require_once($eeSFL_FREE_Env['pluginDir'] . 'includes/ee-upload-form.php');
-			$eeSFL_FREE_UploadFormRun = TRUE;
+			$eeSFL_FREE_UploadRun++;
 		}
 	}
 	

@@ -27,7 +27,6 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		,'ShowSubmitterInfo'
 		,'PreserveSpaces'
 		,'ShowFileExtension'
-		,'UseCache'
 		,'GenerateImgThumbs'
 		,'GeneratePDFThumbs'
 		,'GenerateVideoThumbs'
@@ -230,16 +229,6 @@ $eeOutput .= '
 		
 		
 		<fieldset class="eeSFL_SettingsBlock">
-			
-		<h3>' . __('File List Cache', 'ee-simple-file-list') . '</h3>	
-				
-		<label for="eeUseCache">' . __('Use the File List Cache', 'ee-simple-file-list') . ':</label>
-		<input id="eeUseCache" type="checkbox" name="eeUseCache" value="YES"';
-		if( $eeSFL_Settings['UseCache'] == 'YES' OR $eeSFL_Settings['UseCache'] >= 1 ) { $eeOutput .= ' checked="checked"'; }
-		$eeOutput .= ' /> 
-		<div class="eeNote">' . __('Reduce server load by only scanning the hard disk occasionally.', 'ee-simple-file-list') . ' '  . 
-			__('If you use FTP or another method to upload files to your list, turn this off to re-scan the files before each page load.', 'ee-simple-file-list') . '</div>
-			
 			
 		<h3>' . __('Thumbnail Generation', 'ee-simple-file-list') . '</h3>
 		

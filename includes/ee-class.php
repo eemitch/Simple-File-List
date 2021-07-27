@@ -46,7 +46,6 @@ class eeSFL_FREE_MainClass {
 		// List Settings
 		'ListTitle' => 'Simple File List', // List Title (Not currently used)
 		'FileListDir' => 'wp-content/uploads/simple-file-list/', // List Directory Name (relative to ABSPATH)
-		'UseCache' => 'YES', // To cache or not to cache (YES / NO)
 		'ShowList' => 'YES', // Show the File List (YES, ADMIN, USER, NO)
 		'AdminRole' => 5, // Who can access settings, based on WP role (5 = Admin ... 1 = Subscriber)
 		'ShowFileThumb' => 'YES', // Display the File Thumbnail Column (YES or NO)
@@ -374,37 +373,15 @@ class eeSFL_FREE_MainClass {
 		}
 		
 		
-		// Sort, Update cache time and DB
+		// Sort...
 		if(count($eeFileArrayWorking)) {
 			
 			// Sort
 		    $eeFileArrayWorking = $this->eeSFL_SortFiles($eeFileArrayWorking, $eeSFL_Settings['SortBy'], $eeSFL_Settings['SortOrder']);
-			
-			// Set Cache
-			if(is_numeric($eeSFL_Settings['UseCache'])) {
-				if($eeSFL_Settings['UseCache'] >= 1) { $eeSFL_Settings['UseCache'] = 'YES'; } 
-					else { $eeSFL_Settings['UseCache'] = 'NO'; } // Legacy 12/20 (v4.3)
-			}
-		    
-		    // Set the Transient
-		    if(@$eeSFL_Settings['UseCache'] == 'YES') {
-			
-				$eeExpiresIn = $this->eeUseCache * HOUR_IN_SECONDS;
-				$eeSFL_FREE_Log['RunTime'][] = 'Setting file list cache transient to expire in ' . $this->eeUseCache . ' hours.';
-				set_transient('eeSFL_FileList_1', 'Good', $eeExpiresIn);
-			
-			} else {
-				delete_transient('eeSFL_FileList_1');
-			}
+
 			
 			// Update the DB
 		    update_option('eeSFL_FileList_1', $eeFileArrayWorking);
-		    
-		    
-		    
-		    
-			
-			
 		    
 		    // Check for and create thumbnail if needed...
 		    if( $eeSFL_Settings['ShowFileThumb'] == 'YES' ) {
@@ -412,7 +389,7 @@ class eeSFL_FREE_MainClass {
 			    // Check for supported technologies
 				eeSFL_FREE_CheckSupported();
 						
-				$eeSFL_Log['RunTime'][] = 'Checking thumbnails ...';
+				$eeSFL_Log['RunTime'][] = 'Checking Thumbnails ...';
 		    
 				// Check for and create thumbnail if needed...
 			    foreach($eeFileArrayWorking as $eeKey => $eeFile) {
@@ -426,7 +403,7 @@ class eeSFL_FREE_MainClass {
 			    }
 			    
 		    } else {
-			    $eeSFL_Log['RunTime'][] = 'Skipped Thumbnail Checks';
+			    $eeSFL_Log['RunTime'][] = 'Not Showing Thumbnails';
 			    
 		    }
 		    
