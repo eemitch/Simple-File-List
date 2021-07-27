@@ -5,7 +5,7 @@ Tags: file sharing, file list, file uploader, upload files, share files, exchang
 Requires at least: 4.0
 Requires PHP: 5.6.40
 Tested up to: 5.8
-Stable tag: 4.4.3
+Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -244,7 +244,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 = 4.4.3 =
 * Removed the mostly unnecessary free version cache feature. External uploads, like FTP, will now appear immediately.
-* Minor code improvements
+* Minor code and style improvements.
 
 = 4.4.2 =
 * Bug fix where generated thumbnails were not getting updated when the main files were renamed or deleted.
