@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 4.4.3
+Version: 4.4.5
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -20,7 +20,7 @@ $eeSFL_FREE_DevMode = FALSE; // TRUE/FALSE = Enables visible logging or not
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
-define('eeSFL_FREE_Version', '4.4.3'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_FREE_Version', '4.4.5'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_FREE_DB_Version', '4.6'); // Database structure version - used for eeSFL_FREE_VersionCheck()
 define('eeSFL_FREE_Cache_Version', eeSFL_FREE_Version); // Cache-Buster version for static files - used when updating CSS/JS
 
@@ -50,6 +50,18 @@ add_action( 'wp_ajax_nopriv_simplefilelist_upload_job', 'simplefilelist_upload_j
 // simplefilelist_edit_job <<<----- File Edit Action Hooks (Ajax)
 add_action( 'wp_ajax_simplefilelist_edit_job', 'simplefilelist_edit_job' );
 add_action( 'wp_ajax_nopriv_simplefilelist_edit_job', 'simplefilelist_edit_job' );
+
+
+// Prevent All in One SEO plugin from parsing SFL
+add_filter( 'aioseo_conflicting_shortcodes', 'eeSFL_FREE_aioseo_filter_conflicting_shortcodes' );
+
+function eeSFL_FREE_aioseo_filter_conflicting_shortcodes( $conflictingShortcodes ) {
+   $conflictingShortcodes = array_merge( $conflictingShortcodes, [
+		'Simple File List Pro' => '[eeSFL]',
+		'Simple File List Search' => '[eeSFLS]'
+   ] );
+   return $conflictingShortcodes;
+}
 
 
 // Display Notice to Update Simple File List Pro

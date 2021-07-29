@@ -242,6 +242,13 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
+= 4.4.5 =
+* Bug fix for undefined function.
+
+= 4.4.4 =
+* Added a fix to prevent the "All in One SEO" plugin from parsing Simple File List shortcode, which was breaking front-end features.
+* Added a check to see if the PHP function shell_exec() is available.
+
 = 4.4.3 =
 * Removed the mostly unnecessary free version cache feature. External uploads, like FTP, will now appear immediately.
 * Minor code and style improvements.

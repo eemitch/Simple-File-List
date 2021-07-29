@@ -31,10 +31,15 @@ function eeSFL_FREE_CheckSupported() {
 	$eeSupported = array();
 
     // Check for ffMpeg
-	if(shell_exec('ffmpeg -version')) {
-		$eeSupported[] = 'ffMpeg';
-		$eeSFL_FREE_Log['Supported'][] = 'Supported: ffMpeg';
-	}
+    if(function_exists('shell_exec')) {
+	    
+		if(shell_exec('ffmpeg -version')) {
+			$eeSupported[] = 'ffMpeg';
+			$eeSFL_Log['Supported'][] = 'Supported: ffMpeg';
+		}
+    } else {
+	    $eeSFL_FREE_Log['Trouble'] = '---> shell_exec() NOT SUPPORTED'; 
+    }
     
     if($eeSFL_FREE_Env['eeOS'] != 'WINDOWS') {
 		
@@ -48,13 +53,18 @@ function eeSFL_FREE_CheckSupported() {
 		// Check for GhostScript
 		if($eeSFL_FREE_Env['eeOS'] == 'LINUX') { // TO DO - Make it work for IIS
 		
-			$phpExt = 'gs'; // <<<---- This will be different for Windows
-			if(shell_exec($phpExt . ' --version') >= 1.0) { // <<<---- This will be different for Windows too
-				$eeSupported[] = 'GhostScript';
-				$eeSFL_FREE_Log['Supported'][] = 'Supported: GhostScript';
+			if(function_exists('shell_exec')) {
+			
+				$phpExt = 'gs'; // <<<---- This will be different for Windows
+				if(shell_exec($phpExt . ' --version') >= 1.0) { // <<<---- This will be different for Windows too
+					$eeSupported[] = 'GhostScript';
+					$eeSFL_FREE_Log['Supported'][] = 'Supported: GhostScript';
+				}
 			}
 		}
 	}
+	
+	// echo '<pre>'; print_r($eeSupported); echo '</pre>'; exit;
 	
 	if(count($eeSupported)) {
 		update_option('eeSFL_Supported', $eeSupported);

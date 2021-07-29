@@ -51,13 +51,13 @@ if(count($eeSFL_FREE_Env['UploadedFiles'])) {
 // User Messaging
 if(isset($eeSFL_FREE_Log['messages'])) {	
 	if($eeSFL_FREE_Log['messages'] AND $eeSFL_FREE_ListRun == 1) { 
-		$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_FREE_Log['messages'], 'notice-success');
+		$eeOutput .=  eeSFL_FREE_ResultsDisplay($eeSFL_FREE_Log['messages'], 'notice-success');
 		$eeSFL_FREE_Log['messages'] = array(); // Clear
 	}
 }
 if(isset($eeSFL_FREE_Log['errors'])) {		
 	if($eeSFL_FREE_Log['errors']) { 
-		$eeOutput .=  eeSFL_ResultsDisplay($eeSFL_FREE_Log['errors'], 'notice-error');
+		$eeOutput .=  eeSFL_FREE_ResultsDisplay($eeSFL_FREE_Log['errors'], 'notice-error');
 		$eeSFL_FREE_Log['errors'] = array(); // Clear
 	}
 }
