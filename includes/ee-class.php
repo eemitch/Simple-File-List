@@ -72,12 +72,16 @@ class eeSFL_FREE_MainClass {
 		'PreserveSpaces' => 'NO', // Replace ugly hyphens with spaces
 		'ShowFileDescription' => 'YES', // Display the File Description (YES or NO)
 		'ShowFileActions' => 'YES', // Display the File Action Links Section (below each file name) (YES or NO)
+		'ShowFileOpen' => 'YES', // Show this operation
+		'ShowFileDownload' => 'YES', // Show this operation
+		'ShowFileCopyLink' => 'YES', // Show this operation
 		'ShowFileExtension' => 'YES', // Show the file extension, or not.
 		'ShowHeader' => 'YES', // Show the File List's Table Header (YES or NO)
 		'ShowUploadLimits' => 'YES', // Show the upload limitations text.
 		'GetUploaderInfo' => 'NO', // Show the Info Form
 		'ShowSubmitterInfo' => 'NO', // Show who uploaded the file (name linked to their email)
 		'AllowFrontManage' => 'NO', // Allow front-side users to manage files (YES or NO)
+		'SmoothScroll' => 'YES', // Use the awesome and cool JavaScript smooth scroller after an upload
 		
 		// Notifications
 		'Notify' => 'NO', // Send Notifications (YES or NO)

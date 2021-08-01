@@ -22,8 +22,12 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		,'ShowFileDate'
 		,'ShowFileSize'
 		,'ShowFileActions'
+		,'ShowFileOpen'
+		,'ShowFileDownload'
+		,'ShowFileCopyLink'
 		,'ShowFileDescription'
 		,'ShowHeader'
+		,'SmoothScroll'
 		,'ShowSubmitterInfo'
 		,'PreserveSpaces'
 		,'ShowFileExtension'
@@ -379,32 +383,22 @@ $eeOutput .= '
 		
 		<div class="eeNote">' . __('Show the table header above the file list or not.', 'ee-simple-file-list') . '</div>
 		
+		
+		<label for="eeSmoothScroll">' . __('Use Smooth Scroll', 'ee-simple-file-list-pro') . ':</label>
+		<input type="checkbox" name="eeSmoothScroll" value="YES" id="eeSmoothScroll"';
+		
+		if( $eeSFL_Settings['SmoothScroll'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /> <p>' . __('Scroll to the List', 'ee-simple-file-list-pro') . '</p>
+		
+		<div class="eeNote">' . __('Uses a JavaScript effect to scroll down to the top of the list after an action.', 'ee-simple-file-list-pro') . '</div>
+		
 		</fieldset>
 		
 		
 		<fieldset class="eeSFL_SettingsBlock">
 		
-		<h3>' . __('File Details', 'ee-simple-file-list') . '</h3>	
-		
-		<label for="eeShowFileDescription">' . __('Show File Description', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeShowFileDescription" value="YES" id="eeShowFileDescription"';
-		
-		if( $eeSFL_Settings['ShowFileDescription'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-		
-		$eeOutput .= ' /> <p>' . __('Description of the file', 'ee-simple-file-list') . '</p>
-		
-		<div class="eeNote">' . __('Display the file description below the file name.', 'ee-simple-file-list') . '</div>	
-		
-		
-		<label for="eeShowFileActions">' . __('Show File Actions', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeShowFileActions" value="YES" id="eeShowFileActions"';
-		
-		if( $eeSFL_Settings['ShowFileActions'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-		
-		$eeOutput .= ' /> <p>' . __('Open, Download, etc.', 'ee-simple-file-list') . '</p>
-		
-		<div class="eeNote">' . __('Show file action links below each file name on the front-end list', 'ee-simple-file-list') . '</div>
-		
+		<h3>' . __('File Details', 'ee-simple-file-list') . '</h3>
 		
 		<label for="eeShowSubmitterInfo">' . __('Show File Owner', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eeShowSubmitterInfo" value="YES" id="eeShowSubmitterInfo"';
@@ -413,7 +407,19 @@ $eeOutput .= '
 		
 		$eeOutput .= ' /> <p>' . __('Show on Front-End', 'ee-simple-file-list') . '</p>
 		
-		<div class="eeNote">' . __('Show the name of the user who uploaded the file.', 'ee-simple-file-list') . '</div>	
+		<div class="eeNote">' . __('Show the name of the user who uploaded the file.', 'ee-simple-file-list') . '</div>
+		
+		<label for="eeShowFileDescription">' . __('Show File Description', 'ee-simple-file-list') . ':</label>
+		<input type="checkbox" name="eeShowFileDescription" value="YES" id="eeShowFileDescription"';
+		
+		if( $eeSFL_Settings['ShowFileDescription'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /> <p>' . __('Description of the file', 'ee-simple-file-list') . '</p>
+		
+		<div class="eeNote">' . __('Display the file description below the file name.', 'ee-simple-file-list') . '</div>
+		
+		
+			
 		
 		<label for="eeShowFileExtension">' . __('Show Extension', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eeShowFileExtension" value="YES" id="eeShowFileExtension"';
@@ -433,7 +439,52 @@ $eeOutput .= '
 		$eeOutput .= ' /> <p>' . __('File Name Spaces', 'ee-simple-file-list') . '</p>
 		
 		<div class="eeNote">' . __('Spaces in file names are replaced with hyphens in order to make the URL legal.', 'ee-simple-file-list') . ' ' . 
-			__('This setting will revert this action for display.', 'ee-simple-file-list') . '</div>
+			__('This setting will revert this action for display.', 'ee-simple-file-list') . '</div>	
+		
+		
+		<label for="eeShowFileActions">' . __('Show File Actions', 'ee-simple-file-list') . ':</label>
+		<input type="checkbox" name="eeShowFileActions" value="YES" id="eeShowFileActions"';
+		
+		if( $eeSFL_Settings['ShowFileActions'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /> <p>' . __('Open, Download, etc.', 'ee-simple-file-list') . '</p>
+		
+		
+			<fieldset class="eeSFL_SettingsBlock">
+			
+			<label for="eeShowFileOpen">' . __('Show Open Action', 'ee-simple-file-list-pro') . ':</label>
+			<input type="checkbox" name="eeShowFileOpen" value="YES" id="eeShowFileOpen"';
+			
+			if( $eeSFL_Settings['ShowFileOpen'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+			
+			$eeOutput .= ' /> <p>' . __('Opens the File', 'ee-simple-file-list-pro') . '</p>
+			
+			<div class="eeNote">' . __('If the browser cannot open the file, it will prompt the user to download.', 'ee-simple-file-list-pro') . '</div>
+			
+			
+			
+			
+			<label for="eeShowFileDownload">' . __('Show Download Action', 'ee-simple-file-list-pro') . ':</label>
+			<input type="checkbox" name="eeShowFileDownload" value="YES" id="eeShowFileDownload"';
+			
+			if( $eeSFL_Settings['ShowFileDownload'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+			
+			$eeOutput .= ' /> <p>' . __('Download the File', 'ee-simple-file-list-pro') . '</p>
+			
+			<div class="eeNote">' . __('The browser will prompt the user to download the file.', 'ee-simple-file-list-pro') . '</div>
+			
+			
+			
+			<label for="eeShowFileCopyLink">' . __('Show Copy Action', 'ee-simple-file-list-pro') . ':</label>
+			<input type="checkbox" name="eeShowFileCopyLink" value="YES" id="eeShowFileCopyLink"';
+			
+			if( $eeSFL_Settings['ShowFileCopyLink'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+			
+			$eeOutput .= ' /> <p>' . __('Copy the File URL', 'ee-simple-file-list-pro') . '</p>
+			
+			<div class="eeNote">' . __('Copies the URL for the file, which can then be pasted into a document.', 'ee-simple-file-list-pro') . '</div>
+			
+			</fieldset>
 
 		</fieldset>
 		

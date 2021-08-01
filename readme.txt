@@ -242,6 +242,11 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
+= 4.4.6 = 
+* Added new option settings to allow you to individually show or hide the Open, Download and/or Copy Link actions on the front-end.
+* Added a new option setting to Enable or Disable the front-side Smooth Scrolling effect.
+* Language updates
+
 = 4.4.5 =
 * Bug fix for undefined function.
 

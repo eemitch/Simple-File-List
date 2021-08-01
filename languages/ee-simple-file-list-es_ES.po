@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
 "POT-Creation-Date: 2021-06-25 16:51-0500\n"
-"PO-Revision-Date: 2021-06-25 16:55-0500\n"
+"PO-Revision-Date: 2021-07-31 09:27-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -147,7 +147,7 @@ msgstr "Creado por"
 
 #: ee-list-display.php:464
 msgid "Open"
-msgstr "Abierto"
+msgstr "Abrir"
 
 #: ee-list-display.php:467
 msgid "Download"

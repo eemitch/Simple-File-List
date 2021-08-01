@@ -413,20 +413,32 @@ if( isset($eeSFL_Files) ) {
 							
 							<small class="eeSFL_ListFileActions">';
 								
-							if(in_array($eeFileExt, $eeSFL_FREE->eeOpenableFileFormats)) {
-								$eeFileActions .= '<a class="eeSFL_FileOpen" href="' . $eeFileURL . '" target="_blank">' . __('Open', 'ee-simple-file-list') . '</a> | ';
+							// Open Action
+							if($eeAdmin OR $eeSFL_Settings['ShowFileOpen'] == 'YES') {
+							
+								if(in_array($eeFileExt, $eeSFL_FREE->eeOpenableFileFormats)) {
+									$eeFileActions .= '<a class="eeSFL_FileOpen" href="' . $eeFileURL . '" target="_blank">' . __('Open', 'ee-simple-file-list') . '</a> | ';
+								}
 							}
 							
-							$eeFileActions .= '<a class="eeSFL_FileDownload" href="' . $eeFileURL . '" download="' . basename($eeFileURL) . '">' . __('Download', 'ee-simple-file-list') . '</a>';
+							// Download Action
+							if($eeAdmin OR $eeSFL_Settings['ShowFileDownload'] == 'YES') {
 							
-							$eeFileActions .= ' | <a class="eeSFL_CopyLinkToClipboard" onclick="eeSFL_FREE_CopyLinkToClipboard(\''  . $eeFileURL .   '\')" href="#">' . __('Copy Link', 'ee-simple-file-list') . '</a>';
-							// if($eeShowOps OR $eeAdmin) { $eeFileActions .= ' | '; }
-														
+								$eeFileActions .= '<a class="eeSFL_FileDownload" href="' . $eeFileURL . '" download="' . basename($eeFileURL) . '">' . __('Download', 'ee-simple-file-list') . '</a> | ';
+							
+							}
+							
+							// Copy Link Action
+							if($eeAdmin OR $eeSFL_Settings['ShowFileCopyLink'] == 'YES') {
+								
+								$eeFileActions .= '<a class="eeSFL_CopyLinkToClipboard" onclick="eeSFL_FREE_CopyLinkToClipboard(\''  . $eeFileURL .   '\')" href="#">' . __('Copy Link', 'ee-simple-file-list') . '</a> | ';														
+							
+							}
 							
 							// Append Addition (admin or authorized) Actions
 							if( ($eeAdmin OR $eeSFL_Settings['AllowFrontManage'] == 'YES') AND $eeSFL_FREE_ListRun == 1) {
 								
-								if($eeAdmin) { $eeFileActions .= '<br />'; } else { $eeFileActions .= ' | '; }								
+								if($eeAdmin) { $eeFileActions .= '<br />'; }								
 								
 								$eeFileActions .= '<a href="" id="eeSFL_EditFile_' . $eeRowID . '" onclick="eeSFL_FREE_EditFile(' . $eeRowID . ')">' . 
 								__('Edit', 'ee-simple-file-list') . '</a> | <a href="#" onclick="eeSFL_FREE_Delete(' . $eeRowID . ')">' . 

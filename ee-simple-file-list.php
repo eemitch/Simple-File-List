@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 4.4.5
+Version: 4.4.6
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -20,8 +20,8 @@ $eeSFL_FREE_DevMode = FALSE; // TRUE/FALSE = Enables visible logging or not
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // SFL Versions
-define('eeSFL_FREE_Version', '4.4.5'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
-define('eeSFL_FREE_DB_Version', '4.6'); // Database structure version - used for eeSFL_FREE_VersionCheck()
+define('eeSFL_FREE_Version', '4.4.6'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
+define('eeSFL_FREE_DB_Version', '4.7'); // Database structure version - used for eeSFL_FREE_VersionCheck()
 define('eeSFL_FREE_Cache_Version', eeSFL_FREE_Version); // Cache-Buster version for static files - used when updating CSS/JS
 
 // LEGACY
@@ -342,7 +342,9 @@ function eeSFL_FREE_Shortcode($atts, $content = null) {
 	
 	$eeOutput .= '</div>'; // Ends .eeSFL block
 	
-	if( isset($_REQUEST['ee']) ) { $eeOutput .= '<script>eeSFL_FREE_ScrollToIt();</script>'; }
+	// Smooth Scrolling is AWESOME!
+	if( isset($_REQUEST['ee']) AND $eeSFL_Settings['SmoothScroll'] == 'YES' ) { 
+		$eeOutput .= '<script>eeSFL_FREE_ScrollToIt();</script>'; }
 	
 	$eeSFL_FREE_ListRun++;
 
@@ -907,12 +909,6 @@ function eeSFL_FREE_UpdateThisPlugin($eeInstalled) {
 		$eeSFL_FREE_Log['Updating']['List: 1'] = $eeSettings;
 		
 		$eePreCount = count($eeSettings);
-		
-		if(isset($eeSettings['ExpireTime'])) { // Migrate to new cache setting name 
-			$eeSettings['UseCache'] = $eeSettings['ExpireTime'];
-			unset($eeSettings['ExpireTime']);
-			if(is_numeric($eeSettings['UseCache'])) { $eeSettings['UseCache'] = 'YES'; }
-		}
 		
 		// Update File List Option Name, if needed - Rename the file list's option_name value
 		if(get_option('eeSFL-FileList-1')) {
