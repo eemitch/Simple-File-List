@@ -384,14 +384,14 @@ $eeOutput .= '
 		<div class="eeNote">' . __('Show the table header above the file list or not.', 'ee-simple-file-list') . '</div>
 		
 		
-		<label for="eeSmoothScroll">' . __('Use Smooth Scroll', 'ee-simple-file-list-pro') . ':</label>
+		<label for="eeSmoothScroll">' . __('Use Smooth Scroll', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eeSmoothScroll" value="YES" id="eeSmoothScroll"';
 		
 		if( $eeSFL_Settings['SmoothScroll'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 		
-		$eeOutput .= ' /> <p>' . __('Scroll to the List', 'ee-simple-file-list-pro') . '</p>
+		$eeOutput .= ' /> <p>' . __('Scroll to the List', 'ee-simple-file-list') . '</p>
 		
-		<div class="eeNote">' . __('Uses a JavaScript effect to scroll down to the top of the list after an action.', 'ee-simple-file-list-pro') . '</div>
+		<div class="eeNote">' . __('Uses a JavaScript effect to scroll down to the top of the list after an action.', 'ee-simple-file-list') . '</div>
 		
 		</fieldset>
 		
@@ -452,37 +452,37 @@ $eeOutput .= '
 		
 			<fieldset class="eeSFL_SettingsBlock">
 			
-			<label for="eeShowFileOpen">' . __('Show Open Action', 'ee-simple-file-list-pro') . ':</label>
+			<label for="eeShowFileOpen">' . __('Show Open Action', 'ee-simple-file-list') . ':</label>
 			<input type="checkbox" name="eeShowFileOpen" value="YES" id="eeShowFileOpen"';
 			
 			if( $eeSFL_Settings['ShowFileOpen'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 			
-			$eeOutput .= ' /> <p>' . __('Opens the File', 'ee-simple-file-list-pro') . '</p>
+			$eeOutput .= ' /> <p>' . __('Opens the File', 'ee-simple-file-list') . '</p>
 			
-			<div class="eeNote">' . __('If the browser cannot open the file, it will prompt the user to download.', 'ee-simple-file-list-pro') . '</div>
-			
-			
+			<div class="eeNote">' . __('If the browser cannot open the file, it will prompt the user to download.', 'ee-simple-file-list') . '</div>
 			
 			
-			<label for="eeShowFileDownload">' . __('Show Download Action', 'ee-simple-file-list-pro') . ':</label>
+			
+			
+			<label for="eeShowFileDownload">' . __('Show Download Action', 'ee-simple-file-list') . ':</label>
 			<input type="checkbox" name="eeShowFileDownload" value="YES" id="eeShowFileDownload"';
 			
 			if( $eeSFL_Settings['ShowFileDownload'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 			
-			$eeOutput .= ' /> <p>' . __('Download the File', 'ee-simple-file-list-pro') . '</p>
+			$eeOutput .= ' /> <p>' . __('Download the File', 'ee-simple-file-list') . '</p>
 			
-			<div class="eeNote">' . __('The browser will prompt the user to download the file.', 'ee-simple-file-list-pro') . '</div>
+			<div class="eeNote">' . __('The browser will prompt the user to download the file.', 'ee-simple-file-list') . '</div>
 			
 			
 			
-			<label for="eeShowFileCopyLink">' . __('Show Copy Action', 'ee-simple-file-list-pro') . ':</label>
+			<label for="eeShowFileCopyLink">' . __('Show Copy Action', 'ee-simple-file-list') . ':</label>
 			<input type="checkbox" name="eeShowFileCopyLink" value="YES" id="eeShowFileCopyLink"';
 			
 			if( $eeSFL_Settings['ShowFileCopyLink'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 			
-			$eeOutput .= ' /> <p>' . __('Copy the File URL', 'ee-simple-file-list-pro') . '</p>
+			$eeOutput .= ' /> <p>' . __('Copy the File URL', 'ee-simple-file-list') . '</p>
 			
-			<div class="eeNote">' . __('Copies the URL for the file, which can then be pasted into a document.', 'ee-simple-file-list-pro') . '</div>
+			<div class="eeNote">' . __('Copies the URL for the file, which can then be pasted into a document.', 'ee-simple-file-list') . '</div>
 			
 			</fieldset>
 
