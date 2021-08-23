@@ -431,13 +431,13 @@ class eeSFL_FREE_MainClass {
 	// Get All the Files
 	private function eeSFL_IndexFileListDir($eeFileListDir) {
 	    
-	    global $eeSFL_FREE_Log;
+	    global $eeSFL_FREE, $eeSFL_FREE_Log;
 	    
 	    $eeFilesArray = array();
 	    
 	    if(!is_dir(ABSPATH . $eeFileListDir)) {
 		    
-		    $eeSFL_FREE_Log['errors'][] = 'The File List is Gone. Re-Creating...';
+		    $eeSFL_FREE_Log['errors'][] = 'The directory is Gone :-0  Re-Creating...';
 		    
 		    eeSFL_FREE_FileListDirCheck($eeFileListDir);
 		    return $eeFilesArray;
@@ -448,6 +448,11 @@ class eeSFL_FREE_MainClass {
 	    $eeFileNameOnlyArray = scandir(ABSPATH . $eeFileListDir);
 	    
 	    foreach($eeFileNameOnlyArray as $eeValue) {
+	    	
+	    	$eePathParts = pathinfo($eeValue);
+			if(isset($eePathParts['extension'])) {
+				if( in_array($eePathParts['extension'], $this->eeForbiddenTypes) ) { $eeValue = '.forbidden'; }
+			}
 	    	
 	    	if(strpos($eeValue, '.') !== 0 ) { // Not hidden
 		    	
