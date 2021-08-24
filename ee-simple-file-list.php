@@ -38,9 +38,8 @@ $eeSFL_FREE_UploadRun = 1; // Count the uploaders per page
 // The Log - Written to wp_option -> eeSFL_Log
 $eeSFL_FREE_Log = array('Simple File List is Loading...');
 $eeSFL_FREE_Log[] = 'Version ' . eeSFL_FREE_Version . ' (DB ' . eeSFL_FREE_DB_Version . ')';
-// Format: ['SFL'][] => 'runtime log entry'
-//	['messages'][] = 'Message to the user'
-//	['errors'][] = 'Error condition to user'
+$eeSFL_FREE_Log['messages'] = array();
+$eeSFL_FREE_Log['errors'] = array();
 
 
 // simplefilelist_upload_job <<<----- File Upload Action Hooks (Ajax)

@@ -47,6 +47,10 @@ if(count($eeSFL_FREE_Env['UploadedFiles'])) {
 	}	
 }
 
+if( $eeAdmin AND !is_array($eeUploadedFiles) AND count($eeSFL_FREE_Log['messages']) === 0 ) {
+	$eeSFL_FREE_Log['messages'] = $eeUpSell;
+}
+
 
 // User Messaging
 if(isset($eeSFL_FREE_Log['messages'])) {	

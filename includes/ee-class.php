@@ -19,7 +19,7 @@ class eeSFL_FREE_MainClass {
 	public $eeUseCache = 1; // Hours
     
     // File Types
-    public $eeDynamicImageThumbFormats = array('gif', 'jpg', 'jpeg', 'png');
+    public $eeDynamicImageThumbFormats = array('gif', 'jpg', 'jpeg', 'png', 'tif', 'tiff');
     public $eeDynamicVideoThumbFormats = array('avi', 'flv', 'm4v', 'mov', 'mp4', 'wmv');
     public $eeDefaultThumbFormats = array('3gp', 'ai', 'aif', 'aiff', 'apk', 'avi', 'bmp', 'cr2', 'dmg', 'doc', 'docx', 
     	'eps', 'flv', 'gz', 'indd', 'iso', 'jpeg', 'jpg', 'm4v', 'mov', 'mp3', 'mp4', 'mpeg', 'mpg', 'pdf', 'png', 
@@ -651,15 +651,17 @@ class eeSFL_FREE_MainClass {
 		
 		
 		// The Source
+		$eeImageMemoryNeeded = 0;
+		$eeImageSizeLimit = 0;
 		$eeFileSize = filesize($eeInputFileCompletePath);
 		$eeSizeCheck = getimagesize($eeInputFileCompletePath);
-        
         $eeSizeCheck['memory-limit'] = preg_replace("/[^0-9]/", "", ini_get('memory_limit') ) * 1048576;
-        $eeSizeCheck['memory-usage'] = memory_get_usage();
-        
-        $eeImageMemoryNeeded = ($eeSizeCheck[0] * $eeSizeCheck[1] * $eeSizeCheck['bits']) / 8;
-        
-        $eeImageSizeLimit = ( $eeSizeCheck['memory-limit'] - $eeSizeCheck['memory-usage'] ) * .2;
+	    $eeSizeCheck['memory-usage'] = memory_get_usage();
+		
+		if(isset($eeSizeCheck['bits'])) {
+	        $eeImageMemoryNeeded = ($eeSizeCheck[0] * $eeSizeCheck[1] * $eeSizeCheck['bits']) / 8;
+	        $eeImageSizeLimit = ( $eeSizeCheck['memory-limit'] - $eeSizeCheck['memory-usage'] ) * .2;
+        }
         
         if($eeImageMemoryNeeded > $eeImageSizeLimit) { // It's too big for Wordpress
 			
