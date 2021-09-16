@@ -242,6 +242,9 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
+= 4.4.8 =
+* 
+
 = 4.4.7 =
 * Added automatic thumbnail generation for TIFF (.tif & .tiff) image file types.
 * Bug fix where disallowed file types were being listed if added outside the plugin.
