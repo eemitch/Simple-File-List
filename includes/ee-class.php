@@ -370,7 +370,7 @@ class eeSFL_FREE_MainClass {
 					);
 				
 					if(function_exists('mime_content_type')) {
-						$eeFileArrayWorking['FileMIME'][] = mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFilePath); // MIME Type
+						$eeFileArrayWorking['FileMIME'][] = mime_content_type(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile); // MIME Type
 					}
 				}
 			}
@@ -460,16 +460,18 @@ class eeSFL_FREE_MainClass {
 		    	
 			    	if(!in_array($eeValue, $this->eeExcludedFiles) )  { // Not excluded
 				    	
-				    	// Catch and correct spaces in items found
-				    	if( strpos($eeValue, ' ') AND strpos($eeValue, ' ') !== 0 ) {
-			        
-					        $eeNewItem = str_replace(' ', '-', $eeValue);
-					        
-					        if(rename(ABSPATH . $eeFileListDir . $eeValue, ABSPATH . $eeFileListDir . $eeNewItem)) {
-						        $eeValue = $eeNewItem;
-					        }
-					    }
-				    	
+				    	$eeNewItem = eeSFL_FREE_SanitizeFileName($eeValue);
+			            if($eeNewItem != $eeValue) {
+				            
+				            $eeSFL_FREE_Log['Trouble'][] = 'OLD --> BAD File Name: ' . $eeValue;
+				            
+				            if(rename(ABSPATH . $eeFileListDir . $eeValue, ABSPATH . $eeFileListDir . $eeNewItem)) {
+					        	
+					        	$eeValue = $eeNewItem;
+								$eeSFL_FREE_Log['Trouble'][] = 'NEW --> File Name Sanitized: ' . $eeValue;
+				        	}
+			            }
+			            
 				    	$eeFilesArray[] = $eeValue; // Add the path
 			    	}
 		    	}

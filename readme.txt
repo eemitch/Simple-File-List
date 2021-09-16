@@ -243,7 +243,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 == Changelog ==
 
 = 4.4.8 =
-* 
+* Now sanitizing the names of externally added files the same as if using the plugin upload form.
 
 = 4.4.7 =
 * Added automatic thumbnail generation for TIFF (.tif & .tiff) image file types.
