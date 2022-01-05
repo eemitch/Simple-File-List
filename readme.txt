@@ -4,7 +4,7 @@ Donate link: http://simplefilelist.com
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
 Requires PHP: 5.6.40
-Tested up to: 5.8
+Tested up to: 5.8.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -230,7 +230,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.4.7 - Now offering TIFF Thumbnails
+* 4.4.9 - Various Fixes and Improvements
 
 
 == Screenshots ==
@@ -242,7 +242,13 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
+= 4.4.9 =
+* Added ability to create video thumbnails for the WebM format.
+* Fixed where a double-slash in the item's path would cause Error 99.
+* Bug fix where the site's URL was missing (unpredictably) from file and folder link URLs on the Admin side.
+
 = 4.4.8 =
+* Bug fix where warning was being thrown if the server did not offer any thumbnail generation helpers.
 * Now sanitizing the names of externally added files the same as if using the plugin upload form.
 
 = 4.4.7 =

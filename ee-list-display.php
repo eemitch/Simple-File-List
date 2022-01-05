@@ -247,9 +247,9 @@ if( isset($eeSFL_Files) ) {
 						
 						$eeIsFile = TRUE;
 						
-						$eeSFL_SendFile_AddFileArray[$eeFileCount] = $eeFilePath; // Used for Send -> Add Files
+						// $eeSFL_SendFile_AddFileArray[$eeFileCount] = $eeFilePath; // Used for Send -> Add Files
 						
-						$eeFileURL = $eeSFL_Settings['FileListURL'] . $eeFileArray['FilePath']; // Clickable URL
+						$eeFileURL = $eeSFL_FREE_Env['wpSiteURL'] . $eeSFL_Settings['FileListDir'] . $eeFilePath; // Clickable URL
 						
 						$eeFileURL = str_replace('://', '\\:', $eeFileURL); // Save this
 						$eeFileURL = str_replace('//', '/', $eeFileURL); // Remove double slashes

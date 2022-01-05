@@ -68,6 +68,8 @@ function eeSFL_FREE_CheckSupported() {
 	
 	if(count($eeSupported)) {
 		update_option('eeSFL_Supported', $eeSupported);
+	} else {
+		update_option('eeSFL_Supported', array('None'));
 	}
 	
 	return TRUE;
@@ -83,6 +85,8 @@ function eeSFL_FREE_DetectUpwardTraversal($eeFilePath) {
 	
 	if($eeSFL_FREE_Env['eeOS'] == 'LINUX') {
 	
+		$eeFilePath = str_replace('//', '/', $eeFilePath); // Strip double slashes, which will cause failure
+		
 		$eeUserPath = ABSPATH . dirname($eeFilePath);  // This could be problematic with things like ../
 		$eeRealPath = realpath( ABSPATH . dirname($eeFilePath) ); // Expunge the badness and then compare...
 		

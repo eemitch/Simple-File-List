@@ -20,7 +20,7 @@ class eeSFL_FREE_MainClass {
     
     // File Types
     public $eeDynamicImageThumbFormats = array('gif', 'jpg', 'jpeg', 'png', 'tif', 'tiff');
-    public $eeDynamicVideoThumbFormats = array('avi', 'flv', 'm4v', 'mov', 'mp4', 'wmv');
+    public $eeDynamicVideoThumbFormats = array('avi', 'flv', 'm4v', 'mov', 'mp4', 'webm', 'wmv');
     public $eeDefaultThumbFormats = array('3gp', 'ai', 'aif', 'aiff', 'apk', 'avi', 'bmp', 'cr2', 'dmg', 'doc', 'docx', 
     	'eps', 'flv', 'gz', 'indd', 'iso', 'jpeg', 'jpg', 'm4v', 'mov', 'mp3', 'mp4', 'mpeg', 'mpg', 'pdf', 'png', 
 		'pps', 'ppsx', 'ppt', 'pptx', 'psd', 'tar', 'tgz', 'tif', 'tiff', 'txt', 'wav', 'wma', 'wmv', 'xls', 'xlsx', 'zip');
@@ -172,7 +172,7 @@ class eeSFL_FREE_MainClass {
 			$eeEnv['eeWebServer'] = 'Apache';
 		}
 		
-		$eeEnv['wpSiteURL'] = get_site_url() . '/'; // This Wordpress Website
+		$eeEnv['wpSiteURL'] = get_option('siteurl') . '/'; // This Wordpress Website
 		$eeEnv['wpPluginsURL'] = plugins_url() . '/'; // The Wordpress Plugins Location
 		
 		$eeEnv['pluginURL'] = plugins_url() . '/' . $this->eePluginNameSlug . '/';
