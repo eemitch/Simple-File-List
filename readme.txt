@@ -4,7 +4,7 @@ Donate link: http://simplefilelist.com
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
 Requires PHP: 5.6.40
-Tested up to: 5.8.2
+Tested up to: 5.9
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
