@@ -10,7 +10,7 @@ jQuery(document).ready(function($) {
 	console.log('eeSFL Document Ready');
 	
 	window.addEventListener('touchstart', function() {
-		eeSFL_FREE_isTouchscreen = true;
+		eeSFL_BASE_isTouchscreen = true;
 	});	
 
 }); // END Ready Function
@@ -19,7 +19,7 @@ jQuery(document).ready(function($) {
 
 
 // Copy File URL to Clipboard
-function eeSFL_FREE_CopyLinkToClipboard(eeSFL_FileURL) {
+function eeSFL_BASE_CopyLinkToClipboard(eeSFL_FileURL) {
 	
 	var eeTemp = jQuery('<input name="eeTemp" value="' + eeSFL_FileURL + '" type="url" class="" id="eeTemp" />'); // Create a temporary input
 	jQuery("body").append(eeTemp); // Add it to the bottom of the page
@@ -37,7 +37,7 @@ function eeSFL_FREE_CopyLinkToClipboard(eeSFL_FileURL) {
 
 
 
-function eeSFL_FREE_EditFile(eeSFL_FileID) {
+function eeSFL_BASE_EditFile(eeSFL_FileID) {
 	
 	event.preventDefault(); // Don't follow the link
 	
@@ -56,21 +56,21 @@ function eeSFL_FREE_EditFile(eeSFL_FileID) {
 
 
 
-function eeSFL_FREE_EditRename(eeSFL_FileID) {
+function eeSFL_BASE_EditRename(eeSFL_FileID) {
 	
 	var eeName1 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileLink').text(); // Current File Name
 	var eeName2 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeNewFileName').val(); // New File Name
 	
 	if(eeName1 != eeName2) { // If no match, we rename
 		
-		eeSFL_FREE_FileAction(eeSFL_FileID, 'Rename');
+		eeSFL_BASE_FileAction(eeSFL_FileID, 'Rename');
 	}
 	
 	jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).slideUp();
 	jQuery('#eeSFL_EditFile_' + eeSFL_FileID).text('Edit');
 }
 
-function eeSFL_FREE_EditDesc(eeSFL_FileID) {
+function eeSFL_BASE_EditDesc(eeSFL_FileID) {
 	
 	var eeDesc1 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_SavedDesc').text(); // Current Desc
 	var eeDesc2 = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeSFL_NewFileDesc').val(); // New Desc
@@ -78,7 +78,7 @@ function eeSFL_FREE_EditDesc(eeSFL_FileID) {
 	if(eeDesc1 != eeDesc2) { // If no match, we update  && !eeRenaming
 		
 		jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).slideUp();
-		eeSFL_FREE_FileAction(eeSFL_FileID, 'UpdateDesc');
+		eeSFL_BASE_FileAction(eeSFL_FileID, 'UpdateDesc');
 	}
 }
 
@@ -87,7 +87,7 @@ function eeSFL_FREE_EditDesc(eeSFL_FileID) {
 
 
 // Triggered when you click the Delete link
-function eeSFL_FREE_Delete(eeSFL_FileID) {
+function eeSFL_BASE_Delete(eeSFL_FileID) {
 	
 	event.preventDefault(); // Don't follow the link
 	
@@ -100,7 +100,7 @@ function eeSFL_FREE_Delete(eeSFL_FileID) {
 	
 	if( confirm( eesfl_vars['eeConfirmDeleteText'] + "\r\n\r\n" + eeSFL_FileName ) ) {
 	
-		eeSFL_FREE_FileAction(eeSFL_FileID, 'Delete');
+		eeSFL_BASE_FileAction(eeSFL_FileID, 'Delete');
 	
 	}
 
@@ -110,7 +110,7 @@ function eeSFL_FREE_Delete(eeSFL_FileID) {
 
 
 // AJAX Post to File Engine
-function eeSFL_FREE_FileAction(eeSFL_FileID, eeSFL_Action) {
+function eeSFL_BASE_FileAction(eeSFL_FileID, eeSFL_Action) {
 	
 	event.preventDefault(); // Don't follow link
 	

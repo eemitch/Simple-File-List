@@ -15,29 +15,29 @@ if(eeSFL_FileFormats.length > 1) {
 
 
 // Receive files from input[type=file]
-function eeSFL_FREE_FileInputHandler(eeEvent) {
+function eeSFL_BASE_FileInputHandler(eeEvent) {
 	
 	console.log("File Added via Input");
 	
 	var eeSFL_Files = document.getElementById("eeSFL_FileInput").files;
 	
-	eeSFL_FREE_ProcessFileInput(eeSFL_Files);
+	eeSFL_BASE_ProcessFileInput(eeSFL_Files);
 
 }
 
 // Receive files from the drop zone
-function eeSFL_FREE_DropHandler(eeEvent) {
+function eeSFL_BASE_DropHandler(eeEvent) {
   
   	console.log('File Added via Drop Zone');
 
 	// Prevent default behavior (Prevent file from being opened)
 	eeEvent.preventDefault();
 	  
-	eeSFL_FREE_ProcessFileInput(eeEvent.dataTransfer.files); // The file object
+	eeSFL_BASE_ProcessFileInput(eeEvent.dataTransfer.files); // The file object
 }
 
 // Prevent file from being opened in the browser window
-function eeSFL_FREE_DragOverHandler(eeEvent) {
+function eeSFL_BASE_DragOverHandler(eeEvent) {
 	eeEvent.preventDefault();
 }
 
@@ -47,7 +47,7 @@ function eeSFL_FREE_DragOverHandler(eeEvent) {
 
 	
 // Check the files and prepare for upload
-function eeSFL_FREE_ProcessFileInput(eeSFL_Files) { // The files object
+function eeSFL_BASE_ProcessFileInput(eeSFL_Files) { // The files object
     
     // Make sure it's not too many
     if(eeSFL_Files.length > eeSFL_FileLimit) { // If so, reset
@@ -133,7 +133,7 @@ function eeSFL_FREE_ProcessFileInput(eeSFL_Files) { // The files object
 
 
 // The Upload Queue Processor - This runs when the Upload button is clicked
-function eeSFL_FREE_UploadProcessor(eeSFL_FileObjects) {
+function eeSFL_BASE_UploadProcessor(eeSFL_FileObjects) {
 	
 	eeSFL_FileCount = eeSFL_FileObjects.length;
 	
@@ -149,7 +149,7 @@ function eeSFL_FREE_UploadProcessor(eeSFL_FileObjects) {
 				return;
 			}
 			
-			if( eeSFL_FREE_ValidateEmail(eeSFL_Email) == 'BAD' ) {
+			if( eeSFL_BASE_ValidateEmail(eeSFL_Email) == 'BAD' ) {
 				jQuery('#eeSFL_Email').css('border', '2px solid red');
 				return;
 			}
@@ -164,7 +164,7 @@ function eeSFL_FREE_UploadProcessor(eeSFL_FileObjects) {
 			
 			console.log("Processing File: " + eeSFL_FileObjects[i].name);
 						            
-            eeSFL_FREE_UploadFile(eeSFL_FileObjects[i]); // Upload the file using the function below...
+            eeSFL_BASE_UploadFile(eeSFL_FileObjects[i]); // Upload the file using the function below...
 		}
 	}		
 }
@@ -172,7 +172,7 @@ function eeSFL_FREE_UploadProcessor(eeSFL_FileObjects) {
 
 
 // File Upload AJAX Call
-function eeSFL_FREE_UploadFile(eeSFL_File) { // Pass in file object
+function eeSFL_BASE_UploadFile(eeSFL_File) { // Pass in file object
     
     var eeXhr = new XMLHttpRequest();
     

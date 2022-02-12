@@ -19,7 +19,7 @@ var eeArray2 = new Array;
 
 
 // Shortcode Builder
-function eeSFL_FREE_ShortcodeBuilder(eeNewOption, eeInputType) {
+function eeSFL_BASE_ShortcodeBuilder(eeNewOption, eeInputType) {
 	
 	// Get the Value
 	if(eeInputType == 'select') {

@@ -8,12 +8,12 @@ if(isset($_POST['eeSFL_Upload'])) {
 	
 	$eeSFL_Uploaded = TRUE; // Show the results page
 	
-	eeSFL_FREE_ProcessUpload();
+	eeSFL_BASE_ProcessUpload();
 	
 	if($eeAdmin) {
-		eeSFL_FREE_UploadCompletedAdmin(); // Action Hook: eeSFL_UploadCompletedAdmin  <-- Admin side
+		eeSFL_BASE_UploadCompletedAdmin(); // Action Hook: eeSFL_UploadCompletedAdmin  <-- Admin side
 	} else {
-		eeSFL_FREE_UploadCompleted(); // Action Hook: eeSFL_UploadCompleted <-- Front side
+		eeSFL_BASE_UploadCompleted(); // Action Hook: eeSFL_UploadCompleted <-- Front side
 	}	
 } else {
 	$eeSFL_Uploaded = FALSE; // Show the regular list

@@ -22,8 +22,8 @@ $eeSFL_Button = '<a class="button eeGet" target="_blank" href="' . $eeOrderURL .
 // The Content
 $eeOutput .= '<article class="eeSupp eeExtensions">
 	
-	<a href="' . $eeSFL_FREE_Env['pluginURL'] . 'images/Folder-Demo.jpg" target="_blank">
-		<img src="' . $eeSFL_FREE_Env['pluginURL'] . 'images/Folder-Demo.jpg" width="400" height="566" class="eeRight" alt="Screenshot of front-end file list" /></a>
+	<a href="' . $eeSFL_BASE_Env['pluginURL'] . 'images/Folder-Demo.jpg" target="_blank">
+		<img src="' . $eeSFL_BASE_Env['pluginURL'] . 'images/Folder-Demo.jpg" width="400" height="566" class="eeRight" alt="Screenshot of front-end file list" /></a>
 
 	<h2>' . __('Upgrade to Simple File List Pro', 'ee-simple-file-list') . '</h2>
 	
@@ -45,8 +45,8 @@ $eeOutput .= '<article class="eeSupp eeExtensions">
 		
 	</ul>
 	
-	<a href="' . $eeSFL_FREE_Env['pluginURL'] . 'images/SFL-Pro-Admin.jpg" target="_blank">
-		<img src="' . $eeSFL_FREE_Env['pluginURL'] . 'images/SFL-Pro-Admin.jpg" width="400" height="342" class="eeRight" alt="Screenshot of back-end file list" /></a>
+	<a href="' . $eeSFL_BASE_Env['pluginURL'] . 'images/SFL-Pro-Admin.jpg" target="_blank">
+		<img src="' . $eeSFL_BASE_Env['pluginURL'] . 'images/SFL-Pro-Admin.jpg" width="400" height="342" class="eeRight" alt="Screenshot of back-end file list" /></a>
 	
 	<h3>' . __('More Pro Features', 'ee-simple-file-list') . '</h3>
 	

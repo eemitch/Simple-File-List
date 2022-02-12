@@ -8,7 +8,7 @@ var eeSFL_ID = 1;
 var eeSFL_CheckEmail = false;
 var eeSFL_FileFormats = 'jpg,jpeg';
 
-function eeSFL_FREE_ValidateEmail(eeSFL_CheckEmail) {
+function eeSFL_BASE_ValidateEmail(eeSFL_CheckEmail) {
 
 	var eeSFL_EmailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	
@@ -21,7 +21,7 @@ function eeSFL_FREE_ValidateEmail(eeSFL_CheckEmail) {
 
 
 
-function eeSFL_FREE_ScrollToIt() {
+function eeSFL_BASE_ScrollToIt() {
 	
 	jQuery('html, body').animate({ scrollTop: jQuery('.eeSFL').offset().top }, 1000);
 	
@@ -31,7 +31,7 @@ function eeSFL_FREE_ScrollToIt() {
 
 
 // File Size Formatting
-function eeSFL_FREE_GetFileSize(bytes, si) {
+function eeSFL_BASE_GetFileSize(bytes, si) {
     
     var thresh = si ? 1000 : 1024;
     

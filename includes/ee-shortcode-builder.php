@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_FREE_Log['RunTime'][] = 'Loaded: ee-plugin-instructions';
+$eeSFL_BASE_Log['RunTime'][] = 'Loaded: ee-plugin-instructions';
 
 // All the shortcodes we have
 $eeSFL_ShortcodeArray = array(
@@ -90,7 +90,7 @@ $eeOutput .= '
 		';
 		
 		$eeOutput .= '<label class="eeClearfix">' . __('Show File List', 'ee-simple-file-list') . '<br />
-			<select name="eeSFL_1_ShowList" id="eeShortcodeBuilder_showlist" onchange="eeSFL_FREE_ShortcodeBuilder(\'showlist\', \'select\')">
+			<select name="eeSFL_1_ShowList" id="eeShortcodeBuilder_showlist" onchange="eeSFL_BASE_ShortcodeBuilder(\'showlist\', \'select\')">
 				<option value="YES" ';
 				if($eeSFL_Settings['ShowList'] == 'YES') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
 				$eeOutput .= '>' . __('Show to Everyone', 'ee-simple-file-list') . $eeChecked . '</option>
@@ -111,7 +111,7 @@ $eeOutput .= '
 		
 		
 		<label class="eeClearfix">' . __('Show Uploader', 'ee-simple-file-list') . '<br />
-			<select name="eeSFL_1_AllowUploads" id="eeShortcodeBuilder_allowuploads" onchange="eeSFL_FREE_ShortcodeBuilder(\'allowuploads\', \'select\')">
+			<select name="eeSFL_1_AllowUploads" id="eeShortcodeBuilder_allowuploads" onchange="eeSFL_BASE_ShortcodeBuilder(\'allowuploads\', \'select\')">
 				<option value="YES" ';
 				if($eeSFL_Settings['AllowUploads'] == 'YES') { $eeOutput .= ' selected="selected" '; $eeChecked = $eeCheckmark; } else { $eeChecked = FALSE; }
 				$eeOutput .= '>' . __('Show to Everyone', 'ee-simple-file-list') . $eeChecked . '</option>
@@ -136,11 +136,11 @@ $eeOutput .= '
 
 	<div class="eeShortcodeBuilderBottom">';	
 	
-	function eeSFL_FREE_ShortcodeOptionButton($eeSetting, $eeValue, $eeLabel) {
+	function eeSFL_BASE_ShortcodeOptionButton($eeSetting, $eeValue, $eeLabel) {
 
 		$eeOutput = '
 		
-		<p onclick="eeSFL_FREE_ShortcodeBuilder(\'' . $eeSetting . '\', \'toggle\')" class="" id="' . $eeSetting . '">' . $eeLabel . "</p>
+		<p onclick="eeSFL_BASE_ShortcodeBuilder(\'' . $eeSetting . '\', \'toggle\')" class="" id="' . $eeSetting . '">' . $eeLabel . "</p>
 		
 		";
 		
@@ -156,7 +156,7 @@ $eeOutput .= '
 				$eeSettingNewValue = ($eeSFL_Settings[$eeSetting] == 'YES' ? 'NO' : 'YES'); // Alternate
 				if($eeSFL_Settings[$eeSetting] == 'YES') { $eeSettingShowValue = __('Hide', 'ee-simple-file-list'); } else { $eeSettingShowValue = __('Show', 'ee-simple-file-list'); }
 				
-				$eeOutput .= eeSFL_FREE_ShortcodeOptionButton($eeSettingSet[0], $eeSettingNewValue, '<b>' . $eeSettingShowValue . '</b>' . $eeSettingSet[1]);
+				$eeOutput .= eeSFL_BASE_ShortcodeOptionButton($eeSettingSet[0], $eeSettingNewValue, '<b>' . $eeSettingShowValue . '</b>' . $eeSettingSet[1]);
 				
 			}
 		}

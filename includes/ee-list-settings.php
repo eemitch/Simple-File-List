@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_FREE_Log['RunTime'][] = 'Loading List Settings Page ...';
+$eeSFL_BASE_Log['RunTime'][] = 'Loading List Settings Page ...';
 
 // Check for POST and Nonce
 if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {	
@@ -38,7 +38,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		
 	foreach( $eeCheckboxes as $eeTerm){ // "ee" is added in the function
 		
-		$eeSFL_Settings[$eeTerm] = eeSFL_FREE_ProcessCheckboxInput($eeTerm);
+		$eeSFL_Settings[$eeTerm] = eeSFL_BASE_ProcessCheckboxInput($eeTerm);
 	}
 	
 	$eeTextInputs = array(
@@ -48,7 +48,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		,'LabelSize'
 	);
 	foreach( $eeTextInputs as $eeTerm){
-		$eeSFL_Settings[$eeTerm] = eeSFL_FREE_ProcessTextInput($eeTerm);
+		$eeSFL_Settings[$eeTerm] = eeSFL_BASE_ProcessTextInput($eeTerm);
 	}
 	
 	
@@ -69,9 +69,9 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	// Update DB
 	if( update_option('eeSFL_Settings_1', $eeSFL_Settings) ) {
 		$eeSFL_Confirm = __('Settings Saved', 'ee-simple-file-list');
-		$eeSFL_FREE_Log['RunTime'][] = $eeSFL_Confirm;
+		$eeSFL_BASE_Log['RunTime'][] = $eeSFL_Confirm;
 	} else {
-		$eeSFL_FREE_Log['RunTime'][] = '!!! The database was not updated.';
+		$eeSFL_BASE_Log['RunTime'][] = '!!! The database was not updated.';
 	}
 	
 	delete_transient('eeSFL_FileList_1');
@@ -81,16 +81,16 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	
 $eeOutput .= '<div class="eeSFL_Admin">';
 	
-if(@$eeSFL_FREE_Log['errors']) { 
-	$eeOutput .=  eeSFL_FREE_ResultsDisplay($eeSFL_FREE_Log['errors'], 'notice-error');
+if(@$eeSFL_BASE_Log['errors']) { 
+	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE_Log['errors'], 'notice-error');
 } elseif(@$eeSFL_Confirm) { 
-	$eeOutput .=  eeSFL_FREE_ResultsDisplay($eeSFL_Confirm, 'notice-success');
+	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_Confirm, 'notice-success');
 }
 
 // Begin the Form	
 $eeOutput .= '
 
-<form action="' . admin_url() . '?page=' . $eeSFL_FREE->eePluginSlug . '&tab=settings&subtab=list_settings" method="post" id="eeSFL_Settings">
+<form action="' . admin_url() . '?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings&subtab=list_settings" method="post" id="eeSFL_Settings">
 		
 		<p class="eeSettingsRight"><a class="eeInstructionsLink" href="https://simplefilelist.com/file-list-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list') . '</a>
 		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" /></p>
@@ -254,7 +254,7 @@ $eeOutput .= '
 		
 		<input id="eeGeneratePDFThumbs" type="checkbox" name="eeGeneratePDFThumbs" value="YES"';
 		if( $eeSFL_Settings['GeneratePDFThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
-		if( !isset($eeSFL_FREE_Env['ImkGs']) OR $eeSFL_FREE_Env['eeOS'] == 'WINDOWS' ) { $eeOutput .= ' disabled="disabled"'; }
+		if( !isset($eeSFL_BASE_Env['ImkGs']) OR $eeSFL_BASE_Env['eeOS'] == 'WINDOWS' ) { $eeOutput .= ' disabled="disabled"'; }
 		$eeOutput .= ' /> <p>';
 		
 		$eeMissing = array();
@@ -271,7 +271,7 @@ $eeOutput .= '
 		} else {
 			$eeOutput .= __('Using', 'ee-simple-file-list') . ': <a href="https://www.ghostscript.com/" target="_blank">GhostScript</a>';
 		}
-		if( $eeSFL_FREE_Env['eeOS'] == 'WINDOWS' ) { $eeOutput .=' <em>Windows ' . __('not yet supported', 'ee-simple-file-list') . '</em>'; }
+		if( $eeSFL_BASE_Env['eeOS'] == 'WINDOWS' ) { $eeOutput .=' <em>Windows ' . __('not yet supported', 'ee-simple-file-list') . '</em>'; }
 		
 		$eeOutput .= '</p>
 		<div class="eeNote">' . __('Read a PDF file and create a representative thumbnail image based on the first page.', 'ee-simple-file-list');
@@ -283,10 +283,10 @@ $eeOutput .= '
 		
 		<input id="eeGenerateVideoThumbs" type="checkbox" name="eeGenerateVideoThumbs" value="YES"';
 		if( $eeSFL_Settings['GenerateVideoThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
-		if( !isset($eeSFL_FREE_Env['ffMpeg']) ) { $eeOutput .= ' disabled="disabled"'; }
+		if( !isset($eeSFL_BASE_Env['ffMpeg']) ) { $eeOutput .= ' disabled="disabled"'; }
 		$eeOutput .= ' />'; 
 		
-		if( !isset($eeSFL_FREE_Env['ffMpeg']) ) { 
+		if( !isset($eeSFL_BASE_Env['ffMpeg']) ) { 
 			$eeMissing[] = 'ffMpeg';
 			$eeOutput .= '<p><strong>' . __('Missing', 'ee-simple-file-list') . ': <a href="https://ffmpeg.org/" target="_blank">ffMpeg</a></strong></p>';
 		} else {
@@ -335,7 +335,7 @@ $eeOutput .= '
 		if($eeSFL_Settings['ShowFileThumb'] == 'YES') { $eeOutput .= ' checked'; }
 		$eeOutput .= ' /></td>
 		     <td><input type="text" name="eeLabelThumb" value="';
-		if(@$eeSFL_Settings['LabelThumb']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelThumb']); } else { $eeOutput .= $eeSFL_FREE->DefaultListSettings['LabelThumb']; }
+		if(@$eeSFL_Settings['LabelThumb']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelThumb']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelThumb']; }
 		$eeOutput .= '" size="16" /></td>
 		  </tr>
 		  
@@ -343,7 +343,7 @@ $eeOutput .= '
 		     <td>' . __('File Name', 'ee-simple-file-list') . '</td>
 		     <td><input type="checkbox" name="eeShowFileName" value="YES" id="eeLabelName" checked="checked" disabled /></td>
 		     <td><input type="text" name="eeLabelName" value="';
-		if(@$eeSFL_Settings['LabelName']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelName']); } else { $eeOutput .= $eeSFL_FREE->DefaultListSettings['LabelName']; }
+		if(@$eeSFL_Settings['LabelName']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelName']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelName']; }
 		$eeOutput .= '" size="16" /></td>
 		  </tr>
 		  
@@ -353,7 +353,7 @@ $eeOutput .= '
 		if($eeSFL_Settings['ShowFileDate'] == 'YES') { $eeOutput .= ' checked'; }
 		$eeOutput .= ' /></td>
 		     <td><input type="text" name="eeLabelDate" value="';
-		if(@$eeSFL_Settings['LabelDate']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelDate']); } else { $eeOutput .= $eeSFL_FREE->DefaultListSettings['LabelDate']; }
+		if(@$eeSFL_Settings['LabelDate']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelDate']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelDate']; }
 		$eeOutput .= '" size="16" /></td>
 		  </tr>
 		  
@@ -363,7 +363,7 @@ $eeOutput .= '
 		if($eeSFL_Settings['ShowFileSize'] == 'YES') { $eeOutput .= ' checked'; }
 		$eeOutput .= ' /></td>
 		     <td><input type="text" name="eeLabelSize" value="';
-		if(@$eeSFL_Settings['LabelSize']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelSize']); } else { $eeOutput .= $eeSFL_FREE->DefaultListSettings['LabelSize']; }
+		if(@$eeSFL_Settings['LabelSize']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelSize']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelSize']; }
 		$eeOutput .= '" size="16" /></td>
 		  </tr>
 		 

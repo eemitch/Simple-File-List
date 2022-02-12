@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_FREE_Log['RunTime'][] = 'Loading Email Settings Page ...';
+$eeSFL_BASE_Log['RunTime'][] = 'Loading Email Settings Page ...';
 
 // Check for POST and Nonce
 if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {
@@ -13,7 +13,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		'Notify'
 	);
 	foreach( $eeCheckboxes as $eeTerm){
-		$eeSFL_Settings[$eeTerm] = eeSFL_FREE_ProcessCheckboxInput($eeTerm);
+		$eeSFL_Settings[$eeTerm] = eeSFL_BASE_ProcessCheckboxInput($eeTerm);
 	}
 	
 	$eeDelivery = array('To', 'Cc', 'Bcc');
@@ -22,7 +22,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		
 		if( strpos($_POST['eeNotify' . $eeField], '@') ) {
 			
-			$eeAddresses = $eeSFL_FREE->eeSFL_SanitizeEmailString($_POST['eeNotify' . $eeField]);
+			$eeAddresses = $eeSFL_BASE->eeSFL_SanitizeEmailString($_POST['eeNotify' . $eeField]);
 			$eeSFL_Settings['Notify' . $eeField] = $eeAddresses;
 		}
 	}
@@ -34,17 +34,17 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 		,'NotifySubject'
 	);
 	foreach( $eeTextInputs as $eeTerm){
-		$eeSFL_Settings[$eeTerm] = eeSFL_FREE_ProcessTextInput($eeTerm);
+		$eeSFL_Settings[$eeTerm] = eeSFL_BASE_ProcessTextInput($eeTerm);
 	}
 	
-	$eeSFL_Settings['NotifyMessage'] = eeSFL_FREE_ProcessTextInput('NotifyMessage', 'textarea');
+	$eeSFL_Settings['NotifyMessage'] = eeSFL_BASE_ProcessTextInput('NotifyMessage', 'textarea');
 	
 	// Update DB
 	if( update_option('eeSFL_Settings_1', $eeSFL_Settings) ) {
 		$eeSFL_Confirm = __('Settings Saved', 'ee-simple-file-list');
-		$eeSFL_FREE_Log['RunTime'][] = 'Settings Saved';
+		$eeSFL_BASE_Log['RunTime'][] = 'Settings Saved';
 	} else {
-		$eeSFL_FREE_Log['RunTime'][] = '!!! The database was not updated.';
+		$eeSFL_BASE_Log['RunTime'][] = '!!! The database was not updated.';
 	}
 }
 
@@ -54,16 +54,16 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	
 $eeOutput .= '<div class="eeSFL_Admin">';
 	
-if(@$eeSFL_FREE_Log['errors']) { 
-	$eeOutput .=  eeSFL_FREE_ResultsDisplay($eeSFL_FREE_Log['errors'], 'notice-error');
+if(@$eeSFL_BASE_Log['errors']) { 
+	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE_Log['errors'], 'notice-error');
 } elseif(@$eeSFL_Confirm) { 
-	$eeOutput .=  eeSFL_FREE_ResultsDisplay($eeSFL_Confirm, 'notice-success');
+	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_Confirm, 'notice-success');
 }
 
 // Begin the Form	
 $eeOutput .= '
 
-<form action="' . admin_url() . '?page=' . $eeSFL_FREE->eePluginSlug . '&tab=settings&subtab=email_settings" method="post" id="eeSFL_Settings">
+<form action="' . admin_url() . '?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings&subtab=email_settings" method="post" id="eeSFL_Settings">
 
 	<p class="eeSettingsRight"><a class="eeInstructionsLink" href="https://simplefilelist.com/notification-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list') . '</a>
 		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" /></p>
@@ -134,7 +134,7 @@ $eeOutput .= '
 		<div class="eeNote">' . __('The notification email subject line.', 'ee-simple-file-list') . '</div>';
 		
 	
-	if(!@$eeSFL_Settings['NotifyMessage']) { $eeSFL_Settings['NotifyMessage'] = $eeSFL_FREE->eeNotifyMessageDefault; }
+	if(!@$eeSFL_Settings['NotifyMessage']) { $eeSFL_Settings['NotifyMessage'] = $eeSFL_BASE->eeNotifyMessageDefault; }
 	
 	$eeOutput .= '<label for="eeNotifyMessage">' . __('Message Text', 'ee-simple-file-list') . ':</label>
 	<textarea name="eeNotifyMessage" class="eeAdminInput" id="eeNotifyMessage" cols="64" rows="12" >' . stripslashes($eeSFL_Settings['NotifyMessage']) . '</textarea>
