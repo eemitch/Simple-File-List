@@ -3,25 +3,28 @@
 
 .eeSFL_Admin {
 	max-width: 900px;
-/* 	font-size: 120%; */	
+	font-size: 18px;	
 }
 
-.eeSFL_Admin .eeSFL {
-	padding: 0;
-}
 
-.eeSFL_Admin .eeSFL .eeFiles { /* File List table */
+
+
+/* File List Table */
+.eeSFL_Admin .eeSFL .eeFiles { 
 	background-color: #fcfcfc;
 }
 
-.wrap h2.nav-tab-wrapper {
-	clear: both;
-	margin-top: 20px;
+
+/* ADMIN TABS */
+.eeSFL_Admin h2 {
+	font-size: 2rem;
 }
 
-
-.eeSFL_Admin h2 {
-	font-size: 150%;
+.eeSFL_Admin h2.nav-tab-wrapper {
+	display: flex;
+}
+.eeSFL_Admin h2.nav-tab-wrapper a {
+	flex: 1 1 0%;
 }
 
 .eeSFL_Admin h3 {
@@ -47,11 +50,6 @@ p.eeTitle {
 #eeGoProBanner a.button {
 	float: right;
 	margin: 0 0 2px 25px;
-}
-
-
-.tabSupport {
-	float: right;
 }
 
 .eeSFL_Admin .eeActiveTab {

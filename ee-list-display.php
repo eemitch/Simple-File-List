@@ -72,6 +72,8 @@ if(isset($eeSFL_BASE_Log['errors'])) {
 $eeOutput .= '
 
 <!-- File List -->
+
+<div class="eeSFL" id="eeSFL">
 <span class="eeSFL_Hide" id="eeSFL_ActionNonce">' . $eeSFL_ActionNonce . '</span>
 <script>
 	var eeSFL_PluginURL = "' . $eeSFL_BASE_Env['pluginURL'] . '";

@@ -12,16 +12,13 @@ $eeContributors = array('dmhendricks|https://github.com/dmhendricks/file-icon-ve
 // $eePageSlug = $_GET['page'];
 	
 // The Content
-$eeOutput .= '<article class="eeSupp">
+$eeOutput .= '
+<article>
+	
+	<h1>' . __('Thank You', 'ee-simple-file-list') . '</h1>
 
-	<a href="http://simplefilelist.com/donations/simple-file-list-project/" title="' . esc_attr__('Show Your Support', 'ee-simple-file-list') . '" target="_blank">
-	
-		<img id="mitchellbennisHeadshot" src="' . $eeSFL_BASE_Env['pluginURL'] . 'images/Mitchell-Bennis-Head-Shot.jpg" alt="Mitchell Bennis" />
-	
-	</a>
+	<img class="eeFloatRight" src="' . $eeSFL_BASE_Env['pluginURL'] . 'images/Mitchell-Bennis-Head-Shot.jpg" alt="Mitchell Bennis" />
 
-	<h2>' . __('Thank You', 'ee-simple-file-list') . '</h2>
-	
 	<p>' . __('Thank you for using my plugin. I am proud of this work and am committed to supporting it.', 'ee-simple-file-list') . ' ' . __('The goal is to keep it simple, yet make it do what you need it to do.', 'ee-simple-file-list') . ' ' . __('Tell me about the features that you want.', 'ee-simple-file-list') . ' </p>
 
 	
@@ -34,7 +31,7 @@ $eeOutput .= '<article class="eeSupp">
 		
 		$eeOutput .= '<hr />
 		
-		<h6>' . __('Contributors', 'ee-simple-file-list') . '</h6>
+		<h3>' . __('Contributors', 'ee-simple-file-list') . '</h3>
 		
 		<p>';
 		
@@ -42,7 +39,7 @@ $eeOutput .= '<article class="eeSupp">
 		foreach( $eeContributors as $eeValue){
 			
 			$eeArray = explode('|', $eeValue);
-			$eeOutput .= __('Thanks to', 'ee-simple-file-list') . ' <a href="' . @$eeArray[1] . '" target="_blank">' . @$eeArray[0] . ' </a>' . @$eeArray[2] . '<br />';
+			$eeOutput .= __('Thanks to', 'ee-simple-file-list') . ' <a href="' . $eeArray[1] . '" target="_blank">' . @$eeArray[0] . ' </a>' . @$eeArray[2] . '<br />';
 		}
 		
 		$eeOutput .= '</p>';
