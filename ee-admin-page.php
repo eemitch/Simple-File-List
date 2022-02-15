@@ -84,9 +84,6 @@ function eeSFL_BASE_ManageLists() {
     
 	if($active_tab == 'file_list') {
 	
-/*
-		
-		
 		$eeOutput .= '<div id="uploadFilesDiv">';
 		
 		// Upload Check
@@ -99,10 +96,9 @@ function eeSFL_BASE_ManageLists() {
 		$eeOutput .= '</div>';
 		
 		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-		include($eeSFL_BASE_Env['pluginDir'] . 'ee-list-display.php'); // The File List	
+		// include($eeSFL_BASE_Env['pluginDir'] . 'ee-list-display.php'); // The File List	
 		
-		
-*/	
+			
 	
 	} elseif($active_tab == 'settings') {
 		
@@ -110,10 +106,9 @@ function eeSFL_BASE_ManageLists() {
 		if( isset( $_GET[ 'subtab' ] ) ) { $active_subtab = sanitize_text_field($_GET['subtab']); } else { $active_subtab = 'list_settings'; }
 	    	
     	$eeOutput .= '
-	    
-	    <article class="eeSFL_Settings">
     	
-    	<h2 class="nav-tab-wrapper">';
+    	<h2 class="nav-tab-wrapper">
+    	<div class="ee-nav-sub-tabs">';
 		
 		// List Settings
 		$eeOutput .= '<a href="?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings&subtab=list_settings" class="nav-tab ';  
@@ -134,7 +129,12 @@ function eeSFL_BASE_ManageLists() {
 	    $eeOutput .= $active_subtab . '">' . __('Notification Settings', 'ee-simple-file-list') . '</a>';
 	    
 	    // END Subtabs
-	    $eeOutput .= '</h2>'; 
+	    $eeOutput .= '
+	    
+	    </div>
+	    </h2>
+	    
+	    <article class="eeSFL_Settings">'; 
 	    
 		// Sub-Tab Content
 		if($active_subtab == 'uploader_settings') {
@@ -150,7 +150,57 @@ function eeSFL_BASE_ManageLists() {
 		} else {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-list-settings.php'); // The File List Settings
+			// include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-list-settings.php'); // The File List Settings
+			
+			$eeOutput .= '
+			
+			<div class="eeColFull">
+				
+				<div class="eeColHalfLeft">
+				
+					<h1>' . __('File List Settings', 'ee-simple-file-list') . '</h1>
+					<a class="" href="https://simplefilelist.com/file-list-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list') . '</a>
+				
+				</div>
+				
+				<div class="eeColHalfRight">
+				
+					<input class="button" type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" />
+				
+				</div>
+			
+			</div>
+			
+			<div class="eeColumns">
+			
+			<div class="eeColLeft">
+			
+				<div class="eeSettingsTile">XXX</div>
+			
+				<div class="eeSettingsTile">XXX</div>
+			
+			</div>
+			
+			<div class="eeColRight">
+			
+				<div class="eeSettingsTile">XXX</div>
+			
+				<div class="eeSettingsTile">XXX<br />XXX<br />XXX<br />XXX<br />XXX<br />XXX<br />XXX<br />XXX</div>
+			
+			</div>
+			
+			</div>
+			
+			<div class="eeColFull">
+				
+				<input class="button" type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" />
+			
+			</div>
+			
+			
+			';
+			
+			
 		}
 		
 		$eeOutput .= '

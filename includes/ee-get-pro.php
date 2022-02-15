@@ -50,7 +50,7 @@ $eeOutput .= '
 	
 	
 	<a href="' . $eeSFL_BASE_Env['pluginURL'] . 'images/SFL-Pro-Admin.jpg" target="_blank">
-		<img src="' . $eeSFL_BASE_Env['pluginURL'] . 'images/SFL-Pro-Admin.jpg" width="400" height="342" class="eeFloatRight" alt="Screenshot of back-end file list" />
+		<img src="' . $eeSFL_BASE_Env['pluginURL'] . 'images/SFL-Pro-Admin.jpg" width="949" height="786" class="eeFloatRight" alt="Screenshot of back-end file list" />
 	</a>
 	
 	<h3>' . __('More Pro Features', 'ee-simple-file-list') . '</h3>
