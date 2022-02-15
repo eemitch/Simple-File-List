@@ -11,6 +11,7 @@ function eeSFL_BASE_ManageLists() {
 	global $eeSFL_BASE, $eeSFL_BASE_Log, $eeSFL_BASE_DevMode, $eeSFL_Settings, $eeSFL_BASE_Env, $eeSFL_BASE_ListRun;
 	
 	$eeSFL_Files = FALSE;
+	$eeConfirm = FALSE;
 	$eeForceSort = FALSE; // Only used in shortcode
 	
 	$eeAdmin = is_admin(); // Should be TRUE here
@@ -140,21 +141,22 @@ function eeSFL_BASE_ManageLists() {
 		if($active_subtab == 'uploader_settings') {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-settings.php'); // The Uploader Settings
+			// include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-settings.php'); // The Uploader Settings
 		
 		} elseif($active_subtab == 'email_settings') {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-email-settings.php'); // The Notifications Settings
+			// include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-email-settings.php'); // The Notifications Settings
 		
 		} else {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			// include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-list-settings.php'); // The File List Settings
+			include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-list-settings.php'); // The File List Settings
 			
+/*
 			$eeOutput .= '
 			
-			<div class="eeColFull">
+			<div class="eeColFull eeSettingsTile">
 				
 				<div class="eeColHalfLeft">
 				
@@ -191,7 +193,7 @@ function eeSFL_BASE_ManageLists() {
 			
 			</div>
 			
-			<div class="eeColFull">
+			<div class="eeColFull eeSettingsTile">
 				
 				<input class="button" type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" />
 			
@@ -199,6 +201,7 @@ function eeSFL_BASE_ManageLists() {
 			
 			
 			';
+*/
 			
 			
 		}

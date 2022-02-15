@@ -67,13 +67,14 @@ eeSFL_Admin * + * {
 
 
 /* ADMIN SETTINGS */
-
 .eeSFL_Admin h2.nav-tab-wrapper .ee-nav-sub-tabs {
 	margin-top: 1em;
 }
 .eeSFL_Admin h2.nav-tab-wrapper .ee-nav-sub-tabs a:first-child {
 	margin-left: 2em;
 }
+
+/* MAIN SETTINGS CONTAINER */
 .eeSFL_Settings {
 	margin-top: 0;
 	padding: .5em 1em 1em 0;
@@ -94,44 +95,64 @@ eeSFL_Admin * + * {
 	display: flex;
 	flex-direction: column;
 }
-.eeColLeft > .eeSettingsTile,
-.eeColRight > .eeSettingsTile {
-	flex: 1;
-}
-.eeSettingsTile,
-.eeColFull {
-	padding: 1.5em;
-	margin: 1em 0 1em 1em;
-	margin-bottom: 0;
-	background-color: #f0f0f1;
+
+/* FULL COLUMN WITH INLINE CONTENT */
+.eeColInline {
 	display: flex;
 }
-
-.eeColFull .eeColHalfLeft {
+.eeColInline .eeColHalfLeft {
 	display: flex;
 	flex: 0 0 50%;
     align-items: center;
 }
-.eeColFull .eeColHalfRight {
+.eeColInline .eeColHalfRight {
 	display: flex;
 	flex: 0 0 50%;
 	justify-content: end;
     align-items: center;
 }
-.eeColFull h1,
-.eeColFull a,
-.eeColFull input[type=submit] {
+.eeColInline h1,
+.eeColInline a,
+.eeColInline input[type=submit] {
 	margin: 0;
 	padding: 0;
 }
-.eeColFull h1 {
+.eeColInline h1 {
+	font-size: 2em;
 	margin-right: 1em;
 }
-.eeColFull input[type=submit] {
+.eeColInline input[type=submit] {
 	font-size: 1em;
 	padding: .25em .75em; 
 }
 
+/* SETTINGS TILES */
+.eeSettingsTile {
+	padding: 1.5em;
+	margin: 1em 0 1em 1em;
+	margin-bottom: 0;
+	background-color: #f0f0f1;
+}
+.eeSettingsTile h2,
+.eeSettingsTile h3 {
+	margin: 0 0 1em 0;
+}
+.eeSettingsTile p,
+.eeSettingsTile ul {
+	margin: 0 0 .75em 0;
+}
+
+.eeSettingsTile fieldset {
+	margin-bottom: 1.25em;
+}
+
+.eeSettingsTile .eeNote {
+	font-size: .8em;
+	padding: .25em;
+	background-color: #e9e9e9;
+	border: 1px solid #dadada;
+	border-radius: .1em;
+}
 
 /* ADMIN FOOTER */
 
@@ -164,6 +185,10 @@ eeSFL_Admin * + * {
 	text-align: center;
 }
 
+.eeFullWidth {
+	display: block;
+	width: 100%;
+}
 
 .eeCentered {
 	text-align: center;

@@ -41,7 +41,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	
 	// Update DB
 	if( update_option('eeSFL_Settings_1', $eeSFL_Settings) ) {
-		$eeSFL_Confirm = __('Settings Saved', 'ee-simple-file-list');
+		$eeConfirm = __('Settings Saved', 'ee-simple-file-list');
 		$eeSFL_BASE_Log['RunTime'][] = 'Settings Saved';
 	} else {
 		$eeSFL_BASE_Log['RunTime'][] = '!!! The database was not updated.';
@@ -56,8 +56,8 @@ $eeOutput .= '<div class="eeSFL_Admin">';
 	
 if(@$eeSFL_BASE_Log['errors']) { 
 	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE_Log['errors'], 'notice-error');
-} elseif(@$eeSFL_Confirm) { 
-	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_Confirm, 'notice-success');
+} elseif(@$eeConfirm) { 
+	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeConfirm, 'notice-success');
 }
 
 // Begin the Form	

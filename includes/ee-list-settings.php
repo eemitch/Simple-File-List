@@ -6,7 +6,7 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit 
 $eeSFL_BASE_Log['RunTime'][] = 'Loading List Settings Page ...';
 
 // Check for POST and Nonce
-if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {	
+if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {	
 	
 	// List Visibility
 	if($_POST['eeShowList'] == 'YES') { $eeSFL_Settings['ShowList'] = 'YES'; } 
@@ -68,10 +68,10 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	
 	// Update DB
 	if( update_option('eeSFL_Settings_1', $eeSFL_Settings) ) {
-		$eeSFL_Confirm = __('Settings Saved', 'ee-simple-file-list');
-		$eeSFL_BASE_Log['RunTime'][] = $eeSFL_Confirm;
+		$eeConfirm = __('Settings Saved', 'ee-simple-file-list');
+		$eeSFL_BASE_Log['RunTime'][] = $eeConfirm;
 	} else {
-		$eeSFL_BASE_Log['RunTime'][] = '!!! The database was not updated.';
+		$eeSFL_BASE_Log['errors'][] = __('The Database Update Failed', 'ee-simple-file-list') . ' :-(';
 	}
 	
 	delete_transient('eeSFL_FileList_1');
@@ -79,54 +79,57 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 
 // Settings Display =========================================
 	
-$eeOutput .= '<div class="eeSFL_Admin">';
-	
-if(@$eeSFL_BASE_Log['errors']) { 
+if( count($eeSFL_BASE_Log['errors']) ) { 
 	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE_Log['errors'], 'notice-error');
-} elseif(@$eeSFL_Confirm) { 
-	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_Confirm, 'notice-success');
+} elseif( $eeConfirm ) { 
+	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeConfirm, 'notice-success');
 }
 
 // Begin the Form	
 $eeOutput .= '
 
 <form action="' . admin_url() . '?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings&subtab=list_settings" method="post" id="eeSFL_Settings">
+<input type="hidden" name="eePost" value="TRUE" />';	
 		
-		<p class="eeSettingsRight"><a class="eeInstructionsLink" href="https://simplefilelist.com/file-list-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list') . '</a>
-		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" /></p>
-		
-		<h2>' . __('List Settings', 'ee-simple-file-list') . '</h2>
-		
-		<input type="hidden" name="eePost" value="TRUE" />';	
-		
-		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce', TRUE, FALSE);
-		
-		$eeOutput .= '<br class="eeClearFix" />
-		
-		<fieldset class="eeSFL_SettingsFull">
-		
-			<h3>' . __('List Location', 'ee-simple-file-list') . '</h3>
-				<p><strong>' . ABSPATH . $eeSFL_Settings['FileListDir'] . '</strong></p>
+$eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce', TRUE, FALSE);
+
+$eeOutput .= '<div class="eeColInline eeSettingsTile">
 				
-				<div class="eeNote"><a href="' . admin_url() . '?page=ee-simple-file-list&tab=pro" title="Get Pro Version">' . __('Get Pro Version', 'ee-simple-file-list') . '</a> &rarr; ' . __('The Pro Version allows you to define a custom file list directory.', 'ee-simple-file-list') . '</div>
-			
-		</fieldset>
-		
-		
-		
-		
-		
-		<div class="eeSFL_AdminHalfLeft">
-		
-		<fieldset class="eeSFL_SettingsBlock">
-		
-		<h2>' . __('File List Behavior', 'ee-simple-file-list') . '</h2>
-		
-		<hr />
-		
-		<h3>' . __('File List Access', 'ee-simple-file-list') . '</h3>
+	<div class="eeColHalfLeft">
 	
-		<label for="eeShowList">' . __('Front-Side Display', 'ee-simple-file-list') . '</label>
+		<h1>' . __('File List Settings', 'ee-simple-file-list') . '</h1>
+		<a class="" href="https://simplefilelist.com/file-list-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list') . '</a>
+	
+	</div>
+	
+	<div class="eeColHalfRight">
+	
+		<input class="button" type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" />
+	
+	</div>
+
+</div>
+		
+<div class="eeColFull eeSettingsTile">
+		
+	<h2>' . __('List Location', 'ee-simple-file-list') . '</h2>
+		
+		<p><input class="eeFullWidth" type="text" name="eeFileListDir" value="" placeholder="' . ABSPATH . $eeSFL_Settings['FileListDir'] . '" disabled="disabled" /></p>
+		
+		<div class="eeNote"><a href="' . admin_url() . '?page=ee-simple-file-list&tab=pro" title="Get Pro Version">' . __('Get Pro Version', 'ee-simple-file-list') . '</a> &rarr; ' . __('The Pro Version allows you to define a custom file list directory.', 'ee-simple-file-list') . '</div>
+	
+</div>
+		
+
+<div class="eeColumns">		
+		
+	<div class="eeColLeft">
+		
+		<div class="eeSettingsTile">
+		
+		<h2>' . __('File List Access', 'ee-simple-file-list') . '</h2>
+	
+		<p><label for="eeShowList">' . __('Front-Side Display', 'ee-simple-file-list') . '</label>
 		
 		<select name="eeShowList" id="eeShowList">
 		
@@ -154,27 +157,33 @@ $eeOutput .= '
 			
 			$eeOutput .= '>' . __('Hide the File List Completely', 'ee-simple-file-list') . '</option>
 		
-		</select>
-		<div class="eeNote">' . __('Determine who you will show the front-side list to.', 'ee-simple-file-list') . '</div> 
+		</select></p>
+		<div class="eeNote">' . __('Determine who you will show the front-side list to.', 'ee-simple-file-list') . '</div>
 		
-		<label for="eeAllowFrontManage">' . __('Front-End Management', 'ee-simple-file-list') . ':</label>
+		</div>
+		
+		
+		<div class="eeSettingsTile">
+		
+		<h2>' . __('Front-End Management', 'ee-simple-file-list') . '</h2>
+		
+		<p><label for="eeAllowFrontManage">' . __('Allow File Management', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eeAllowFrontManage" value="YES" id="eeAllowFrontManage"';
 		
 		if( $eeSFL_Settings['AllowFrontManage'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 		
-		$eeOutput .= ' /> <p><strong>' . __('Allow file deleting, renaming, etc...', 'ee-simple-file-list') . '</strong></p>
+		$eeOutput .= ' /></p>
 		
-		<div class="eeNote"><a href="https://simplefilelist.com/file-access-manager/" target="_blank">' . __('Get File Access Manager', 'ee-simple-file-list') . '</a> &rarr; ' . 
-			__('The Pro version allows you to add the "File Access Manager" extension.  This gives you improved user access control.', 'ee-simple-file-list') . '</div>
+		<div class="eeNote">' . __('Allow file deletion, file renaming, and other operations.', 'ee-simple-file-list') . ' ' . __('Upgrade to Simple File List Pro and add the File Access Manager extension to give you access control for specific users and roles.', 'ee-simple-file-list') . ' <a href="https://simplefilelist.com/file-access-manager/" target="_blank">' .  __('Get the Upgrade', 'ee-simple-file-list') . '</a></div>
 			
-		</fieldset>
+		</div>
 		
 		
-		<fieldset class="eeSFL_SettingsBlock">
+		<div class="eeSettingsTile">
 		
 		<h3>' . __('File Sorting and Order', 'ee-simple-file-list') . '</h3>	
 			
-		<label for="eeSortList">' . __('Sort By', 'ee-simple-file-list') . ':</label>
+		<p><label for="eeSortList">' . __('Sort By', 'ee-simple-file-list') . ':</label>
 		
 		<select name="eeSortBy" id="eeSortList">
 		
@@ -212,33 +221,32 @@ $eeOutput .= '
 			
 			$eeOutput .= '>' . __('Random', 'ee-simple-file-list') . '</option>
 		
-		</select> 
-		
-		<div class="eeNote">' . __('Sort the list by name, date, file size, or randomly.', 'ee-simple-file-list') . '</div>
+		</select></p>
 			
-		<label for="eeSortOrder">' . __('Reverse Order', 'ee-simple-file-list') . ':</label>
+		<p><label for="eeSortOrder">' . __('Reverse Order', 'ee-simple-file-list') . ':</label>
 		<input type="checkbox" name="eeSortOrder" value="Descending" id="eeSortOrder"';
 		
 		if( $eeSFL_Settings['SortOrder'] == 'Descending') { $eeOutput .= ' checked="checked"'; }
 		
-		$eeOutput .= ' /> <p>&darr; ' . __('Descending', 'ee-simple-file-list') . '</p>
+		$eeOutput .= ' /> &darr; ' . __('Descending', 'ee-simple-file-list') . '</p>
 		
-		<div class="eeNote">' . __('Check this box to reverse the default sort order.', 'ee-simple-file-list') . '<br />
-			' . __('The list is sorted Ascending by default', 'ee-simple-file-list') . ': A to Z, ' . __('Small to Large', 'ee-simple-file-list') . ', ' . __('Old to New', 'ee-simple-file-list') . '</div>	
+		<div class="eeNote">' . __('Sort the list by name, date, file size, or randomly.', 'ee-simple-file-list') . ' ' . __('Check the box to reverse the sort order.', 'ee-simple-file-list') . '</div>	
 		
-		</fieldset>
-		
+		</div>
 		
 		
 		
 		
-		<fieldset class="eeSFL_SettingsBlock">
+		
+		<div class="eeSettingsTile">
 			
 		<h3>' . __('Thumbnail Generation', 'ee-simple-file-list') . '</h3>
 		
 		<p>' . __('You can choose to generate small representative images of large images, PDF files and videos files.', 'ee-simple-file-list') . '</p>
 		
-		<label for="eeGenerateImgThumbs">' . __('Image Thumbnails', 'ee-simple-file-list') . ':</label>
+		<fieldset>
+		
+		<p><label for="eeGenerateImgThumbs">' . __('Image Thumbnails', 'ee-simple-file-list') . ':</label>
 		
 		<input id="eeGenerateImgThumbs" type="checkbox" name="eeGenerateImgThumbs" value="YES"';
 		if( $eeSFL_Settings['GenerateImgThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
@@ -246,16 +254,19 @@ $eeOutput .= '
 		$eeSupported = get_option('eeSFL_Supported');
 		if(!$eeSupported) { $eeSupported = array(); }
 		
-		$eeOutput .= ' /> <p>' . __('Using', 'ee-simple-file-list') . ': <a href="https://developer.wordpress.org/reference/functions/wp_get_image_editor/" target="_blank">Wordpress</a></p>
+		$eeOutput .= ' /> ' . __('Using', 'ee-simple-file-list') . ': <a href="https://developer.wordpress.org/reference/functions/wp_get_image_editor/" target="_blank">Wordpress</a></p>
 		<div class="eeNote">' . __('Read an image file and create a small thumbnail image.', 'ee-simple-file-list') . '</div>
 		
 		
-		<label for="eeGeneratePDFThumbs">' . __('PDF Thumbnails', 'ee-simple-file-list') . ':</label>
+		</fieldset>
+		<fieldset>
+		
+		<p><label for="eeGeneratePDFThumbs">' . __('PDF Thumbnails', 'ee-simple-file-list') . ':</label>
 		
 		<input id="eeGeneratePDFThumbs" type="checkbox" name="eeGeneratePDFThumbs" value="YES"';
 		if( $eeSFL_Settings['GeneratePDFThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
 		if( !isset($eeSFL_BASE_Env['ImkGs']) OR $eeSFL_BASE_Env['eeOS'] == 'WINDOWS' ) { $eeOutput .= ' disabled="disabled"'; }
-		$eeOutput .= ' /> <p>';
+		$eeOutput .= ' /> ';
 		
 		$eeMissing = array();
 		
@@ -278,40 +289,41 @@ $eeOutput .= '
 		
 		$eeOutput .= '</div>
 		
+		</fieldset>
+		<fieldset>
 		
-		<label for="eeGenerateVideoThumbs">' . __('Video Thumbnails', 'ee-simple-file-list') . ':</label>
+		<p><label for="eeGenerateVideoThumbs">' . __('Video Thumbnails', 'ee-simple-file-list') . ':</label>
 		
 		<input id="eeGenerateVideoThumbs" type="checkbox" name="eeGenerateVideoThumbs" value="YES"';
 		if( $eeSFL_Settings['GenerateVideoThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
 		if( !isset($eeSFL_BASE_Env['ffMpeg']) ) { $eeOutput .= ' disabled="disabled"'; }
-		$eeOutput .= ' />'; 
+		$eeOutput .= ' /> '; 
 		
 		if( !isset($eeSFL_BASE_Env['ffMpeg']) ) { 
 			$eeMissing[] = 'ffMpeg';
-			$eeOutput .= '<p><strong>' . __('Missing', 'ee-simple-file-list') . ': <a href="https://ffmpeg.org/" target="_blank">ffMpeg</a></strong></p>';
+			$eeOutput .= '<strong>' . __('Missing', 'ee-simple-file-list') . ': <a href="https://ffmpeg.org/" target="_blank">ffMpeg</a></strong>';
 		} else {
-			$eeOutput .= '<p>' . __('Using', 'ee-simple-file-list') . ' <a href="https://ffmpeg.org/" target="_blank">ffMpeg</a></p>';
+			$eeOutput .= __('Using', 'ee-simple-file-list') . ' <a href="https://ffmpeg.org/" target="_blank">ffMpeg</a>';
 		}
 				 	 
-		$eeOutput .= '<div class="eeNote">' . __('Read a video file and create a representative thumbnail image at the 1 second mark.', 'ee-simple-file-list') . '</div>';
+		$eeOutput .= '</p>
+		
+		<div class="eeNote">' . __('Read a video file and create a representative thumbnail image at the 1 second mark.', 'ee-simple-file-list') . '</div>';
 		
 		if(count($eeMissing)) {
 			$eeOutput .= '<p><strong><em>' . __('Please install the missing PHP extensions to activate the disabled features.', 'ee-simple-file-list') . '</em></strong></p>';
 		}	
 			
-			
-		
-		$eeOutput .= '</fieldset>
+		$eeOutput .= '
 		
 		</div>
 		
+	</div>
 		
 		
+	<div class="eeColRight">
 		
-		
-		<div class="eeSFL_AdminHalfRight">
-		
-		<fieldset class="eeSFL_SettingsBlock">
+		<div class="eeSettingsTile">
 		
 		<h2>' . __('File List Display', 'ee-simple-file-list') . '</h2>
 		
@@ -393,10 +405,10 @@ $eeOutput .= '
 		
 		<div class="eeNote">' . __('Uses a JavaScript effect to scroll down to the top of the list after an action.', 'ee-simple-file-list') . '</div>
 		
-		</fieldset>
+		</div>
 		
 		
-		<fieldset class="eeSFL_SettingsBlock">
+		<div class="eeSettingsTile">
 		
 		<h3>' . __('File Details', 'ee-simple-file-list') . '</h3>
 		
@@ -450,7 +462,7 @@ $eeOutput .= '
 		$eeOutput .= ' /> <p>' . __('Open, Download, etc.', 'ee-simple-file-list') . '</p>
 		
 		
-			<fieldset class="eeSFL_SettingsBlock">
+			<div class="eeSettingsTile">
 			
 			<label for="eeShowFileOpen">' . __('Show Open Action', 'ee-simple-file-list') . ':</label>
 			<input type="checkbox" name="eeShowFileOpen" value="YES" id="eeShowFileOpen"';
@@ -484,16 +496,21 @@ $eeOutput .= '
 			
 			<div class="eeNote">' . __('Copies the URL for the file, which can then be pasted into a document.', 'ee-simple-file-list') . '</div>
 			
-			</fieldset>
+			</div>
 
-		</fieldset>
-		
 		</div>
 		
-		<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" />
+	</div>
 		
-	</form>
-	
-</div>';
+</div>
+
+
+<div class="eeColInline eeSettingsTile">
+				
+	<input class="button" type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" />
+			
+</div>
+		
+</form>';
 	
 ?>

@@ -75,8 +75,8 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	
 	// Update DB
 	if( update_option('eeSFL_Settings_1', $eeSFL_Settings) ) {
-		$eeSFL_Confirm = __('Settings Saved', 'ee-simple-file-list');
-		$eeSFL_BASE_Log['RunTime'][] = $eeSFL_Confirm;
+		$eeConfirm = __('Settings Saved', 'ee-simple-file-list');
+		$eeSFL_BASE_Log['RunTime'][] = $eeConfirm;
 	} else {
 		$eeSFL_BASE_Log['RunTime'][] = '!!! The database was not updated.';
 	}
@@ -88,8 +88,8 @@ $eeOutput .= '<div class="eeSFL_Admin">';
 	
 if(@$eeSFL_BASE_Log['errors']) { 
 	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE_Log['errors'], 'notice-error');
-} elseif(@$eeSFL_Confirm) { 
-	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_Confirm, 'notice-success');
+} elseif(@$eeConfirm) { 
+	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeConfirm, 'notice-success');
 }
 	
 $eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings&subtab=uploader_settings" method="post" id="eeSFL_Settings">
@@ -108,7 +108,7 @@ $eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL_BASE->eePluginSl
 	
 	<div class="eeSFL_AdminHalfLeft">
 	
-	<fieldset class="eeSFL_SettingsBlock">
+	<fieldset class="eeSettingsTile">
 	
 		<h3>' . __('File Upload Restrictions', 'ee-simple-file-list') . '</h3>
 		
@@ -178,7 +178,7 @@ $eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL_BASE->eePluginSl
 			
 	<div class="eeSFL_AdminHalfRight">		
 			
-	<fieldset class="eeSFL_SettingsBlock">
+	<fieldset class="eeSettingsTile">
 	
 	<h3>' . __('Upload Job Limits', 'ee-simple-file-list') . '</h3>
 	
