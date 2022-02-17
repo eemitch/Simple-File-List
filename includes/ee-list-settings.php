@@ -123,7 +123,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 
 <div class="eeColumns">		
 		
-	<!-- Right Column -->
+	<!-- Left Column -->
 	
 	<div class="eeColLeft">
 		
@@ -362,7 +362,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		
 		<fieldset>
 		<legend>' . __('Show Open Action', 'ee-simple-file-list') . '</legend>
-		<div><label>' . __('Show Link', 'ee-simple-file-list') . ':</label>
+		<div><label>' . __('Show Link', 'ee-simple-file-list') . '</label>
 		<input type="checkbox" name="eeShowFileOpen" value="YES" id="eeShowFileOpen"';
 		
 		if( $eeSFL_Settings['ShowFileOpen'] == 'YES') { $eeOutput .= ' checked="checked"'; }
@@ -376,7 +376,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		
 		<fieldset>
 		<legend>' . __('Show Download Action', 'ee-simple-file-list') . '</legend>
-		<div><label>' . __('Show Link', 'ee-simple-file-list') . ':</label>
+		<div><label>' . __('Show Link', 'ee-simple-file-list') . '</label>
 		<input type="checkbox" name="eeShowFileDownload" value="YES" id="eeShowFileDownload"';
 		
 		if( $eeSFL_Settings['ShowFileDownload'] == 'YES') { $eeOutput .= ' checked="checked"'; }
@@ -391,7 +391,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		
 		<fieldset>
 		<legend>' . __('Show Copy Action', 'ee-simple-file-list') . '</legend>
-		<div><label>' . __('Show Link', 'ee-simple-file-list') . ':</label>
+		<div><label>' . __('Show Link', 'ee-simple-file-list') . '</label>
 		<input type="checkbox" name="eeShowFileCopyLink" value="YES" id="eeShowFileCopyLink"';
 		
 		if( $eeSFL_Settings['ShowFileCopyLink'] == 'YES') { $eeOutput .= ' checked="checked"'; }

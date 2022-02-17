@@ -157,18 +157,37 @@ eeSFL_Admin * + * {
 }
 .eeSettingsTile fieldset label,
 .eeSettingsTile fieldset input[type=text],
+.eeSettingsTile fieldset input[type=email],
 .eeSettingsTile fieldset select,
 .eeSettingsTile fieldset input[type=checkbox] {
 	display: inline-block;
 	margin-right: .75em;
-	font-size: .75em;
+	font-size: .9em;
 }
+
+.eeSettingsTile fieldset label input[type=checkbox] {
+	margin-left: 1em;
+}
+
+.eeSettingsTile fieldset label.eeBlock {
+	display: block;
+	width: 100%;
+	line-height: 2;
+}
+.eeSettingsTile fieldset label.eeBlock input[type=text] {
+	display: block;
+	width: 100%;
+}
+
 .eeSettingsTile fieldset input[type=checkbox] {
 	transform: scale(1.2);
 	padding: .5em;
 }
 .eeSettingsTile fieldset input[type=text] {
-	width: 40%;
+/* 	width: 40%; */
+}
+.eeSettingsTile fieldset textarea {
+	width: 100%;
 }
 
 .eeSettingsTile fieldset legend {

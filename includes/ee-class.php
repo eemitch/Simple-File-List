@@ -85,7 +85,10 @@ class eeSFL_BASE_MainClass {
 		'ShowFileExtension' => 'YES', // Show the file extension, or not.
 		'ShowHeader' => 'YES', // Show the File List's Table Header (YES or NO)
 		'ShowUploadLimits' => 'YES', // Show the upload limitations text.
-		'GetUploaderInfo' => 'NO', // Show the Info Form
+		
+		'GetUploaderDesc' => 'NO', // Show the Description Form
+		'GetUploaderInfo' => 'NO', // Show the User Info Form
+		
 		'ShowSubmitterInfo' => 'NO', // Show who uploaded the file (name linked to their email)
 		'AllowFrontManage' => 'NO', // Allow front-side users to manage files (YES or NO)
 		'SmoothScroll' => 'YES', // Use the awesome and cool JavaScript smooth scroller after an upload

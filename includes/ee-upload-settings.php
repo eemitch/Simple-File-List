@@ -86,34 +86,49 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	
 $eeOutput .= '<div class="eeSFL_Admin">';
 	
-if(@$eeSFL_BASE_Log['errors']) { 
+if( count($eeSFL_BASE_Log['errors']) ) { 
 	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE_Log['errors'], 'notice-error');
-} elseif(@$eeConfirm) { 
+} elseif($eeConfirm) { 
 	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeConfirm, 'notice-success');
 }
 	
-$eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings&subtab=uploader_settings" method="post" id="eeSFL_Settings">
+$eeOutput .= '
 
-	<p class="eeSettingsRight"><a class="eeInstructionsLink" href="https://simplefilelist.com/upload-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list') . '</a>
-	
-	<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" /></p>
-			
-	<h2>' . __('Upload Settings', 'ee-simple-file-list') . '</h2>
+<form action="' . admin_url() . '?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings&subtab=uploader_settings" method="post" id="eeSFL_Settings">
+<input type="hidden" name="eePost" value="TRUE" />';	
+$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce', TRUE, FALSE);
+$eeOutput .= '
 
-	<input type="hidden" name="eePost" value="TRUE" />';	
+<div class="eeColInline eeSettingsTile">
+				
+	<div class="eeColHalfLeft">
 	
-	$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce', TRUE, FALSE);
+		<h1>' . __('File Upload Settings', 'ee-simple-file-list') . '</h1>
+		<a class="" href="https://simplefilelist.com/upload-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list') . '</a>
 	
-	$eeOutput .= '
+	</div>
 	
-	<div class="eeSFL_AdminHalfLeft">
+	<div class="eeColHalfRight">
 	
-	<fieldset class="eeSettingsTile">
+		<input class="button" type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" />
 	
-		<h3>' . __('File Upload Restrictions', 'ee-simple-file-list') . '</h3>
+	</div>
+
+</div>
+
+<div class="eeColumns">		
 		
-		<label for="eeAllowUploads">' . __('Allow File Upload', 'ee-simple-file-list') . '</label>
+	<!-- Left Column -->
+	
+	<div class="eeColLeft">
 		
+		<div class="eeSettingsTile">
+		
+		<h2>' . __('File Upload Restrictions', 'ee-simple-file-list') . '</h2>
+
+		<fieldset>
+		<legend>' . __('Who Can Upload Files', 'ee-simple-file-list-pro') . '</legend>
+		<div><label>' . __('Restrict To', 'ee-simple-file-list') . '
 		<select name="eeAllowUploads" id="eeAllowUploads">
 		
 			<option value="YES" style="background-color:#FFFF00;"';
@@ -140,83 +155,157 @@ $eeOutput .= '<form action="' . admin_url() . '?page=' . $eeSFL_BASE->eePluginSl
 			
 			$eeOutput .= '>' . __('Hide the Front Side Uploader Completely', 'ee-simple-file-list') . '</option>
 		
-		</select>
+		</select></label></div>
+		
 		<div class="eeNote">' . __('Allow anyone to upload, only logged-in users, administrators or nobody.', 'ee-simple-file-list') . ' <strong>' . __('Please use "Anyone Can Upload" with Caution', 'simple-file-list') . '</strong></div>
 		
+		</fieldset>
 		
-		<label for="eeAllowOverwrite">' . __('Allow Overwriting', 'ee-simple-file-list') . ':</label>
+		</div>
+		
+		
+		
+		<div class="eeSettingsTile">
+		
+		<h2>' . __('Allow File Overwrite', 'ee-simple-file-list') . '</h2>
+
+		<fieldset>
+		<legend>' . __('Overwrite or Save as New', 'ee-simple-file-list-pro') . '</legend>
+		<div><label>' . __('Overwrite', 'ee-simple-file-list') . '
 		<input type="checkbox" name="eeAllowOverwrite" value="YES" id="eeAllowOverwrite"';
 		
 		if( @$eeSFL_Settings['AllowOverwrite'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 		
-		$eeOutput .= ' /> <p>' . __('Do not number files, overwrite instead.', 'ee-simple-file-list') . '</p>
+		$eeOutput .= ' /></label></div>
 		
-		<div class="eeNote">' . __('Existing files with the same name will be overwritten.', 'ee-simple-file-list') . ' ' .  
-			__('Use with caution!', 'ee-simple-file-list') . '</div>
+		<div class="eeNote">' . __('Do not save new copies of files with the same name. Existing files will be overwritten.', 'ee-simple-file-list') . '</div>
+		
+		</fieldset>
 			
+		</div>
 		
 		
-		<label for="eeGetUploaderInfo">' . __('Get File Owner Information', 'ee-simple-file-list') . ':</label>
+		
+		<div class="eeSettingsTile">
+		
+		<h2>' . __('Upload Submitter Information', 'ee-simple-file-list') . '</h2>
+
+		<fieldset>
+		
+		<legend>' . __('Upload Description', 'ee-simple-file-list-pro') . '</legend>
+		<div><label>' . __('Show Input', 'ee-simple-file-list') . '
+		<input type="checkbox" name="eeGetUploaderDesc" value="YES" id="eeGetUploaderDesc"';
+		
+		if( $eeSFL_Settings['GetUploaderDesc'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /></label></div>
+		
+		<div class="eeNote">' . __('Display an input allowing the submitter to add a text description of the file upload.', 'ee-simple-file-list') . '</div>
+		
+		</fieldset>
+		
+		
+		<fieldset>
+		
+		<legend>' . __('Submitter Information', 'ee-simple-file-list-pro') . '</legend>
+		<div><label>' . __('Require', 'ee-simple-file-list') . '
 		<input type="checkbox" name="eeGetUploaderInfo" value="YES" id="eeGetUploaderInfo"';
 		
 		if( $eeSFL_Settings['GetUploaderInfo'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 		
-		$eeOutput .= ' /> <p>' . __('Get name, email and description', 'ee-simple-file-list') . '</p>
+		$eeOutput .= ' /></label></div>
 		
-		<div class="eeNote">' . __('Display a form which must be filled out before a file is uploaded; Name, Email, Description', 'ee-simple-file-list') . '<br />
-		' . __('If the user is logged in, the name and email will automatically be captured regardless. Descriptions are always optional.', 'ee-simple-file-list') . '<br />
-			' . __('This user information can be displayed along with the file.', 'ee-simple-file-list') . '</div>
+		<div class="eeNote">' . __('Display a form with name and email which is required to be filled out.', 'ee-simple-file-list') . '<br />
+		' . __('If the user is logged in the form will not appear. The name and email address will be automatically captured from the user data.', 'ee-simple-file-list') . '</div>
 		
+		</fieldset>
 		
-		
-	</fieldset>
+		</div>
 			
-	</div>		
+	</div>
 	
 	
 	
-			
-	<div class="eeSFL_AdminHalfRight">		
-			
-	<fieldset class="eeSettingsTile">
+	<!-- Right Column -->
 	
-	<h3>' . __('Upload Job Limits', 'ee-simple-file-list') . '</h3>
+	<div class="eeColRight">
+		
+		<div class="eeSettingsTile">
+		
+		<h2>' . __('Upload Job Limits', 'ee-simple-file-list') . '</h2>
 	
-	<label for="eeUploadLimit">' . __('Upload Limit', 'ee-simple-file-list') . '</label>
-		<input type="number" min="1" max="100" step="1" name="eeUploadLimit" value="' . $eeSFL_Settings['UploadLimit'] . '" class="eeAdminInput" id="eeUploadLimit" />
-		<div class="eeNote">' . __('The maximum number of files that may be uploaded per submission.', 'ee-simple-file-list') . '</div>';
+		<fieldset>
+		<legend>' . __('Maximum Files Limit', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('File Limit', 'ee-simple-file-list') . '
+		<input type="number" min="1" max="100" step="1" name="eeUploadLimit" value="' . $eeSFL_Settings['UploadLimit'] . '" id="eeUploadLimit" /></label></div>
+		
+		<div class="eeNote">' . __('The maximum number of files that may be uploaded per submission.', 'ee-simple-file-list') . '</div>
+		
+		</fieldset>';
 	
-	// Maximum File Size
-	if(!$eeSFL_Settings['UploadMaxFileSize']) { $eeSFL_Settings['UploadMaxFileSize'] = $eeSFL_BASE_Env['the_max_upload_size']; }
+		// Maximum File Size
+		if(!$eeSFL_Settings['UploadMaxFileSize']) { $eeSFL_Settings['UploadMaxFileSize'] = $eeSFL_BASE_Env['the_max_upload_size']; }
 	
-	$eeOutput .= '<label for="eeUploadMaxFileSize">' . __('Maximum File Size', 'ee-simple-file-list') . ' (MB):</label>
+		$eeOutput .= '
+		
+		<fieldset>
+		<legend>' . __('Maximum File Size', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('Size', 'ee-simple-file-list') . ' (MB)
+		<input type="number" min="1" max="' . $eeSFL_BASE_Env['the_max_upload_size']. '" step="1" name="eeUploadMaxFileSize" value="' . $eeSFL_Settings['UploadMaxFileSize'] . '" id="eeUploadMaxFileSize" /></label></div>
+		
+		<div class="eeNote">' . __('Your hosting limits the maximum file upload size to', 'ee-simple-file-list') . ' <strong>' . $eeSFL_BASE_Env['the_max_upload_size']. ' MB</strong>.</div>
 	
-	<input type="number" min="1" max="' . $eeSFL_BASE_Env['the_max_upload_size']. '" step="1" name="eeUploadMaxFileSize" value="' . $eeSFL_Settings['UploadMaxFileSize'] . '" class="eeAdminInput" id="eeUploadMaxFileSize" />
-		<div class="eeNote">' . __('Your hosting limits the maximum file upload size to', 'ee-simple-file-list') . ' <strong>' . $eeSFL_BASE_Env['the_max_upload_size']. ' MB</strong>.</div>';
+		</fieldset>
+		
+		</div>
+		
+		
+		<div class="eeSettingsTile">
+		
+		<h2>' . __('Allowed File Types', 'ee-simple-file-list') . '</h2>
 	
-	
-	// File Formats Allowed
-	$eeOutput .= '<label for="eeFormats">' . __('Allowed File Types', 'ee-simple-file-list') . ':</label><textarea name="eeFileFormats" class="eeAdminInput" id="eeFormats" cols="64" rows="3" >' . $eeSFL_Settings['FileFormats'] . '</textarea>
+		<fieldset>
+		<legend>File Extensions</legend>
+		<div><label>' . __('File Types', 'ee-simple-file-list') . '<br />
+		<textarea name="eeFileFormats" id="eeFormats" cols="32" rows="3" >' . $eeSFL_Settings['FileFormats'] . '</textarea></label></div>
+		
 		<div class="eeNote">' . __('Only use the file types you absolutely need, such as', 'ee-simple-file-list') . ' jpg, jpeg, png, pdf, mp4, etc</div>
 		
+		</fieldset>
 		
-	<label for="eeShowUploadLimits">' . __('Show Upload Limits', 'ee-simple-file-list') . ':</label>
+		</div>
+		
+		
+		<div class="eeSettingsTile">
+		
+		<h2>' . __('Limits Display', 'ee-simple-file-list') . '</h2>
+		
+		<fieldset>
+		<legend>' . __('Show Upload Limits', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('Show Limits', 'ee-simple-file-list') . '
 		<input type="checkbox" name="eeShowUploadLimits" value="YES" id="eeShowUploadLimits"';
 		
 		if( $eeSFL_Settings['ShowUploadLimits'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 		
-		$eeOutput .= ' /> <p>' . __('Display upload restrictions on the front-end.', 'ee-simple-file-list') . '</p>
+		$eeOutput .= ' /></label></div>
 		
-		<div class="eeNote">' . __('Show the user file size, number and file type restrictions.', 'ee-simple-file-list') . '</div>
+		<div class="eeNote">' . __('Display upload limitations on the front-end, such as size and types allowed.', 'ee-simple-file-list') . '</div>
 		
-	</fieldset>
+		</fieldset> 
+	
+		</div>
 	
 	</div>
-		
-	<input type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" class="button eeSFL_Save" />
-	
-	</form>
-	
-</div>';
+
+</div>
+
+
+<div class="eeColInline eeSettingsTile">
+				
+	<input class="button" type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" />
+			
+</div>
+
+</form>';
 
 ?>
