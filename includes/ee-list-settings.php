@@ -116,13 +116,15 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		
 		<p><input class="eeFullWidth" type="text" name="eeFileListDir" value="" placeholder="' . ABSPATH . $eeSFL_Settings['FileListDir'] . '" disabled="disabled" /></p>
 		
-		<div class="eeNote"><a href="' . admin_url() . '?page=ee-simple-file-list&tab=pro" title="Get Pro Version">' . __('Get Pro Version', 'ee-simple-file-list') . '</a> &rarr; ' . __('The Pro Version allows you to define a custom file list directory.', 'ee-simple-file-list') . '</div>
+		<div class="eeNote">' . __('Upgrade to Pro', 'ee-simple-file-list') . '</a> &rarr; ' . __('The Pro Version allows you to define a custom file list directory. It must only be relative to the WordPress home directory.', 'ee-simple-file-list') . '</div>
 	
 </div>
 		
 
 <div class="eeColumns">		
 		
+	<!-- Right Column -->
+	
 	<div class="eeColLeft">
 		
 		<div class="eeSettingsTile">
@@ -174,14 +176,16 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		
 		$eeOutput .= ' /></p>
 		
-		<div class="eeNote">' . __('Allow file deletion, file renaming, and other operations.', 'ee-simple-file-list') . ' ' . __('Upgrade to Simple File List Pro and add the File Access Manager extension to give you access control for specific users and roles.', 'ee-simple-file-list') . ' <a href="https://simplefilelist.com/file-access-manager/" target="_blank">' .  __('Get the Upgrade', 'ee-simple-file-list') . '</a></div>
+		<div class="eeNote">' . __('Allow file deletion, file renaming, editing descriptions and dates.', 'ee-simple-file-list') . '</div>
+		<div class="eeNote"><a href="https://get.simplefilelist.com/" target="_blank">' .  __('Upgrade to Pro', 'ee-simple-file-list') . '</a> ' . __('Upgrade to Simple File List Pro and add the file access manager extension. This will allow access control for specific users and roles.', 'ee-simple-file-list') . '<br />
+		</div>
 			
 		</div>
 		
 		
 		<div class="eeSettingsTile">
 		
-		<h3>' . __('File Sorting and Order', 'ee-simple-file-list') . '</h3>	
+		<h2>' . __('File Sorting and Order', 'ee-simple-file-list') . '</h2>	
 			
 		<p><label for="eeSortList">' . __('Sort By', 'ee-simple-file-list') . ':</label>
 		
@@ -236,11 +240,9 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		
 		
 		
-		
-		
 		<div class="eeSettingsTile">
 			
-		<h3>' . __('Thumbnail Generation', 'ee-simple-file-list') . '</h3>
+		<h2>' . __('Thumbnail Generation', 'ee-simple-file-list') . '</h2>
 		
 		<p>' . __('You can choose to generate small representative images of large images, PDF files and videos files.', 'ee-simple-file-list') . '</p>
 		
@@ -249,16 +251,19 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		<p><label for="eeGenerateImgThumbs">' . __('Image Thumbnails', 'ee-simple-file-list') . ':</label>
 		
 		<input id="eeGenerateImgThumbs" type="checkbox" name="eeGenerateImgThumbs" value="YES"';
-		if( $eeSFL_Settings['GenerateImgThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
 		
 		$eeSupported = get_option('eeSFL_Supported');
-		if(!$eeSupported) { $eeSupported = array(); }
+		if( !is_array($eeSupported) ) { $eeSupported = array(); }
+		$eeMissing = array();
 		
-		$eeOutput .= ' /> ' . __('Using', 'ee-simple-file-list') . ': <a href="https://developer.wordpress.org/reference/functions/wp_get_image_editor/" target="_blank">Wordpress</a></p>
-		<div class="eeNote">' . __('Read an image file and create a small thumbnail image.', 'ee-simple-file-list') . '</div>
+		if( $eeSFL_Settings['GenerateImgThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
 		
+		$eeOutput .= ' />
+			<div class="eeNote">' . __('Read an image file and create a small thumbnail image.', 'ee-simple-file-list') . '</div>
 		
 		</fieldset>
+		
+		
 		<fieldset>
 		
 		<p><label for="eeGeneratePDFThumbs">' . __('PDF Thumbnails', 'ee-simple-file-list') . ':</label>
@@ -268,21 +273,16 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		if( !isset($eeSFL_BASE_Env['ImkGs']) OR $eeSFL_BASE_Env['eeOS'] == 'WINDOWS' ) { $eeOutput .= ' disabled="disabled"'; }
 		$eeOutput .= ' /> ';
 		
-		$eeMissing = array();
-		
 		if( !in_array('ImageMagick' , $eeSupported) ) { 
-			$eeOutput .='<strong>' . __('Missing', 'ee-simple-file-list') . ': <a href="https://imagemagick.org/index.php" target="_blank">Image Magick</a></strong><br />';
-			$eeMissing[] = 'Image Magick';
-		} else {
-			$eeOutput .= __('Using', 'ee-simple-file-list') . ': <a href="https://imagemagick.org/index.php" target="_blank">Image Magick</a><br />';
+			$eeMissing[] = __('Image Magick is Not Installed. PDF thumbnails cannot be created.', 'ee-simple-file-list-pro');
 		}
 		if( !in_array('GhostScript' , $eeSupported) ) { 
-			$eeOutput .=' <strong>' . __('Missing', 'ee-simple-file-list') . ': <a href="https://www.ghostscript.com/" target="_blank">GhostScript</a></strong>';
-			$eeMissing[] = 'GhostScript';
-		} else {
-			$eeOutput .= __('Using', 'ee-simple-file-list') . ': <a href="https://www.ghostscript.com/" target="_blank">GhostScript</a>';
+			$eeMissing[] = 'GhostScript is Not Installed. PDF thumbnails cannot be created.';
 		}
-		if( $eeSFL_BASE_Env['eeOS'] == 'WINDOWS' ) { $eeOutput .=' <em>Windows ' . __('not yet supported', 'ee-simple-file-list') . '</em>'; }
+		
+		if( $eeSFL_BASE_Env['eeOS'] == 'WINDOWS' ) { 
+			$eeMissing .= ' <em>Windows ' . __('not yet supported for PDF thumbnails.', 'ee-simple-file-list') . '</em>';
+		}
 		
 		$eeOutput .= '</p>
 		<div class="eeNote">' . __('Read a PDF file and create a representative thumbnail image based on the first page.', 'ee-simple-file-list');
@@ -300,10 +300,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		$eeOutput .= ' /> '; 
 		
 		if( !isset($eeSFL_BASE_Env['ffMpeg']) ) { 
-			$eeMissing[] = 'ffMpeg';
-			$eeOutput .= '<strong>' . __('Missing', 'ee-simple-file-list') . ': <a href="https://ffmpeg.org/" target="_blank">ffMpeg</a></strong>';
-		} else {
-			$eeOutput .= __('Using', 'ee-simple-file-list') . ' <a href="https://ffmpeg.org/" target="_blank">ffMpeg</a>';
+			$eeMissing[] = __('Video thumbnails will not be created because ffMpeg is not Installed.', 'ee-simple-file-list');
 		}
 				 	 
 		$eeOutput .= '</p>
@@ -311,195 +308,206 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		<div class="eeNote">' . __('Read a video file and create a representative thumbnail image at the 1 second mark.', 'ee-simple-file-list') . '</div>';
 		
 		if(count($eeMissing)) {
-			$eeOutput .= '<p><strong><em>' . __('Please install the missing PHP extensions to activate the disabled features.', 'ee-simple-file-list') . '</em></strong></p>';
+			
+			$eeOutput .= '
+			<br />
+			<div class="eeNote">';
+			
+			foreach( $eeMissing as $eeKey => $eeValue) {
+				$eeOutput .= '<small>&rarr; ' . $eeValue . '</small><br />';
+			}
+			
+			$eeOutput .= '</div>';
 		}	
 			
 		$eeOutput .= '
 		
 		</div>
 		
+		
+		<div class="eeSettingsTile">
+		
+		<h2>' . __('Smooth-Scroll', 'ee-simple-file-list') . '</h2>
+		
+		<p><label for="eeSmoothScroll">' . __('Use Smooth-Scroll', 'ee-simple-file-list') . ':</label>
+		<input type="checkbox" name="eeSmoothScroll" value="YES" id="eeSmoothScroll"';
+		
+		if( $eeSFL_Settings['SmoothScroll'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /></p>
+		
+		<div class="eeNote">' . __('Uses a JavaScript effect to scroll down to the top of the list after an action. This can be helpful if the list is not located close to the top of the page.', 'ee-simple-file-list') . '</div>
+		
+		</div>
+		
+		
+		
 	</div>
+	
+	
+	
+	
 		
 		
+	<!-- Right Column -->
+	
 	<div class="eeColRight">
+		
+		
+		<div class="eeSettingsTile">
+		
+		<h2>' . __('File Actions', 'ee-simple-file-list') . '</h2>
+		
+		
+		
+		<fieldset>
+		<legend>' . __('Show Open Action', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('Show Link', 'ee-simple-file-list') . ':</label>
+		<input type="checkbox" name="eeShowFileOpen" value="YES" id="eeShowFileOpen"';
+		
+		if( $eeSFL_Settings['ShowFileOpen'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /></div>
+		
+		<div class="eeNote">' . __('Display the Open File link. If the browser cannot open the file, it will prompt the user to download.', 'ee-simple-file-list') . '</div>
+		
+		</fieldset>
+		
+		
+		<fieldset>
+		<legend>' . __('Show Download Action', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('Show Link', 'ee-simple-file-list') . ':</label>
+		<input type="checkbox" name="eeShowFileDownload" value="YES" id="eeShowFileDownload"';
+		
+		if( $eeSFL_Settings['ShowFileDownload'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /></div>
+		
+		<div class="eeNote">' . __('The browser will prompt the user to download the file.', 'ee-simple-file-list') . '</div>
+		
+		</fieldset>
+
+		
+		
+		<fieldset>
+		<legend>' . __('Show Copy Action', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('Show Link', 'ee-simple-file-list') . ':</label>
+		<input type="checkbox" name="eeShowFileCopyLink" value="YES" id="eeShowFileCopyLink"';
+		
+		if( $eeSFL_Settings['ShowFileCopyLink'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /></div>
+		
+		<div class="eeNote">' . __('Copies the file URL to the user clipboard.', 'ee-simple-file-list') . '</div>
+		
+		</fieldset>
+		
+		
+		</div>
+		
 		
 		<div class="eeSettingsTile">
 		
 		<h2>' . __('File List Display', 'ee-simple-file-list') . '</h2>
 		
-		<hr />
-		
-		<h3>' . __('File List Table Information', 'ee-simple-file-list') . '</h3>
-
-		<table id="eeListSettingsTable">
-			<thead>
-			  	<tr>
-			     	<th>' . __('Item', 'ee-simple-file-list') . '</th>
-				 	<th>' . __('Show', 'ee-simple-file-list') . '</th>
-				 	<th>' . __('Label', 'ee-simple-file-list') . '</th>
-				 </tr>
-			</thead>
-		<tbody>
-		  
-		<tr>
-		     <td>' . __('File Thumbnail', 'ee-simple-file-list') . '</td>
-		     <td><input type="checkbox" name="eeShowFileThumb" value="YES" id="eeShowFileThumb"'; 
+		<fieldset>
+		<legend>' . __('File Thumbnail', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('Show', 'ee-simple-file-list') . '</label><input type="checkbox" name="eeShowFileThumb" value="YES" id="eeShowFileThumb"'; 
 		if($eeSFL_Settings['ShowFileThumb'] == 'YES') { $eeOutput .= ' checked'; }
-		$eeOutput .= ' /></td>
-		     <td><input type="text" name="eeLabelThumb" value="';
-		if(@$eeSFL_Settings['LabelThumb']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelThumb']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelThumb']; }
-		$eeOutput .= '" size="16" /></td>
-		  </tr>
-		  
-		  <tr>
-		     <td>' . __('File Name', 'ee-simple-file-list') . '</td>
-		     <td><input type="checkbox" name="eeShowFileName" value="YES" id="eeLabelName" checked="checked" disabled /></td>
-		     <td><input type="text" name="eeLabelName" value="';
-		if(@$eeSFL_Settings['LabelName']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelName']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelName']; }
-		$eeOutput .= '" size="16" /></td>
-		  </tr>
-		  
-		  <tr>
-		     <td>' . __('File Date', 'ee-simple-file-list') . '</td>
-		     <td><input type="checkbox" name="eeShowFileDate" value="YES" id="eeShowFileDate"'; 
+		$eeOutput .= ' />
+		<input type="text" name="eeLabelThumb" value="';
+		if( isset($eeSFL_Settings['LabelThumb']) ) { $eeOutput .= stripslashes($eeSFL_Settings['LabelThumb']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelThumb']; }
+		$eeOutput .= '" size="16" /></div>
+		
+		<div class="eeNote">' . __('Show file thumbnail images.', 'ee-simple-file-list') . '</div>
+		
+		</fieldset>
+		
+		
+		<fieldset>
+		<legend>' . __('File Date', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('Show', 'ee-simple-file-list') . '</label><input type="checkbox" name="eeShowFileDate" value="YES" id="eeShowFileDate"'; 
 		if($eeSFL_Settings['ShowFileDate'] == 'YES') { $eeOutput .= ' checked'; }
-		$eeOutput .= ' /></td>
-		     <td><input type="text" name="eeLabelDate" value="';
-		if(@$eeSFL_Settings['LabelDate']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelDate']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelDate']; }
-		$eeOutput .= '" size="16" /></td>
-		  </tr>
-		  
-		  <tr>
-		     <td>' . __('File Size', 'ee-simple-file-list') . '</td>
-		     <td><input type="checkbox" name="eeShowFileSize" value="YES" id="eeShowFileSize"'; 
+		$eeOutput .= ' />
+		<input type="text" name="eeLabelDate" value="';
+		if( isset($eeSFL_Settings['LabelDate'])) { $eeOutput .= stripslashes($eeSFL_Settings['LabelDate']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelDate']; }
+		$eeOutput .= '" size="16" /><select name="eeShowFileDateAs" id="eeShowFileDateAs">
+			<option value="">' . __('Choose Date', 'ee-simple-file-list') . '</option>
+			<option value="Added">' . __('Added', 'ee-simple-file-list') . '</option>
+			<option value="Modified">' . __('Modified', 'ee-simple-file-list-pro') . '</option>
+		</select></div>
+		
+		<div class="eeNote">Show the file date, either last modified or added to the list.</div>
+		
+		</fieldset>
+		
+		
+		<fieldset>
+		<legend>' . __('File Size', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('Show', 'ee-simple-file-list') . '</label><input type="checkbox" name="eeShowFileSize" value="YES" id="eeShowFileSize"'; 
 		if($eeSFL_Settings['ShowFileSize'] == 'YES') { $eeOutput .= ' checked'; }
-		$eeOutput .= ' /></td>
-		     <td><input type="text" name="eeLabelSize" value="';
-		if(@$eeSFL_Settings['LabelSize']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelSize']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelSize']; }
-		$eeOutput .= '" size="16" /></td>
-		  </tr>
-		 
-		 
-		  	</tbody>
-		</table>
+		$eeOutput .= ' />
+		<input type="text" name="eeLabelSize" value="';
+		if( isset($eeSFL_Settings['LabelSize']) ) { $eeOutput .= stripslashes($eeSFL_Settings['LabelSize']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelSize']; }
+		$eeOutput .= '" size="16" /></div>
 				
-		<div class="eeNote">' . __('Limit the file information to display on the front-side file list.', 'ee-simple-file-list') . '</div>
-			
+		<div class="eeNote">' . __('Limit the file information to display on the front-side file list. Enter a custom label if needed.', 'ee-simple-file-list') . '</div>
 		
-		<label for="eeShowListHeader">' . __('Show Header', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeShowHeader" value="YES" id="eeShowListHeader"';
-		
-		if( $eeSFL_Settings['ShowHeader'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-		
-		$eeOutput .= ' /> <p>' . __('Show the table header', 'ee-simple-file-list') . '</p>
-		
-		<div class="eeNote">' . __('Show the table header above the file list or not.', 'ee-simple-file-list') . '</div>
+		</fieldset>
 		
 		
-		<label for="eeSmoothScroll">' . __('Use Smooth Scroll', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeSmoothScroll" value="YES" id="eeSmoothScroll"';
+		<fieldset>
+		<legend>' . __('File Description', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('Show', 'ee-simple-file-list') . '</label><input type="checkbox" name="eeShowFileDescription" value="YES" id="eeShowFileDescription"'; 
+		if($eeSFL_Settings['ShowFileDesc'] == 'YES') { $eeOutput .= ' checked'; }
+		$eeOutput .= ' />
+		<input type="text" name="eeLabelDesc" value="';
+		if( isset($eeSFL_Settings['LabelDesc']) ) { $eeOutput .= stripslashes($eeSFL_Settings['LabelDesc']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelDesc']; }
+		$eeOutput .= '" size="16" /></div>
+				
+		<div class="eeNote">' . __('Show a description of the file, which can include keywords and special characters not allowed within the file name.', 'ee-simple-file-list') . '</div>
 		
-		if( $eeSFL_Settings['SmoothScroll'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-		
-		$eeOutput .= ' /> <p>' . __('Scroll to the List', 'ee-simple-file-list') . '</p>
-		
-		<div class="eeNote">' . __('Uses a JavaScript effect to scroll down to the top of the list after an action.', 'ee-simple-file-list') . '</div>
-		
-		</div>
-		
-		
-		<div class="eeSettingsTile">
-		
-		<h3>' . __('File Details', 'ee-simple-file-list') . '</h3>
-		
-		<label for="eeShowSubmitterInfo">' . __('Show File Owner', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeShowSubmitterInfo" value="YES" id="eeShowSubmitterInfo"';
-		
-		if( $eeSFL_Settings['ShowSubmitterInfo'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-		
-		$eeOutput .= ' /> <p>' . __('Show on Front-End', 'ee-simple-file-list') . '</p>
-		
-		<div class="eeNote">' . __('Show the name of the user who uploaded the file.', 'ee-simple-file-list') . '</div>
-		
-		<label for="eeShowFileDescription">' . __('Show File Description', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeShowFileDescription" value="YES" id="eeShowFileDescription"';
-		
-		if( $eeSFL_Settings['ShowFileDescription'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-		
-		$eeOutput .= ' /> <p>' . __('Description of the file', 'ee-simple-file-list') . '</p>
-		
-		<div class="eeNote">' . __('Display the file description below the file name.', 'ee-simple-file-list') . '</div>
+		</fieldset>
 		
 		
-			
+		<fieldset>
+		<legend>' . __('File Submitter', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('Show', 'ee-simple-file-list') . '</label><input type="checkbox" name="eeShowSubmitterInfo" value="YES" id="eeShowSubmitterInfo"'; 
+		if($eeSFL_Settings['ShowSubmitterInfo'] == 'YES') { $eeOutput .= ' checked'; }
+		$eeOutput .= ' />
+		<input type="text" name="eeLabeOwner" value="';
+		if( isset($eeSFL_Settings['LabelOwner']) ) { $eeOutput .= stripslashes($eeSFL_Settings['LabelOwner']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelOwner']; }
+		$eeOutput .= '" size="16" /></div>
+				
+		<div class="eeNote">' . __('Show the name of the user who uploaded the file on the front-end.', 'ee-simple-file-list') . '</div>
 		
-		<label for="eeShowFileExtension">' . __('Show Extension', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeShowFileExtension" value="YES" id="eeShowFileExtension"';
+		</fieldset>
 		
-		if( $eeSFL_Settings['ShowFileExtension'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 		
-		$eeOutput .= ' /> <p>' . __('File Type', 'ee-simple-file-list') . '</p>
-		
+		<fieldset>
+		<legend>' . __('File Extension', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('Show', 'ee-simple-file-list') . '</label><input type="checkbox" name="eeShowFileExtension" value="YES" id="eeShowFileExtension"'; 
+		if($eeSFL_Settings['ShowFileExtension'] == 'YES') { $eeOutput .= ' checked'; }
+		$eeOutput .= ' /></div>
+				
 		<div class="eeNote">' . __('Show or hide the file extension.', 'ee-simple-file-list') . '</div>
-
 		
-		<label for="eePreserveSpaces">' . __('Preserve Spaces', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eePreserveSpaces" value="YES" id="eePreserveSpaces"';
+		</fieldset>
 		
-		if( $eeSFL_Settings['PreserveSpaces'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 		
-		$eeOutput .= ' /> <p>' . __('File Name Spaces', 'ee-simple-file-list') . '</p>
-		
+		<fieldset>
+		<legend>' . __('Preserve Spaces', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('Show', 'ee-simple-file-list') . '</label><input type="checkbox" name="eePreserveSpaces" value="YES" id="eePreserveSpaces"'; 
+		if($eeSFL_Settings['PreserveSpaces'] == 'YES') { $eeOutput .= ' checked'; }
+		$eeOutput .= ' /></div>
+				
 		<div class="eeNote">' . __('Spaces in file names are replaced with hyphens in order to make the URL legal.', 'ee-simple-file-list') . ' ' . 
-			__('This setting will revert this action for display.', 'ee-simple-file-list') . '</div>	
+			__('This setting will revert this action for display.', 'ee-simple-file-list') . '</div>
 		
+		</fieldset>
 		
-		<label for="eeShowFileActions">' . __('Show File Actions', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeShowFileActions" value="YES" id="eeShowFileActions"';
-		
-		if( $eeSFL_Settings['ShowFileActions'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-		
-		$eeOutput .= ' /> <p>' . __('Open, Download, etc.', 'ee-simple-file-list') . '</p>
-		
-		
-			<div class="eeSettingsTile">
-			
-			<label for="eeShowFileOpen">' . __('Show Open Action', 'ee-simple-file-list') . ':</label>
-			<input type="checkbox" name="eeShowFileOpen" value="YES" id="eeShowFileOpen"';
-			
-			if( $eeSFL_Settings['ShowFileOpen'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-			
-			$eeOutput .= ' /> <p>' . __('Opens the File', 'ee-simple-file-list') . '</p>
-			
-			<div class="eeNote">' . __('If the browser cannot open the file, it will prompt the user to download.', 'ee-simple-file-list') . '</div>
-			
-			
-			
-			
-			<label for="eeShowFileDownload">' . __('Show Download Action', 'ee-simple-file-list') . ':</label>
-			<input type="checkbox" name="eeShowFileDownload" value="YES" id="eeShowFileDownload"';
-			
-			if( $eeSFL_Settings['ShowFileDownload'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-			
-			$eeOutput .= ' /> <p>' . __('Download the File', 'ee-simple-file-list') . '</p>
-			
-			<div class="eeNote">' . __('The browser will prompt the user to download the file.', 'ee-simple-file-list') . '</div>
-			
-			
-			
-			<label for="eeShowFileCopyLink">' . __('Show Copy Action', 'ee-simple-file-list') . ':</label>
-			<input type="checkbox" name="eeShowFileCopyLink" value="YES" id="eeShowFileCopyLink"';
-			
-			if( $eeSFL_Settings['ShowFileCopyLink'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-			
-			$eeOutput .= ' /> <p>' . __('Copy the File URL', 'ee-simple-file-list') . '</p>
-			
-			<div class="eeNote">' . __('Copies the URL for the file, which can then be pasted into a document.', 'ee-simple-file-list') . '</div>
-			
-			</div>
-
 		</div>
-		
+
 	</div>
 		
 </div>

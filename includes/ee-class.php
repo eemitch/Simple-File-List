@@ -48,13 +48,20 @@ class eeSFL_BASE_MainClass {
 		'FileListDir' => 'wp-content/uploads/simple-file-list/', // List Directory Name (relative to ABSPATH)
 		'ShowList' => 'YES', // Show the File List (YES, ADMIN, USER, NO)
 		'AdminRole' => 5, // Who can access settings, based on WP role (5 = Admin ... 1 = Subscriber)
-		'ShowFileThumb' => 'YES', // Display the File Thumbnail Column (YES or NO)
-		'ShowFileDate' => 'YES', // Display the File Date Column (YES or NO)
-		'ShowFileSize' => 'YES', // Display the File Size Column (YES or NO)
-		'LabelThumb' => 'Thumb', // Label for the thumbnail column
-		'LabelName' => 'Name', // Label for the file name column
-		'LabelDate' => 'Date', // Label for the file date column
-		'LabelSize' => 'Size', // Label for the file size column
+		
+		'ShowFileThumb' => 'YES', // Display the File Thumbnail (YES or NO)
+		'ShowFileDate' => 'YES', // Display the File Date (YES or NO)
+		'ShowFileDateAs' => 'Added', // Which date to show: added or modified
+		'ShowFileSize' => 'YES', // Display the File Size (YES or NO)
+		'ShowFileDesc' => 'YES', // Display the File Description (YES or NO)
+		
+		'LabelThumb' => 'Thumb', // Label for the thumbnail
+		'LabelName' => 'Name', // Label for the file name
+		'LabelDate' => 'Date', // Label for the file date
+		'LabelSize' => 'Size', // Label for the file size
+		'LabelDesc' => 'Description', // Label for the file description
+		'LabelOwner' => 'Submitter', // Label for the file owner
+		
 		'SortBy' => 'DateMod', // Sort By (Name, Date, DateMod, Size, Random) -- DateMod added in 4.3
 		'SortOrder' => 'Descending', // Descending or Ascending
 		
@@ -172,15 +179,15 @@ class eeSFL_BASE_MainClass {
 			$eeEnv['eeWebServer'] = 'Apache';
 		}
 		
-		$eeEnv['wpSiteURL'] = get_option('siteurl') . '/'; // This Wordpress Website
-		$eeEnv['wpPluginsURL'] = plugins_url() . '/'; // The Wordpress Plugins Location
+		$eeEnv['wpSiteURL'] = get_option('siteurl') . '/'; // This WordPress Website
+		$eeEnv['wpPluginsURL'] = plugins_url() . '/'; // The WordPress Plugins Location
 		
 		$eeEnv['pluginURL'] = plugins_url() . '/' . $this->eePluginNameSlug . '/';
 		$eeEnv['pluginDir'] = WP_PLUGIN_DIR . '/' . $this->eePluginNameSlug . '/';
 		
 		$wpUploadArray = wp_upload_dir();
 		$wpUploadDir = $wpUploadArray['basedir'];
-		$eeEnv['wpUploadDir'] = $wpUploadDir . '/'; // The Wordpress Uploads Location
+		$eeEnv['wpUploadDir'] = $wpUploadDir . '/'; // The WordPress Uploads Location
 		$eeEnv['wpUploadURL'] = $wpUploadArray['baseurl'] . '/';
 
 		$eeEnv['FileListDefaultDir'] = str_replace(ABSPATH, '', $eeEnv['wpUploadDir'] . 'simple-file-list/'); // The default file list location
@@ -665,7 +672,7 @@ class eeSFL_BASE_MainClass {
 	        $eeImageSizeLimit = ( $eeSizeCheck['memory-limit'] - $eeSizeCheck['memory-usage'] ) * .2;
         }
         
-        if($eeImageMemoryNeeded > $eeImageSizeLimit) { // It's too big for Wordpress
+        if($eeImageMemoryNeeded > $eeImageSizeLimit) { // It's too big for WordPress
 			
 			if( strpos($eeFileNameOnly, 'temp_') === 0 ) { // These are PDF thumbs
 				$eeDefaultThumbIcon = $eeSFL_BASE_Env['pluginDir'] . 'images/thumbnails/!default_pdf.jpg';
@@ -684,7 +691,7 @@ class eeSFL_BASE_MainClass {
 		
 		} else { // Create thumbnail
 
-			// Thank Wordpress for this easyness.
+			// Thank WordPress for this easyness.
 			$eeFileImage = wp_get_image_editor($eeInputFileCompletePath); // Try to open the file
 	        
 	        if (!is_wp_error($eeFileImage)) { // Image File Opened

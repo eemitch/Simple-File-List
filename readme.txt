@@ -158,7 +158,7 @@ Restrict access to all of the files by default. Grant access to specific files t
 * Pagination breaks up large file lists into smaller pages.
 * Define the number of files per page in the settings.
 * Show or hide the search bar and/or pagination in the settings.
-* Updating to newer versions is just like other Wordpress plugins.
+* Updating to newer versions is just like other WordPress plugins.
 * Shortcode attributes to control search visibility and pagination functionality.
 **[eeSFL search="YES/NO" paged="YES/NO" filecount="25"]**
 * Use a shortcode to place a search form anywhere on your website.
@@ -169,9 +169,9 @@ Restrict access to all of the files by default. Grant access to specific files t
 
 == Installation ==
 
-Just like most other Wordpress plugins...
+Just like most other WordPress plugins...
 
-1. To install, simply use the amazing Wordpress plugin installer, or upload the plugin zip file to your Wordpress website, and activate it.
+1. To install, simply use the amazing WordPress plugin installer, or upload the plugin zip file to your WordPress website, and activate it.
 1. A new main menu item will appear: **File List**  Click on this.
 1. Then click on **Settings** tab and configure the features you want for your file list.
 1. Upload some files by clicking on the **Upload Files** button
@@ -219,11 +219,11 @@ A: This is a setting that you choose in the file configuration. The initial defa
 
 = Q: What if I have trouble or need assistance? Will you help? =
 
-A: Yes! I enjoy helping people. Please contact me with any issues using the <a href="https://wordpress.org/support/plugin/simple-file-list/">Wordpress Forum</a> or via <a href="https://simplefilelist.com/get-support/">SimpleFileList.com</a>
+A: Yes! I enjoy helping people. Please contact me with any issues using the <a href="https://wordpress.org/support/plugin/simple-file-list/">WordPress Forum</a> or via <a href="https://simplefilelist.com/get-support/">SimpleFileList.com</a>
 
 = Q: Why did you develop this plugin? =
 
-A: I got tired of the difficulties of getting files back and forth between myself and my non-technical clients once they become too large for email, and having an archive for them to return to was needed. Training these people to use FTP or Dropbox was a challenge. I wanted something simple that I could use on my own website, so I created a simple index.php page that solved my problem. I later realized that others could benefit from this functionality, so I decided to port it to my favorite website platform; Wordpress. I also hoped that the donations would pay for a large home and a private jet, but that has not happened yet :-(  Regardless, I still enjoy giving to the community and helping others.
+A: I got tired of the difficulties of getting files back and forth between myself and my non-technical clients once they become too large for email, and having an archive for them to return to was needed. Training these people to use FTP or Dropbox was a challenge. I wanted something simple that I could use on my own website, so I created a simple index.php page that solved my problem. I later realized that others could benefit from this functionality, so I decided to port it to my favorite website platform; WordPress. I also hoped that the donations would pay for a large home and a private jet, but that has not happened yet :-(  Regardless, I still enjoy giving to the community and helping others.
 
 
 
@@ -331,7 +331,7 @@ Pages using the "showfolder" shortcode attribute will show "ERROR 95" where the 
 * Code improvements.
 
 = 4.2.10 =
-* Fixed a bug where list settings were not working if Wordpress is in a sub-folder.
+* Fixed a bug where list settings were not working if WordPress is in a sub-folder.
 * Fixed a Javascript warning shown when the uploader was not being shown.
 * Removed the Search and Pagination extension integration.
 * Various minor changes.
@@ -339,7 +339,7 @@ Pages using the "showfolder" shortcode attribute will show "ERROR 95" where the 
 
 = 4.2.8 =
 * Fixed several security issues.
-* Updated input sanitization to use Wordpress functions.
+* Updated input sanitization to use WordPress functions.
 * Under-the-hood code improvements.
 
 
@@ -399,7 +399,7 @@ Pages using the "showfolder" shortcode attribute will show "ERROR 95" where the 
 * Added ability to show or hide the file extension.
 * Added ability to preserve spaces in file names, which are normally replaced with hyphens.
 * Expanded configuration options for the upload notification emails (from, from name, to, cc, bcc, subject, and body text)
-* Added ability to restrict access to the plugin’s list and upload settings by Wordpress user role
+* Added ability to restrict access to the plugin’s list and upload settings by WordPress user role
 * New Shortcode: hidename="this-file.docx, that-folder"  Hide specific file names in the list. Accepts a comma list of file names.
 * New Shortcode: hidetype="psd, zip, folder"  Hide specific file types in the list. Accepts a comma list of file extensions.
 * Implemented a database-based file lists to improve performance and allow for meta data tracking.
@@ -520,7 +520,7 @@ Pages using the "showfolder" shortcode attribute will show "ERROR 95" where the 
 * File List Table Sorting - Built-in file list table sorting. Click on a column heading to sort it.
 * Forced Download Link - Allows for forced downloading of a file, rather than relying on the default browser action.
 * Choose File Types - Fully customize the types of files you want users to be able to upload.
-* Date Format - The file date format now uses the format selected in your Wordpress General Settings.
+* Date Format - The file date format now uses the format selected in your WordPress General Settings.
 * Custom Upload Folder - Specify whatever folder you like for users to upload files.
 * Additional Viewing Restrictions - Limit viewing the list and/or uploading only to Admins.
 * Shortcode Attributes - Hide the list or the uploader on a per page/post basis using [eeSFL showlist="NO" allowuploads="NO"]
@@ -588,4 +588,4 @@ Pages using the "showfolder" shortcode attribute will show "ERROR 95" where the 
 
 = 1.0 =
 
-* FIRST RELEASE VERSION - Previous versions were non-Wordpress.
+* FIRST RELEASE VERSION - Previous versions were non-WordPress.

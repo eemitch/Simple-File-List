@@ -141,69 +141,17 @@ function eeSFL_BASE_ManageLists() {
 		if($active_subtab == 'uploader_settings') {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			// include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-settings.php'); // The Uploader Settings
+			include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-settings.php'); // The Uploader Settings
 		
 		} elseif($active_subtab == 'email_settings') {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			// include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-email-settings.php'); // The Notifications Settings
+			include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-email-settings.php'); // The Notifications Settings
 		
 		} else {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-list-settings.php'); // The File List Settings
-			
-/*
-			$eeOutput .= '
-			
-			<div class="eeColFull eeSettingsTile">
-				
-				<div class="eeColHalfLeft">
-				
-					<h1>' . __('File List Settings', 'ee-simple-file-list') . '</h1>
-					<a class="" href="https://simplefilelist.com/file-list-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list') . '</a>
-				
-				</div>
-				
-				<div class="eeColHalfRight">
-				
-					<input class="button" type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" />
-				
-				</div>
-			
-			</div>
-			
-			<div class="eeColumns">
-			
-			<div class="eeColLeft">
-			
-				<div class="eeSettingsTile">XXX</div>
-			
-				<div class="eeSettingsTile">XXX</div>
-			
-			</div>
-			
-			<div class="eeColRight">
-			
-				<div class="eeSettingsTile">XXX</div>
-			
-				<div class="eeSettingsTile">XXX<br />XXX<br />XXX<br />XXX<br />XXX<br />XXX<br />XXX<br />XXX</div>
-			
-			</div>
-			
-			</div>
-			
-			<div class="eeColFull eeSettingsTile">
-				
-				<input class="button" type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" />
-			
-			</div>
-			
-			
-			';
-*/
-			
-			
+			include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-list-settings.php'); // The File List Settings			
 		}
 		
 		$eeOutput .= '

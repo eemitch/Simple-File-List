@@ -126,33 +126,69 @@ eeSFL_Admin * + * {
 	padding: .25em .75em; 
 }
 
+
+
 /* SETTINGS TILES */
 .eeSettingsTile {
 	padding: 1.5em;
 	margin: 1em 0 1em 1em;
 	margin-bottom: 0;
 	background-color: #f0f0f1;
+	flex: 1;
 }
 .eeSettingsTile h2,
 .eeSettingsTile h3 {
 	margin: 0 0 1em 0;
+}
+.eeSettingsTile h3 {
+	font-size: .9em;
+	margin-bottom: .3em;
 }
 .eeSettingsTile p,
 .eeSettingsTile ul {
 	margin: 0 0 .75em 0;
 }
 
-.eeSettingsTile fieldset {
+.eeSettingsTile fieldset{
 	margin-bottom: 1.25em;
+}
+.eeSettingsTile fieldset div {
+	margin-bottom: .75em;
+}
+.eeSettingsTile fieldset label,
+.eeSettingsTile fieldset input[type=text],
+.eeSettingsTile fieldset select,
+.eeSettingsTile fieldset input[type=checkbox] {
+	display: inline-block;
+	margin-right: .75em;
+	font-size: .75em;
+}
+.eeSettingsTile fieldset input[type=checkbox] {
+	transform: scale(1.2);
+	padding: .5em;
+}
+.eeSettingsTile fieldset input[type=text] {
+	width: 40%;
+}
+
+.eeSettingsTile fieldset legend {
+	display: block;
+	width: 100%;
+	padding-bottom: .25em; 
+	border-bottom: 1px solid #666;
+	margin-bottom: .5em;
 }
 
 .eeSettingsTile .eeNote {
 	font-size: .8em;
+	font-style: italic;
 	padding: .25em;
 	background-color: #e9e9e9;
 	border: 1px solid #dadada;
 	border-radius: .1em;
 }
+
+
 
 /* ADMIN FOOTER */
 
@@ -183,6 +219,17 @@ eeSFL_Admin * + * {
 	margin-top: 1em;
 	padding-top: .5em;
 	text-align: center;
+}
+
+
+
+/* GENERAL STYLES */
+
+.eeFlex {
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	line-height: 1;
 }
 
 .eeFullWidth {

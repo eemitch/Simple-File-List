@@ -1455,7 +1455,7 @@ msgstr "Mitchell Bennis"
 #~ msgid "Cannot create the file directory. Reverting to default."
 #~ msgstr "Det går inte att skapa fil katalogen. Återgår till standard."
 
-#~ msgid "This must be relative to your Wordpress home folder."
+#~ msgid "This must be relative to your WordPress home folder."
 #~ msgstr "Detta måste vara i förhållande till din WordPress hemmapp."
 
 #~ msgid "Default Location"
@@ -1793,7 +1793,7 @@ msgstr "Mitchell Bennis"
 #~ "eller slumpmässigt."
 
 #~ msgid ""
-#~ "The file date format uses the format selected on your Wordpress General "
+#~ "The file date format uses the format selected on your WordPress General "
 #~ "Settings page."
 #~ msgstr ""
 #~ "Fil datum formatet använder det format som valts på din WordPress "
@@ -1920,7 +1920,7 @@ msgstr "Mitchell Bennis"
 #~ msgstr "Spåra ägaren?"
 
 #, fuzzy
-#~ msgid "This will append the Wordpress user ID to the file name."
+#~ msgid "This will append the WordPress user ID to the file name."
 #~ msgstr "Detta kommer att lägga till WordPress användar-ID till fil namnet."
 
 #, fuzzy

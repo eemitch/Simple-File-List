@@ -1507,8 +1507,8 @@ msgstr "Mitchell Bennis"
 #~ "Impossible de créer le répertoire de fichiers. Revenir à la valeur par "
 #~ "défaut."
 
-#~ msgid "This must be relative to your Wordpress home folder."
-#~ msgstr "Cela doit être relatif à votre dossier d'accueil Wordpress."
+#~ msgid "This must be relative to your WordPress home folder."
+#~ msgstr "Cela doit être relatif à votre dossier d'accueil WordPress."
 
 #~ msgid "Default Location"
 #~ msgstr "Emplacement par défaut"
@@ -1854,7 +1854,7 @@ msgstr "Mitchell Bennis"
 #~ "sa taille ou aléatoirement."
 
 #~ msgid ""
-#~ "The file date format uses the format selected on your Wordpress General "
+#~ "The file date format uses the format selected on your WordPress General "
 #~ "Settings page."
 #~ msgstr ""
 #~ "Le format de date de fichier utilise le format sélectionné sur votre page "
@@ -1980,7 +1980,7 @@ msgstr "Mitchell Bennis"
 #~ msgid "Track the Owner?"
 #~ msgstr "Suivre le propriétaire?"
 
-#~ msgid "This will append the Wordpress user ID to the file name."
+#~ msgid "This will append the WordPress user ID to the file name."
 #~ msgstr "Ceci ajoutera l'ID d'utilisateur de WordPress au nom de fichier."
 
 #~ msgid ""

@@ -1478,7 +1478,7 @@ msgstr "Mitchell Bennis"
 #~ msgid "Cannot create the file directory. Reverting to default."
 #~ msgstr "Kan de bestandsmap niet maken. Terug naar standaard."
 
-#~ msgid "This must be relative to your Wordpress home folder."
+#~ msgid "This must be relative to your WordPress home folder."
 #~ msgstr "Dit moet relatief zijn ten opzichte van je WordPress-thuismap."
 
 #~ msgid "Default Location"
@@ -1818,11 +1818,11 @@ msgstr "Mitchell Bennis"
 #~ "U kunt de bestandslijst sorteren op naam, datum, grootte of willekeurig."
 
 #~ msgid ""
-#~ "The file date format uses the format selected on your Wordpress General "
+#~ "The file date format uses the format selected on your WordPress General "
 #~ "Settings page."
 #~ msgstr ""
 #~ "Het datumformaat van de bestanden maakt gebruik van het formaat dat is "
-#~ "ingesteld op de algemene instellingenpagina van uw Wordpress installatie."
+#~ "ingesteld op de algemene instellingenpagina van uw WordPress installatie."
 
 #~ msgid "Reverse Order: Normal or Descending"
 #~ msgstr "Omgekeerde volgorde: normaal of aflopend"
@@ -1944,7 +1944,7 @@ msgstr "Mitchell Bennis"
 #~ msgid "Track the Owner?"
 #~ msgstr "Volg de eigenaar?"
 
-#~ msgid "This will append the Wordpress user ID to the file name."
+#~ msgid "This will append the WordPress user ID to the file name."
 #~ msgstr "Dit voegt de WordPress User ID toe aan de bestandsnaam."
 
 #~ msgid ""

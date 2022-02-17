@@ -1475,8 +1475,8 @@ msgstr "Mitchell Bennis"
 #~ msgid "Cannot create the file directory. Reverting to default."
 #~ msgstr "Não é possível criar o diretório de arquivos. Revertendo ao padrão."
 
-#~ msgid "This must be relative to your Wordpress home folder."
-#~ msgstr "Isso deve ser relativo à sua pasta em casa Wordpress."
+#~ msgid "This must be relative to your WordPress home folder."
+#~ msgstr "Isso deve ser relativo à sua pasta em casa WordPress."
 
 #~ msgid "Default Location"
 #~ msgstr "Localização Padrão"
@@ -1816,7 +1816,7 @@ msgstr "Mitchell Bennis"
 #~ "seu tamanho ou aleatoriamente."
 
 #~ msgid ""
-#~ "The file date format uses the format selected on your Wordpress General "
+#~ "The file date format uses the format selected on your WordPress General "
 #~ "Settings page."
 #~ msgstr ""
 #~ "O formato de data do arquivo usa o formato selecionado na página de "
@@ -1941,7 +1941,7 @@ msgstr "Mitchell Bennis"
 #~ msgid "Track the Owner?"
 #~ msgstr "Rastrear o proprietário?"
 
-#~ msgid "This will append the Wordpress user ID to the file name."
+#~ msgid "This will append the WordPress user ID to the file name."
 #~ msgstr ""
 #~ "Isso irá acrescentar o ID de usuário do WordPress para o nome do arquivo."
 

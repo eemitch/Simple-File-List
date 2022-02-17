@@ -252,7 +252,7 @@ function eeSFL_BASE_UploadFile(eeSFL_File) { // Pass in file object
         }
     };
     
-    // Wordpress Action
+    // WordPress Action
     eeFormData.append("action", "simplefilelist_upload_job");
     
     // These values are set in ee-upload-form.php
