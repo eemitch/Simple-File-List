@@ -44,29 +44,18 @@ function eeSFL_BASE_ManageLists() {
     <a href="?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings" class="nav-tab ';   
 	if($active_tab == 'settings') {$eeOutput .= ' eeActiveTab '; }  
     $active_tab == 'settings' ? 'nav-tab-active' : ''; 
-    $eeOutput .= $active_tab . '">' . __('Settings', 'ee-simple-file-list') . '</a>';
+    $eeOutput .= $active_tab . '">' . __('Settings', 'ee-simple-file-list') . '</a>
     
-    
-    // Shortcode Builder
-    $eeOutput .= '
-    <a href="?page=' . $eeSFL_BASE->eePluginSlug . '&tab=shortcode" class="nav-tab ';  
-	if($active_tab == 'shortcode') {$eeOutput .= ' eeActiveTab '; }   
-    $active_tab == 'support' ? 'nav-tab-active' : ''; 
-    $eeOutput .= $active_tab . '">' . __('Create Shortcode', 'ee-simple-file-list') . '</a>
-    
-    </span>
-    <span class="nav-tab-wrapper-right">
-    ';
-    
-    // You should Buy the PRO Version
-    $eeOutput .= '
     <a href="?page=' . $eeSFL_BASE->eePluginSlug . '&tab=pro" class="nav-tab ';   
 	if($active_tab == 'pro') {$eeOutput .= ' eeActiveTab '; }  
     $active_tab == 'pro' ? 'nav-tab-active' : ''; 
-    $eeOutput .= $active_tab . '">' . __('Pro Version', 'ee-simple-file-list') . '</a>';
+    $eeOutput .= $active_tab . '">' . __('Upgrade Version', 'ee-simple-file-list') . '</a>
     
-    // Author
-    $eeOutput .= '
+    
+    </span>
+    <span class="nav-tab-wrapper-right">
+    
+    
     <a href="?page=' . $eeSFL_BASE->eePluginSlug . '&tab=author" class="nav-tab ';   
 	if($active_tab == 'author') {$eeOutput .= ' eeActiveTab '; }  
     $active_tab == 'author' ? 'nav-tab-active' : ''; 
@@ -85,7 +74,7 @@ function eeSFL_BASE_ManageLists() {
     
 	if($active_tab == 'file_list') {
 	
-		$eeOutput .= '<div id="uploadFilesDiv">';
+		$eeOutput .= $eeUpSell . '<div id="uploadFilesDiv">';
 		
 		// Upload Check
 		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security

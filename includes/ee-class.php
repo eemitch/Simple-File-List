@@ -53,12 +53,14 @@ class eeSFL_BASE_MainClass {
 		'ShowFileDate' => 'YES', // Display the File Date (YES or NO)
 		'ShowFileDateAs' => 'Added', // Which date to show: added or modified
 		'ShowFileSize' => 'YES', // Display the File Size (YES or NO)
+		
 		'ShowFileDesc' => 'YES', // Display the File Description (YES or NO)
 		
 		'LabelThumb' => 'Thumb', // Label for the thumbnail
 		'LabelName' => 'Name', // Label for the file name
 		'LabelDate' => 'Date', // Label for the file date
 		'LabelSize' => 'Size', // Label for the file size
+		
 		'LabelDesc' => 'Description', // Label for the file description
 		'LabelOwner' => 'Submitter', // Label for the file owner
 		
@@ -71,6 +73,8 @@ class eeSFL_BASE_MainClass {
 		'UploadMaxFileSize' => 8, // Maximum Size per File (MB)
 		'FileFormats' => 'jpg, jpeg, png, tif, pdf, mov, mp4, mp3, zip', // Allowed Formats
 		'AllowOverwrite' => 'NO', // Number new files with same name, or just overwrite.
+		
+		'UploadConfirm' => 'YES', // Show the upload confirmation screen, or go right back to the list.
 		
 		// Display Settings
 		'GenerateImgThumbs' => 'YES', // Create thumbnail images for images if possible.

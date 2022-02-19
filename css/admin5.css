@@ -39,6 +39,23 @@ eeSFL_Admin * + * {
 .eeSFL_Admin ul code {
 	line-height: 2;
 }
+.eeSFL_Admin .notice p {
+	margin: 1.5em 0 1.5em .5em;
+}
+
+#eeGoProBanner {
+	background-color: #d0ffd8;
+	padding: 10px;
+	border: 1px solid #666;
+}
+#eeGoProBanner p {
+	font-size: 100%;
+	color: #666;
+}
+#eeGoProBanner a.button {
+	float: right;
+	margin: 0 0 2px 25px;
+}
 
 /* ADMIN TABS */
 
@@ -184,7 +201,7 @@ eeSFL_Admin * + * {
 	padding: .5em;
 }
 .eeSettingsTile fieldset input[type=text] {
-/* 	width: 40%; */
+	width: 40%;
 }
 .eeSettingsTile fieldset textarea {
 	width: 100%;
@@ -243,6 +260,15 @@ eeSFL_Admin * + * {
 
 
 /* GENERAL STYLES */
+
+.eeSFL_Admin p.eeAlert {
+	font-size: 125%;
+	color: red;
+	background-color: #DDD;
+	margin: 20px;
+	padding: 4px;
+	text-align: center;
+}
 
 .eeFlex {
 	display: flex;

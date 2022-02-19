@@ -68,6 +68,8 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 		'AllowOverwrite'
 		,'ShowUploadLimits'
 		,'GetUploaderInfo'
+		,'GetUploaderDesc'
+		,'UploadConfirm'
 	);
 	foreach( $eeCheckboxes as $eeTerm ) {
 		$eeSFL_Settings[$eeTerm] = eeSFL_BASE_ProcessCheckboxInput($eeTerm);
@@ -278,7 +280,20 @@ $eeOutput .= '
 		
 		<div class="eeSettingsTile">
 		
-		<h2>' . __('Limits Display', 'ee-simple-file-list') . '</h2>
+		<h2>' . __('Display', 'ee-simple-file-list') . '</h2>
+		
+		<fieldset>
+		<legend>' . __('Confirmation', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('Show Results', 'ee-simple-file-list') . '
+		<input type="checkbox" name="eeUploadConfirm" value="YES" id="eeUploadConfirm"';
+		
+		if( $eeSFL_Settings['UploadConfirm'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /></label></div>
+		
+		<div class="eeNote">' . __('Show a resulting list of the files uploaded, or proceed directly back to the file list.', 'ee-simple-file-list') . '</div>
+		
+		</fieldset>
 		
 		<fieldset>
 		<legend>' . __('Show Upload Limits', 'ee-simple-file-list') . '</legend>
@@ -291,7 +306,7 @@ $eeOutput .= '
 		
 		<div class="eeNote">' . __('Display upload limitations on the front-end, such as size and types allowed.', 'ee-simple-file-list') . '</div>
 		
-		</fieldset> 
+		</fieldset>  
 	
 		</div>
 	

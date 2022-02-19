@@ -21,11 +21,11 @@ if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settin
 		,'ShowFileThumb'
 		,'ShowFileDate'
 		,'ShowFileSize'
-		,'ShowFileActions'
 		,'ShowFileOpen'
 		,'ShowFileDownload'
 		,'ShowFileCopyLink'
-		,'ShowFileDescription'
+		,'ShowFileDesc'
+		,'GetUploaderDesc'
 		,'ShowHeader'
 		,'SmoothScroll'
 		,'ShowSubmitterInfo'
@@ -46,6 +46,8 @@ if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settin
 		,'LabelName'
 		,'LabelDate'
 		,'LabelSize'
+		,'LabelDesc'
+		,'LabelOwner'
 	);
 	foreach( $eeTextInputs as $eeTerm){
 		$eeSFL_Settings[$eeTerm] = eeSFL_BASE_ProcessTextInput($eeTerm);
@@ -54,7 +56,6 @@ if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settin
 	
 	// Sort by Select Box	
 	if(isset($_POST['eeSortBy'])) { 
-		
 		$eeSFL_Settings['SortBy'] = sanitize_text_field($_POST['eeSortBy']);
 		if(!$eeSFL_Settings['SortBy']) { $eeSFL_Settings['SortBy'] = 'Name'; }
 	}
@@ -62,6 +63,14 @@ if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settin
 	// Asc/Desc Checkbox
 	if(@$_POST['eeSortOrder'] == 'Descending') { $eeSFL_Settings['SortOrder'] = 'Descending'; }
 		else { $eeSFL_Settings['SortOrder'] = 'Ascending'; }
+	
+	// Show Date Type	
+	if(isset($_POST['eeShowFileDateAs'])) { 
+		$eeSFL_Settings['ShowFileDateAs'] = sanitize_text_field($_POST['eeShowFileDateAs']);
+		if( $eeSFL_Settings['ShowFileDateAs'] == 'Modified' ) { $eeSFL_Settings['ShowFileDateAs'] = 'Modified'; }
+			else { $eeSFL_Settings['ShowFileDateAs'] = 'Added';}
+	}
+	
 	
 	// Sort for Sanity
 	ksort($eeSFL_Settings);
@@ -417,7 +426,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		$eeOutput .= ' />
 		<input type="text" name="eeLabelThumb" value="';
 		if( isset($eeSFL_Settings['LabelThumb']) ) { $eeOutput .= stripslashes($eeSFL_Settings['LabelThumb']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelThumb']; }
-		$eeOutput .= '" size="16" /></div>
+		$eeOutput .= '" size="32" /></div>
 		
 		<div class="eeNote">' . __('Show file thumbnail images.', 'ee-simple-file-list') . '</div>
 		
@@ -431,10 +440,18 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		$eeOutput .= ' />
 		<input type="text" name="eeLabelDate" value="';
 		if( isset($eeSFL_Settings['LabelDate'])) { $eeOutput .= stripslashes($eeSFL_Settings['LabelDate']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelDate']; }
-		$eeOutput .= '" size="16" /><select name="eeShowFileDateAs" id="eeShowFileDateAs">
-			<option value="">' . __('Choose Date', 'ee-simple-file-list') . '</option>
-			<option value="Added">' . __('Added', 'ee-simple-file-list') . '</option>
-			<option value="Modified">' . __('Modified', 'ee-simple-file-list-pro') . '</option>
+		$eeOutput .= '" size="32" />
+		
+		<select name="eeShowFileDateAs" id="eeShowFileDateAs">
+			<option value="">' . __('Date Type', 'ee-simple-file-list') . '</option>
+			
+			<option value="Added"';
+			if($eeSFL_Settings['ShowFileDateAs'] == 'Added') { $eeOutput .= ' selected="selected"'; }
+			$eeOutput .= '>' . __('Added', 'ee-simple-file-list') . '</option>
+			
+			<option value="Modified"';
+			if($eeSFL_Settings['ShowFileDateAs'] == 'Modified') { $eeOutput .= ' selected="selected"'; }
+			$eeOutput .= '>' . __('Modified', 'ee-simple-file-list-pro') . '</option>
 		</select></div>
 		
 		<div class="eeNote">Show the file date, either last modified or added to the list.</div>
@@ -449,7 +466,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		$eeOutput .= ' />
 		<input type="text" name="eeLabelSize" value="';
 		if( isset($eeSFL_Settings['LabelSize']) ) { $eeOutput .= stripslashes($eeSFL_Settings['LabelSize']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelSize']; }
-		$eeOutput .= '" size="16" /></div>
+		$eeOutput .= '" size="32" /></div>
 				
 		<div class="eeNote">' . __('Limit the file information to display on the front-side file list. Enter a custom label if needed.', 'ee-simple-file-list') . '</div>
 		
@@ -458,12 +475,12 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		
 		<fieldset>
 		<legend>' . __('File Description', 'ee-simple-file-list') . '</legend>
-		<div><label>' . __('Show', 'ee-simple-file-list') . '</label><input type="checkbox" name="eeShowFileDescription" value="YES" id="eeShowFileDescription"'; 
+		<div><label>' . __('Show', 'ee-simple-file-list') . '</label><input type="checkbox" name="eeShowFileDesc" value="YES" id="eeShowFileDesc"'; 
 		if($eeSFL_Settings['ShowFileDesc'] == 'YES') { $eeOutput .= ' checked'; }
 		$eeOutput .= ' />
 		<input type="text" name="eeLabelDesc" value="';
 		if( isset($eeSFL_Settings['LabelDesc']) ) { $eeOutput .= stripslashes($eeSFL_Settings['LabelDesc']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelDesc']; }
-		$eeOutput .= '" size="16" /></div>
+		$eeOutput .= '" size="32" /></div>
 				
 		<div class="eeNote">' . __('Show a description of the file, which can include keywords and special characters not allowed within the file name.', 'ee-simple-file-list') . '</div>
 		
@@ -475,9 +492,12 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		<div><label>' . __('Show', 'ee-simple-file-list') . '</label><input type="checkbox" name="eeShowSubmitterInfo" value="YES" id="eeShowSubmitterInfo"'; 
 		if($eeSFL_Settings['ShowSubmitterInfo'] == 'YES') { $eeOutput .= ' checked'; }
 		$eeOutput .= ' />
-		<input type="text" name="eeLabeOwner" value="';
-		if( isset($eeSFL_Settings['LabelOwner']) ) { $eeOutput .= stripslashes($eeSFL_Settings['LabelOwner']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelOwner']; }
-		$eeOutput .= '" size="16" /></div>
+		<input type="text" name="eeLabelOwner" value="';
+		
+		// echo '<pre>'; print_r($eeSFL_BASE->DefaultListSettings); echo '</pre>'; exit;
+		
+		if( $eeSFL_Settings['LabelOwner'] ) { $eeOutput .= stripslashes($eeSFL_Settings['LabelOwner']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelOwner']; }
+		$eeOutput .= '" size="32" /></div>
 				
 		<div class="eeNote">' . __('Show the name of the user who uploaded the file on the front-end.', 'ee-simple-file-list') . '</div>
 		
