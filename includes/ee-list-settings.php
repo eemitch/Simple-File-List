@@ -8,6 +8,15 @@ $eeSFL_BASE_Log['RunTime'][] = 'Loading List Settings Page ...';
 // Check for POST and Nonce
 if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {	
 	
+	// List Style
+	if(isset($_POST['eeShowListStyle'])) { 
+		$eeShowListStyle = sanitize_text_field($_POST['eeShowListStyle']);
+		if( $eeShowListStyle == 'Flex' ) { $eeSFL_Settings['ShowListStyle'] = 'Flex'; }
+			elseif($eeShowListStyle == 'Tiles') { $eeSFL_Settings['ShowListStyle'] = 'Tiles'; }
+				else { $eeSFL_Settings['ShowListStyle'] = 'Table'; }
+	}
+	
+	
 	// List Visibility
 	if($_POST['eeShowList'] == 'YES') { $eeSFL_Settings['ShowList'] = 'YES'; } 
 		elseif($_POST['eeShowList'] == 'USER') { $eeSFL_Settings['ShowList'] = 'USER'; } // Show only to logged in users
@@ -135,6 +144,38 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 	<!-- Left Column -->
 	
 	<div class="eeColLeft">
+	
+		<div class="eeSettingsTile">
+		
+		<h2>' . __('File List Style', 'ee-simple-file-list') . '</h2>
+	
+		<p><label for="eeShowListStyle">' . __('Display Style Type', 'ee-simple-file-list') . '</label>
+		
+		<select name="eeShowListStyle" id="eeShowListStyle">
+		
+			<option value="Table"';
+
+			if($eeSFL_Settings['ShowListStyle'] == 'Table') { $eeOutput .= ' selected'; }
+			
+			$eeOutput .= '>' . __('Standard Table Display', 'ee-simple-file-list') . '</option>
+			
+			<option value="Tiles"';
+
+			if($eeSFL_Settings['ShowListStyle'] == 'Tiles') { $eeOutput .= ' selected'; }
+			
+			$eeOutput .= '>' . __('Tiles Displayed in Columns', 'ee-simple-file-list') . '</option>
+			
+			<option value="Flex"';
+
+			if($eeSFL_Settings['ShowListStyle'] == 'Flex') { $eeOutput .= ' selected'; }
+			
+			$eeOutput .= '>' . __('Flexible List Display', 'ee-simple-file-list') . '</option>
+		
+		</select></p>
+		<div class="eeNote">' . __('Determine who you will show the front-side list to.', 'ee-simple-file-list') . '</div>
+		
+		</div>
+	
 		
 		<div class="eeSettingsTile">
 		

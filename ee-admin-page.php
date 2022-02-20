@@ -22,6 +22,11 @@ function eeSFL_BASE_ManageLists() {
 
 	// Get the new tab's query string value. We will only use values to display tabs that we are expecting.
 	if( isset( $_GET[ 'tab' ] ) ) { $active_tab = sanitize_text_field($_GET[ 'tab' ]); } else { $active_tab = 'file_list'; }
+
+	// Upsell to Pro
+	if( $eeAdmin AND !$_POST AND count($eeSFL_BASE_Log['messages']) === 0 ) {
+		$eeSFL_BASE_Log['messages'] = $eeUpSell;
+	}
 	
 	$eeOutput .= '
 	<h2 class="nav-tab-wrapper">';
@@ -74,19 +79,75 @@ function eeSFL_BASE_ManageLists() {
     
 	if($active_tab == 'file_list') {
 	
-		$eeOutput .= $eeUpSell . '<div id="uploadFilesDiv">';
+		// Scan the Disk
+		$eeSFL_Files = $eeSFL_BASE->eeSFL_UpdateFileListArray();
 		
-		// Upload Check
+		$eeOutput .= '<div id="uploadFilesDiv">';
+		
+			// Upload Check
+			$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
+			include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-check.php');
+			
+			$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
+			include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-form.php'); // The Uploader
+			
+		$eeOutput .= '</div>
+			
+		<section class="eeSFL_Settings">
+		<div class="eeSettingsTile">
+		
+			<div class="eeColInline">';
+		
+			// If showing just-uploaded files
+			if($eeSFL_Uploaded) { 
+				
+				$eeOutput .= '
+				
+				<a href="' . eeSFL_BASE_AppendProperUrlOp($eeURL) . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . __('Back to the Files', 'ee-simple-file-list') . '</a>';
+			
+			} else {
+				
+				$eeOutput .= '
+				
+				<div class="eeColHalfLeft">
+			
+				<a class="eeHide button eeFlex1" id="eeSFL_UploadFilesButtonSwap">' . __('Cancel Upload', 'ee-simple-file-list') . '</a>
+				<a href="#" class="button eeFlex1" id="eeSFL_UploadFilesButton">' . __('Upload Files', 'ee-simple-file-list') . '</a>
+				<a href="#" class="button eeFlex1" id="eeSFL_ReScanButton">' . __('Re-Scan Files', 'ee-simple-file-list') . '</a>
+				<a href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" class="button eeFlex1" >' . __('Create Folder', 'ee-simple-file-list') . '</a>
+				
+				</div>
+				
+				<div class="eeColHalfRight">';
+				
+				// Get File Count
+				$eeFileCount = count($eeSFL_Files);
+				
+				// Calc Date Last Changed
+				$eeArray = array();
+				foreach( $eeSFL_Files as $eeKey => $eeFileArray) { $eeArray[] = $eeFileArray['FileDateAdded']; }
+				rsort($eeArray); // Most recent at the top	
+				
+				$eeOutput .= '<small>' . $eeFileCount . ' ' . __('Files', 'ee-simple-file-list') . ' - ' . __('Sorted by', 'ee-simple-file-list') . ' ' . ucwords($eeSFL_Settings['SortBy']);
+				
+				if($eeSFL_Settings['SortBy'] == 'Ascending') { $eeOutput .= ' &uarr;'; } else { $eeOutput .= ' &darr;'; } 
+				
+				$eeOutput .= '<br />' . 
+				__('Last Changed', 'ee-simple-file-list') . ': ' . date_i18n( get_option('date_format'), strtotime( $eeArray[0] ) ) . '</small>';
+				
+				unset($eeArray);
+				
+				$eeOutput .= '</div>';
+			}
+			
+			$eeOutput .= '
+			
+			</div>
+		</div>
+		</section>';
+		
 		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-		include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-check.php');
-		
-		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-		include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-form.php'); // The Uploader
-		
-		$eeOutput .= '</div>';
-		
-		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-		// include($eeSFL_BASE_Env['pluginDir'] . 'ee-list-display.php'); // The File List	
+		include($eeSFL_BASE_Env['pluginDir'] . 'ee-list-display.php'); // The File List	
 		
 			
 	

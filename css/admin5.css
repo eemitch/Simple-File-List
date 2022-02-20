@@ -128,8 +128,10 @@ eeSFL_Admin * + * {
 	justify-content: end;
     align-items: center;
 }
+
 .eeColInline h1,
 .eeColInline a,
+.eeColInline small,
 .eeColInline input[type=submit] {
 	margin: 0;
 	padding: 0;
@@ -137,6 +139,11 @@ eeSFL_Admin * + * {
 .eeColInline h1 {
 	font-size: 2em;
 	margin-right: 1em;
+}
+.eeColInline a.button {
+	font-size: 1em;
+	margin-right: .5em;
+	text-align: center;
 }
 .eeColInline input[type=submit] {
 	font-size: 1em;
@@ -225,6 +232,12 @@ eeSFL_Admin * + * {
 }
 
 
+/* ADMIN LIST */
+
+
+
+
+
 
 /* ADMIN FOOTER */
 
@@ -258,9 +271,6 @@ eeSFL_Admin * + * {
 }
 
 
-
-/* GENERAL STYLES */
-
 .eeSFL_Admin p.eeAlert {
 	font-size: 125%;
 	color: red;
@@ -269,37 +279,3 @@ eeSFL_Admin * + * {
 	padding: 4px;
 	text-align: center;
 }
-
-.eeFlex {
-	display: flex;
-	align-content: center;
-	justify-content: center;
-	line-height: 1;
-}
-
-.eeFullWidth {
-	display: block;
-	width: 100%;
-}
-
-.eeCentered {
-	text-align: center;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.eeFloatRight {
-	float: right;
-	clear: right;
-	margin: 0 0 1.5em 1.5em;
-	max-width: 50%;
-	height: auto;
-}
-
-.eeClearFix::after {
-  display: block;
-  content: " ";
-  clear: both;
-}
-
-.eeHide { display: none !important; }

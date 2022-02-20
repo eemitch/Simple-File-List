@@ -1,0 +1,79 @@
+/* Simple File List | Author: Mitchell Bennis | support@simplefilelist.com */
+
+.eeSFL form {
+	border: 2px solid #DDD;
+	padding: 1.5em;
+	padding-top: .5em;
+	margin: 1em auto;
+}
+
+#eeSFL_FileDropZone {
+	padding: 10px;
+	border: 5px dashed #c7c7c7;
+}
+#eeSFL_FilesDrug {
+	margin-left: 20px;
+	margin-bottom: 1em;
+	font-size: 120%;
+}
+#eeSFL_UploadGo {
+	float: left;
+	margin-left: 20px;
+}
+#eeSFL_UploadProgress {
+	
+	display: none; /* Show with javascript */
+	overflow: hidden;
+	width: 1%;
+	height: 2em;
+	line-height: 2em;
+	background-color: #23e100;
+	color: #FFF;
+	font-size: 1em;
+	text-align: center;
+	vertical-align: text-top;
+}
+#eeSFL_UploadProgress em {
+	display: none; /* Show with javascript */
+}
+
+
+
+#eeUploadInfoForm {
+	margin-bottom: 20px;
+}
+#eeUploadInfoForm p {
+	margin: 0;
+	font-size: 80%;
+}
+#eeUploadInfoForm label,
+#eeUploadInfoForm input[type=text],
+#eeUploadInfoForm input[type=email] {
+	width: 100%;
+	float: left;
+	margin-bottom: 5px;
+	max-width: 100%;
+
+}
+.eeSFL input[type=file] {
+	float: left;
+	margin-bottom: 1em;
+	font-size: 120%;
+}
+#eeUploadInfoForm label {
+	width: 100%;
+	clear: left;
+	margin: 0;
+}
+#eeUploadInfoForm textarea {
+	width: 100%;
+	margin: 0;
+	height: 4em;
+}
+
+.eeSFL_UploadingImg,
+.entry-content .eeSFL_UploadingImg {
+	margin-right: 1em;
+	box-shadow: none !important;
+	border-radius: 32px;
+}

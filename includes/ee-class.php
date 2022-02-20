@@ -47,11 +47,16 @@ class eeSFL_BASE_MainClass {
 		'ListTitle' => 'Simple File List', // List Title (Not currently used)
 		'FileListDir' => 'wp-content/uploads/simple-file-list/', // List Directory Name (relative to ABSPATH)
 		'ShowList' => 'YES', // Show the File List (YES, ADMIN, USER, NO)
+		
+		'ShowListStyle' => 'Table', // Table, Tiles, or Flex
+		
 		'AdminRole' => 5, // Who can access settings, based on WP role (5 = Admin ... 1 = Subscriber)
 		
 		'ShowFileThumb' => 'YES', // Display the File Thumbnail (YES or NO)
 		'ShowFileDate' => 'YES', // Display the File Date (YES or NO)
+		
 		'ShowFileDateAs' => 'Added', // Which date to show: added or modified
+		
 		'ShowFileSize' => 'YES', // Display the File Size (YES or NO)
 		
 		'ShowFileDesc' => 'YES', // Display the File Description (YES or NO)

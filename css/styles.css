@@ -1,0 +1,125 @@
+/* Simple File List Script: eeStyle.css | Author: Mitchell Bennis | support@simplefilelist.com */
+
+
+/* File List Container */
+.eeSFL {
+	box-sizing: border-box;
+}
+
+
+
+#eeMessageDisplay ul {
+	list-style: none;
+}
+#eeMessageDisplay ul li:before {
+	content: '✓ ';
+}
+
+.eeSFL a.eeDimmedLink {
+	color: #6a9db4;
+}
+.eeSFL a.eeDimmedLink:hover {
+	color: #0073aa;
+	text-decoration: underline;
+}
+
+.eeFlex {
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	line-height: 1;
+}
+.eeFlex1 {
+	flex: 1;
+}
+.eeFlex2 {
+	flex: 2;
+}
+
+.eeFullWidth {
+	display: block;
+	width: 100%;
+}
+
+.eeCentered {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.eeFloatRight {
+	float: right;
+	clear: right;
+	margin: 0 0 1.5em 1.5em;
+	max-width: 50%;
+	height: auto;
+}
+
+.eeClearFix::after {
+  display: block;
+  content: " ";
+  clear: both;
+}
+
+.wp-core-ui .button, .wp-core-ui .button-secondary {
+	vertical-align: middle;
+}
+
+.eeSFL a.eeDimmedLink {
+	color: #6a9db4;
+}
+.eeSFL a.eeDimmedLink:hover {
+	color: #0073aa;
+	text-decoration: underline;
+}
+
+.eeFlex {
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	line-height: 1;
+}
+.eeFlex1 {
+	flex: 1;
+}
+.eeFlex2 {
+	flex: 2;
+}
+
+.eeFullWidth {
+	display: block;
+	width: 100%;
+}
+
+.eeCentered {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.eeFloatRight {
+	float: right;
+	clear: right;
+	margin: 0 0 1.5em 1.5em;
+	max-width: 50%;
+	height: auto;
+}
+
+.eeClearFix::after {
+  display: block;
+  content: " ";
+  clear: both;
+}
+
+.wp-core-ui .button, .wp-core-ui .button-secondary {
+	vertical-align: middle;
+}
+
+.eeHide, 
+.eeSFL_FileRenameEntry, 
+.eeOldFileName,
+.eeSFL_SavedDesc { display: none !important; }
+
+
+
+

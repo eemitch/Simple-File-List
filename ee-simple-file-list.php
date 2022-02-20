@@ -272,8 +272,8 @@ function eeSFL_BASE_Shortcode($atts, $content = null) {
 		}
 		
 		// Legacy
-		if($hidetype) { $eeSFL_HideType = strtolower($hidetype); } else { $eeSFL_HideType = FALSE; }
-		if($hidename) { $eeSFL_HideName = strtolower($hidename); } else { $eeSFL_HideName = FALSE; }
+		if($hidetype) { $eeHideType = strtolower($hidetype); } else { $eeHideType = FALSE; }
+		if($hidename) { $eeHideName = strtolower($hidename); } else { $eeHideName = FALSE; }
 
 		
 	} else {
@@ -375,7 +375,8 @@ function eeSFL_BASE_Enqueue() {
 	global $eeSFL_VarsForJS;
 	
 	// Register the style like this for a theme:
-    wp_register_style( 'ee-simple-file-list-css', plugin_dir_url(__FILE__) . 'css/eeStyles.css', '', eeSFL_BASE_Cache_Version);
+    wp_register_style( 'ee-simple-file-list-css', plugin_dir_url(__FILE__) . 'css/styles.css', '', eeSFL_BASE_Cache_Version);
+    wp_register_style( 'ee-simple-file-list-css-table', plugins_url('css/styles-table.css', __FILE__), '', eeSFL_BASE_Cache_Version );
 	wp_enqueue_style('ee-simple-file-list-css');
 	
 	// Javascript
@@ -422,8 +423,10 @@ function eeSFL_BASE_AdminHead($eeHook) {
     if(in_array($eeHook, $eeHooks)) {
         
         // CSS
-        wp_enqueue_style( 'ee-simple-file-list-css-front', plugins_url('css/eeStyles.css', __FILE__), '', eeSFL_BASE_Cache_Version );
-        wp_enqueue_style( 'ee-simple-file-list-css-back', plugins_url('css/admin5.css', __FILE__), '', eeSFL_BASE_Cache_Version );
+        wp_enqueue_style( 'ee-simple-file-list-css', plugins_url('css/styles.css', __FILE__), '', eeSFL_BASE_Cache_Version );
+        wp_enqueue_style( 'ee-simple-file-list-css-upload', plugins_url('css/styles-upload-form.css', __FILE__), '', eeSFL_BASE_Cache_Version );
+        wp_enqueue_style( 'ee-simple-file-list-css-table', plugins_url('css/styles-table.css', __FILE__), '', eeSFL_BASE_Cache_Version );
+        wp_enqueue_style( 'ee-simple-file-list-css-admin', plugins_url('css/admin5.css', __FILE__), '', eeSFL_BASE_Cache_Version );
         
         // Javascript
         wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js', $deps, eeSFL_BASE_Cache_Version, FALSE);
