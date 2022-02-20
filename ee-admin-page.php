@@ -13,6 +13,7 @@ function eeSFL_BASE_ManageLists() {
 	$eeSFL_Files = FALSE;
 	$eeConfirm = FALSE;
 	$eeForceSort = FALSE; // Only used in shortcode
+	$eeURL = eeSFL_BASE_GetThisURL();
 	
 	$eeAdmin = is_admin(); // Should be TRUE here
 	if(!$eeAdmin) { return FALSE; }
@@ -82,28 +83,30 @@ function eeSFL_BASE_ManageLists() {
 		// Scan the Disk
 		$eeSFL_Files = $eeSFL_BASE->eeSFL_UpdateFileListArray();
 		
-		$eeOutput .= '<div id="uploadFilesDiv">';
+		$eeOutput .= '
 		
-			// Upload Check
-			$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-			include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-check.php');
-			
-			$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-			include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-form.php'); // The Uploader
-			
-		$eeOutput .= '</div>
-			
 		<section class="eeSFL_Settings">
+		
+		
+		<div id="uploadFilesDiv" class="eeSettingsTile eeAdminUploadForm">';
+		
+		// The Upload Form
+		$eeSFL_Nonce = wp_create_nonce('eeInclude');
+		include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-form.php');
+		
+		$eeOutput .= '</div>
+		
+		
 		<div class="eeSettingsTile">
 		
 			<div class="eeColInline">';
 		
 			// If showing just-uploaded files
-			if($eeSFL_Uploaded) { 
+			if($eeSFL_Uploaded AND $eeSFL_Settings['UploadConfirm'] == 'YES') { 
 				
 				$eeOutput .= '
 				
-				<a href="' . eeSFL_BASE_AppendProperUrlOp($eeURL) . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . __('Back to the Files', 'ee-simple-file-list') . '</a>';
+				<a href="' . $eeURL . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . __('Back to the Files', 'ee-simple-file-list') . '</a>';
 			
 			} else {
 				

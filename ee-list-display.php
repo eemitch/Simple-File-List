@@ -74,7 +74,7 @@ $eeOutput .= '
 ';
 
 // Upload Confirmation
-if($eeSFL_Files == $eeUploadedFiles AND $eeSFL_BASE_ListRun == 1) {
+if(!$eeAdmin AND $eeUploadedFiles AND $eeSFL_BASE_ListRun == 1) {
 	
 	$eeOutput .= '
 	

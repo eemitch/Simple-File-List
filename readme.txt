@@ -243,7 +243,14 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 == Changelog ==
 
 = 5.0.2 =
-* Major UI Improvements
+* Major UI and code base improvements.
+* NEW -> Added option to choose from three file list styles: Table, Tiles or Flex
+* NEW -> Added 'Show Date Type' Setting. Shows 'Added' or 'Modified' despite the sort settings.
+* NEW -> Separated the 'Get Uploader Info' form settings. Now you can get the description and/or the submitter's information, rather than just both.
+* NEW -> Added inputs for customizing the description and file submitter label text.
+* NEW -> Added an option to bypass the post-upload results page and go straight to the file list.
+* Removed the Shortcode Builder -> Shortcode attributes have been over-used :-(
+If you need to over-ride existing list settings, refer to: https://simplefilelist.com/shortcode/
 * Now Requires PHP 7
 
 

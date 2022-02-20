@@ -232,9 +232,56 @@ eeSFL_Admin * + * {
 }
 
 
-/* ADMIN LIST */
-
-
+/* ADMIN UPLOAD FORM */
+.eeSFL_Settings .eeAdminUploadForm #eeSFL_FileDropZone {
+	padding: 1em;
+	border: 4px dashed #c7c7c7;
+}
+.eeSFL_Settings .eeAdminUploadForm label {
+	display: block;
+}
+.eeSFL_Settings .eeAdminUploadForm textarea {
+	display: block;
+	width: 100%;
+	height: 4em;
+	margin-bottom: 1.5em;
+}
+.eeSFL_Settings .eeAdminUploadForm input[type=file] {
+	display: block;
+	width: 100%;
+	padding: .33em;
+	font-size: 120%;
+	background-color: #FFF;
+	border: 1px solid #5e5e5e;
+}
+.eeSFL_Settings .eeAdminUploadForm #eeSFL_FilesDrug {
+	display: none;
+	padding: .33em;
+	font-size: 120%;
+	background-color: #FFF;
+	border: 1px solid #5e5e5e;
+}
+.eeSFL_Settings .eeAdminUploadForm #eeSFL_UploadGo {
+	float: right;
+	margin: 1.5em 3em 0 0;
+	font-size: 120%;
+}
+.eeSFL_Settings .eeAdminUploadForm #eeSFL_UploadProgress {
+	display: none; /* Show with javascript */
+	overflow: hidden;
+	width: 1%;
+	height: 2em;
+	line-height: 2em;
+	background-color: #23e100;
+	color: #FFF;
+	font-size: 1em;
+	text-align: center;
+	vertical-align: text-top;
+}
+.eeSFL_Settings .eeAdminUploadForm #eeSFL_UploadProgress em, /* Show with javascript */
+.eeSFL_Settings .eeAdminUploadForm p.sfl_instuctions {
+	display: none; 
+}
 
 
 

@@ -1129,51 +1129,7 @@ class eeSFL_BASE_MainClass {
 		
 		return $eeAddressSanitized;
 	}
-	
-	
-	
-	
-	
-	
-	// Upload Info Form Display
-	public function eeSFL_UploadInfoForm() {
-		
-		$eeName = '';
-		$eeEmail = '';
-		
-		$wpUserObj = wp_get_current_user();
-		
-		if($wpUserObj) {
-			$eeName = $wpUserObj->first_name . ' ' . $wpUserObj->last_name;
-			$eeEmail = $wpUserObj->user_email;
-		}
-		
-		$eeOutput = '<div id="eeUploadInfoForm">';
-			
-			if(!$eeEmail) {
-				
-				$eeOutput .= '<label for="eeSFL_Name">' . __('Name', 'ee-simple-file-list') . ':</label>
-					<input type="text" name="eeSFL_Name" value="" id="eeSFL_Name" size="64" maxlength="64" /> 
-						<label for="eeSFL_Email">' . __('Email', 'ee-simple-file-list') . ':</label>
-							<input type="text" name="eeSFL_Email" value="" id="eeSFL_Email" size="64" maxlength="128" />';
-			}
-			
-			$eeOutput .= '<label for="eeSFL_Comments">' . __('Description', 'ee-simple-file-list') . ':</label>';
-			
-			$eeOutput .= '<textarea placeholder="' . __('Add a description (optional)', 'ee-simple-file-list') . '" name="eeSFL_Comments" id="eeSFL_Comments" rows="5" cols="64" maxlength="5012"></textarea>';
-			
-			if($eeEmail) { $eeOutput .= '<p>' . __('Submitter:', 'ee-simple-file-list') . ' ' . $eeName . ' (' . $eeEmail . ')</p>'; }
-			
-			if($eeEmail) {
-				$eeOutput .= '<input type="hidden" id="eeSFL_Name" name="eeSFL_Name" value="' . $eeName . '" />
-					<input type="hidden" id="eeSFL_Email" name="eeSFL_Email" value="' . $eeEmail . '" />';
-			}
-			
-			$eeOutput .= '</div>';
-			
-		return $eeOutput;
-	
-	}
+
 		
 	
 	

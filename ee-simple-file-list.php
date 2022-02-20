@@ -220,6 +220,7 @@ function eeSFL_BASE_Shortcode($atts, $content = null) {
     
     $eeSFL_ListNumber = $eeSFL_BASE_ListRun; // Legacy 03/20
     $eeForceSort = FALSE;
+    $eeShowIt = FALSE;
 	
 	$eeOutput = '';
 	
@@ -289,10 +290,6 @@ function eeSFL_BASE_Shortcode($atts, $content = null) {
 	
 	$eeOutput .= '><!-- $eeSFL_BASE_ListRun = ' . $eeSFL_BASE_ListRun . ' -->';
 	
-	// Upload Check
-	$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-	include(WP_PLUGIN_DIR . '/' . $eeSFL_BASE->eePluginNameSlug . '/includes/ee-upload-check.php');
-	
 	// Who Can Upload?
 	switch ($eeSFL_Settings['AllowUploads']) {
 	    case 'YES':
@@ -308,13 +305,19 @@ function eeSFL_BASE_Shortcode($atts, $content = null) {
 			$eeSFL_Settings['AllowUploads'] = 'NO'; // Show Nothing
 	}
 	
+	// Show the Upload Form or Not
 	if($eeSFL_Settings['AllowUploads'] != 'NO' AND $eeSFL_BASE_UploadRun == 1) {
 		
-		if(!isset($_POST['eeSFL_Upload']) AND !isset($_POST['eeSFLS_Searching'])) {
+		if( $eeSFL_Settings['UploadConfirm'] == 'NO' ) { $eeShowIt = TRUE; } 
+		
+		if( !isset($_POST['eeSFL_Upload']) ) { $eeShowIt = TRUE; }
+			
+		if($eeShowIt) {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
 			
 			require_once($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-form.php');
+			
 			$eeSFL_BASE_UploadRun++;
 		}
 	}
@@ -424,7 +427,7 @@ function eeSFL_BASE_AdminHead($eeHook) {
         
         // CSS
         wp_enqueue_style( 'ee-simple-file-list-css', plugins_url('css/styles.css', __FILE__), '', eeSFL_BASE_Cache_Version );
-        wp_enqueue_style( 'ee-simple-file-list-css-upload', plugins_url('css/styles-upload-form.css', __FILE__), '', eeSFL_BASE_Cache_Version );
+        // wp_enqueue_style( 'ee-simple-file-list-css-upload', plugins_url('css/styles-upload-form.css', __FILE__), '', eeSFL_BASE_Cache_Version );
         wp_enqueue_style( 'ee-simple-file-list-css-table', plugins_url('css/styles-table.css', __FILE__), '', eeSFL_BASE_Cache_Version );
         wp_enqueue_style( 'ee-simple-file-list-css-admin', plugins_url('css/admin5.css', __FILE__), '', eeSFL_BASE_Cache_Version );
         

@@ -21,7 +21,6 @@
 	margin-left: 20px;
 }
 #eeSFL_UploadProgress {
-	
 	display: none; /* Show with javascript */
 	overflow: hidden;
 	width: 1%;
@@ -36,7 +35,6 @@
 #eeSFL_UploadProgress em {
 	display: none; /* Show with javascript */
 }
-
 
 
 #eeUploadInfoForm {
