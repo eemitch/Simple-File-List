@@ -1,5 +1,8 @@
 /* Simple File List Back-End Styles
 	Version 5 - Winter 2022 */
+	
+/* COLORS */
+
 
 
 .eeSFL_Admin { /* <main> */
@@ -7,9 +10,32 @@
 	padding: .5em;
 	padding-top: 0;
 	font-size: 16px;
+	position: relative;
+	
+/* 	background-color: #000; */
+	
+	--ee-admin-light-text: #eaeaef;
+	--ee-admin-dark-text: #444;
+	--ee-admin-input-background: #FFF;
+	--ee-admin-light-background: #f0f0f1;
+	--ee-admin-medium-background: #dcdcde;
+	--ee-admin-dark-background: #5f5f5f;
+	--ee-admin-tile-background: #f0f0f1;
+	--ee-admin-upsell-background: #d0ffd8;
+	--ee-admin-border: #777;
+	--ee-admin-upload-progress-bar: #23e100;
+	--ee-admin-caution-background: #cc0000;
+	
 }
+
+.ee {
+	color: #d4ffdd;
+}
+
+
 eeSFL_Admin * + * {
 	margin-top: 1.5em;
+	
 }
 .eeSFL_Admin h1,
 .eeSFL_Admin h2,
@@ -44,9 +70,9 @@ eeSFL_Admin * + * {
 }
 
 #eeGoProBanner {
-	background-color: #d0ffd8;
+	background-color: var(--ee-admin-upsell-background);
 	padding: 10px;
-	border: 1px solid #666;
+	border: 1px solid var(--ee-admin-border);
 }
 #eeGoProBanner p {
 	font-size: 100%;
@@ -57,6 +83,68 @@ eeSFL_Admin * + * {
 	margin: 0 0 2px 25px;
 }
 
+
+/* ADMIN HEADER */
+
+.eeSFL_Admin header {
+	background-color: var(--ee-admin-medium-background);
+	padding: .75em;
+	margin: 0 0 .5em;
+	border: 1px solid var(--ee-admin-border);
+}
+
+.eeSFL_Admin header img {
+	display: block;
+	float: left;
+	height: 4em;
+	width: auto;
+	margin: .25em 1.5em .25em .25em;
+}
+.eeSFL_Admin header div {
+	float: left;
+}
+.eeSFL_Admin header .eeShortCodeOps {
+	float: right;
+}
+.eeSFL_Admin header .eeShortCodeOps p {
+	line-height: 1.5;
+	text-align: right;
+}
+.eeSFL_Admin header p.heading {
+	margin: 0;
+	margin-bottom: .1em;
+	padding: 0;
+	font-size: 2em;
+	line-height: 1;
+}
+.eeSFL_Admin header p.eeTagLine {
+	font-size: 90%;
+	margin: 0;
+	padding: 0;
+	border-bottom: 2px solid var(--ee-admin-border);
+}
+.eeSFL_Admin header p.eeHeaderLinks {
+	font-size: .7em;
+	margin: 0;
+	margin-top: .5em;
+	line-height: 1;
+}
+.eeSFL_Admin header p.eeHeaderLinks a {
+	text-decoration: none;
+	display: inline-block;
+	margin-right: .5em;
+	color: var(--ee-admin-light-text);
+	background-color: var(--ee-admin-dark-background);
+	padding: .25em .3em;
+	border-radius: .33em;
+	border: 1px solid var(--ee-admin-dark-background);
+}
+.eeSFL_Admin header p.eeHeaderLinks a:hover {
+	color: var(--ee-admin-dark-text);
+	background-color: var(--ee-admin-medium-background);
+	border: 1px solid var(--ee-admin-border);
+}
+
 /* ADMIN TABS */
 
 .eeSFL_Admin .nav-tab {
@@ -64,7 +152,7 @@ eeSFL_Admin * + * {
 }
 .eeSFL_Admin h2.nav-tab-wrapper {
 	display: flex;
-	border-bottom: 2px solid #333;
+	border-bottom: 2px solid var(--ee-admin-border);
 }
 .eeSFL_Admin h2.nav-tab-wrapper span {
 	display: flex;
@@ -77,9 +165,12 @@ eeSFL_Admin * + * {
 	margin-left: 0;
 }
 .eeSFL_Admin h2.nav-tab-wrapper a.eeActiveTab {
-	color: #eaeaef;
-	background-color: #5f5f5f;
+	color: var(--ee-admin-light-text);
+	background-color: var(--ee-admin-dark-background);
 }
+
+
+
 
 
 
@@ -95,9 +186,9 @@ eeSFL_Admin * + * {
 .eeSFL_Settings {
 	margin-top: 0;
 	padding: .5em 1em 1em 0;
-	border: 2px solid #666;
+	border: 2px solid var(--ee-admin-border);
 	border-top: none;
-	background-color: #5f5f5f;
+	background-color: var(--ee-admin-dark-background);
 }
 .eeColumns {
 	display: flex;
@@ -157,7 +248,7 @@ eeSFL_Admin * + * {
 	padding: 1.5em;
 	margin: 1em 0 1em 1em;
 	margin-bottom: 0;
-	background-color: #f0f0f1;
+	background-color: var(--ee-admin-tile-background); /*  #f0f0f1 */
 	flex: 1;
 }
 .eeSettingsTile h2,
@@ -189,7 +280,8 @@ eeSFL_Admin * + * {
 	font-size: .9em;
 }
 
-.eeSettingsTile fieldset label input[type=checkbox] {
+.eeSettingsTile fieldset label input[type=checkbox],
+.eeSettingsTile fieldset label select {
 	margin-left: 1em;
 }
 
@@ -206,9 +298,11 @@ eeSFL_Admin * + * {
 .eeSettingsTile fieldset input[type=checkbox] {
 	transform: scale(1.2);
 	padding: .5em;
+	background-color: var(--ee-admin-input-background);
 }
 .eeSettingsTile fieldset input[type=text] {
 	width: 40%;
+	background-color: var(--ee-admin-input-background);
 }
 .eeSettingsTile fieldset textarea {
 	width: 100%;
@@ -218,7 +312,7 @@ eeSFL_Admin * + * {
 	display: block;
 	width: 100%;
 	padding-bottom: .25em; 
-	border-bottom: 1px solid #666;
+	border-bottom: 1px solid var(--ee-admin-border);
 	margin-bottom: .5em;
 }
 
@@ -226,16 +320,18 @@ eeSFL_Admin * + * {
 	font-size: .8em;
 	font-style: italic;
 	padding: .25em;
-	background-color: #e9e9e9;
-	border: 1px solid #dadada;
-	border-radius: .1em;
+	margin-bottom: .33em;
+	color: var(--ee-admin-dark-text);
+	background-color: var(--ee-admin-medium-background);
+	border: 1px solid var(--ee-admin-border);
+	border-radius: .25em;
 }
 
 
 /* ADMIN UPLOAD FORM */
 .eeSFL_Settings .eeAdminUploadForm #eeSFL_FileDropZone {
 	padding: 1em;
-	border: 4px dashed #c7c7c7;
+	border: 4px dashed var(--ee-admin-border);
 }
 .eeSFL_Settings .eeAdminUploadForm label {
 	display: block;
@@ -245,21 +341,22 @@ eeSFL_Admin * + * {
 	width: 100%;
 	height: 4em;
 	margin-bottom: 1.5em;
+	background-color: var(--ee-admin-input-background);
 }
 .eeSFL_Settings .eeAdminUploadForm input[type=file] {
 	display: block;
 	width: 100%;
 	padding: .33em;
 	font-size: 120%;
-	background-color: #FFF;
-	border: 1px solid #5e5e5e;
+	background-color: var(--ee-admin-input-background);
+	border: 1px solid var(--ee-admin-border);
 }
 .eeSFL_Settings .eeAdminUploadForm #eeSFL_FilesDrug {
 	display: none;
 	padding: .33em;
 	font-size: 120%;
-	background-color: #FFF;
-	border: 1px solid #5e5e5e;
+	background-color: var(--ee-admin-input-background);
+	border: 1px solid var(--ee-admin-border);
 }
 .eeSFL_Settings .eeAdminUploadForm #eeSFL_UploadGo {
 	float: right;
@@ -272,8 +369,8 @@ eeSFL_Admin * + * {
 	width: 1%;
 	height: 2em;
 	line-height: 2em;
-	background-color: #23e100;
-	color: #FFF;
+	background-color: var(--ee-admin-upload-progress-bar);
+	color: var(--ee-admin-light-text);
 	font-size: 1em;
 	text-align: center;
 	vertical-align: text-top;
@@ -289,17 +386,17 @@ eeSFL_Admin * + * {
 /* ADMIN FOOTER */
 
 .eeSFL_Admin > footer {
-	background-color: #dcdcde;
-	border: 1px solid #999;
-	border-top: 3px solid #333;
+	background-color: var(--ee-admin-medium-background);
+	border: 1px solid var(--ee-admin-border);
+	border-top: 3px solid var(--ee-admin-border);
 	margin-top: 1.5em;
 	padding: 1.5em;
 }
 
 .eeSFL_Admin > footer > a {
 	display: inline-block;
-	color: #EEE;
-	background: #333;
+	color: var(--ee-admin-light-text);
+	background: var(--ee-admin-dark-background);
 	padding: .2em .5em;
 	margin-right: .5em;
 	border-radius: .2em;
@@ -307,11 +404,11 @@ eeSFL_Admin * + * {
 }
 .eeSFL_Admin > footer > a.eeCaution {
 	font-weight: bold;
-	background-color: #cc0000;
+	background-color: var(--ee-admin-caution-background);
 }
 
 .eeSFL_Admin > footer > p.ee-plugin-version {
-	border-top: 2px solid #333;
+	border-top: .25em solid var(--ee-admin-border);
 	margin-top: 1em;
 	padding-top: .5em;
 	text-align: center;

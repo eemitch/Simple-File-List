@@ -1,0 +1,14 @@
+#eeSFL {
+	
+	/* 	Light Theme Colors */
+	
+	--ee-light-text: #eaeaef;
+	--ee-dark-text: #444;
+	--ee-input-background: #FFF;
+	--ee-light-background: #f0f0f1;
+	--ee-medium-background: #dcdcde;
+	--ee-dark-background: #5f5f5f;
+	--ee-border: #777;
+	
+	--ee-upload-progress-bar: #23e100;
+}

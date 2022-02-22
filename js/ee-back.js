@@ -23,10 +23,11 @@ jQuery(function() {
    // Copy the Shortcode to the clipboard
    jQuery('#eeCopytoClipboard').on('click', function() {  
 	
-	var eeShortCode = jQuery('#eeSFL_ShortCode').val();
-    jQuery('#eeSFL_ShortCode').focus();
-    jQuery('#eeSFL_ShortCode').select();
-    document.execCommand('copy');
+		var eeShortCode = jQuery('#eeSFL_ShortCode').val();
+		jQuery('#eeSFL_ShortCode').focus();
+		jQuery('#eeSFL_ShortCode').select();
+		jQuery('#eeSFL_ShortCode').css('background-color', '#d4ffdd');
+		document.execCommand('copy');
     
    });
    

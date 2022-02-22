@@ -264,21 +264,21 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 					if($eeAdmin OR $eeSFL_Settings['ShowFileOpen'] == 'YES') {
 					
 						if(in_array($eeFileExt, $eeSFL_BASE->eeOpenableFileFormats)) {
-							$eeFileActions .= '<a class="eeSFL_FileOpen" href="' . $eeFileURL . '" target="_blank">' . __('Open', 'ee-simple-file-list') . '</a> | ';
+							$eeFileActions .= '<a class="eeSFL_FileOpen" href="' . $eeFileURL . '" target="_blank">' . __('Open', 'ee-simple-file-list') . '</a>';
 						}
 					}
 					
 					// Download Action
 					if($eeAdmin OR $eeSFL_Settings['ShowFileDownload'] == 'YES') {
 					
-						$eeFileActions .= '<a class="eeSFL_FileDownload" href="' . $eeFileURL . '" download="' . basename($eeFileURL) . '">' . __('Download', 'ee-simple-file-list') . '</a> | ';
+						$eeFileActions .= '<a class="eeSFL_FileDownload" href="' . $eeFileURL . '" download="' . basename($eeFileURL) . '">' . __('Download', 'ee-simple-file-list') . '</a>';
 					
 					}
 					
 					// Copy Link Action
 					if($eeAdmin OR $eeSFL_Settings['ShowFileCopyLink'] == 'YES') {
 						
-						$eeFileActions .= '<a class="eeSFL_CopyLinkToClipboard" onclick="eeSFL_BASE_CopyLinkToClipboard(\''  . $eeFileURL .   '\')" href="#">' . __('Copy Link', 'ee-simple-file-list') . '</a> | ';														
+						$eeFileActions .= '<a class="eeSFL_CopyLinkToClipboard" onclick="eeSFL_BASE_CopyLinkToClipboard(\''  . $eeFileURL .   '\')" href="#">' . __('Copy Link', 'ee-simple-file-list') . '</a>';														
 					
 					}
 					
@@ -288,14 +288,14 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 						if($eeAdmin) { $eeFileActions .= '<br />'; }								
 						
 						$eeFileActions .= '<a href="" id="eeSFL_EditFile_' . $eeRowID . '" onclick="eeSFL_BASE_EditFile(' . $eeRowID . ')">' . 
-						__('Edit', 'ee-simple-file-list') . '</a> | <a href="#" onclick="eeSFL_BASE_Delete(' . $eeRowID . ')">' . 
+						__('Edit', 'ee-simple-file-list') . '</a><a href="#" onclick="eeSFL_BASE_Delete(' . $eeRowID . ')">' . 
 						__('Delete', 'ee-simple-file-list') . '</a>';
 						
 						if($eeAdmin) {
 						
-							$eeFileActions .= ' | 
-							 <a class="eeDimmedLink" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Move', 'ee-simple-file-list') . '</a> | 
-							 <a class="eeDimmedLink" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Users', 'ee-simple-file-list') . '</a> | 
+							$eeFileActions .= '
+							 <a class="eeDimmedLink" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Move', 'ee-simple-file-list') . '</a>
+							 <a class="eeDimmedLink" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Users', 'ee-simple-file-list') . '</a>
 							 <a class="eeDimmedLink" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Send', 'ee-simple-file-list') . '</a>';
 							
 						}

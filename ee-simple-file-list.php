@@ -22,7 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 // SFL Versions
 define('eeSFL_BASE_Version', '5.0.2'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_BASE_DB_Version', '4.7'); // Database structure version - used for eeSFL_BASE_VersionCheck()
-define('eeSFL_BASE_Cache_Version', eeSFL_BASE_Version); // Cache-Buster version for static files - used when updating CSS/JS
 
 // LEGACY
 if( !defined('eeSFL_Version') ) { define('eeSFL_Version', eeSFL_BASE_Version); } // Fix for Folder Extension Need, post 4.2.12
@@ -220,7 +219,7 @@ function eeSFL_BASE_Shortcode($atts, $content = null) {
     
     $eeSFL_ListNumber = $eeSFL_BASE_ListRun; // Legacy 03/20
     $eeForceSort = FALSE;
-    $eeShowIt = FALSE;
+    $eeShowUploader = FALSE;
 	
 	$eeOutput = '';
 	
@@ -282,6 +281,8 @@ function eeSFL_BASE_Shortcode($atts, $content = null) {
 	}
 	
 	
+	
+	
 	// Begin Front-Side List Display ==================================================================
 	
 	$eeOutput .= '<div class="eeSFL"';
@@ -308,14 +309,16 @@ function eeSFL_BASE_Shortcode($atts, $content = null) {
 	// Show the Upload Form or Not
 	if($eeSFL_Settings['AllowUploads'] != 'NO' AND $eeSFL_BASE_UploadRun == 1) {
 		
-		if( $eeSFL_Settings['UploadConfirm'] == 'NO' ) { $eeShowIt = TRUE; } 
+		$eeSFL_Nonce = wp_create_nonce('eeInclude');
+		require_once($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-check.php');
 		
-		if( !isset($_POST['eeSFL_Upload']) ) { $eeShowIt = TRUE; }
+		if( $eeSFL_Settings['UploadConfirm'] == 'NO' ) { $eeShowUploader = TRUE; } 
+		
+		if( !isset($_POST['eeSFL_Upload']) ) { $eeShowUploader = TRUE; }
 			
-		if($eeShowIt) {
+		if($eeShowUploader AND $eeSFL_Settings['UploadPosition'] == 'Above') {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			
 			require_once($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-form.php');
 			
 			$eeSFL_BASE_UploadRun++;
@@ -340,6 +343,14 @@ function eeSFL_BASE_Shortcode($atts, $content = null) {
 	if($eeSFL_Settings['ShowList'] != 'NO') {
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
 		include(WP_PLUGIN_DIR . '/' . $eeSFL_BASE->eePluginNameSlug . '/ee-list-display.php');
+	}
+	
+	if($eeShowUploader AND $eeSFL_Settings['UploadPosition'] == 'Below') {
+			
+		$eeSFL_Nonce = wp_create_nonce('eeInclude');
+		require_once($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-form.php');
+		
+		$eeSFL_BASE_UploadRun++;
 	}
 	
 	$eeOutput .= '</div>'; // Ends .eeSFL block
@@ -375,29 +386,53 @@ add_shortcode( 'eeSFL', 'eeSFL_BASE_Shortcode' );
 // Load Front-side <head>
 function eeSFL_BASE_Enqueue() {
 	
-	global $eeSFL_VarsForJS;
+	global $eeSFL_Settings, $eeSFL_VarsForJS;
 	
-	// Register the style like this for a theme:
-    wp_register_style( 'ee-simple-file-list-css', plugin_dir_url(__FILE__) . 'css/styles.css', '', eeSFL_BASE_Cache_Version);
-    wp_register_style( 'ee-simple-file-list-css-table', plugins_url('css/styles-table.css', __FILE__), '', eeSFL_BASE_Cache_Version );
-	wp_enqueue_style('ee-simple-file-list-css');
+	
+	// CSS
+    wp_register_style( 'ee-simple-file-list-css', plugin_dir_url(__FILE__) . 'css/styles.css', '', eeSFL_BASE_Version);
+    wp_enqueue_style('ee-simple-file-list-css');
+    
+    if($eeSFL_Settings['AllowUploads'] != 'NO') {
+	    wp_register_style( 'ee-simple-file-list-css-upload', plugins_url('css/styles-upload-form.css', __FILE__), '', eeSFL_BASE_Version );
+		wp_enqueue_style('ee-simple-file-list-css-upload');
+    }
+    
+    // List Style
+    if($eeSFL_Settings['ShowListStyle'] == 'Flex') {
+    	wp_register_style( 'ee-simple-file-list-css-flex', plugins_url('css/styles-flex.css', __FILE__), '', eeSFL_BASE_Version );
+		wp_enqueue_style('ee-simple-file-list-css-flex');
+	} elseif($eeSFL_Settings['ShowListStyle'] == 'Tiles') {
+    	wp_register_style( 'ee-simple-file-list-css-tiles', plugins_url('css/styles-tiles.css', __FILE__), '', eeSFL_BASE_Version );
+		wp_enqueue_style('ee-simple-file-list-css-tiles');
+	} else {
+		wp_register_style( 'ee-simple-file-list-css-table', plugins_url('css/styles-table.css', __FILE__), '', eeSFL_BASE_Version );
+		wp_enqueue_style('ee-simple-file-list-css-table');
+	}
+	
+	// List Theme
+    if($eeSFL_Settings['ShowListTheme'] == 'Dark') {
+    	wp_register_style( 'ee-simple-file-list-css-theme-dark', plugins_url('css/styles-theme-dark.css', __FILE__), '', eeSFL_BASE_Version );
+		wp_enqueue_style('ee-simple-file-list-css-theme-dark');
+	} else {
+		wp_register_style( 'ee-simple-file-list-css-theme-light', plugins_url('css/styles-theme-light.css', __FILE__), '', eeSFL_BASE_Version );
+		wp_enqueue_style('ee-simple-file-list-css-theme-light');
+	}
 	
 	// Javascript
 	$deps = array('jquery'); // Requires jQuery
-	
-	
 	
 	// Register Scripts
 	wp_register_script( 'ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js' );
 	// wp_register_script( 'ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js' ); // Throws "jQuery Not Defined" error?
 	
 	// Enqueue
-	wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js', $deps, eeSFL_BASE_Cache_Version, FALSE); // Head
-	wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js',$deps, eeSFL_BASE_Cache_Version, TRUE); // Footer
+	wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js', $deps, eeSFL_BASE_Version, FALSE); // Head
+	wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js',$deps, eeSFL_BASE_Version, TRUE); // Footer
 	
 	// Uploader
 	wp_register_script( 'ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js' );
-	wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_BASE_Cache_Version, TRUE);
+	wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_BASE_Version, TRUE);
 	
 	// Pass variables
 	wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $eeSFL_VarsForJS ); // Footer
@@ -410,7 +445,7 @@ add_action( 'wp_enqueue_scripts', 'eeSFL_BASE_Enqueue' );
 // Admin <head>
 function eeSFL_BASE_AdminHead($eeHook) {
 
-	global $eeSFL_VarsForJS;
+	global $eeSFL_Settings, $eeSFL_VarsForJS;
 	
 	$deps = array('jquery');
 	
@@ -426,16 +461,25 @@ function eeSFL_BASE_AdminHead($eeHook) {
     if(in_array($eeHook, $eeHooks)) {
         
         // CSS
-        wp_enqueue_style( 'ee-simple-file-list-css', plugins_url('css/styles.css', __FILE__), '', eeSFL_BASE_Cache_Version );
-        // wp_enqueue_style( 'ee-simple-file-list-css-upload', plugins_url('css/styles-upload-form.css', __FILE__), '', eeSFL_BASE_Cache_Version );
-        wp_enqueue_style( 'ee-simple-file-list-css-table', plugins_url('css/styles-table.css', __FILE__), '', eeSFL_BASE_Cache_Version );
-        wp_enqueue_style( 'ee-simple-file-list-css-admin', plugins_url('css/admin5.css', __FILE__), '', eeSFL_BASE_Cache_Version );
+        wp_enqueue_style( 'ee-simple-file-list-css', plugins_url('css/styles.css', __FILE__), '', eeSFL_BASE_Version );
+        
+        // List Style
+        if($eeSFL_Settings['ShowListStyle'] == 'Flex') {
+        	wp_enqueue_style( 'ee-simple-file-list-css-flex', plugins_url('css/styles-flex.css', __FILE__), '', eeSFL_BASE_Version );
+        } elseif($eeSFL_Settings['ShowListStyle'] == 'Tiles') {
+	        wp_enqueue_style( 'ee-simple-file-list-css-tiles', plugins_url('css/styles-tiles.css', __FILE__), '', eeSFL_BASE_Version );
+        } else {
+	        wp_enqueue_style( 'ee-simple-file-list-css-table', plugins_url('css/styles-table.css', __FILE__), '', eeSFL_BASE_Version );
+        }
+        
+        wp_enqueue_style( 'ee-simple-file-list-css-admin', plugins_url('css/admin5.css', __FILE__), '', eeSFL_BASE_Version );
+        
         
         // Javascript
-        wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js', $deps, eeSFL_BASE_Cache_Version, FALSE);
-		wp_enqueue_script('ee-simple-file-list-js-back', plugin_dir_url(__FILE__) . 'js/ee-back.js', $deps, eeSFL_BASE_Cache_Version, FALSE);
-        wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js', $deps, eeSFL_BASE_Cache_Version, TRUE);
-        wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_BASE_Cache_Version, TRUE);
+        wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js', $deps, eeSFL_BASE_Version, FALSE);
+		wp_enqueue_script('ee-simple-file-list-js-back', plugin_dir_url(__FILE__) . 'js/ee-back.js', $deps, eeSFL_BASE_Version, FALSE);
+        wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js', $deps, eeSFL_BASE_Version, TRUE);
+        wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_BASE_Version, TRUE);
 		
 		wp_localize_script('ee-simple-file-list-js-head', 'eeSFL_JS', array( 'pluginsUrl' => plugins_url() ) ); // Needs expanding for alert boxes
 		

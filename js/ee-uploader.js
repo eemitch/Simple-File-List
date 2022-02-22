@@ -140,7 +140,7 @@ function eeSFL_BASE_UploadProcessor(eeSFL_FileObjects) {
 	if(eeSFL_FileCount) {
 		
 		// Check if input fields have been completed, if they appear.
-		if(jQuery('#eeSFL_Comments').length >= 1) { // Get Uploader Info is ON
+		if(jQuery('#eeSFL_FileDesc').length >= 1) { // Get Uploader Info is ON
 			var eeSFL_Name = jQuery('#eeSFL_Name').val();
 			var eeSFL_Email = jQuery('#eeSFL_Email').val();
 			

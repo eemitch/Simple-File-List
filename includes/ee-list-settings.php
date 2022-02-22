@@ -6,25 +6,9 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit 
 $eeSFL_BASE_Log['RunTime'][] = 'Loading List Settings Page ...';
 
 // Check for POST and Nonce
-if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {	
-	
-	// List Style
-	if(isset($_POST['eeShowListStyle'])) { 
-		$eeShowListStyle = sanitize_text_field($_POST['eeShowListStyle']);
-		if( $eeShowListStyle == 'Flex' ) { $eeSFL_Settings['ShowListStyle'] = 'Flex'; }
-			elseif($eeShowListStyle == 'Tiles') { $eeSFL_Settings['ShowListStyle'] = 'Tiles'; }
-				else { $eeSFL_Settings['ShowListStyle'] = 'Table'; }
-	}
-	
-	
-	// List Visibility
-	if($_POST['eeShowList'] == 'YES') { $eeSFL_Settings['ShowList'] = 'YES'; } 
-		elseif($_POST['eeShowList'] == 'USER') { $eeSFL_Settings['ShowList'] = 'USER'; } // Show only to logged in users
-			 elseif($_POST['eeShowList'] == 'ADMIN') { $eeSFL_Settings['ShowList'] = 'ADMIN'; } // Show only to logged in Admins
-				else { $eeSFL_Settings['ShowList'] = 'NO'; }	
-
+if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {
 		
-		// YES/NO Checkboxes
+	// YES/NO Checkboxes
 	$eeCheckboxes = array(
 		'AllowFrontManage'
 		,'ShowFileThumb'
@@ -46,10 +30,10 @@ if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settin
 	);
 		
 	foreach( $eeCheckboxes as $eeTerm){ // "ee" is added in the function
-		
 		$eeSFL_Settings[$eeTerm] = eeSFL_BASE_ProcessCheckboxInput($eeTerm);
 	}
 	
+	// Text or Select Inputs
 	$eeTextInputs = array(
 		'LabelThumb'
 		,'LabelName'
@@ -57,27 +41,16 @@ if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settin
 		,'LabelSize'
 		,'LabelDesc'
 		,'LabelOwner'
+		,'ShowList'
+		,'ShowListStyle'
+		,'ShowListTheme'
+		,'SortBy'
+		,'SortOrder'
+		,'ShowFileDateAs'
 	);
+	
 	foreach( $eeTextInputs as $eeTerm){
 		$eeSFL_Settings[$eeTerm] = eeSFL_BASE_ProcessTextInput($eeTerm);
-	}
-	
-	
-	// Sort by Select Box	
-	if(isset($_POST['eeSortBy'])) { 
-		$eeSFL_Settings['SortBy'] = sanitize_text_field($_POST['eeSortBy']);
-		if(!$eeSFL_Settings['SortBy']) { $eeSFL_Settings['SortBy'] = 'Name'; }
-	}
-	
-	// Asc/Desc Checkbox
-	if(@$_POST['eeSortOrder'] == 'Descending') { $eeSFL_Settings['SortOrder'] = 'Descending'; }
-		else { $eeSFL_Settings['SortOrder'] = 'Ascending'; }
-	
-	// Show Date Type	
-	if(isset($_POST['eeShowFileDateAs'])) { 
-		$eeSFL_Settings['ShowFileDateAs'] = sanitize_text_field($_POST['eeShowFileDateAs']);
-		if( $eeSFL_Settings['ShowFileDateAs'] == 'Modified' ) { $eeSFL_Settings['ShowFileDateAs'] = 'Modified'; }
-			else { $eeSFL_Settings['ShowFileDateAs'] = 'Added';}
 	}
 	
 	
@@ -145,37 +118,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 	
 	<div class="eeColLeft">
 	
-		<div class="eeSettingsTile">
 		
-		<h2>' . __('File List Style', 'ee-simple-file-list') . '</h2>
-	
-		<p><label for="eeShowListStyle">' . __('Display Style Type', 'ee-simple-file-list') . '</label>
-		
-		<select name="eeShowListStyle" id="eeShowListStyle">
-		
-			<option value="Table"';
-
-			if($eeSFL_Settings['ShowListStyle'] == 'Table') { $eeOutput .= ' selected'; }
-			
-			$eeOutput .= '>' . __('Standard Table Display', 'ee-simple-file-list') . '</option>
-			
-			<option value="Tiles"';
-
-			if($eeSFL_Settings['ShowListStyle'] == 'Tiles') { $eeOutput .= ' selected'; }
-			
-			$eeOutput .= '>' . __('Tiles Displayed in Columns', 'ee-simple-file-list') . '</option>
-			
-			<option value="Flex"';
-
-			if($eeSFL_Settings['ShowListStyle'] == 'Flex') { $eeOutput .= ' selected'; }
-			
-			$eeOutput .= '>' . __('Flexible List Display', 'ee-simple-file-list') . '</option>
-		
-		</select></p>
-		<div class="eeNote">' . __('Determine who you will show the front-side list to.', 'ee-simple-file-list') . '</div>
-		
-		</div>
-	
 		
 		<div class="eeSettingsTile">
 		
@@ -212,7 +155,12 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		</select></p>
 		<div class="eeNote">' . __('Determine who you will show the front-side list to.', 'ee-simple-file-list') . '</div>
 		
+		<div class="eeNote"><a href="https://get.simplefilelist.com/" target="_blank">' .  __('Upgrade to PRO', 'ee-simple-file-list') . '</a> ' . __('Upgrade to allow much more precise user and role access to file lists.', 'ee-simple-file-list') . '</div>
+		
 		</div>
+		
+		
+		
 		
 		
 		<div class="eeSettingsTile">
@@ -227,10 +175,88 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		$eeOutput .= ' /></p>
 		
 		<div class="eeNote">' . __('Allow file deletion, file renaming, editing descriptions and dates.', 'ee-simple-file-list') . '</div>
-		<div class="eeNote"><a href="https://get.simplefilelist.com/" target="_blank">' .  __('Upgrade to Pro', 'ee-simple-file-list') . '</a> ' . __('Upgrade to Simple File List Pro and add the file access manager extension. This will allow access control for specific users and roles.', 'ee-simple-file-list') . '<br />
+		<div class="eeNote"><a href="https://get.simplefilelist.com/" target="_blank">' .  __('Upgrade to PRO', 'ee-simple-file-list') . '</a> ' . __('Upgrade to allow greater file management control for specific users and roles.', 'ee-simple-file-list') . '<br />
 		</div>
 			
 		</div>
+		
+		
+		
+		
+		
+		<div class="eeSettingsTile">
+		
+		<h2>' . __('File List Display', 'ee-simple-file-list') . '</h2>
+	
+		
+		<fieldset>
+		<legend>File List Style</legend>
+		
+		<p><label for="eeShowListStyle">' . __('Style', 'ee-simple-file-list') . '</label>
+		
+		<select name="eeShowListStyle" id="eeShowListStyle">
+		
+			<option value="Table"';
+
+			if($eeSFL_Settings['ShowListStyle'] == 'Table') { $eeOutput .= ' selected'; }
+			
+			$eeOutput .= '>' . __('Standard Table Display', 'ee-simple-file-list') . '</option>
+			
+			<option value="Tiles"';
+
+			if($eeSFL_Settings['ShowListStyle'] == 'Tiles') { $eeOutput .= ' selected'; }
+			
+			$eeOutput .= '>' . __('Tiles Displayed in Columns', 'ee-simple-file-list') . '</option>
+			
+			<option value="Flex"';
+
+			if($eeSFL_Settings['ShowListStyle'] == 'Flex') { $eeOutput .= ' selected'; }
+			
+			$eeOutput .= '>' . __('Flexible List Display', 'ee-simple-file-list') . '</option>
+		
+		</select></p>
+		<div class="eeNote">' . __('Choose the style of the file list: Table, Tiles or Flex.', 'ee-simple-file-list') . '</div>
+		
+		</fieldset>
+		
+		
+		
+		<fieldset>
+		<legend>File List Theme</legend>
+		
+		<p><label for="eeShowListTheme">' . __('Show', 'ee-simple-file-list') . '</label>
+		
+		<select name="eeShowListTheme" id="eeShowListTheme">
+		
+			<option value="Light"';
+
+			if($eeSFL_Settings['ShowListTheme'] == 'Light') { $eeOutput .= ' selected'; }
+			
+			$eeOutput .= '>' . __('Light Theme', 'ee-simple-file-list') . '</option>
+			
+			<option value="Dark"';
+
+			if($eeSFL_Settings['ShowListTheme'] == 'Dark') { $eeOutput .= ' selected'; }
+			
+			$eeOutput .= '>' . __('Dark Theme', 'ee-simple-file-list') . '</option>
+			
+			<option value="None"';
+
+			if($eeSFL_Settings['ShowListTheme'] == 'None') { $eeOutput .= ' selected'; }
+			
+			$eeOutput .= '>' . __('No Theme', 'ee-simple-file-list') . '</option>
+		
+		</select></p>
+		<div class="eeNote">' . __('Choose the color theme of the file list', 'ee-simple-file-list') . ': Light, Dark, or None.'  . __('This will rely upon your theme colors', 'ee-simple-file-list') . '</div>
+		
+		</fieldset>
+
+		
+		</div>
+	
+		
+		
+		
 		
 		
 		<div class="eeSettingsTile">
@@ -492,7 +518,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 			
 			<option value="Modified"';
 			if($eeSFL_Settings['ShowFileDateAs'] == 'Modified') { $eeOutput .= ' selected="selected"'; }
-			$eeOutput .= '>' . __('Modified', 'ee-simple-file-list-pro') . '</option>
+			$eeOutput .= '>' . __('Modified', 'ee-simple-file-list') . '</option>
 		</select></div>
 		
 		<div class="eeNote">Show the file date, either last modified or added to the list.</div>
@@ -541,6 +567,16 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		$eeOutput .= '" size="32" /></div>
 				
 		<div class="eeNote">' . __('Show the name of the user who uploaded the file on the front-end.', 'ee-simple-file-list') . '</div>
+		
+		</fieldset>
+		
+		<fieldset>
+		<legend>' . __('Table Header', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('Show', 'ee-simple-file-list') . '</label><input type="checkbox" name="eeShowHeader" value="YES" id="eeShowHeader"'; 
+		if($eeSFL_Settings['ShowHeader'] == 'YES') { $eeOutput .= ' checked'; }
+		$eeOutput .= ' /></div>
+				
+		<div class="eeNote">' . __('Show or hide the file table header.', 'ee-simple-file-list') . '</div>
 		
 		</fieldset>
 		

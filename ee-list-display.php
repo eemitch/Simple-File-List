@@ -14,14 +14,16 @@ global $eeSFL_BASE_ListRun;
 
 $eeSFL_BASE_Log['RunTime'][] = 'Loaded: ee-list-display';
 
+if( !isset($eeSFL_Files) ) { // Scan the Disk
+	$eeSFL_Files = $eeSFL_BASE->eeSFL_UpdateFileListArray();
+}
+
 // Save for later
 $eeSFL_FileTotalCount = 0;
-$eeSFL_ItemTotalCount = $eeSFL_FileTotalCount; //  + $eeSFL_FolderTotalCount
-$eeSFL_FileTotalCount = count($eeSFL_Files,0);
-
+$eeSFL_FileTotalCount = count($eeSFL_Files, 0);
 
 // Check for Upload Job
-if(count($eeSFL_BASE_Env['UploadedFiles'])) {
+if( isset($_POST['eeSFL_Upload']) ) {
 	
 	foreach( $eeSFL_Files as $eeThisKey => $eeFileArray ) {
 		
@@ -29,16 +31,23 @@ if(count($eeSFL_BASE_Env['UploadedFiles'])) {
 			$eeUploadedFiles[] = $eeFileArray;
 		}
 	}
-	
-	if(count($eeUploadedFiles)) {
+
+	if($eeSFL_Settings['UploadConfirm'] == 'YES') {
 		
 		// Show Only File(s) Just Uploaded
-		if($eeSFL_Settings['UploadConfirm'] == 'YES') { $eeSFL_Files = $eeUploadedFiles; }
+		$eeSFL_Files = $eeUploadedFiles;
 		
 	} else {
+		
+		// Refresh
+		$eeSFL_Files = $eeSFL_BASE->eeSFL_UpdateFileListArray();
+		$eeSFL_FileTotalCount = count($eeSFL_Files, 0);
+	}
+	
+	if(count($eeUploadedFiles) < 1) {
+		
 		$eeSFL_Files = array();
-		$eeSFL_BASE_Log['errors'][] = 'Upload Processing Error.';
-		$eeSFL_BASE_Log['errors'][] = $eeSFL_BASE_Env['UploadedFiles'];
+		$eeSFL_BASE_Log['errors'][] = __('Upload Processing Error. Files may not have been added properly.', 'ee-simple-file-list');
 	}	
 }
 
@@ -74,7 +83,7 @@ $eeOutput .= '
 ';
 
 // Upload Confirmation
-if(!$eeAdmin AND $eeUploadedFiles AND $eeSFL_BASE_ListRun == 1) {
+if(!$eeAdmin AND $eeUploadedFiles AND $eeSFL_Settings['UploadConfirm'] == 'YES' AND $eeSFL_BASE_ListRun == 1) {
 	
 	$eeOutput .= '
 	

@@ -369,9 +369,9 @@ function eeSFL_BASE_ProcessUpload() {
 							}
 						}
 						
-						if( isset($_POST['eeSFL_Comments'])) {
+						if( isset($_POST['eeSFL_FileDesc'])) {
 							
-							$eeString = sanitize_text_field(@$_POST['eeSFL_Comments']);
+							$eeString = sanitize_text_field(@$_POST['eeSFL_FileDesc']);
 							
 							if($eeString) {
 								

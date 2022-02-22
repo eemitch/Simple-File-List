@@ -75,6 +75,10 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 		$eeSFL_Settings[$eeTerm] = eeSFL_BASE_ProcessCheckboxInput($eeTerm);
 	}
 	
+	// Show Abore or Below List
+	if(@$_POST['eeUploadPosition'] == 'Above') { $eeSFL_Settings['UploadPosition'] = 'Above'; }
+		else { $eeSFL_Settings['UploadPosition'] = 'Below'; }
+	
 	// Update DB
 	if( update_option('eeSFL_Settings_1', $eeSFL_Settings) ) {
 		$eeConfirm = __('Settings Saved', 'ee-simple-file-list');
@@ -281,6 +285,24 @@ $eeOutput .= '
 		<div class="eeSettingsTile">
 		
 		<h2>' . __('Display', 'ee-simple-file-list') . '</h2>
+		
+		<fieldset>
+		<legend>' . __('Upload Form Position', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('File Types', 'ee-simple-file-list') . '<select name="eeUploadPosition" id="eeUploadPosition">
+			<option value="">' . __('Choose Position', 'ee-simple-file-list') . '</option>
+			
+			<option value="Above"';
+			if($eeSFL_Settings['UploadPosition'] == 'Above') { $eeOutput .= ' selected="selected"'; }
+			$eeOutput .= '>' . __('Above', 'ee-simple-file-list') . '</option>
+			
+			<option value="Below"';
+			if($eeSFL_Settings['UploadPosition'] == 'Below') { $eeOutput .= ' selected="selected"'; }
+			$eeOutput .= '>' . __('Below', 'ee-simple-file-list') . '</option>
+		</select></label></div>
+		
+		<div class="eeNote">' . __('Choose to show the upload form either above or below the file list.', 'ee-simple-file-list') . '</div>
+		
+		</fieldset>
 		
 		<fieldset>
 		<legend>' . __('Confirmation', 'ee-simple-file-list') . '</legend>

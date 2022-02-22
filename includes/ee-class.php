@@ -49,6 +49,7 @@ class eeSFL_BASE_MainClass {
 		'ShowList' => 'YES', // Show the File List (YES, ADMIN, USER, NO)
 		
 		'ShowListStyle' => 'Table', // Table, Tiles, or Flex
+		'ShowListTheme' => 'Light', // Table, Tiles, or Flex
 		
 		'AdminRole' => 5, // Who can access settings, based on WP role (5 = Admin ... 1 = Subscriber)
 		
@@ -80,6 +81,7 @@ class eeSFL_BASE_MainClass {
 		'AllowOverwrite' => 'NO', // Number new files with same name, or just overwrite.
 		
 		'UploadConfirm' => 'YES', // Show the upload confirmation screen, or go right back to the list.
+		'UploadPosition' => 'Above', // Above or Below the list
 		
 		// Display Settings
 		'GenerateImgThumbs' => 'YES', // Create thumbnail images for images if possible.
@@ -1016,10 +1018,10 @@ class eeSFL_BASE_MainClass {
 				$eeSFL_Body .= strtolower($eeSFL_Email) . PHP_EOL;
 				$eeSFL_ReplyTo = $eeSFL_Name . ' <' . $eeSFL_Email . '>';
 				
-				$eeSFL_Comments = substr(sanitize_text_field(@$_POST['eeSFL_Comments']), 0, 5012);
-				$eeSFL_Comments = strip_tags($eeSFL_Comments);
-				if($eeSFL_Comments) {
-					$eeSFL_Body .= $eeSFL_Comments . PHP_EOL . PHP_EOL;
+				$eeSFL_FileDesc = substr(sanitize_text_field(@$_POST['eeSFL_FileDesc']), 0, 5012);
+				$eeSFL_FileDesc = strip_tags($eeSFL_FileDesc);
+				if($eeSFL_FileDesc) {
+					$eeSFL_Body .= $eeSFL_FileDesc . PHP_EOL . PHP_EOL;
 				}
 			}
 			

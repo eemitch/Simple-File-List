@@ -50,7 +50,7 @@ function eeSFL_BASE_ManageLists() {
     <a href="?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings" class="nav-tab ';   
 	if($active_tab == 'settings') {$eeOutput .= ' eeActiveTab '; }  
     $active_tab == 'settings' ? 'nav-tab-active' : ''; 
-    $eeOutput .= $active_tab . '">' . __('Settings', 'ee-simple-file-list') . '</a>
+    $eeOutput .= $active_tab . '">' . __('List Settings', 'ee-simple-file-list') . '</a>
     
     <a href="?page=' . $eeSFL_BASE->eePluginSlug . '&tab=pro" class="nav-tab ';   
 	if($active_tab == 'pro') {$eeOutput .= ' eeActiveTab '; }  
@@ -79,6 +79,9 @@ function eeSFL_BASE_ManageLists() {
     // Tab Content =============================================================
     
 	if($active_tab == 'file_list') {
+		
+		$eeSFL_Nonce = wp_create_nonce('eeInclude');
+		require_once($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-check.php');
 	
 		// Scan the Disk
 		$eeSFL_Files = $eeSFL_BASE->eeSFL_UpdateFileListArray();
@@ -211,13 +214,6 @@ function eeSFL_BASE_ManageLists() {
 		
 		</article>';
 		
-	} elseif($active_tab == 'shortcode') { // Shortcode Builder Tab Display...
-			
-		// Get the instructions page
-		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-shortcode-builder.php');
-	
-	
 	} elseif($active_tab == 'pro') { // Instructions Tab Display...
 			
 		// Get the sales page
