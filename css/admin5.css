@@ -12,20 +12,38 @@
 	font-size: 16px;
 	position: relative;
 	
-/* 	background-color: #000; */
-	
+	--ee-admin-border: #777;
 	--ee-admin-light-text: #eaeaef;
-	--ee-admin-dark-text: #444;
+	--ee-admin-medium-text: #999;
+	--ee-admin-dark-text: #333;
 	--ee-admin-input-background: #FFF;
 	--ee-admin-light-background: #f0f0f1;
 	--ee-admin-medium-background: #dcdcde;
-	--ee-admin-dark-background: #5f5f5f;
+	--ee-admin-dark-background: #1d2327;
 	--ee-admin-tile-background: #f0f0f1;
 	--ee-admin-upsell-background: #d0ffd8;
-	--ee-admin-border: #777;
 	--ee-admin-upload-progress-bar: #23e100;
+	--ee-admin-disabled-action-background: #e0e0e1;
 	--ee-admin-caution-background: #cc0000;
 	
+}
+
+.eeSFL_Admin .eeSFL {
+
+	--ee-color-table-background: none;
+	--ee-color-table-border: #777;
+	--ee-color-table-header-background: #1d2327;
+	--ee-color-table-header-text: #eaeaef;
+	--ee-color-table-row-background: #FFF;
+	--ee-color-table-row-background-hover: #EEE;
+	--ee-color-table-cell-text: #333;
+	--ee-color-action-link-text: #333;
+	--ee-color-action-link-background: #dcdcde;
+	--ee-color-action-link-text-hover: #DDD;
+	--ee-color-action-link-background-hover: #333;
+	--ee-color-table-edit-background: #EEE;
+	--ee-color-table-input-background: #FFF;
+
 }
 
 .ee {
@@ -423,3 +441,17 @@ eeSFL_Admin * + * {
 	padding: 4px;
 	text-align: center;
 }
+
+
+
+.eeSFL table.eeFiles .eeSFL_ListFileActions > a.eeDisabledAction {
+	border: 1px solid var(--ee-admin-border);
+	background-color: var(--ee-admin-light-background);
+	color: var(--ee-admin-medium-text);
+}
+
+.wp-core-ui .button, .wp-core-ui .button-secondary {
+	vertical-align: middle;
+}
+
+

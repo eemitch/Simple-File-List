@@ -256,7 +256,7 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 				if($eeAdmin OR $eeSFL_Settings['ShowFileActions'] == 'YES') { // Always show to Admin
 					
 					// Construct
-					$eeFileActions = '
+					$eeOutput .= '
 					
 					<small class="eeSFL_ListFileActions">';
 						
@@ -264,81 +264,53 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 					if($eeAdmin OR $eeSFL_Settings['ShowFileOpen'] == 'YES') {
 					
 						if(in_array($eeFileExt, $eeSFL_BASE->eeOpenableFileFormats)) {
-							$eeFileActions .= '<a class="eeSFL_FileOpen" href="' . $eeFileURL . '" target="_blank">' . __('Open', 'ee-simple-file-list') . '</a>';
+							$eeOutput .= '<a class="eeSFL_FileOpen" href="' . $eeFileURL . '" target="_blank">' . __('Open', 'ee-simple-file-list') . '</a>';
 						}
 					}
 					
 					// Download Action
 					if($eeAdmin OR $eeSFL_Settings['ShowFileDownload'] == 'YES') {
 					
-						$eeFileActions .= '<a class="eeSFL_FileDownload" href="' . $eeFileURL . '" download="' . basename($eeFileURL) . '">' . __('Download', 'ee-simple-file-list') . '</a>';
+						$eeOutput .= '<a class="eeSFL_FileDownload" href="' . $eeFileURL . '" download="' . basename($eeFileURL) . '">' . __('Download', 'ee-simple-file-list') . '</a>';
 					
 					}
 					
 					// Copy Link Action
 					if($eeAdmin OR $eeSFL_Settings['ShowFileCopyLink'] == 'YES') {
 						
-						$eeFileActions .= '<a class="eeSFL_CopyLinkToClipboard" onclick="eeSFL_BASE_CopyLinkToClipboard(\''  . $eeFileURL .   '\')" href="#">' . __('Copy Link', 'ee-simple-file-list') . '</a>';														
+						$eeOutput .= '<a class="eeSFL_CopyLinkToClipboard" onclick="eeSFL_BASE_CopyLinkToClipboard(\''  . $eeFileURL .   '\')" href="#">' . __('Copy Link', 'ee-simple-file-list') . '</a>';														
 					
 					}
 					
-					// Append Addition (admin or authorized) Actions
+					// Front-End Manage or Admin
 					if( ($eeAdmin OR $eeSFL_Settings['AllowFrontManage'] == 'YES') AND $eeSFL_BASE_ListRun == 1) {
 						
-						if($eeAdmin) { $eeFileActions .= '<br />'; }								
+						// if($eeAdmin) { $eeFileActions .= '<br />'; }								
 						
-						$eeFileActions .= '<a href="" id="eeSFL_EditFile_' . $eeRowID . '" onclick="eeSFL_BASE_EditFile(' . $eeRowID . ')">' . 
+						$eeOutput .= '<a href="" id="eeSFL_EditFile_' . $eeRowID . '" onclick="eeSFL_BASE_EditFile(' . $eeRowID . ')">' . 
 						__('Edit', 'ee-simple-file-list') . '</a><a href="#" onclick="eeSFL_BASE_Delete(' . $eeRowID . ')">' . 
 						__('Delete', 'ee-simple-file-list') . '</a>';
 						
 						if($eeAdmin) {
 						
-							$eeFileActions .= '
-							 <a class="eeDimmedLink" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Move', 'ee-simple-file-list') . '</a>
-							 <a class="eeDimmedLink" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Users', 'ee-simple-file-list') . '</a>
-							 <a class="eeDimmedLink" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Send', 'ee-simple-file-list') . '</a>';
-							
-						}
-					
-						// Strip trailing pipe if needed
-						if(substr($eeFileActions, -2) == '| ') {
-							$eeFileActions = substr($eeFileActions, 0, -3);
+							$eeOutput .= '
+							 <a class="eeDisabledAction" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Move', 'ee-simple-file-list') . '</a>
+							 <a class="eeDisabledAction" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Users', 'ee-simple-file-list') . '</a>
+							 <a class="eeDisabledAction" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Send', 'ee-simple-file-list') . '</a>';
 						}
 							
-						$eeFileActions .= '</small>'; // Close action links
-					
+						$eeOutput .= '</small>'; // Close File List Actions Links
 						
-					
-						// Expanding Inputs
-						if($eeAdmin OR $eeSFL_Settings['AllowFrontManage'] == 'YES') {
-							
-							// Javascript-powered Drop-Down Box
-							$eeFileActions .= '<div class="eeSFL_EditFileWrap" id="eeSFL_EditFileWrap_' . $eeRowID . '">
-							
-							<h4>' . __('Edit Details', 'ee-simple-file-list') . '</h4>';
-							
-							$eeFileActions .= '<p><label for="eeSFL_NewFileName_' . $eeRowID . '">' . __('File Name', 'ee-simple-file-list') . '</label>
-							<input required="required" type="text" class="eeNewFileName" name="eeNewFileName" value="' . $eeRealFileName . '" size="32" id="eeSFL_NewFileName_' . $eeRowID . '" />
-								<a class="button" href="#" onclick="eeSFL_BASE_EditRename(' . $eeRowID . ')">' . __('Save', 'ee-simple-file-list') . '</a></p>
-								
-							<p><label for="eeSFL_FileDesc_' . $eeRowID . '">' . __('Description', 'ee-simple-file-list') . '</label>
-								<span class="eeSFL_SavedDesc">' . @$eeFileArray['FileDescription'] . '</span>
-								<input type="text" class="eeSFL_NewFileDesc" name="eeSFL_FileID_' . $eeFileKey . '" value="' . @$eeFileArray['FileDescription'] . '" size="32" id="eeSFL_FileDesc_' . $eeRowID . '" />
-									<a class="button" href="#" onclick="eeSFL_BASE_EditDesc(' . $eeRowID . ')">' . __('Save', 'ee-simple-file-list') . '</a></p>
-							
-							<p class="eeCenter"><small>' . __('Added', 'ee-simple-file-list') . ': ' . date_i18n( get_option('date_format'), strtotime( $eeFileArray['FileDateAdded'] ) ) . '<br />
-								' . __('Modified', 'ee-simple-file-list') . ': ' . date_i18n( get_option('date_format'), strtotime( $eeFileArray['FileDateChanged'] ) ) . '<br />';
-							
-							$eeFileActions .= __('Size', 'ee-simple-file-list') . ': ' . $eeFileSize . '</small></p>
-								
-							</div>';
-						}
+						// File Details to Pass to the Editor
+						$eeOutput .= '
+						
+						<span class="eeHide eeFileSize">' . $eeFileSize . '</span>
+						<span class="eeHide eeFileDateAdded">' . date_i18n( get_option('date_format'), strtotime( $eeFileArray['FileDateAdded'] ) ) . '</span>
+						<span class="eeHide eeFileDateChanged">' . date_i18n( get_option('date_format'), strtotime( $eeFileArray['FileDateChanged'] ) ) . '</span>';
 					
 					} // END File Operations
-					
-					$eeOutput .= $eeFileActions;
 			
-				} // END FileActions	
+				} // END File Actions	
 			
 			$eeOutput .= '</td>';
 			

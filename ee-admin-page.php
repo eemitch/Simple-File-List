@@ -26,7 +26,7 @@ function eeSFL_BASE_ManageLists() {
 
 	// Upsell to Pro
 	if( $eeAdmin AND !$_POST AND count($eeSFL_BASE_Log['messages']) === 0 ) {
-		$eeSFL_BASE_Log['messages'] = $eeUpSell;
+		// $eeSFL_BASE_Log['messages'] = $eeUpSell;
 	}
 	
 	$eeOutput .= '

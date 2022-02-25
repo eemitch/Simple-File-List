@@ -6,6 +6,78 @@
 	box-sizing: border-box;
 }
 
+.eeSFL_Modal {
+	display: none;
+}
+.eeSFL_Modal .eeSFL_ModalBackground {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+.eeSFL_Modal .eeSFL_ModalBody {
+	position: fixed;
+	top: 10em;
+	bottom: 10em;
+	right: 20%;
+	left: 20%;
+	padding: 2em 3em;
+	background-color: rgba(255, 255, 255, 1);
+	border: 1px solid #999;
+	overflow: auto;
+}
+.eeSFL_Modal .eeSFL_ModalBody h1,
+.eeSFL_Modal .eeSFL_ModalBody p {
+	margin: 0;
+	margin-bottom: 10px;
+}
+.eeSFL_Modal .eeSFL_ModalBody label,
+.eeSFL_Modal .eeSFL_ModalBody input[type=text],
+.eeSFL_Modal .eeSFL_ModalBody textarea,
+.eeSFL_Modal .eeSFL_ModalBody small {
+	display: block;
+	width: 100%;
+	font-size: 120%;
+}
+.eeSFL_Modal .eeSFL_ModalBody input[type=text],
+.eeSFL_Modal .eeSFL_ModalBody textarea {
+	padding: .3em;
+}
+.eeSFL_Modal .eeSFL_ModalBody small {
+	margin: .5em 0 1.5em 0;
+	font-size: 80%;
+}
+.eeSFL_Modal .eeSFL_ModalBody button {
+	float: right;
+	clear: both;
+	font-size: 150%;
+}
+.eeSFL_Modal p.eeModalFileDetails {
+	clear: both;
+	text-align: center;
+	border-bottom: 2px solid #666;
+	margin-bottom: 2em;
+}
+
+
+
+.eeSFL_Modal .eeSFL_ModalClose {
+	position: absolute;
+	top: 1em;
+	right: 1em;
+	padding: 0;
+	font-size: 1.75em;
+	height: 1.5em;
+	width: 1.5em;
+	line-height: 0;
+}
+
+
+
+
+
 
 
 #eeMessageDisplay ul {
@@ -15,13 +87,12 @@
 	content: '✓ ';
 }
 
-.eeSFL a.eeDimmedLink {
-	color: #6a9db4;
-}
-.eeSFL a.eeDimmedLink:hover {
-	color: #0073aa;
-	text-decoration: underline;
-}
+
+
+
+
+
+
 
 .eeFlex {
 	display: flex;
@@ -65,6 +136,7 @@
 	vertical-align: middle;
 }
 
+/*
 .eeSFL a.eeDimmedLink {
 	color: #6a9db4;
 }
@@ -72,6 +144,7 @@
 	color: #0073aa;
 	text-decoration: underline;
 }
+*/
 
 .eeFlex {
 	display: flex;
@@ -111,10 +184,6 @@
   display: block;
   content: " ";
   clear: both;
-}
-
-.wp-core-ui .button, .wp-core-ui .button-secondary {
-	vertical-align: middle;
 }
 
 .eeHide, 

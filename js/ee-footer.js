@@ -11,7 +11,17 @@ jQuery(document).ready(function($) {
 	
 	window.addEventListener('touchstart', function() {
 		eeSFL_BASE_isTouchscreen = true;
+	});
+	
+	
+	jQuery('#eeSFL_Modal_Manage_Close').on('click', function() {
+		jQuery('#eeSFL_Modal_Manage').hide();
 	});	
+	
+	
+	
+	
+		
 
 }); // END Ready Function
 
@@ -41,16 +51,19 @@ function eeSFL_BASE_EditFile(eeSFL_FileID) {
 	
 	event.preventDefault(); // Don't follow the link
 	
-	if( jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).is(':visible') ) {
-		
-		jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).slideUp();
-		jQuery('#eeSFL_EditFile_' + eeSFL_FileID).text(eesfl_vars['eeEditText']);
+	console.log('Editing File: ' + eeSFL_FileID);
 	
-	} else {
-		
-		jQuery('#eeSFL_EditFileWrap_' + eeSFL_FileID).slideDown();
-		jQuery('#eeSFL_EditFile_' + eeSFL_FileID).text( eesfl_vars['eeCancelText'] );
-	}
+	jQuery('#eeSFL_Modal_Manage').show();
+	
+	// Pre-Populate the Modal
+	jQuery('#eeSFL_Modal_Manage .eeSFL_Modal_Manage_FileID').text(eeSFL_FileID);
+	
+	var eeSFL_FileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' .eeSFL_RealFileName').text();
+	jQuery('#eeSFL_Modal_Manage #eeNewFileName').val(eeSFL_FileName);
+	
+	var eeSFL_FileDescription = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' .eeSFL_FileDesc').text();
+	jQuery('#eeSFL_Modal_Manage #eeNewFileDesc').html(eeSFL_FileDescription);
+	
 }
 
 
@@ -120,7 +133,7 @@ function eeSFL_BASE_FileAction(eeSFL_FileID, eeSFL_Action) {
 	var eeActionEngine = eesfl_vars.ajaxurl;
 	
 	// Current File Name
-	var eeSFL_FileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_RealFileName').text(); 
+	var eeSFL_FileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_RealFileName').text();
 	
 	// AJAX --------------
 	
@@ -130,7 +143,8 @@ function eeSFL_BASE_FileAction(eeSFL_FileID, eeSFL_Action) {
 	if(eeSFL_Action == 'Rename') {
 		
 		// Get the new name
-		var eeSFL_NewFileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeNewFileName').val();
+		// var eeSFL_NewFileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' input.eeNewFileName').val();
+		var eeSFL_NewFileName = jQuery('#eeSFL_Modal_Manage input.eeNewFileName').val();
 		
 		// Sanitize to match reality
 		eeSFL_NewFileName = eeSFL_NewFileName.replace(/ /g, '-'); // Deal with spaces

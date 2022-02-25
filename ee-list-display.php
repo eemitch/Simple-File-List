@@ -138,9 +138,42 @@ $eeOutput .= '
 
 <p class="eeHide"><span id="eeSFL_FilesCount">' . $eeFileCount . '</span></p>
 
-</div>
+</div><!-- END .eeSFL -->';
 
-<!-- END #eeSFL -->'; 
+// Modal Input
+if($eeAdmin OR $eeSFL_Settings['AllowFrontManage'] == 'YES') {
+							
+	$eeOutput .= '
+	
+	<div class="eeSFL_Modal" id="eeSFL_Modal_Manage">
+	<div class="eeSFL_ModalBackground"></div>
+	<div class="eeSFL_ModalBody">
+	
+		<button id="eeSFL_Modal_Manage_Close" class="eeSFL_ModalClose">&times;</button>
+		
+		<h1>' . __('Edit File', 'ee-simple-file-list') . '</h1>
+		
+		<p class="eeModalFileDetails">File ID: <span class="eeSFL_Modal_Manage_FileID">???</span> | ' . 
+		__('Added', 'ee-simple-file-list') . ': <span class="eeFileDateAdded" >???</span> | ' . 
+		__('Changed', 'ee-simple-file-list') . ': <span class="eeFileDateChanged" >???</span> | ' . 
+		__('Size', 'ee-simple-file-list') . ': <span class="eeFileSize">???</span>
+		</p>
+		
+		<label for="eeNewFileName">' . __('File Name', 'ee-simple-file-list') . '</label>
+		<input required="required" type="text" id="eeNewFileName" name="eeNewFileName" value="??" size="64" />
+		<small class="eeModalNote">' . __('Change the name.', 'ee-simple-file-list') . ' ' . __('Some characters are not allowed so these will be automatically replaced.', 'ee-simple-file-list') . '</small>
+		
+		<label for="eeNewFileDesc">' . __('Description', 'ee-simple-file-list') . '</label>
+		<textarea cols="64" rows="3" id="eeNewFileDesc" name="eeFileNewDesc">???</textarea>
+		<small class="eeModalNote">' . __('Add a description.', 'ee-simple-file-list') . ' ' . __('Use this field to describe this file and use characters not allowed within the file name.', 'ee-simple-file-list') . '</small>
+		
+		<button class="button" onclick="eeSFL_BASE_SaveFileEdit()">' . __('Save', 'ee-simple-file-list') . '</button>
+	
+		
+
+	</div>
+	</div>';
+}
 	
 $eeSFL_BASE_Env['FileLists'] = ''; // Remove to clean up display
 

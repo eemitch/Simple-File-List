@@ -285,11 +285,11 @@ function eeSFL_BASE_Shortcode($atts, $content = null) {
 	
 	// Begin Front-Side List Display ==================================================================
 	
-	$eeOutput .= '<div class="eeSFL"';
+	// $eeOutput .= '<div class="eeSFL"';
 	
-	if($eeSFL_BASE_ListRun == 1) { $eeOutput .= ' id="eeSFL"'; } // 3/20 - Legacy for user CSS
+	// if($eeSFL_BASE_ListRun == 1) { $eeOutput .= ' id="eeSFL"'; } // 3/20 - Legacy for user CSS
 	
-	$eeOutput .= '><!-- $eeSFL_BASE_ListRun = ' . $eeSFL_BASE_ListRun . ' -->';
+	// $eeOutput .= '><!-- $eeSFL_BASE_ListRun = ' . $eeSFL_BASE_ListRun . ' -->';
 	
 	// Who Can Upload?
 	switch ($eeSFL_Settings['AllowUploads']) {
@@ -353,7 +353,7 @@ function eeSFL_BASE_Shortcode($atts, $content = null) {
 		$eeSFL_BASE_UploadRun++;
 	}
 	
-	$eeOutput .= '</div>'; // Ends .eeSFL block
+	// $eeOutput .= '</div>'; // Ends .eeSFL block
 	
 	// Smooth Scrolling is AWESOME!
 	if( isset($_REQUEST['ee']) AND $eeSFL_Settings['SmoothScroll'] == 'YES' ) { 
@@ -391,33 +391,42 @@ function eeSFL_BASE_Enqueue() {
 	
 	// CSS
     wp_register_style( 'ee-simple-file-list-css', plugin_dir_url(__FILE__) . 'css/styles.css', '', eeSFL_BASE_Version);
-    wp_enqueue_style('ee-simple-file-list-css');
-    
-    if($eeSFL_Settings['AllowUploads'] != 'NO') {
-	    wp_register_style( 'ee-simple-file-list-css-upload', plugins_url('css/styles-upload-form.css', __FILE__), '', eeSFL_BASE_Version );
-		wp_enqueue_style('ee-simple-file-list-css-upload');
-    }
+	wp_enqueue_style('ee-simple-file-list-css');
+	
+	
+	// List Theme
+    if($eeSFL_Settings['ShowListTheme'] == 'Dark') {
+    	
+    	wp_register_style( 'ee-simple-file-list-css-theme-dark', plugins_url('css/styles-theme-dark.css', __FILE__), '', eeSFL_BASE_Version );
+		wp_enqueue_style('ee-simple-file-list-css-theme-dark');
+	
+	} elseif($eeSFL_Settings['ShowListTheme'] == 'Light') {
+		
+		wp_register_style( 'ee-simple-file-list-css-theme-light', plugins_url('css/styles-theme-light.css', __FILE__), '', eeSFL_BASE_Version );
+		wp_enqueue_style('ee-simple-file-list-css-theme-light');
+	}
     
     // List Style
     if($eeSFL_Settings['ShowListStyle'] == 'Flex') {
+    	
     	wp_register_style( 'ee-simple-file-list-css-flex', plugins_url('css/styles-flex.css', __FILE__), '', eeSFL_BASE_Version );
 		wp_enqueue_style('ee-simple-file-list-css-flex');
+		
 	} elseif($eeSFL_Settings['ShowListStyle'] == 'Tiles') {
+    	
     	wp_register_style( 'ee-simple-file-list-css-tiles', plugins_url('css/styles-tiles.css', __FILE__), '', eeSFL_BASE_Version );
 		wp_enqueue_style('ee-simple-file-list-css-tiles');
+		
 	} else {
+		
 		wp_register_style( 'ee-simple-file-list-css-table', plugins_url('css/styles-table.css', __FILE__), '', eeSFL_BASE_Version );
 		wp_enqueue_style('ee-simple-file-list-css-table');
 	}
 	
-	// List Theme
-    if($eeSFL_Settings['ShowListTheme'] == 'Dark') {
-    	wp_register_style( 'ee-simple-file-list-css-theme-dark', plugins_url('css/styles-theme-dark.css', __FILE__), '', eeSFL_BASE_Version );
-		wp_enqueue_style('ee-simple-file-list-css-theme-dark');
-	} else {
-		wp_register_style( 'ee-simple-file-list-css-theme-light', plugins_url('css/styles-theme-light.css', __FILE__), '', eeSFL_BASE_Version );
-		wp_enqueue_style('ee-simple-file-list-css-theme-light');
-	}
+	if($eeSFL_Settings['AllowUploads'] != 'NO') {
+	    wp_register_style( 'ee-simple-file-list-css-upload', plugins_url('css/styles-upload-form.css', __FILE__), '', eeSFL_BASE_Version );
+		wp_enqueue_style('ee-simple-file-list-css-upload');
+    }
 	
 	// Javascript
 	$deps = array('jquery'); // Requires jQuery
@@ -435,7 +444,7 @@ function eeSFL_BASE_Enqueue() {
 	wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_BASE_Version, TRUE);
 	
 	// Pass variables
-	wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $eeSFL_VarsForJS ); // Footer
+	wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $eeSFL_VarsForJS );
 
 }
 add_action( 'wp_enqueue_scripts', 'eeSFL_BASE_Enqueue' );
@@ -449,14 +458,8 @@ function eeSFL_BASE_AdminHead($eeHook) {
 	
 	$deps = array('jquery');
 	
-	// wp_die($eeHook);
-    
-    $eeHooks = array(
-    	'toplevel_page_ee-simple-file-list', // toplevel_page_ee-simple-file-list
-    	// 'simple-file-list_page_ee-simple-file-list',
-    	// 'simple-file-list_page_ee-simple-file-list-settings',
-    	'file-list_page_ee-simple-file-list-access'
-    );
+	// wp_die($eeHook); // Check the hook
+    $eeHooks = array('toplevel_page_ee-simple-file-list');
     
     if(in_array($eeHook, $eeHooks)) {
         
@@ -472,6 +475,7 @@ function eeSFL_BASE_AdminHead($eeHook) {
 	        wp_enqueue_style( 'ee-simple-file-list-css-table', plugins_url('css/styles-table.css', __FILE__), '', eeSFL_BASE_Version );
         }
         
+        // Admin Styles
         wp_enqueue_style( 'ee-simple-file-list-css-admin', plugins_url('css/admin5.css', __FILE__), '', eeSFL_BASE_Version );
         
         
@@ -481,10 +485,9 @@ function eeSFL_BASE_AdminHead($eeHook) {
         wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js', $deps, eeSFL_BASE_Version, TRUE);
         wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_BASE_Version, TRUE);
 		
-		wp_localize_script('ee-simple-file-list-js-head', 'eeSFL_JS', array( 'pluginsUrl' => plugins_url() ) ); // Needs expanding for alert boxes
-		
 		// Pass variables
-		wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $eeSFL_VarsForJS ); // Footer
+		wp_localize_script('ee-simple-file-list-js-head', 'eeSFL_JS', array( 'pluginsUrl' => plugins_url() ) );
+		wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $eeSFL_VarsForJS );
     }  
 }
 add_action('admin_enqueue_scripts', 'eeSFL_BASE_AdminHead');

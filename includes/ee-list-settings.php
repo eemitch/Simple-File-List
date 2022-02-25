@@ -186,11 +186,11 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		
 		<div class="eeSettingsTile">
 		
-		<h2>' . __('File List Display', 'ee-simple-file-list') . '</h2>
+		<h2>' . __('File List Style', 'ee-simple-file-list') . '</h2>
 	
 		
 		<fieldset>
-		<legend>File List Style</legend>
+		<legend>File List Type</legend>
 		
 		<p><label for="eeShowListStyle">' . __('Style', 'ee-simple-file-list') . '</label>
 		

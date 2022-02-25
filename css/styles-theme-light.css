@@ -1,14 +1,54 @@
-#eeSFL {
+.eeSFL,
+#eeSFL_UploadForm {
 	
-	/* 	Light Theme Colors */
+	/* 	THEME - LIGHT */
+	/* 	Light grey solids, borders with dark text */
 	
-	--ee-light-text: #eaeaef;
-	--ee-dark-text: #444;
-	--ee-input-background: #FFF;
-	--ee-light-background: #f0f0f1;
-	--ee-medium-background: #dcdcde;
-	--ee-dark-background: #5f5f5f;
-	--ee-border: #777;
+	/* 	https://html-color.codes/grey */
+	/* 	Theme text and background colors are generally honered */
 	
-	--ee-upload-progress-bar: #23e100;
+	.eePickerThingy {
+		color: #d9d9db;
+	}
+	
+	--ee-hack-to-make-first-rule-work: #000;
+	/* 	First rule seems to be ignored ? */
+	
+	
+	/* 	COMMON */
+	--ee-color-text-input-background: #efefef;
+	--ee-color-action-link-text: #333;
+	--ee-color-action-link-text-hover: #FFF;
+	--ee-color-action-link-background: rgba(220, 220, 220, .8); 
+	--ee-color-action-link-background-hover: rgba(97, 97, 97, 1);
+	
+	
+	/* UPLOAD FORM - LIGHT */
+	--ee-color-upload-form-background: rgba(255, 255, 255, 0.2);
+	--ee-color-upload-progress-bar: #23e100;
+	--ee-color-drop-zone-border: #c7c7c7;
+	--ee-color-upload-progress-text: #FFF;
+	--ee-color-upload-progress-background: #23e100;
+	
+	
+	/* 	TABLE */
+	--ee-color-table-background: transparent;
+	--ee-color-table-border: #DCDCDC;
+	--ee-color-table-header-background: #d9d9db;
+	--ee-color-table-header-text: #808080;
+	--ee-color-table-row-background: rgba(255, 255, 255, 0.2);
+	--ee-color-table-row-background-hover: rgba(244, 244, 244, 0.3);
+	
+	
+	
+	/* TILES */
+	
+	
+	
+	/* FLEX */
+	
+
+
+	
+	
 }

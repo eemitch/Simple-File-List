@@ -2,11 +2,10 @@
 
 #eeSFL_UploadForm {
 	box-sizing: border-box;
-	padding: 1em;
+	padding: .5em;
 	padding-top: 0;
 	font-size: 16px;
-	background-color: var(--ee-color-upload-form-background);
-	border: 2px solid var(--ee-color-table-border);
+	border: 2px solid #DDD;
 	margin: 0;
 }
 
@@ -23,25 +22,22 @@
 /* DRAG & DROP */
 
 #eeSFL_FileDropZone {
-	padding: 1em;
-	border: 5px dashed var(--ee-color-drop-zone-border);
+	padding: 10px;
+	border: 5px dashed #c7c7c7;
 }
 #eeSFL_FilesDrug {
 	margin-left: 20px;
 	margin-bottom: 1em;
 	font-size: 120%;
 }
-
-/* PROGRESS BAR */
-
 #eeSFL_UploadProgress {
 	display: none; /* Show with javascript */
 	overflow: hidden;
 	width: 1%;
 	height: 2em;
 	line-height: 2em;
-	background-color: var(--ee-color-upload-progress-background);
-	color: var(--ee-color-upload-progress-text);
+	background-color: #23e100;
+	color: #FFF;
 	font-size: 1em;
 	text-align: center;
 	vertical-align: text-top;
@@ -50,42 +46,42 @@
 	display: none; /* Show with javascript */
 }
 
-/* UPLOAD FORM */
-
+#eeSFL_UploadForm p {
+/*
+	margin: 0;
+	font-size: 80%;
+*/
+}
 #eeSFL_UploadForm label,
 #eeSFL_UploadForm input[type=text],
 #eeSFL_UploadForm input[type=email],
 #eeSFL_UploadForm textarea,
-#eeSFL_UploadForm input[type=file] {
+#eeSFL_UploadForm  input[type=file] {
 	float: left;
 	clear: left;
 	width: 100%;
 	padding: .2em;
 	margin-bottom: .5em;
-	
 }
-#eeSFL_UploadForm input[type=text],
-#eeSFL_UploadForm input[type=email],
-#eeSFL_UploadForm textarea {
-	background-color: var(--ee-color-text-input-background);
-}
-
 #eeSFL_UploadForm input[type=file] {
 	font-size: 120%;
-	padding: .25em;
-	border: 1px solid var(--ee-color-table-border);
 }
-
-#eeSFL_UploadForm textarea {
+#eeUploadInfoForm textarea {
 	height: 4em;
 }
-
 #eeSFL_UploadForm button {
 	margin: 2em;
-	font-size: 120%;
 }
-
 #eeSFL_UploadForm p.sfl_instuctions {
 	text-align: right;
 	font-size: 80%;
 }
+
+/*
+.eeSFL_UploadingImg,
+.entry-content .eeSFL_UploadingImg {
+	margin-right: 1em;
+	box-shadow: none !important;
+	border-radius: 32px;
+}
+*/

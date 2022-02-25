@@ -94,8 +94,6 @@ if(strlen($eeSFL_Settings['FileListDir']) > 1) {
 			
 		}
 			
-		if($eeEmail AND !$eeAdmin AND $eeSFL_Settings['GetUploaderInfo'] == 'YES') { $eeOutput .= '<p>' . __('Submitter:', 'ee-simple-file-list') . ' ' . $eeName . ' (' . $eeEmail . ')</p>'; }
-			
 		$eeOutput .= '</div>';	
 			
 		
@@ -116,9 +114,11 @@ if(strlen($eeSFL_Settings['FileListDir']) > 1) {
 			
 		</script>
 		
-		<span id="eeSFL_UploadProgress"><em>' . __('Processing the Upload', 'ee-simple-file-list') . '</em></span>
+		<span id="eeSFL_UploadProgress"><em class="eeHide">' . __('Processing the Upload', 'ee-simple-file-list') . '</em></span>
 		
 		<button type="button" class="button" name="eeSFL_UploadGo" id="eeSFL_UploadGo" onclick="eeSFL_BASE_UploadProcessor(eeSFL_FileObjects);">' . __('Upload', 'ee-simple-file-list') . '</button>';
+		
+		if($eeEmail AND !$eeAdmin) { $eeOutput .= '<p>' . __('Submitter:', 'ee-simple-file-list') . ' ' . $eeName . ' (' . $eeEmail . ')</p>'; }
 		
 		if($eeSFL_Settings['ShowUploadLimits'] == 'YES') {
 		
