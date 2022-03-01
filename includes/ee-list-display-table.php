@@ -143,7 +143,7 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 		
 			$eeOutput .= '
 			
-			<tr id="eeSFL_RowID-' . $eeRowID . '">'; // Add an ID to use in javascript
+			<tr class="eeSFL_Row" id="eeSFL_RowID-' . $eeRowID . '">'; // Add an ID to use in javascript
 			
 			
 			// Thumbnail

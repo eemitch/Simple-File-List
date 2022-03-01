@@ -4,6 +4,7 @@
 
 var eeSFL_isTouchscreen = false;
 var eeSFL_FileID = false;
+var eeFile = false;
 var eeSFL_ID = 1;
 var eeSFL_CheckEmail = false;
 var eeSFL_FileFormats = 'jpg,jpeg';

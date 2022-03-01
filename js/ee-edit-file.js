@@ -212,11 +212,22 @@ function eeSFL_BASE_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 				if(eeSFL_FileNiceNameNew) {
 					
 					if(eeSFL_FileNameNew) { // If the file name changed
-						var eeNewLink = '<a class="eeSFL_FileName" href="/' + eeSFL_FileListDir + eeSFL_FileNameNew + '">' + eeSFL_FileNiceNameNew + '</a>';
+						
+						if( eeSFL_FileNiceNameNew.length < 1 ) { // If the Nice Name is removed
+							
+							eeNewLink = '<a class="eeSFL_FileName" href="/' + eeSFL_FileListDir + eeSFL_FileNameNew + '">' + eeSFL_FileNameNew + '</a>';
+						}
 					
-					} else { // If not
+					} 
+					
+					// TO DO - Removing Nice Name Removes file name from the display :-(
+					
+					else { // If not
+						
 						var eeNewLink = '<a class="eeSFL_FileName" href="/' + eeSFL_FileListDir + eeSFL_FileNameOld + '">' + eeSFL_FileNiceNameNew + '</a>';
 					}
+					
+					
 					
 					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileLink').html(eeNewLink);
 				}
