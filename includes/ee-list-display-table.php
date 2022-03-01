@@ -80,12 +80,20 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 		
 		// Ready, set...
 		$eeIsFile = FALSE;
+		$eeFileNiceName = FALSE;
 		$eeFileURL = FALSE;
 		$eeFileExt = FALSE;
 		$eeFileThumbURL = FALSE;
 
 		$eeFilePath = $eeFileArray['FilePath']; // Path relative to FileListDir
 		$eeFileName = basename($eeFileArray['FilePath']); // Just the name
+		
+		// File Nice Name
+		if( isset($eeFileArray['FileNiceName']) ) {
+			if( strlen($eeFileArray['FileNiceName']) >= 1 ) {
+				$eeFileNiceName = $eeFileArray['FileNiceName'];
+			}
+		}
 		
 		// Date to Display
 		if($eeSFL_Settings['ShowFileDateAs'] == 'Modified') {
@@ -193,28 +201,38 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 				
 				$eeRealFileName = $eeFileName; // Save for editing
 				
-				$eeOutput .= '<span class="eeSFL_RealFileName eeHide">' . $eeRealFileName . '</span>
+				$eeOutput .= '
+				
+				<span class="eeSFL_RealFileName eeHide">' . $eeRealFileName . '</span>
+				<span class="eeSFL_FileNiceName eeHide">' . $eeFileNiceName . '</span>
 				
 				<p class="eeSFL_FileLink"><a class="eeSFL_FileName" href="' . $eeFileURL .  '" target="_blank">';
 				
-				// Strip the extension?
-				if(!$eeAdmin AND $eeSFL_Settings['ShowFileExtension'] == 'NO') {
-					$eeSFL_PathParts = pathinfo($eeFileName);
-					$eeFileName = $eeSFL_PathParts['filename'];
-				}
-				
-				// Replace hyphens with spaces?
-				if(!$eeAdmin AND $eeSFL_Settings['PreserveSpaces'] == 'YES') {
-					$eeFileName = eeSFL_BASE_PreserveSpaces($eeFileName); 
+				if($eeFileNiceName) {
+					
+					$eeFileName = stripSlashes($eeFileNiceName);
+					
+				} else {
+					
+					// Strip the extension?
+					if(!$eeAdmin AND $eeSFL_Settings['ShowFileExtension'] == 'NO') {
+						$eeSFL_PathParts = pathinfo($eeFileName);
+						$eeFileName = $eeSFL_PathParts['filename'];
+					}
+					
+					// Replace hyphens with spaces?
+					if(!$eeAdmin AND $eeSFL_Settings['PreserveSpaces'] == 'YES') {
+						$eeFileName = eeSFL_BASE_PreserveSpaces($eeFileName); 
+					}
 				}
 				
 				$eeOutput .= $eeFileName . '</a></p>';
 				
 				// Show File Description, or not.
-				if(@$eeFileArray['FileDescription'] OR @$eeFileArray['SubmitterComments']) { 
+				if(isset($eeFileArray['FileDescription']) OR isset($eeFileArray['SubmitterComments'])) { 
 					
 					$eeClass = ''; // Show
-					if(!@$eeFileArray['FileDescription']) {
+					if(!$eeFileArray['FileDescription'] AND isset($eeFileArray['SubmitterComments'])) {
 						$eeFileArray['FileDescription'] = $eeFileArray['SubmitterComments']; // Show the submitter comment if no desc
 					}
 					
@@ -226,7 +244,8 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 				// This is always here because for js access
 				$eeOutput .= '<p class="eeSFL_FileDesc ' . $eeClass . '">';
 				
-				if($eeAdmin OR $eeSFL_Settings['ShowFileDescription'] == 'YES') { $eeOutput .= stripslashes(@$eeFileArray['FileDescription']); }
+				if( ($eeAdmin OR $eeSFL_Settings['ShowFileDescription'] == 'YES') AND isset($eeFileArray['FileDescription']) ) { 
+					$eeOutput .= stripslashes($eeFileArray['FileDescription']); }
 				 
 				$eeOutput .= '</p>';
 				
@@ -287,9 +306,11 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 						
 						// if($eeAdmin) { $eeFileActions .= '<br />'; }								
 						
-						$eeOutput .= '<a href="" id="eeSFL_EditFile_' . $eeRowID . '" onclick="eeSFL_BASE_EditFile(' . $eeRowID . ')">' . 
-						__('Edit', 'ee-simple-file-list') . '</a><a href="#" onclick="eeSFL_BASE_Delete(' . $eeRowID . ')">' . 
-						__('Delete', 'ee-simple-file-list') . '</a>';
+						$eeOutput .= '
+						
+						<a href="#" onclick="eeSFL_BASE_OpenEditModal(' . $eeRowID . ')">' . __('Edit', 'ee-simple-file-list') . '</a>
+						
+						<a href="#" onclick="eeSFL_BASE_DeleteFile(' . $eeRowID . ')">' . __('Delete', 'ee-simple-file-list') . '</a>';
 						
 						if($eeAdmin) {
 						
@@ -304,9 +325,9 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 						// File Details to Pass to the Editor
 						$eeOutput .= '
 						
-						<span class="eeHide eeFileSize">' . $eeFileSize . '</span>
-						<span class="eeHide eeFileDateAdded">' . date_i18n( get_option('date_format'), strtotime( $eeFileArray['FileDateAdded'] ) ) . '</span>
-						<span class="eeHide eeFileDateChanged">' . date_i18n( get_option('date_format'), strtotime( $eeFileArray['FileDateChanged'] ) ) . '</span>';
+						<span class="eeHide eeSFL_FileSize">' . $eeFileSize . '</span>
+						<span class="eeHide eeSFL_FileDateAdded">' . date_i18n( get_option('date_format'), strtotime( $eeFileArray['FileDateAdded'] ) ) . '</span>
+						<span class="eeHide eeSFL_FileDateChanged">' . date_i18n( get_option('date_format'), strtotime( $eeFileArray['FileDateChanged'] ) ) . '</span>';
 					
 					} // END File Operations
 			

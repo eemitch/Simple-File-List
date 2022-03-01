@@ -131,6 +131,7 @@ class eeSFL_BASE_MainClass {
 			'FileDateAdded' => '', // Date the file was added to the list
 			'FileDateChanged' => '', // Last date the file was renamed or otherwise changed
 			'FileDescription' => '', // A short description of the file
+			'FileNiceName' => '', // A name that will replace the actual file name
 			'SubmitterName' => '', // Who uploaded the file
 			'SubmitterEmail' => '', // Their email
 			'SubmitterComments' => '', // What they said

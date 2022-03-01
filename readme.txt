@@ -252,6 +252,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 * NEW -> Added inputs for customizing the description and file submitter label text.
 * NEW -> Added an option to bypass the post-upload results page and go straight to the file list.
 * NEW -> Added shortcode display with copy-to-clipboard button to admin UI (top-right)
+* The file list table is now responsive, shifting to a vertical block display on small screens.
 * Removed the Shortcode Builder -> Shortcode attributes have been over-used :-(
 If you need to over-ride existing list settings, refer to: https://simplefilelist.com/shortcode/
 * Now Requires PHP 7

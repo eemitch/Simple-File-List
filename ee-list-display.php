@@ -153,23 +153,25 @@ if($eeAdmin OR $eeSFL_Settings['AllowFrontManage'] == 'YES') {
 		
 		<h1>' . __('Edit File', 'ee-simple-file-list') . '</h1>
 		
-		<p class="eeModalFileDetails">File ID: <span class="eeSFL_Modal_Manage_FileID">???</span> | ' . 
-		__('Added', 'ee-simple-file-list') . ': <span class="eeFileDateAdded" >???</span> | ' . 
-		__('Changed', 'ee-simple-file-list') . ': <span class="eeFileDateChanged" >???</span> | ' . 
-		__('Size', 'ee-simple-file-list') . ': <span class="eeFileSize">???</span>
+		<p class="eeSFL_ModalFileDetails">File ID: <span class="eeSFL_Modal_Manage_FileID">???</span> | ' . 
+		__('Added', 'ee-simple-file-list') . ': <span id="eeSFL_FileDateAdded" >???</span> | ' . 
+		__('Changed', 'ee-simple-file-list') . ': <span id="eeSFL_FileDateChanged" >???</span> | ' . 
+		__('Size', 'ee-simple-file-list') . ': <span id="eeSFL_FileSize">???</span>
 		</p>
 		
-		<label for="eeNewFileName">' . __('File Name', 'ee-simple-file-list') . '</label>
-		<input required="required" type="text" id="eeNewFileName" name="eeNewFileName" value="??" size="64" />
-		<small class="eeModalNote">' . __('Change the name.', 'ee-simple-file-list') . ' ' . __('Some characters are not allowed so these will be automatically replaced.', 'ee-simple-file-list') . '</small>
+		<label for="eeSFL_FileNameNew">' . __('File Name', 'ee-simple-file-list') . '</label>
+		<input type="text" id="eeSFL_FileNameNew" name="eeSFL_FileNameNew" value="??" size="64" />
+		<small class="eeSFL_ModalNote">' . __('Change the name.', 'ee-simple-file-list') . ' ' . __('Some characters are not allowed. These will be automatically replaced.', 'ee-simple-file-list') . '</small>
 		
-		<label for="eeNewFileDesc">' . __('Description', 'ee-simple-file-list') . '</label>
-		<textarea cols="64" rows="3" id="eeNewFileDesc" name="eeFileNewDesc">???</textarea>
-		<small class="eeModalNote">' . __('Add a description.', 'ee-simple-file-list') . ' ' . __('Use this field to describe this file and use characters not allowed within the file name.', 'ee-simple-file-list') . '</small>
+		<label for="eeSFL_FileNiceNameNew">' . __('File Nice Name', 'ee-simple-file-list') . '</label>
+		<input type="text" id="eeSFL_FileNiceNameNew" name="eeSFL_FileNiceNameNew" value="" size="64" />
+		<small class="eeSFL_ModalNote">' . __('Enter a name that will be shown in place of the real file name.', 'ee-simple-file-list') . ' ' . __('You may use special characters not allowed in the file name.', 'ee-simple-file-list') . '</small>
 		
-		<button class="button" onclick="eeSFL_BASE_SaveFileEdit()">' . __('Save', 'ee-simple-file-list') . '</button>
-	
+		<label for="eeSFL_FileDescriptionNew">' . __('Description', 'ee-simple-file-list') . '</label>
+		<textarea cols="64" rows="3" id="eeSFL_FileDescriptionNew" name="eeSFL_FileDescriptionNew"></textarea>
+		<small class="eeSFL_ModalNote">' . __('Add a description.', 'ee-simple-file-list') . ' ' . __('Use this field to describe this file and apply keywords for searching.', 'ee-simple-file-list') . '</small>
 		
+		<button class="button" onclick="eeSFL_BASE_FileEditSaved()">' . __('Save', 'ee-simple-file-list') . '</button>
 
 	</div>
 	</div>';

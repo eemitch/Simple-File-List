@@ -117,3 +117,69 @@
 	display: inline-block;
 	width: 20%;
 }
+
+
+/* SMALL SCREEN STYLES */
+@media (max-width: 40em) { /* Would be nice to know the width of .eeSFL */
+	
+	#eeSFL, .eeSFL {
+		box-sizing: border-box;
+	}
+	
+	.eeSFL table.eeFiles,
+	.eeSFL table.eeFiles thead,
+	.eeSFL table.eeFiles tbody,
+	.eeSFL table.eeFiles tr,
+	.eeSFL table.eeFiles th,
+	.eeSFL table.eeFiles td,
+	.eeSFL table.eeFiles td.eeSFL_Thumbnail,
+	.eeSFL table.eeFiles td.eeSFL_FileName {
+		display: block;
+		width: 100%;
+		margin: 0;
+		padding: .25em 0;
+		text-align: center;
+		border: none;
+	}
+	.eeSFL table.eeFiles thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	.eeSFL table.eeFiles tr {
+		margin-bottom: 3em;
+	}
+	.eeSFL table.eeFiles td.eeSFL_Thumbnail img {
+		margin: 0 auto;
+	}
+	
+	.eeSFL table.eeFiles p.eeSFL_FileLink {
+		font-size: 150%;
+		font-weight: bold;
+		margin-bottom: 1em;
+		text-align: center;
+	}
+	
+	.eeSFL table.eeFiles small.eeSFL_ListFileActions {
+		display: flex;
+		margin-bottom: 1em;
+	}
+	
+	.eeSFL table.eeFiles .eeSFL_ListFileActions > a {
+		display: block;
+		flex: 1;
+		color: var(--ee-color-action-link-text);
+		background-color: var(--ee-color-action-link-background);
+		padding: 1em .5em;
+		margin: 0 .5em;
+		border-radius: 3px;
+		font-size: 85%;
+		text-align: center;
+		white-space: nowrap;
+	}
+	
+	
+
+}
+
+

@@ -440,8 +440,16 @@ function eeSFL_BASE_Enqueue() {
 	wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js',$deps, eeSFL_BASE_Version, TRUE); // Footer
 	
 	// Uploader
-	wp_register_script( 'ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js' );
-	wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_BASE_Version, TRUE);
+	if($eeSFL_Settings['AllowUploads'] != 'NO') {
+		wp_register_script( 'ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js' );
+		wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_BASE_Version, TRUE);
+	}
+	
+	// File Management
+	if($eeSFL_Settings['AllowFrontManage'] != 'NO') {
+		wp_register_script( 'ee-simple-file-list-js-edit-file', plugin_dir_url(__FILE__) . 'js/ee-edit-file.js' );
+		wp_enqueue_script('ee-simple-file-list-js-edit-file', plugin_dir_url(__FILE__) . 'js/ee-edit-file.js',$deps, eeSFL_BASE_Version, TRUE);
+	}
 	
 	// Pass variables
 	wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $eeSFL_VarsForJS );
@@ -484,6 +492,7 @@ function eeSFL_BASE_AdminHead($eeHook) {
 		wp_enqueue_script('ee-simple-file-list-js-back', plugin_dir_url(__FILE__) . 'js/ee-back.js', $deps, eeSFL_BASE_Version, FALSE);
         wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js', $deps, eeSFL_BASE_Version, TRUE);
         wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_BASE_Version, TRUE);
+        wp_enqueue_script('ee-simple-file-list-js-edit-file', plugin_dir_url(__FILE__) . 'js/ee-edit-file.js',$deps, eeSFL_BASE_Version, TRUE);
 		
 		// Pass variables
 		wp_localize_script('ee-simple-file-list-js-head', 'eeSFL_JS', array( 'pluginsUrl' => plugins_url() ) );
@@ -661,80 +670,33 @@ function eeSFL_BASE_FileUploader() {
 // File Editor Engine
 function eeSFL_BASE_FileEditor() {
 	
+	// All POST values used shall be expected
+	
 	global $eeSFL_BASE, $eeSFL_BASE_Log, $eeSFL_Settings;
-	$eeFileName = '';
-	$eeFileAction = '';
+	
+	$eeFileNameNew = FALSE;
+	$eeFileNiceNameNew = FALSE;
+	$eeFileDescriptionNew = FALSE;
+	$eeFileAction = FALSE;
 	
 	// WP Security
-	if( !check_ajax_referer( 'eeSFL_ActionNonce', 'eeSecurity' ) ) {
-		return 'ERROR 98';	
-	}
+	if( !check_ajax_referer( 'eeSFL_ActionNonce', 'eeSecurity' ) ) { return 'ERROR 98';	}
 	
 	// Check if we should be doing this
 	if(is_admin() OR $eeSFL_Settings['AllowFrontManage'] == 'YES') {
 		
 		// The Action
-		if(@$_POST['eeFileAction']) { 
-			$eeFileAction = sanitize_text_field($_POST['eeFileAction']); 
-		}
-		if(!$eeFileAction) { 
-			return "Missing the Action";
-		}
-				
-		// The File Name
-		if(@$_POST['eeFileName']) { 
-			$eeFileName = sanitize_text_field($_POST['eeFileName']); 
-		}
-		if(!$eeFileName) { 
-			return "Missing the Current File Name";
-		}
+		if( strlen($_POST['eeFileAction']) ) { $eeFileAction = sanitize_text_field($_POST['eeFileAction']); } 
+		if( !$eeFileAction ) { return "Missing the Action"; }
 		
-		// Renaming
-		if( strpos($eeFileAction, 'Rename') === 0 ) {
+		// The Current File Name
+		if( strlen($_POST['eeFileName']) ) { $eeFileName = sanitize_text_field($_POST['eeFileName']); }
+		if(!$eeFileName) { return "Missing the File Name"; }
 		
-			// If Renaming
-			if( strpos($eeFileAction, '|') ) {
-				$eeArray = explode('|', $eeFileAction);
-				$eeFileAction = $eeArray[0];
-				$eeNewFileName = urldecode( $eeArray[1] );
-				$eeNewFileName = eeSFL_BASE_SanitizeFileName($eeNewFileName);
-			}
-			
-			if($eeNewFileName) {
-				
-				$eePathParts = pathinfo($eeFileName);
-				$eeOldExtension = strtolower($eePathParts['extension']); // Prevent changing file extension
-				$eePathParts = pathinfo($eeNewFileName);
-				$eeNewExtension = strtolower($eePathParts['extension']);
-				if($eeOldExtension != $eeNewExtension) { 
-					return "Changing File Extensions is Not Allowed";
-				}
-				
-				eeSFL_BASE_DetectUpwardTraversal($eeSFL_Settings['FileListDir'] . $eeNewFileName); // Die if foolishness
-				
-				$eeNewFileName = eeSFL_BASE_CheckForDuplicateFile($eeNewFileName); // Don't over-write
-				
-				$eeOldFilePath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFileName;
-				$eeNewFilePath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeNewFileName;
-				
-				if( !rename($eeOldFilePath, $eeNewFilePath) ) {
-					
-					return 'Could Not Rename ' . $eeOldFilePath . ' to ' . $eeNewFilePath;
-				
-				} else {
-					
-					$eeSFL_BASE->eeSFL_UpdateFileDetail($eeFileName, 'FilePath', $eeNewFileName);
-					
-					$eeSFL_BASE->eeSFL_UpdateThumbnail($eeFileName, $eeNewFileName); // Rename the thumb
-					
-					return 'SUCCESS';
-				}
-			
-			} else { 
-				return "Missing the New File Name";
-			}
-			
-		} elseif($eeFileAction == 'Delete') {
+		// Folder Path - PRO ONLY
+		
+		// Delete the File
+		if($eeFileAction == 'Delete') {
 			
 			eeSFL_BASE_DetectUpwardTraversal($eeSFL_Settings['FileListDir'] . $eeFileName); // Die if foolishness
 			
@@ -763,35 +725,85 @@ function eeSFL_BASE_FileEditor() {
 				} else {
 					return __('File Delete Failed', 'ee-simple-file-list') . ':' . $eeFileName;
 				}
+			
+			} else {
+				return __('Item is Not a File', 'ee-simple-file-list') . ':' . $eeFileName;
 			}	
 		
-		} elseif($eeFileAction == 'UpdateDesc') {
+		} elseif($eeFileAction == 'Edit') {
 			
-			// The Description
-			if(filter_var(@$_POST['eeFileID'], FILTER_VALIDATE_INT) !== FALSE) { // Might be a zero
-				$eeFileID = $_POST['eeFileID'];
-			} else { 
-				$eeFileID = 0;
+			// The Nice Name - Might be empty
+			if($_POST['eeFileNiceNameNew'] != 'false') {
+				$eeFileNiceNameNew = trim(sanitize_text_field($_POST['eeFileNiceNameNew']));
+				if(!$eeFileNiceNameNew) { $eeFileNiceNameNew = ''; } 
+				$eeSFL_BASE->eeSFL_UpdateFileDetail($eeFileName, 'FileNiceName', $eeFileNiceNameNew);
 			}
 			
-			// The Description
-			if(@$_POST['eeFileDesc']) { 
-				$eeFileDesc = sanitize_text_field($_POST['eeFileDesc']); 
-			} else { 
-				$eeFileDesc = '';
+			// The Description - Might be empty
+			if($_POST['eeFileDescNew'] != 'false') {
+				$eeFileDescriptionNew = trim(sanitize_text_field($_POST['eeFileDescNew']));
+				if(!$eeFileDescriptionNew) { $eeFileDescriptionNew = ''; } 
+				$eeSFL_BASE->eeSFL_UpdateFileDetail($eeFileName, 'FileDescription', $eeFileDescriptionNew);
 			}
+
 			
-			$eeSFL_BASE->eeSFL_UpdateFileDetail($eeFileName, 'FileDescription', $eeFileDesc);
+			
+			// Date Modified - PRO ONLY
 		
+			
+			
+			// New File Name? - Rename Last
+			if( strlen($_POST['eeFileNameNew']) >= 3 ) { 
+				
+				$eeFileNameNew = sanitize_text_field($_POST['eeFileNameNew']);
+				$eeFileNameNew  = urldecode( $eeFileNameNew );
+				$eeFileNameNew  = eeSFL_BASE_SanitizeFileName( $eeFileNameNew );
+				
+				if( strlen($eeFileNameNew) >= 3 ) { // a.b
+				
+					// Prevent changing file extension
+					$eePathParts = pathinfo( $eeFileName );
+					$eeOldExtension = strtolower( $eePathParts['extension'] ); 
+					$eePathParts = pathinfo( $eeFileNameNew );
+					$eeNewExtension = strtolower( $eePathParts['extension'] );
+					if($eeOldExtension != $eeNewExtension) { return "Changing File Extensions is Not Allowed"; }
+				
+					// Die if foolishness
+					eeSFL_BASE_DetectUpwardTraversal($eeSFL_Settings['FileListDir'] . $eeFileNameNew ); 
+					
+					// Check for Duplicate File
+					$eeFileNameNew  = eeSFL_BASE_CheckForDuplicateFile($eeFileNameNew );
+					
+					// Rename File On Disk
+					$eeOldFilePath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFileName;
+					$eeNewFilePath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFileNameNew ;
+					
+					if( !rename($eeOldFilePath, $eeNewFilePath) ) {
+						
+						return __('Could Not Change the Name', 'ee-simple-file-list') . ' ' . $eeOldFilePath . ' ' . __('to', 'ee-simple-file-list') . ' ' . $eeNewFilePath;
+					
+					} else {
+						
+						$eeSFL_BASE->eeSFL_UpdateFileDetail($eeFileName, 'FilePath', $eeFileNameNew );
+						
+						$eeSFL_BASE->eeSFL_UpdateThumbnail($eeFileName, $eeFileNameNew ); // Rename the thumb
+					}
+				
+				} else {
+					return __('Invalid New File Name', 'ee-simple-file-list');
+				}
+			}
+			
 			return 'SUCCESS';
 			
-		} else {
+		} else { // End Editing
 			
 			return; // Nothing to do	
 		}
 	}
 	
 	// We should not be doing this
+	return;
 }
 
 
