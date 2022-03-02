@@ -4,19 +4,6 @@
 
 console.log('ee-footer.js Loaded');
 
-// Upon page load completion...
-jQuery(document).ready(function($) {	
-
-	console.log('eeSFL Document Ready');
-	
-	window.addEventListener('touchstart', function() {
-		eeSFL_FREE_isTouchscreen = true;
-	});	
-
-}); // END Ready Function
-
-
-
 
 // Copy File URL to Clipboard
 function eeSFL_FREE_CopyLinkToClipboard(eeSFL_FileURL) {
@@ -240,3 +227,31 @@ function eeSFL_FREE_FileAction(eeSFL_FileID, eeSFL_Action) {
 		});
 	}
 }
+
+
+// Upon page load completion...
+jQuery(document).ready(function($) {	
+
+	console.log('eeSFL Document Ready');
+	
+	window.addEventListener('touchstart', function() {
+		eeSFL_FREE_isTouchscreen = true;
+	});	
+	
+	
+	jQuery( '.eeFiles tr' ).each(function( index ) {
+		var eeThisID = '#' + jQuery(this).attr('id');
+		var eeFileName = jQuery( eeThisID + " span.eeSFL_RealFileName" ).text();
+		var eeFileLink = jQuery( eeThisID + " a.eeSFL_FileName" ).attr('href');
+		var eeExt = eeFileName.split('.').pop();
+		console.log( index + ": " + eeFileName );
+		var eeAudioPlayer = '<audio class="eeSFL_AudioPlayer" controls><source src="' + eeFileLink + '" type="audio/mpeg">Not Supported</audio>';
+		if(eeExt == 'mp3') {
+			console.log('MP3 File Found: ' + eeFileName);
+			console.log('Updating the Display...');
+			jQuery(eeThisID + ' .eeSFL_FileOpen').text('Play');
+			jQuery( eeThisID + " td.eeSFL_FileName" ).append('<div>' + eeAudioPlayer +  '</div>');
+		}
+	});
+
+}); // END Ready Function
