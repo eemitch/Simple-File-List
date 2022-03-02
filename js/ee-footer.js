@@ -33,7 +33,7 @@ jQuery(document).ready(function($) {
 		var eeExt = eeFileName.split('.').pop(); // Get the File Extension
 		console.log( index + ": " + eeFileName );
 		
-		var eeAudioPlayer = '<audio controls><source src="' + eeFileLink + '" type="audio/mpeg">Not Supported</audio>';
+		var eeAudioPlayer = '<audio class="eeSFL_AudioPlayer" controls><source src="' + eeFileLink + '" type="audio/mpeg">Not Supported</audio>';
 		
 		if(eeExt == 'mp3') {
 			console.log('MP3 File Found: ' + eeFileName);
