@@ -242,6 +242,10 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
+= 4.4.10 =
+* DEVELOPMENT
+* Working on Audio player and mobile responsive file list table
+
 = 4.4.9 =
 * Added ability to create video thumbnails for the WebM format.
 * Fixed where a double-slash in the item's path would cause Error 99.
