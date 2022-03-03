@@ -740,9 +740,14 @@ function eeSFL_BASE_FileEditor() {
 			}
 			
 			// The Description - Might be empty
-			if($_POST['eeFileDescNew'] != 'false') {
+			if($_POST['eeFileDescNew'] != 'false' OR $_POST['eeFileDescNew'] == '') {
+			
 				$eeFileDescriptionNew = trim(sanitize_text_field($_POST['eeFileDescNew']));
 				if(!$eeFileDescriptionNew) { $eeFileDescriptionNew = ''; } 
+				
+				
+				// $eeFileDescriptionNew = '';
+				
 				$eeSFL_BASE->eeSFL_UpdateFileDetail($eeFileName, 'FileDescription', $eeFileDescriptionNew);
 			}
 
@@ -776,7 +781,11 @@ function eeSFL_BASE_FileEditor() {
 					
 					// Rename File On Disk
 					$eeOldFilePath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFileName;
-					$eeNewFilePath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFileNameNew ;
+					$eeNewFilePath = ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFileNameNew;
+					
+					if(!is_file($eeOldFilePath)) {
+						return __('File Not Found', 'ee-simple-file-list') . ': ' . basename($eeOldFilePath);
+					}
 					
 					if( !rename($eeOldFilePath, $eeNewFilePath) ) {
 						

@@ -21,6 +21,7 @@ jQuery(document).ready(function($) {
 	
 	
 	
+/*
 	
 	
 	// Look for Media Files and Add Player
@@ -54,6 +55,7 @@ jQuery(document).ready(function($) {
 		
 	});
 	
+*/
 		
 
 }); // END Ready Function
