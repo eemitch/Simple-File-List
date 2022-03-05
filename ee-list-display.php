@@ -136,7 +136,7 @@ if( is_array($eeSFL_Files) ) {
 // This allows javascript to access the count
 $eeOutput .= '
 
-<p class="eeHide"><span id="eeSFL_FilesCount">' . $eeFileCount . '</span></p>
+<p class="eeHide"><span id="eeSFL_FilesCount">' . $eeSFL_BASE->eeFileCount . '</span></p>
 
 </div><!-- END .eeSFL -->';
 

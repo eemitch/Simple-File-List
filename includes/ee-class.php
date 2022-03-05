@@ -70,7 +70,7 @@ class eeSFL_BASE_MainClass {
 		'LabelDesc' => 'Description', // Label for the file description
 		'LabelOwner' => 'Submitter', // Label for the file owner
 		
-		'SortBy' => 'DateMod', // Sort By (Name, Date, DateMod, Size, Random) -- DateMod added in 4.3
+		'SortBy' => 'DateChanged', // Sort By (Name, Date, DateChanged, Size, Random) -- DateChanged added in 4.3
 		'SortOrder' => 'Descending', // Descending or Ascending
 		
 		// Upload Settings
@@ -119,6 +119,26 @@ class eeSFL_BASE_MainClass {
 	
 	
 	
+	public $eeIsFile = FALSE;
+	public $eeFilePath = FALSE;
+	public $eeFileURL = FALSE;
+	public $eeFileName = FALSE;
+	public $eeFileExt = FALSE;
+	public $eeRealFileName = FALSE;
+	public $eeFileNiceName = FALSE;
+	public $eeFileDescription = FALSE;
+	public $eeFileThumbURL = FALSE;
+	public $eeFileDateAdded = FALSE;
+	public $eeFileDateChanged = FALSE;
+	public $eeFileDate = FALSE;
+	public $eeFileSize = FALSE;
+	public $eeFileOwner = FALSE;
+	public $eeFileSubmitterEmail = FALSE;
+	public $eeFileSubmitterName = FALSE;
+	public $eeFileSubmitterComments = FALSE;
+	public $eeFileCount = 0;
+	
+	
 	 // Default File List Definition
     public $eeSFL_Files = array(
 	    
@@ -137,6 +157,148 @@ class eeSFL_BASE_MainClass {
 			'SubmitterComments' => '', // What they said
 		)
     );
+    
+    
+    
+    public function eeSFL_ProcessFileArray($eeFileArray, $eeHideName = FALSE, $eeHideType = FALSE) {
+	    
+	    global $eeSFL_Settings, $eeSFL_BASE_Env;
+	    
+	    if( is_admin() ) { $eeAdmin = TRUE; } else { $eeAdmin = FALSE; }
+	    
+	    if( is_array($eeFileArray) ) {
+			
+			// Deny Folder Listing
+			if(strpos($eeFileArray['FilePath'], '/')) { return FALSE; }
+
+			// Assign values to our properties
+			
+			// The File Name
+			$this->eeFilePath = $eeFileArray['FilePath']; // Path relative to FileListDir
+			$this->eeFileName = basename($eeFileArray['FilePath']); // This name might change
+			$this->eeRealFileName = $this->eeFileName; // Never changed
+			$this->eeFileExt = basename($eeFileArray['FileExt']); // Just the name
+			$this->eeFileURL = $eeSFL_BASE_Env['wpSiteURL'] . $eeSFL_Settings['FileListDir'] . $this->eeFilePath; // Clickable URL
+			$this->eeFileSize = eeSFL_BASE_FormatFileSize($eeFileArray['FileSize']); // Formatted Size
+			
+			// Must Be a File
+			if(strpos($this->eeFilePath, '.')) { // Skip folders and hidden files
+			
+				// Skip names hidden via shortcode
+				if($eeHideName) { // Expecting a comma deleimited string of file names
+					$eeArray = explode(',', $eeHideName);
+					foreach( $eeArray as $eeKey => $eeValue ) {
+						if( strtolower($eeFileName) ==  $eeValue . '.' . $this->eeFileExt ) {  return FALSE; } // Without extension
+						if($eeValue == strtolower($this->eeFileName)) { return FALSE; } // With extension
+					}
+				}
+				
+				// Skip types hidden via shortcode
+				if($eeHideType) { // Expecting a comma deleimited string of extensions
+					if(strpos($eeHideType, $this->eeFileExt) OR strpos($eeHideType, $this->eeFileExt) === 0 ) { 
+						return FALSE;
+					}
+				}
+				
+				$this->eeIsFile = TRUE;
+				
+				// Thumbnail
+				$eeHasCreatedThumb = FALSE;
+				if( in_array($this->eeFileExt,  $this->eeDynamicImageThumbFormats) AND $eeSFL_Settings['GenerateImgThumbs'] == 'YES' ) { $eeHasCreatedThumb = TRUE; }
+				if( in_array($this->eeFileExt,  $this->eeDynamicVideoThumbFormats) AND isset($eeSFL_BASE_Env['ffMpeg']) AND $eeSFL_Settings['GenerateVideoThumbs'] == 'YES' ) { $eeHasCreatedThumb = TRUE; }
+				if( $this->eeFileExt == 'pdf' AND isset($eeSFL_BASE_Env['ImkGs']) AND $eeSFL_Settings['GeneratePDFThumbs'] == 'YES' ) { $eeHasCreatedThumb = TRUE; }
+				
+				if($eeHasCreatedThumb) { // Images use .jpg files
+	
+					$eePathParts = pathinfo($this->eeFilePath);
+					$eeFileThumbURL = $eeSFL_Settings['FileListURL'];
+					if($eePathParts['dirname']) { $eeFileThumbURL .= $eePathParts['dirname'] . '/'; }
+					$this->eeFileThumbURL = $eeFileThumbURL . '.thumbnails/thumb_' . $eePathParts['filename'] . '.jpg';
+	
+				} else { // Others use our awesome .svg files
+					
+					if( !in_array($this->eeFileExt, $this->eeDefaultThumbFormats) ) { $eeDefaultThumb = '!default.svg'; } // What the heck is this? 
+						else { $eeDefaultThumb = $this->eeFileExt . '.svg'; } // Use our sweet icon
+					
+					$this->eeFileThumbURL = $eeSFL_BASE_Env['pluginURL'] . 'images/thumbnails/' . $eeDefaultThumb;
+				}
+				
+				
+				
+				// File Nice Name
+				if( isset($eeFileArray['FileNiceName']) ) {
+					if( strlen($eeFileArray['FileNiceName']) >= 1 ) {
+						$this->eeFileNiceName = $eeFileArray['FileNiceName'];
+						$this->eeFileName = $eeFileArray['FileNiceName'];
+					}
+				}
+				
+				if($this->eeFileNiceName === FALSE) {
+					
+					// Strip the Extension?
+					if(!$eeAdmin AND $eeSFL_Settings['ShowFileExtension'] == 'NO') {
+						$eePathParts = pathinfo($this->eeRealFileName);
+						$this->eeFileName = $eePathParts['filename'];
+					}
+					
+					// Replace hyphens with spaces?
+					if(!$eeAdmin AND $eeSFL_Settings['PreserveSpaces'] == 'YES') {
+						$this->eeFileName = eeSFL_BASE_PreserveSpaces($this->eeRealFileName); 
+					}
+				}
+				
+				if( isset($eeFileArray['FileDescription']) ) {
+					$this->eeFileDescription = $eeFileArray['FileDescription'];
+				}
+				
+				// File Description
+				if( isset($eeFileArray['SubmitterComments']) ) { 
+					if(!$this->eeFileDescription) {
+						$this->eeFileDescription = $eeFileArray['SubmitterComments']; // Show the submitter comment if no desc
+						$this->eeFileSubmitterComments = $eeFileArray['SubmitterComments']; // Use on back-end
+					}
+				}
+				
+				
+				
+				// File Dates and the Display Date
+				if($eeSFL_Settings['ShowFileDateAs'] == 'Changed') {
+					$this->eeFileDateChanged = date_i18n( get_option('date_format'), strtotime( $eeFileArray['FileDateChanged'] ) ); // The mod date
+					$this->eeFileDate = $this->eeFileDateChanged;
+				} else {
+					$this->eeFileDateAdded = date_i18n( get_option('date_format'), strtotime( $eeFileArray['FileDateAdded'] ) );
+					$this->eeFileDate = $this->eeFileDateAdded;
+				}
+				
+				
+				
+				// Submitter Info
+				if( isset($eeFileArray['FileOwner']) ) { 
+					if(is_numeric($eeFileArray['FileOwner'])) {
+						$this->eeFileOwner = $eeFileArray['FileOwner']; // The User ID
+						$wpUserData = get_userdata($this->eeFileOwner);
+						if($wpUserData->user_email) {
+							$this->eeFileSubmitterEmail = $wpUserData->user_email;
+							$this->eeFileSubmitterName = $wpUserData->first_name . ' ' . $wpUserData->last_name;
+						}
+					}
+				
+				} elseif(isset($eeFileArray['SubmitterName'])) {
+					
+					$this->eeFileSubmitterName = $eeFileArray['SubmitterName'];
+					$this->eeFileSubmitterEmail = $eeFileArray['SubmitterEmail'];
+					
+				}
+				
+				$this->eeFileCount++; // Bump the file count
+			
+			} else {
+				return FALSE; // Not an item we want to display
+			}
+		}
+	    
+	    return TRUE;
+	}
 	
 	
 	
@@ -930,7 +1092,7 @@ class eeSFL_BASE_MainClass {
 				$eeFilesSorted[ $eeFileArray['FileDateAdded'] . ' ' . $eeKey ] = $eeFileArray;
 			}
 			
-		} elseif($eeSortBy == 'DateMod') { // Files by Date Modified (By Customer Request)
+		} elseif($eeSortBy == 'DateChanged') { // Files by Date Modified (By Customer Request)
 			
 			foreach($eeFiles as $eeKey => $eeFileArray) {
 					

@@ -9,7 +9,7 @@ function eeSFL_BASE_DeleteFile(eeSFL_FileID) {
 	console.log('Deleting File: ' + eeSFL_FileID);
 	
 	// Get the File Name
-    var eeSFL_FileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' .eeSFL_RealFileName').text();
+    var eeSFL_FileName = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' .eeSFL_RealFileName').text();
     
     console.log(eeSFL_FileName);
 	
@@ -43,23 +43,23 @@ function eeSFL_BASE_OpenEditModal(eeSFL_FileID) {
 	// Pre-Populate the Modal
 	jQuery('#eeSFL_Modal_Manage .eeSFL_Modal_Manage_FileID').text(eeSFL_FileID);
 	
-	eeSFL_FileNameOld = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_RealFileName').text();
+	eeSFL_FileNameOld = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_RealFileName').text();
 	jQuery('#eeSFL_FileNameNew').val(eeSFL_FileNameOld);
 	
-	eeSFL_FileNiceNameOld = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_FileNiceName').text();
+	eeSFL_FileNiceNameOld = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_FileNiceName').text();
 	eeSFL_FileNiceNameOld = eeSFL_FileNiceNameOld.eeStripSlashes();
 	jQuery('#eeSFL_FileNiceNameNew').val(eeSFL_FileNiceNameOld);
 	
-	eeSFL_FileDescriptionOld = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' .eeSFL_FileDesc').text();
+	eeSFL_FileDescriptionOld = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' .eeSFL_FileDesc').text();
 	jQuery('#eeSFL_FileDescriptionNew').val(eeSFL_FileDescriptionOld);
 	
-	eeSFL_FileSize = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_FileSize').text();
+	eeSFL_FileSize = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_FileSize').text();
 	jQuery('#eeSFL_FileSize').text(eeSFL_FileSize);
 	
-	eeSFL_FileDateAdded = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_FileDateAdded').text();
+	eeSFL_FileDateAdded = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_FileDateAdded').text();
 	jQuery('#eeSFL_FileDateAdded').text(eeSFL_FileDateAdded);
 	
-	eeSFL_FileDateChanged = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_FileDateChanged').text();
+	eeSFL_FileDateChanged = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_FileDateChanged').text();
 	jQuery('#eeSFL_FileDateChanged').text(eeSFL_FileDateChanged);
 	
 }
@@ -180,7 +180,7 @@ function eeSFL_BASE_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 	} else if(eeSFL_FileAction == 'Delete') {
 		
 		// Get the File Name
-		var eeSFL_FileName = jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_RealFileName').text();
+		var eeSFL_FileName = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_RealFileName').text();
 		
 		eeFormData = {
 			'action': 'simplefilelist_edit_job',
@@ -207,10 +207,10 @@ function eeSFL_BASE_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 				
 				if(eeSFL_FileNameNew) {
 					var eeNewLink = '<a class="eeSFL_FileName" href="/' + eeSFL_FileListDir + eeSFL_FileNameNew + '">' + eeSFL_FileNameNew + '</a>';
-					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileLink').html(eeNewLink);
-					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' span.eeSFL_RealFileName').text(eeSFL_FileNameNew);
-					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' a.eeSFL_FileOpen').attr('href', '/' + eeSFL_FileListDir + eeSFL_FileNameNew);
-					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' a.eeSFL_FileDownload').attr('href', '/' + eeSFL_FileListDir + eeSFL_FileNameNew);
+					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileLink').html(eeNewLink);
+					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_RealFileName').text(eeSFL_FileNameNew);
+					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' a.eeSFL_FileOpen').attr('href', '/' + eeSFL_FileListDir + eeSFL_FileNameNew);
+					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' a.eeSFL_FileDownload').attr('href', '/' + eeSFL_FileListDir + eeSFL_FileNameNew);
 				}
 				
 				// console.log('eeSFL_FileNameOld: ' + eeSFL_FileNameOld);
@@ -254,7 +254,7 @@ function eeSFL_BASE_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 						
 					}
 					
-					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileLink').html(eeNewLink);
+					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileLink').html(eeNewLink);
 				
 				
 				}
@@ -262,20 +262,20 @@ function eeSFL_BASE_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 				
 				if(eeSFL_FileDescriptionNew) {
 					
-					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').removeClass('eeHide');
-					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').html(eeSFL_FileDescriptionNew);
+					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').removeClass('eeHide');
+					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').html(eeSFL_FileDescriptionNew);
 					eeSFL_FileDescriptionOld = ''; 
 				
 				} else if(eeSFL_FileDescriptionNew == '') {
 					
-					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').addClass('eeHide');
-					jQuery('#eeSFL_RowID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').html('');
+					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').addClass('eeHide');
+					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').html('');
 					eeSFL_FileDescriptionOld = '';
 				}
 				
 			} else if(eeSFL_FileAction == 'Delete') {
 				
-				jQuery('#eeSFL_RowID-' + eeSFL_FileID).hide('slow');
+				jQuery('#eeSFL_FileID-' + eeSFL_FileID).hide('slow');
 				
 			}
 		

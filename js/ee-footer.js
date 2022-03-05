@@ -21,7 +21,6 @@ jQuery(document).ready(function($) {
 	
 	
 	
-/*
 	
 	
 	// Look for Media Files and Add Player
@@ -43,7 +42,7 @@ jQuery(document).ready(function($) {
 			// Change the Open Link to Play
 			jQuery(eeThisID + ' .eeSFL_FileOpen').text('Play');
 			
-			jQuery( eeThisID + " td.eeSFL_FileName" ).append('<div>' + eeAudioPlayer +  '</div>'); // TO DO - Update this for SFL 5/6
+			jQuery( eeThisID + " td.eeSFL_FileName" ).append('<div class="eeSFL_AudioPlayerWrap">' + eeAudioPlayer +  '</div>'); // TO DO - Update this for SFL 5/6
 			
 			
 		}
@@ -55,7 +54,6 @@ jQuery(document).ready(function($) {
 		
 	});
 	
-*/
 		
 
 }); // END Ready Function

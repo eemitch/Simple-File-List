@@ -281,9 +281,9 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 			$eeOutput .= '>' . __('Date File Added', 'ee-simple-file-list') . '</option>
 			
 			
-			<option value="DateMod"';
+			<option value="DateChanged"';
 			
-			if($eeSFL_Settings['SortBy'] == 'DateMod') { $eeOutput .=  ' selected'; }
+			if($eeSFL_Settings['SortBy'] == 'DateChanged') { $eeOutput .=  ' selected'; }
 			
 			$eeOutput .= '>' . __('Date File Changed', 'ee-simple-file-list') . '</option>
 			
@@ -516,12 +516,12 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 			if($eeSFL_Settings['ShowFileDateAs'] == 'Added') { $eeOutput .= ' selected="selected"'; }
 			$eeOutput .= '>' . __('Added', 'ee-simple-file-list') . '</option>
 			
-			<option value="Modified"';
-			if($eeSFL_Settings['ShowFileDateAs'] == 'Modified') { $eeOutput .= ' selected="selected"'; }
-			$eeOutput .= '>' . __('Modified', 'ee-simple-file-list') . '</option>
+			<option value="Changed"';
+			if($eeSFL_Settings['ShowFileDateAs'] == 'Changed') { $eeOutput .= ' selected="selected"'; }
+			$eeOutput .= '>' . __('Changed', 'ee-simple-file-list') . '</option>
 		</select></div>
 		
-		<div class="eeNote">Show the file date, either last modified or added to the list.</div>
+		<div class="eeNote">Show the file date, either last changed or when added to the list.</div>
 		
 		</fieldset>
 		
