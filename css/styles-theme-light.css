@@ -1,3 +1,5 @@
+.eePickerThingy { color: rgba(218, 218, 220, 0.8); }
+
 .eeSFL,
 #eeSFL_UploadForm {
 	
@@ -7,11 +9,7 @@
 	/* 	https://html-color.codes/grey */
 	/* 	Theme text and background colors are generally honered */
 	
-	.eePickerThingy {
-		color: #d9d9db;
-	}
-	
-	--ee-hack-to-make-first-rule-work: #000;
+/* 	--ee-hack-to-make-first-rule-work: #000; */
 	/* 	First rule seems to be ignored ? */
 	
 	
@@ -42,7 +40,8 @@
 	
 	
 	/* TILES */
-	
+	--ee-color-tile-border: #DCDCDC;
+	--ee-color-tile-background: rgba(218, 218, 220, 0.8);
 	
 	
 	/* FLEX */

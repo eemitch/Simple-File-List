@@ -1,0 +1,93 @@
+
+/* Tiles Container */
+.eeSFL section.eeFiles {
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background-color: transparent;
+/* 	border: 1px dashed #666; */
+	font-size: 14px;
+}
+
+.eeSFL article.eeSFL_Tile {
+/* 	display: flex; */
+	flex: 1 0 29%;
+	margin: 0 1% .5em 1%;
+	padding: 0 0 1% 0;
+	background-color: #EEE;
+	text-align: center;
+}
+
+.eeSFL article.eeSFL_Tile h4 {
+	margin: 0 0 .5em 0;
+	padding: .25em;
+	font-weight: bold;
+	font-size: 1.2em;
+	white-space: nowrap;
+	background-color: var(--ee-color-tile-background);
+}
+.eeSFL article.eeSFL_Tile h4 a {
+	text-decoration: none;
+}
+.eeSFL article.eeSFL_Tile p {
+	margin: .25em 0;
+}
+
+.eeSFL article.eeSFL_Tile small.eeSFL_ListFileActions {
+	display: block;
+	width: 100%;
+	margin-bottom: .5em;
+	line-height: 2;
+}
+.eeSFL article.eeSFL_Tile small.eeSFL_ListFileActions a {
+	white-space: nowrap;
+	display: inline-block;
+	color: var(--ee-color-action-link-text);
+	background-color: var(--ee-color-action-link-background);
+	padding: .1em .3em;
+	margin: 0 .33em .5em 0;
+	text-decoration: none;
+}
+.eeSFL article.eeSFL_Tile small.eeSFL_ListFileActions a:hover {
+	color: var(--ee-color-action-link-text-hover);
+	background-color: var(--ee-color-action-link-background-hover);
+}
+
+.eeSFL article.eeSFL_Tile div.eeSFL_Thumbnail a {
+	text-decoration: none;
+}
+.eeSFL article.eeSFL_Tile div.eeSFL_Thumbnail img {
+	width: 64px;
+	height: auto;
+	
+	
+}
+
+.eeSFL article.eeSFL_Tile .eeSFL_FileDetails {
+	padding: .25em 0;
+	border-top: 1px solid var(--ee-color-tile-border);
+}
+
+.eeSFL article.eeSFL_Tile .eeSFL_FileSize,
+.eeSFL article.eeSFL_Tile .eeSFL_FileDate {
+	display: inline-block;
+	margin: 0 .5em;
+}
+
+
+/* LARGE SCREEN STYLES */
+@media (min-width: 40em) { /* Would be nice to know the width of .eeSFL */
+
+/*
+	.eeSFL article.eeSFL_Tile {
+		float: left;
+		width: 50%;
+		margin: 0;
+	}
+*/
+
+	
+
+}

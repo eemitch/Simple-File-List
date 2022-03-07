@@ -263,13 +263,13 @@ function eeSFL_BASE_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 				if(eeSFL_FileDescriptionNew) {
 					
 					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').removeClass('eeHide');
-					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').html(eeSFL_FileDescriptionNew);
+					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').text(eeSFL_FileDescriptionNew);
 					eeSFL_FileDescriptionOld = ''; 
 				
 				} else if(eeSFL_FileDescriptionNew == '') {
 					
 					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').addClass('eeHide');
-					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').html('');
+					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').text('');
 					eeSFL_FileDescriptionOld = '';
 				}
 				

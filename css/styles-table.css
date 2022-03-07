@@ -74,7 +74,7 @@
 	white-space: nowrap;
 }
 
-.eeSFL table.eeFiles .eeSFL_ListFileActions > a {
+.eeSFL table.eeFiles .eeSFL_ListFileActions a {
 	display: inline-block;
 	color: var(--ee-color-action-link-text);
 	background-color: var(--ee-color-action-link-background);
@@ -83,7 +83,7 @@
 	border-radius: 3px;
 	font-size: 80%;
 }
-.eeSFL table.eeFiles .eeSFL_ListFileActions > a:hover {
+.eeSFL table.eeFiles .eeSFL_ListFileActions a:hover {
 	color: var(--ee-color-action-link-text-hover);
 	background-color: var(--ee-color-action-link-background-hover);
 }

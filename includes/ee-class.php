@@ -160,6 +160,80 @@ class eeSFL_BASE_MainClass {
     
     
     
+    
+    public function eeSFL_ReturnFileActions($eeFileID) {
+			
+		global $eeSFL_BASE, $eeSFL_Settings, $eeSFL_BASE_ListRun;
+		
+		$eeAdmin = is_admin();
+		
+		$eeOutput = '
+		
+		<small class="eeSFL_ListFileActions">';
+			
+		// Open Action
+		if($eeAdmin OR $eeSFL_Settings['ShowFileOpen'] == 'YES') {
+		
+			if(in_array($eeSFL_BASE->eeFileExt, $eeSFL_BASE->eeOpenableFileFormats)) {
+				$eeOutput .= '
+				<a class="eeSFL_FileOpen" href="' . $eeSFL_BASE->eeFileURL . '" target="_blank">' . __('Open', 'ee-simple-file-list') . '</a>';
+			}
+		}
+		
+		// Download Action
+		if($eeAdmin OR $eeSFL_Settings['ShowFileDownload'] == 'YES') {
+		
+			$eeOutput .= '
+			<a class="eeSFL_FileDownload" href="' . $eeSFL_BASE->eeFileURL . '" download="' . basename($eeSFL_BASE->eeFileURL) . '">' . __('Download', 'ee-simple-file-list') . '</a>';
+		
+		}
+		
+		// Copy Link Action
+		if($eeAdmin OR $eeSFL_Settings['ShowFileCopyLink'] == 'YES') {
+			
+			$eeOutput .= '
+			<a class="eeSFL_CopyLinkToClipboard" onclick="eeSFL_BASE_CopyLinkToClipboard(\''  . $eeSFL_BASE->eeFileURL .   '\')" href="#">' . __('Copy Link', 'ee-simple-file-list') . '</a>';														
+		
+		}
+		
+		// Front-End Manage or Admin
+		if( ($eeAdmin OR $eeSFL_Settings['AllowFrontManage'] == 'YES') AND $eeSFL_BASE_ListRun == 1) {							
+			
+			// <span class="eeSFL_FileManageLinks">
+			
+			$eeOutput .= '
+			<a href="#" onclick="eeSFL_BASE_OpenEditModal(' . $eeFileID . ')">' . __('Edit', 'ee-simple-file-list') . '</a>
+			<a href="#" onclick="eeSFL_BASE_DeleteFile(' . $eeFileID . ')">' . __('Delete', 'ee-simple-file-list') . '</a>';
+			
+			if($eeAdmin) {
+			
+				$eeOutput .= '
+				 <a class="eeDisabledAction" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Move', 'ee-simple-file-list') . '</a>
+				 <a class="eeDisabledAction" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Users', 'ee-simple-file-list') . '</a>
+				 <a class="eeDisabledAction" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Send', 'ee-simple-file-list') . '</a>';
+			}
+			
+			// $eeOutput .= '<span>';
+		
+		}
+				
+		$eeOutput .= '
+		
+		</small>'; // Close File List Actions Links
+		
+		// File Details to Pass to the Editor
+		$eeOutput .= '
+		
+		<span class="eeHide eeSFL_FileSize">' . $eeSFL_BASE->eeFileSize . '</span>
+		<span class="eeHide eeSFL_FileDateAdded">' . $eeSFL_BASE->eeFileDateAdded . '</span>
+		<span class="eeHide eeSFL_FileDateChanged">' . $eeSFL_BASE->eeFileDateChanged . '</span>';
+		
+		return $eeOutput;
+	    
+    }
+    
+    
+    
     public function eeSFL_ProcessFileArray($eeFileArray, $eeHideName = FALSE, $eeHideType = FALSE) {
 	    
 	    global $eeSFL_Settings, $eeSFL_BASE_Env;
@@ -180,6 +254,15 @@ class eeSFL_BASE_MainClass {
 			$this->eeFileExt = basename($eeFileArray['FileExt']); // Just the name
 			$this->eeFileURL = $eeSFL_BASE_Env['wpSiteURL'] . $eeSFL_Settings['FileListDir'] . $this->eeFilePath; // Clickable URL
 			$this->eeFileSize = eeSFL_BASE_FormatFileSize($eeFileArray['FileSize']); // Formatted Size
+			
+			// Reset These
+			$this->eeFileNiceName = FALSE;
+			$this->eeFileDescription = FALSE;
+			$this->eeSubmitterComments = FALSE;
+			$this->eeFileOwner = FALSE;
+			$this->eeFileSubmitterEmail = FALSE;
+			$this->eeFileSubmitterName = FALSE;
+			$this->eeFileSubmitterComments = FALSE;
 			
 			// Must Be a File
 			if(strpos($this->eeFilePath, '.')) { // Skip folders and hidden files

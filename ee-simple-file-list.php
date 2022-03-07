@@ -739,14 +739,14 @@ function eeSFL_BASE_FileEditor() {
 				$eeSFL_BASE->eeSFL_UpdateFileDetail($eeFileName, 'FileNiceName', $eeFileNiceNameNew);
 			}
 			
+			
+			
 			// The Description - Might be empty
-			if($_POST['eeFileDescNew'] != 'false' OR $_POST['eeFileDescNew'] == '') {
+			if($_POST['eeFileDescNew'] != 'false') {
 			
 				$eeFileDescriptionNew = trim(sanitize_text_field($_POST['eeFileDescNew']));
-				if(!$eeFileDescriptionNew) { $eeFileDescriptionNew = ''; } 
 				
-				
-				// $eeFileDescriptionNew = '';
+				if(!$eeFileDescriptionNew) { $eeFileDescriptionNew = ''; }
 				
 				$eeSFL_BASE->eeSFL_UpdateFileDetail($eeFileName, 'FileDescription', $eeFileDescriptionNew);
 			}

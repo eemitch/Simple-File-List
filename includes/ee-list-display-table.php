@@ -62,18 +62,20 @@ $eeOutput .= '
 <tbody>';
 				
 
-$eeSFL_BASE_Log['RunTime'][] = 'Listing Files...';
+$eeSFL_BASE_Log['RunTime'][] = 'Listing Files in Table View...';
 						
 // Loop through array
-foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<---------------------------- BEGIN FILE LIST LOOP ----------------<<<
+foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<---------------------------- BEGIN FILE LIST LOOP ----------------<<<	 
 	
-	$eeFileID ++; // We start with one ...
+	// echo '<pre>'; print_r($eeFileArray); echo '</pre>'; exit;
 	
 	// Populate our class properties for this file
 	if( $eeSFL_BASE->eeSFL_ProcessFileArray($eeFileArray) === FALSE ) { continue; } // Skip This File
 			
 	if( $eeSFL_BASE->eeIsFile === TRUE ) {
 			
+		$eeFileID ++;
+		
 		// Start The List --------------------------------------------------------------
 	
 		$eeOutput .= '
@@ -109,84 +111,24 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 			
 			
 			// Show File Description
-			if(!$eeAdmin OR $eeSFL_Settings['ShowFileDesc'] == 'NO') {
-				$eeClass = 'eeHide';
-			}
-			if(!$eeSFL_BASE->eeFileDescription) { // This is always here in case of editing, but hidden if empty
-				$eeOutput .= '<p class="eeSFL_FileDesc ' . $eeClass . '">' . $eeSFL_BASE->eeFileDescription . '</p>';
-			}
+			if(!$eeAdmin OR $eeSFL_Settings['ShowFileDesc'] == 'NO') { $eeClass = 'eeHide'; }
+			
+			// This is always here in case of editing, but hidden if empty
+			$eeOutput .= '<p class="eeSFL_FileDesc ' . $eeClass . '">' . stripslashes($eeSFL_BASE->eeFileDescription) . '</p>';
 			
 			
 			// Submitter Info
 			if($eeAdmin OR $eeSFL_Settings['ShowSubmitterInfo'] == 'YES') {	
 				if($eeSFL_BASE->eeFileSubmitterName) {
 					$eeOutput .= '<p class="eeSFL_FileSubmitter">' . __('Submitted by', 'ee-simple-file-list') . ': 
-						<a href="mailto:' . $eeSFL_BASE->eeFileSubmitterEmail . '">' . $eeSFL_BASE->eeFileSubmitterName . '</a></p>';
+						<a href="mailto:' . $eeSFL_BASE->eeFileSubmitterEmail . '">' . stripslashes($eeSFL_BASE->eeFileSubmitterName) . '</a></p>';
 				}
 			}
 			
+			// File Actions
+			$eeOutput .= $eeSFL_BASE->eeSFL_ReturnFileActions($eeFileID);
 			
 			
-			// File Actions   ------------------------------------------------------------------------------------
-			
-			if($eeAdmin OR $eeSFL_Settings['ShowFileActions'] == 'YES') { // Always show to Admin
-				
-				// Construct
-				$eeOutput .= '
-				
-				<small class="eeSFL_ListFileActions">';
-					
-				// Open Action
-				if($eeAdmin OR $eeSFL_Settings['ShowFileOpen'] == 'YES') {
-				
-					if(in_array($eeSFL_BASE->eeFileExt, $eeSFL_BASE->eeOpenableFileFormats)) {
-						$eeOutput .= '<a class="eeSFL_FileOpen" href="' . $eeSFL_BASE->eeFileURL . '" target="_blank">' . __('Open', 'ee-simple-file-list') . '</a>';
-					}
-				}
-				
-				// Download Action
-				if($eeAdmin OR $eeSFL_Settings['ShowFileDownload'] == 'YES') {
-				
-					$eeOutput .= '<a class="eeSFL_FileDownload" href="' . $eeSFL_BASE->eeFileURL . '" download="' . basename($eeSFL_BASE->eeFileURL) . '">' . __('Download', 'ee-simple-file-list') . '</a>';
-				
-				}
-				
-				// Copy Link Action
-				if($eeAdmin OR $eeSFL_Settings['ShowFileCopyLink'] == 'YES') {
-					
-					$eeOutput .= '<a class="eeSFL_CopyLinkToClipboard" onclick="eeSFL_BASE_CopyLinkToClipboard(\''  . $eeSFL_BASE->eeFileURL .   '\')" href="#">' . __('Copy Link', 'ee-simple-file-list') . '</a>';														
-				
-				}
-				
-				// Front-End Manage or Admin
-				if( ($eeAdmin OR $eeSFL_Settings['AllowFrontManage'] == 'YES') AND $eeSFL_BASE_ListRun == 1) {							
-					
-					$eeOutput .= '
-					
-					<a href="#" onclick="eeSFL_BASE_OpenEditModal(' . $eeFileID . ')">' . __('Edit', 'ee-simple-file-list') . '</a>
-					
-					<a href="#" onclick="eeSFL_BASE_DeleteFile(' . $eeFileID . ')">' . __('Delete', 'ee-simple-file-list') . '</a>';
-					
-					if($eeAdmin) {
-					
-						$eeOutput .= '
-						 <a class="eeDisabledAction" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Move', 'ee-simple-file-list') . '</a>
-						 <a class="eeDisabledAction" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Users', 'ee-simple-file-list') . '</a>
-						 <a class="eeDisabledAction" href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" >' . __('Send', 'ee-simple-file-list') . '</a>';
-					}
-						
-					$eeOutput .= '</small>'; // Close File List Actions Links
-					
-					// File Details to Pass to the Editor
-					$eeOutput .= '
-					
-					<span class="eeHide eeSFL_FileSize">' . $eeSFL_BASE->eeFileSize . '</span>
-					<span class="eeHide eeSFL_FileDateAdded">' . $eeSFL_BASE->eeFileDateAdded . '</span>
-					<span class="eeHide eeSFL_FileDateChanged">' . $eeSFL_BASE->eeFileDateChanged . '</span>';
-				
-				} // END File Operations
-		
-			} // END File Actions	
 		
 		$eeOutput .= '</td>';
 		

@@ -444,7 +444,14 @@ eeSFL_Admin * + * {
 
 
 
-.eeSFL table.eeFiles .eeSFL_ListFileActions > a.eeDisabledAction {
+.eeSFL article.eeSFL_Tile {
+	margin-top: .5em;
+	background-color: #FFF;
+}
+
+
+
+.eeSFL table.eeFiles .eeSFL_ListFileActions a.eeDisabledAction {
 	border: 1px solid var(--ee-admin-border);
 	background-color: var(--ee-admin-light-background);
 	color: var(--ee-admin-medium-text);
