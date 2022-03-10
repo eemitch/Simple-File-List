@@ -7,17 +7,16 @@
 	margin: 0;
 	padding: 0;
 	background-color: transparent;
-/* 	border: 1px dashed #666; */
 	font-size: 14px;
 }
 
 .eeSFL article.eeSFL_Tile {
-/* 	display: flex; */
 	flex: 1 0 29%;
-	margin: 0 1% .5em 1%;
+	margin: 0 1% 1em 1%;
 	padding: 0 0 1% 0;
-	background-color: #EEE;
+	background-color: var(--ee-color-tile-background);
 	text-align: center;
+	border: 1px solid var(--ee-color-tile-border);
 }
 
 .eeSFL article.eeSFL_Tile h4 {
@@ -26,7 +25,7 @@
 	font-weight: bold;
 	font-size: 1.2em;
 	white-space: nowrap;
-	background-color: var(--ee-color-tile-background);
+	background-color: var(--ee-color-tile-header-background);
 }
 .eeSFL article.eeSFL_Tile h4 a {
 	text-decoration: none;
@@ -61,12 +60,14 @@
 .eeSFL article.eeSFL_Tile div.eeSFL_Thumbnail img {
 	width: 64px;
 	height: auto;
-	
-	
+}
+.eeSFL article.eeSFL_Tile div.eeSFL_Thumbnail img:hover {
+	box-shadow: 2px 2px 3px 3px rgba(69, 69, 69, 0.72);
 }
 
 .eeSFL article.eeSFL_Tile .eeSFL_FileDetails {
 	padding: .25em 0;
+	margin-top: .25em;
 	border-top: 1px solid var(--ee-color-tile-border);
 }
 

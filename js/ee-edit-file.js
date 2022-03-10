@@ -205,59 +205,37 @@ function eeSFL_BASE_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 				
 				// Update the Display
 				
+				var eeFileNameDisplay = eeSFL_FileNameOld;
+				var eeFileNameActual = eeSFL_FileNameOld;
+
+				
 				if(eeSFL_FileNameNew) {
-					var eeNewLink = '<a class="eeSFL_FileName" href="/' + eeSFL_FileListDir + eeSFL_FileNameNew + '">' + eeSFL_FileNameNew + '</a>';
-					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileLink').html(eeNewLink);
+					
 					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_RealFileName').text(eeSFL_FileNameNew);
 					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' a.eeSFL_FileOpen').attr('href', '/' + eeSFL_FileListDir + eeSFL_FileNameNew);
 					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' a.eeSFL_FileDownload').attr('href', '/' + eeSFL_FileListDir + eeSFL_FileNameNew);
+					
+					eeFileNameDisplay = eeSFL_FileNameNew;
+					eeFileNameActual = eeSFL_FileNameNew;
 				}
 				
-				// console.log('eeSFL_FileNameOld: ' + eeSFL_FileNameOld);
-				// console.log('eeSFL_FileNameNew: ' + eeSFL_FileNameNew);
-				// console.log('eeSFL_FileNiceNameNew: ' + eeSFL_FileNiceNameNew);
 				
-				if(eeSFL_FileNiceNameNew !== false) {
+				if( eeSFL_FileNiceNameNew.length >= 1 ) {
 					
+					console.log('Changed Nice Name');
 					
-					
-					console.log('Length: ' + eeSFL_FileNiceNameNew.length);
-					
-					var eeNewLink = '<a class="eeSFL_FileName" href="/' + eeSFL_FileListDir + eeSFL_FileNameOld + '">' + eeSFL_FileNameOld + '</a>';
-					
-					if( eeSFL_FileNiceNameNew.length < 1 ) { // Nice Name Removed
-						
-						if(eeSFL_FileNameNew == '') { // If the file name did not changed
-							
-							var eeNewLink = '<a class="eeSFL_FileName" href="/' + eeSFL_FileListDir + eeSFL_FileNameOld + '">' + eeSFL_FileNameOld + '</a>';
-							
-						} else { // New File Name and New Nice Name
-								
-							var eeNewLink = '<a class="eeSFL_FileName" href="/' + eeSFL_FileListDir + eeSFL_FileNameNew + '">' + eeSFL_FileNameNew + '</a>';
-							
-						}
-						
-						eeSFL_FileNiceNameOld = '';
-						
-						
-					} else { // New Nice Name
-						
-						if(eeSFL_FileNameNew == '') { // If the file name changed
-							
-							var eeNewLink = '<a class="eeSFL_FileName" href="/' + eeSFL_FileListDir + eeSFL_FileNameOld + '">' + eeSFL_FileNiceNameNew + '</a>';
-							
-						} else { // New File Name and New Nice Name
-								
-							var eeNewLink = '<a class="eeSFL_FileName" href="/' + eeSFL_FileListDir + eeSFL_FileNameNew + '">' + eeSFL_FileNiceNameNew + '</a>';
-							
-						}
-						
-					}
-					
-					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileLink').html(eeNewLink);
+					eeFileNameDisplay = eeSFL_FileNiceNameNew;
+					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_FileNiceName').text(eeSFL_FileNiceNameNew);
 				
-				
+				} else {
+					
+					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_FileNiceName').text(eeSFL_FileNiceNameOld);
+					eeFileNameDisplay = eeSFL_FileNiceNameOld;
+					
 				}
+				
+				jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' a.eeSFL_FileName').attr('href', '/' + eeSFL_FileListDir + eeFileNameActual);
+				jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' a.eeSFL_FileName').text(eeFileNameDisplay);
 				
 				
 				if(eeSFL_FileDescriptionNew) {
@@ -270,8 +248,14 @@ function eeSFL_BASE_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 					
 					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').addClass('eeHide');
 					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' p.eeSFL_FileDesc').text('');
+					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' .eeSFL_FileDesc').text('');
 					eeSFL_FileDescriptionOld = '';
 				}
+				
+				eeSFL_FileDescriptionOld = '';
+				eeSFL_FileNiceNameOld = '';
+				
+				
 				
 			} else if(eeSFL_FileAction == 'Delete') {
 				

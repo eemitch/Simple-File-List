@@ -40,7 +40,9 @@
 	
 	
 	/* TILES */
-	
+	--ee-color-tile-border: #333;
+	--ee-color-tile-header-background: #67676c;
+	--ee-color-tile-background: rgba(33, 33, 33, 0.1);
 	
 	
 	/* FLEX */

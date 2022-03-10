@@ -41,7 +41,8 @@
 	
 	/* TILES */
 	--ee-color-tile-border: #DCDCDC;
-	--ee-color-tile-background: rgba(218, 218, 220, 0.8);
+	--ee-color-tile-header-background: #e9e9ee;
+	--ee-color-tile-background: rgba(224, 225, 235, 0.2);
 	
 	
 	/* FLEX */
