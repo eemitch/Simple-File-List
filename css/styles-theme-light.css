@@ -38,7 +38,6 @@
 	--ee-color-table-row-background-hover: rgba(244, 244, 244, 0.3);
 	
 	
-	
 	/* TILES */
 	--ee-color-tile-border: #DCDCDC;
 	--ee-color-tile-header-background: #e9e9ee;
@@ -46,7 +45,9 @@
 	
 	
 	/* FLEX */
-	
+	--ee-color-flex-border: #DCDCDC;
+	--ee-color-flex-background: rgba(224, 225, 235, 0.2);
+	--ee-color-flex-file-background: rgba(224, 225, 235, 0.2);
 
 
 	

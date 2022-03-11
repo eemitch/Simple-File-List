@@ -43,6 +43,19 @@
 	--ee-color-action-link-background-hover: #333;
 	--ee-color-table-edit-background: #EEE;
 	--ee-color-table-input-background: #FFF;
+	
+	
+	/* TILES */
+	--ee-color-tile-border: #777;
+	--ee-color-tile-header-background: #dcdcde;
+	--ee-color-tile-background: #FFF;
+	
+	/* FLEX */
+	--ee-color-flex-border: #777;
+	--ee-color-flex-background: #FFF;
+	--ee-color-flex-file-background: #EEE;
+	
+	padding-top: 1em;
 
 }
 
@@ -451,6 +464,9 @@ eeSFL_Admin * + * {
 
 
 
+.eeSFL table.eeFiles {
+	margin-top: 0;
+}
 .eeSFL table.eeFiles .eeSFL_ListFileActions a.eeDisabledAction {
 	border: 1px solid var(--ee-admin-border);
 	background-color: var(--ee-admin-light-background);

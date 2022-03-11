@@ -229,8 +229,8 @@ function eeSFL_BASE_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 				
 				} else {
 					
-					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_FileNiceName').text(eeSFL_FileNiceNameOld);
-					eeFileNameDisplay = eeSFL_FileNiceNameOld;
+					jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_FileNiceName').text(eeFileNameActual);
+					eeFileNameDisplay = eeFileNameActual;
 					
 				}
 				

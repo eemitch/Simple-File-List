@@ -288,7 +288,7 @@ $eeOutput .= '
 		
 		<fieldset>
 		<legend>' . __('Upload Form Position', 'ee-simple-file-list') . '</legend>
-		<div><label>' . __('File Types', 'ee-simple-file-list') . '<select name="eeUploadPosition" id="eeUploadPosition">
+		<div><label>' . __('Position', 'ee-simple-file-list') . '<select name="eeUploadPosition" id="eeUploadPosition">
 			<option value="">' . __('Choose Position', 'ee-simple-file-list') . '</option>
 			
 			<option value="Above"';

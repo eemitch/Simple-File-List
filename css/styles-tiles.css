@@ -21,7 +21,7 @@
 
 .eeSFL article.eeSFL_Tile h4 {
 	margin: 0 0 .5em 0;
-	padding: .25em;
+	padding: .5em;
 	font-weight: bold;
 	font-size: 1.2em;
 	white-space: nowrap;
@@ -78,17 +78,24 @@
 }
 
 
-/* LARGE SCREEN STYLES */
-@media (min-width: 40em) { /* Would be nice to know the width of .eeSFL */
+/* SMALL SCREEN STYLES */
+@media (max-width: 40em) { /* Would be nice to know the width of .eeSFL */
 
-/*
-	.eeSFL article.eeSFL_Tile {
-		float: left;
-		width: 50%;
-		margin: 0;
+	.eeSFL section.eeFiles {
+		display: block;
 	}
-*/
-
+	
+	.eeSFL article.eeSFL_Tile h4 {
+		font-size: 1.75em;
+		white-space: normal;
+		margin-bottom: 1em;	
+	}
+	
+	.eeSFL article.eeSFL_Tile small.eeSFL_ListFileActions a {
+		font-size: 1.5em;
+		padding: .25em .5em;
+		margin: 0 .5em .75em 0;	
+	}
 	
 
 }

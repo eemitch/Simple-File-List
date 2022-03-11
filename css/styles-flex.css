@@ -1,0 +1,98 @@
+
+
+.eeSFL section.eeFiles {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background-color: transparent;
+	font-size: 14px;
+}
+
+.eeSFL article.eeSFL_File {
+	flex: 1;
+	width: 100%;
+	padding: 0;
+	margin: 0 0 2em 0;
+	background-color: var(--ee-color-flex-background);
+	border: 2px solid var(--ee-color-flex-border);
+	border-radius: 6px;
+}
+
+.eeSFL div.eeSFL_FlexRow {
+	display: flex;
+	flex-direction: row;
+	background-color: var(--ee-color-flex-file-background);
+	padding: .5em;
+	border-bottom: 1px solid var(--ee-color-flex-border);
+}
+
+.eeSFL div.eeSFL_FlexRow div.eeSFL_Thumbnail {
+/* 	flex: 1; */
+	width: 64px;
+}
+.eeSFL div.eeSFL_FlexRow .eeSFL_Thumbnail a {
+	text-decoration: none;
+}
+.eeSFL div.eeSFL_FlexRow .eeSFL_Thumbnail a img {
+	width: 100%;
+	height: auto;
+}
+
+.eeSFL div.eeSFL_FlexRow .eeSFL_FileInfo {
+	flex: 3;
+	padding-left: 1em;
+}
+.eeSFL div.eeSFL_FlexRow .eeSFL_FileLink {
+	padding-bottom: .25em;
+	border-bottom: 2px solid var(--ee-color-flex-border);
+}
+
+.eeSFL div.eeSFL_FlexRow .eeSFL_FileDetails {
+	flex: 1;
+	border-left: 2px solid var(--ee-color-flex-border);
+}
+.eeSFL div.eeSFL_FlexRow .eeSFL_FileDetails span {
+	display: block;
+	text-align: center;
+	padding: .25em .1em;
+}
+
+.eeSFL div.eeSFL_FlexRow h4 {
+	margin: 0 0 .5em 0;
+	font-weight: bold;
+	font-size: 1.2em;
+}
+.eeSFL div.eeSFL_FlexRow p {
+	margin: 0 0 .5em 0;
+}
+.eeSFL div.eeSFL_FlexRow h4 a {
+	text-decoration: none;
+}
+
+.eeSFL div.eeSFL_FileOps .eeSFL_ListFileActions {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+}
+.eeSFL div.eeSFL_FileOps .eeSFL_ListFileActions a {
+	flex: 1;
+	text-align: center;
+	text-decoration: none;
+	font-weight: bold;
+	padding: .5em .1em;
+	color: var(--ee-color-action-link-text);
+	background-color: var(--ee-color-action-link-background);
+	border: 1px solid var(--ee-color-flex-background);
+	border-collapse: collapse;
+	white-space: nowrap;
+}
+.eeSFL div.eeSFL_FileOps .eeSFL_ListFileActions a:hover {
+	color: var(--ee-color-action-link-text-hover);
+	background-color: var(--ee-color-action-link-background-hover);
+	border: 1px solid var(--ee-color-flex-border);
+}
+

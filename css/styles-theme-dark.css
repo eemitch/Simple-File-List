@@ -20,7 +20,7 @@
 	--ee-color-action-link-text: #FFF;
 	--ee-color-action-link-text-hover: #FFF;
 	--ee-color-action-link-background: rgba(66, 66, 66, .8); 
-	--ee-color-action-link-background-hover: rgba(97, 97, 97, 1);
+	--ee-color-action-link-background-hover: #333;
 	
 	
 	/* UPLOAD FORM - DARK */
@@ -46,6 +46,9 @@
 	
 	
 	/* FLEX */
+	--ee-color-flex-border: #333;
+	--ee-color-flex-background: rgba(33, 33, 33, 0.1);
+	--ee-color-flex-file-background: rgba(33, 33, 33, 0.1);
 	
 
 

@@ -21,9 +21,7 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 		
 		$eeOutput .= '
 		
-		<article id="eeSFL_FileID-' . $eeFileID . '" class="eeSFL_Tile">';
-		
-		$eeOutput .= '
+		<article id="eeSFL_FileID-' . $eeFileID . '" class="eeSFL_Tile">
 		
 		<span class="eeSFL_RealFileName eeHide">' . $eeSFL_BASE->eeRealFileName . '</span>
 		<span class="eeSFL_FileNiceName eeHide">' . $eeSFL_BASE->eeFileNiceName . '</span>
@@ -37,18 +35,13 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 		
 		// Thumbnail
 		if($eeAdmin OR $eeSFL_Settings['ShowFileThumb'] == 'YES') {
-			
-			$eeOutput .= '<div class="eeSFL_Thumbnail">';
-			
-			if($eeSFL_BASE->eeFileThumbURL) { $eeOutput .= '<a href="' . $eeSFL_BASE->eeFileURL .  '"';
-					
-				$eeOutput .= '><img src="' . $eeSFL_BASE->eeFileThumbURL . '" width="64" height="64" alt="Thumb" /></a>'; }
-			
-			$eeOutput .= '</div>';
+			if($eeSFL_BASE->eeFileThumbURL) { 
+				$eeOutput .= '<div class="eeSFL_Thumbnail"><a href="' . $eeSFL_BASE->eeFileURL .  '"><img src="' . $eeSFL_BASE->eeFileThumbURL . '" width="64" height="64" alt="Thumb" /></a></div>';
+			}
 		}
 		
 		
-		// Show File Description
+		// File Description
 		if($eeSFL_Settings['ShowFileDesc'] == 'NO' AND !$eeAdmin) { $eeClass = 'eeHide'; }
 		$eeOutput .= '<p class="eeSFL_FileDesc ' . $eeClass . '">' . stripslashes($eeSFL_BASE->eeFileDescription) . '</p>'; // Always here for JS
 		
