@@ -1194,8 +1194,15 @@ class eeSFL_BASE_MainClass {
 			
 			foreach($eeFiles as $eeKey => $eeFileArray) {
 				
-				$eeFilePathLowerCase = strtolower($eeFileArray['FilePath']); // Make lower case so name sorting works properly
-				$eeFilesSorted[ $eeFilePathLowerCase ] = $eeFileArray; // These keys shall always be unique
+				// Use Nice Name if Available
+				if( isset($eeFileArray['FileNiceName']) ) {
+					$eeFileLowerCase = strtolower($eeFileArray['FileNiceName']); // Make lower case so name sorting works properly
+					$eeFileLowerCase = eeSFL_BASE_SanitizeFileName($eeFileLowerCase); // Get rid of troublsome chars
+				} else {
+					$eeFileLowerCase = strtolower($eeFileArray['FilePath']); // Make lower case so name sorting works properly
+				}
+				
+				$eeFilesSorted[ $eeFileLowerCase ] = $eeFileArray; // These keys shall always be unique
 			}
 		
 		} else { // Random
@@ -1217,9 +1224,12 @@ class eeSFL_BASE_MainClass {
 			
 			return $eeFilesSorted;
 		}
-			
+		
+		
 		// Sort by the key
 		ksort($eeFilesSorted); 
+		
+		// echo '<pre>'; print_r($eeFilesSorted); echo '</pre>'; exit;
 		
 		// If Descending
 		if($eeSortOrder == 'Descending') {
