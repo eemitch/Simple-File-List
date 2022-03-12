@@ -14,8 +14,11 @@ global $eeSFL_BASE_ListRun;
 
 $eeSFL_BASE_Log['RunTime'][] = 'Loaded: ee-list-display';
 
-if( !isset($eeSFL_Files) ) { // Scan the Disk
+// echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
+
+if( !isset($eeSFL_Files) ) { // Might be Set in Admin
 	$eeSFL_Files = $eeSFL_BASE->eeSFL_UpdateFileListArray();
+	
 }
 
 // Save for later
@@ -24,6 +27,8 @@ $eeSFL_FileTotalCount = count($eeSFL_Files, 0);
 
 // Check for Upload Job
 if( isset($_POST['eeSFL_Upload']) ) {
+	
+	// echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
 	
 	foreach( $eeSFL_Files as $eeThisKey => $eeFileArray ) {
 		

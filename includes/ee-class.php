@@ -49,7 +49,7 @@ class eeSFL_BASE_MainClass {
 		'ShowList' => 'YES', // Show the File List (YES, ADMIN, USER, NO)
 		
 		'ShowListStyle' => 'Table', // Table, Tiles, or Flex
-		'ShowListTheme' => 'Light', // Table, Tiles, or Flex
+		'ShowListTheme' => 'Light', // Light, Dark or None
 		
 		'AdminRole' => 5, // Who can access settings, based on WP role (5 = Admin ... 1 = Subscriber)
 		
@@ -618,7 +618,12 @@ class eeSFL_BASE_MainClass {
 				// Look for this file in our array
 				foreach( $eeFileArrayWorking as $eeKey2 => $eeThisFileArray ) {
 					
-					if($eeFile == $eeThisFileArray['FilePath']) { $eeFound = TRUE; break; } // Found this file, on to the next.
+					if($eeFile == $eeThisFileArray['FilePath']) { // Found this file, on to the next.
+						
+						$eeFileArrayWorking[$eeKey2] = array_merge($this->eeSFL_Files[0], $eeThisFileArray); // Add all of the string keys
+						$eeFound = TRUE;
+						break;
+					}
 				}
 				
 				if($eeFound === FALSE) {
@@ -1195,7 +1200,7 @@ class eeSFL_BASE_MainClass {
 			foreach($eeFiles as $eeKey => $eeFileArray) {
 				
 				// Use Nice Name if Available
-				if( isset($eeFileArray['FileNiceName']) ) {
+				if( strlen($eeFileArray['FileNiceName']) ) {
 					$eeFileLowerCase = strtolower($eeFileArray['FileNiceName']); // Make lower case so name sorting works properly
 					$eeFileLowerCase = eeSFL_BASE_SanitizeFileName($eeFileLowerCase); // Get rid of troublsome chars
 				} else {

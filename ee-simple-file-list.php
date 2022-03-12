@@ -62,32 +62,6 @@ function eeSFL_BASE_aioseo_filter_conflicting_shortcodes( $conflictingShortcodes
 }
 
 
-// Display Notice to Update Simple File List Pro
-function eeSFL_BASE_ALERT() {
-    
-    include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-	$eeFolders = 'ee-simple-file-list-folders/ee-simple-file-list-folders.php';
-	$eeSearch = 'ee-simple-file-list-folders/ee-simple-file-list-search.php';
-	
-	if( is_plugin_active($eeFolders) OR is_plugin_active($eeSearch) ) {
-		
-		$wpScreen = get_current_screen(); // Get the current screen
-	 
-	    if ( $wpScreen->id == 'dashboard' OR $wpScreen->id == 'plugins' OR $wpScreen->id == 'toplevel_page_ee-simple-file-list' ) {
-	        
-	        $eeOutput = '<div class="notice notice-error is-dismissible">
-	            <p><strong>' . __('IMPORTANT', 'ee-simple-file-list') . '</strong><br />' . 
-	            	__('Extensions are no longer supported for the free version of Simple File List.', 'ee-simple-file-list') . ' ' .
-	            	__('Please upgrade to the Pro version.', 'ee-simple-file-list') . ' <a href="https://simplefilelist.com/upgrade-to-simple-file-list-pro/" target="_blank">' . __('Free Upgrade', 'ee-simple-file-list') . '</a></p>
-	            </div>';
-	            
-	        echo $eeOutput;
-	    }
-    }
-}
-add_action( 'admin_notices', 'eeSFL_BASE_ALERT' );
-
-
 
 // Plugin Setup
 function eeSFL_BASE_Setup() {
@@ -108,6 +82,7 @@ function eeSFL_BASE_Setup() {
 		'eeFileTooLargeText' => __('This file is too large', 'ee-simple-file-list'),
 		'eeFileNotAllowedText' => __('This file type is not allowed', 'ee-simple-file-list'),
 		'eeUploadErrorText' => __('Upload Failed', 'ee-simple-file-list'),
+		'eeFilesSelected' =>  __('Files Selected', 'ee-simple-file-list'),
 		
 		// Back-End Only
 		'eeShowText' => __('Show', 'ee-simple-file-list'), // Shortcode Builder
@@ -160,53 +135,6 @@ function eeSFL_BASE_Textdomain() {
 }
 
 
-// Createing a New Post with Shortcode
-function eeSFL_BASE_CreatePostwithShortcode() { 
-	
-	if(@$_POST['eeCreatePostType']) {
-		
-		global $eeSFL_BASE_Log;
-		
-		$eeShortcode = FALSE;
-		$eeCreatePostType = FALSE;
-		$eePostTitle = FALSE;
-		
-		$eeCreatePostType = sanitize_text_field(@$_POST['eeCreatePostType']);
-		$eeShortcode = sanitize_text_field(@$_POST['eeShortcode']);
-		$eePostTitle = sanitize_text_field(@$_POST['eePostTitle']);
-		
-		if(!$eeShortcode) { $eeShortcode = '[eeSFL]'; }
-		
-		if(!$eePostTitle) {
-			$eePostTitle = 'My Simple File List ' . $eeCreatePostType;
-		}
-			
-		if(($eeCreatePostType == "Post" OR $eeCreatePostType == "Page") AND $eeShortcode) {
-			
-			// Create Post Object
-			$eeNewPost = array(
-				'post_type'		=> $eeCreatePostType,
-				'post_title'    => $eePostTitle,
-				'post_content'  => '<div>' . $eeShortcode . '</div>',
-				'post_status'   => 'draft'
-			);
-			
-			// Create Post
-			$eeNewPostID = wp_insert_post( $eeNewPost );
-			
-			if($eeNewPostID) {
-				
-				header('Location: /?p=' . $eeNewPostID);
-			}
-			
-			return TRUE;
-		}
-	}
-}
-add_action( 'wp_loaded', 'eeSFL_BASE_CreatePostwithShortcode' );
-
-
-
 // Shortcode
 function eeSFL_BASE_Shortcode($atts, $content = null) {
 	
@@ -242,13 +170,11 @@ function eeSFL_BASE_Shortcode($atts, $content = null) {
 			'sortorder' => '', // Descending or Ascending
 			'hidetype' => '', // Hide file types
 			'hidename' => '', // Hide the name matches
-			'showfolder' => '', // eeSFLF - OBSOLETE
+			'style' => '', // Table, Tiles, or Flex
+			'theme' => '', // Light, Dark or None
 		), $atts );
 		
 		extract($atts);
-		
-		// Don't show anything if a folder is defined.
-		if( strlen($showfolder) >= 1 ) { return '<p style="color:red;font-weight:bold;">ERROR 95</p>'; }
 	
 		$eeSFL_BASE_Log['L' . $eeSFL_BASE_ListRun][] = 'Shortcode Attributes...';
 		
@@ -259,6 +185,8 @@ function eeSFL_BASE_Shortcode($atts, $content = null) {
 		if($showsize) { $eeSFL_Settings['ShowFileSize'] = $showsize; }
 		if($showheader) { $eeSFL_Settings['ShowHeader'] = $showheader; }
 		if($showactions) { $eeSFL_Settings['ShowFileActions'] = $showactions; }
+		if($style) { $eeSFL_Settings['ShowListStyle'] = $style; }
+		if($theme) { $eeSFL_Settings['ShowListTheme'] = $theme; }
 		
 		
 		if($sortby OR $sortorder) { // Force a re-sort of the file list array if a shortcode attribute was used
@@ -279,9 +207,6 @@ function eeSFL_BASE_Shortcode($atts, $content = null) {
 	} else {
 		$eeSFL_BASE_Log['L' . $eeSFL_BASE_ListRun][] = 'No Shortcode Attributes';
 	}
-	
-	
-	
 	
 	// Begin Front-Side List Display ==================================================================
 	
@@ -365,17 +290,13 @@ function eeSFL_BASE_Shortcode($atts, $content = null) {
 	$eeSFL_Time = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
 	$eeSFL_BASE_Log[] = 'Execution Time: ' . round($eeSFL_Time,3);
 	
-	// $eeOutput .= $eeSFL_BASE->eeSFL_WriteLogData(); // Only adds output if DevMode is ON
+	// $eeOutput .= $eeSFL_BASE->eeSFL_WriteLogData();
 	
 	// Give it back
 	unset($eeSFL_Files);
 	unset($eeSFL_BASE_Env);
 	unset($eeSFL_Settings);
 	unset($eeSFL_BASE_Log);
-	
-	
-	
-	// exit( htmlentities($eeOutput) );
 	
 	return $eeOutput; // Output the page
 }
@@ -979,7 +900,7 @@ function eeSFL_BASE_UpdateThisPlugin($eeInstalled) {
 			}
 		}
 		
-		$eeSFL_BASE_Log['Updating']['List: 1'] = $eeSettings;
+		$eeSFL_BASE_Log['Updating'] = $eeSettings;
 		
 		$eePreCount = count($eeSettings);
 		

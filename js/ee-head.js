@@ -42,7 +42,9 @@ function eeSFL_BASE_ScrollToIt() {
 
 
 // File Size Formatting
-function eeSFL_BASE_GetFileSize(bytes, si) {
+function eeSFL_BASE_GetFileSize(bytes) {
+    
+    var si = 1024;
     
     var thresh = si ? 1000 : 1024;
     

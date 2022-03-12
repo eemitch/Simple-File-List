@@ -411,6 +411,30 @@ eeSFL_Admin * + * {
 	display: none; 
 }
 
+/* Upload Queue */
+
+#eeSFL_FileUploadQueue p {
+	position: relative;
+	margin: 1em;
+}
+#eeSFL_FileUploadQueue span.eeSFL_FileUploadName {
+	display: block;
+	border-bottom: 1px solid var(--ee-color-drop-zone-border);
+	padding-bottom: .25em;
+	font-weight: bold;
+}
+#eeSFL_FileUploadQueue span.eeSFL_FileUploadType {
+	display: inline-block;
+	margin-left: 2em;
+}
+#eeSFL_FileUploadQueue .eeSFL_FileUploadRemove {
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 1.5em;
+	line-height: 1;
+	cursor: pointer;
+}
 
 
 

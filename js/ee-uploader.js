@@ -1,8 +1,6 @@
 // Simple File List Script: ee-uploader.js | Author: Mitchell Bennis | support@simplefilelist.com
 
-console.log("ee-upload.js | ver 4.2.10");
-
-
+var eeSFL_Files = new Array(); // Upload Queue
 var eeSFL_FileSet = new Array(); // Names
 var eeSFL_FileObjects = new Array(); // File objects
 var eeSFL_FileCount = 0; // How many to upload
@@ -19,9 +17,9 @@ function eeSFL_BASE_FileInputHandler(eeEvent) {
 	
 	console.log("File Added via Input");
 	
-	var eeSFL_Files = document.getElementById("eeSFL_FileInput").files;
+	eeSFL_Files = document.getElementById("eeSFL_FileInput").files;
 	
-	eeSFL_BASE_ProcessFileInput(eeSFL_Files);
+	eeSFL_BASE_AddFilesToQueue(eeSFL_Files);
 
 }
 
@@ -33,7 +31,7 @@ function eeSFL_BASE_DropHandler(eeEvent) {
 	// Prevent default behavior (Prevent file from being opened)
 	eeEvent.preventDefault();
 	  
-	eeSFL_BASE_ProcessFileInput(eeEvent.dataTransfer.files); // The file object
+	eeSFL_BASE_AddFilesToQueue(eeEvent.dataTransfer.files); // The file object
 }
 
 // Prevent file from being opened in the browser window
@@ -42,12 +40,28 @@ function eeSFL_BASE_DragOverHandler(eeEvent) {
 }
 
 
-
+function eeSFL_QueueRemove(eeID) {
+	
+	eeSFL_FileObjects.splice(eeID, 1); // Remove from the object
+	
+	eeSFL_FileCount = eeSFL_FileCount - 1; // Drop the count
+	
+	jQuery('#eeID' + eeID).hide('slow');
+	jQuery('#eeID' + eeID).remove(); // Remove it from the Queue Display
+	jQuery('#eeSFL_FilesDrug').text(eesfl_vars['eeFilesSelected'] +  ': ' + eeSFL_FileCount);
+	
+	if(eeSFL_FileCount == 0) {
+		document.getElementById('eeSFL_UploadForm').reset();
+		jQuery('#eeSFL_FilesDrug').hide();
+		jQuery('#eeSFL_FileInput').show();
+	}
+	
+}
 
 
 	
-// Check the files and prepare for upload
-function eeSFL_BASE_ProcessFileInput(eeSFL_Files) { // The files object
+// Check and prep one or more file to be uploaded.
+function eeSFL_BASE_AddFilesToQueue(eeSFL_Files) { // The files object
     
     // Make sure it's not too many
     if(eeSFL_Files.length > eeSFL_FileLimit) { // If so, reset
@@ -60,9 +74,11 @@ function eeSFL_BASE_ProcessFileInput(eeSFL_Files) { // The files object
 	}
     
     // Loop through file object
-    for(var i = 0; i < eeSFL_Files.length; i++){
+    for(var i = 0; i < eeSFL_Files.length; i++) {
         
         var eeSFL_File =  eeSFL_Files[i];
+	    
+	    // console.log(eeSFL_File);
         
         console.group("File # " + i);
 	        
@@ -96,7 +112,13 @@ function eeSFL_BASE_ProcessFileInput(eeSFL_Files) { // The files object
         if(!eeSFL_Error) { // If no errors
         	
 			eeSFL_FileObjects.push(eeSFL_File); // Add this object
-			eeSFL_FileSet.push(eeSFL_File.name); // Add this name for the post-processor 
+			eeSFL_FileSet.push(eeSFL_File.name); // Add this name for the post-processor
+			
+			// Upload Queue Display
+			var eeSFL_UploadQueue = '<p id="eeID' + i + '"><span class="eeSFL_FileUploadRemove" onclick="eeSFL_QueueRemove(' + i + ')">&#9746;</span><span class="eeSFL_FileUploadName">' + eeSFL_File.name + '</span><small><span class="eeSFL_FileUploadType">' + eeSFL_File.type + '</span> &rarr; <span class="eeSFL_FileUploadSize">' + eeSFL_BASE_GetFileSize(eeSFL_File.size) + '</span></small></p>';
+			
+			// Populate the Upload Queue
+			jQuery('#eeSFL_FileUploadQueue').append(eeSFL_UploadQueue);
 			
         } else {
 	        
@@ -118,7 +140,7 @@ function eeSFL_BASE_ProcessFileInput(eeSFL_Files) { // The files object
 	
 	
 	jQuery('#eeSFL_FileInput').hide();
-	jQuery('#eeSFL_FilesDrug').text(eeSFL_FileCount + ' files selected.');
+	jQuery('#eeSFL_FilesDrug').text(eesfl_vars['eeFilesSelected'] +  ': ' + eeSFL_FileCount);
 	jQuery('#eeSFL_FilesDrug').show();
     
     // Helpful information

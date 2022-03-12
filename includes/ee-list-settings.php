@@ -350,7 +350,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		$eeOutput .= ' /> ';
 		
 		if( !in_array('ImageMagick' , $eeSupported) ) { 
-			$eeMissing[] = __('Image Magick is Not Installed. PDF thumbnails cannot be created.', 'ee-simple-file-list-pro');
+			$eeMissing[] = __('Image Magick is Not Installed. PDF thumbnails cannot be created.', 'ee-simple-file-list');
 		}
 		if( !in_array('GhostScript' , $eeSupported) ) { 
 			$eeMissing[] = 'GhostScript is Not Installed. PDF thumbnails cannot be created.';

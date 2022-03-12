@@ -388,13 +388,14 @@ function eeSFL_BASE_ProcessUpload() {
 							$eeFileArrayWorking[$eeKey] = $eeNewFileArray; // Updating current file array
 						} else {
 							$eeFileArrayWorking[] = $eeNewFileArray; // Append this file array to the big one
-							$eeFileArrayWorking = $eeSFL_BASE->eeSFL_SortFiles($eeFileArrayWorking, $eeSFL_Settings['SortBy'], $eeSFL_Settings['SortOrder']);
 						}
 						
 						// Create thumbnail if needed
-						$eeSFL_BASE->eeSFL_CheckThumbnail($eeNewFileArray['FilePath'], $eeSFL_Settings);
+						if($eeSFL_Settings['UploadConfirm'] == 'YES') {
+							$eeSFL_BASE->eeSFL_CheckThumbnail($eeNewFileArray['FilePath'], $eeSFL_Settings);
+						}
 						
-						// Notification Info (FREE)
+						// Notification Info
 						$eeUploadJob .=  $eeFile . PHP_EOL . 
 							$eeSFL_Settings['FileListURL'] . $eeFile . PHP_EOL . 
 								"(" . eeSFL_BASE_FormatFileSize($eeNewFileArray['FileSize']) . ")" . PHP_EOL . PHP_EOL;

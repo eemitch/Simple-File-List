@@ -133,7 +133,7 @@ $eeOutput .= '
 		<h2>' . __('File Upload Restrictions', 'ee-simple-file-list') . '</h2>
 
 		<fieldset>
-		<legend>' . __('Who Can Upload Files', 'ee-simple-file-list-pro') . '</legend>
+		<legend>' . __('Who Can Upload Files', 'ee-simple-file-list') . '</legend>
 		<div><label>' . __('Restrict To', 'ee-simple-file-list') . '
 		<select name="eeAllowUploads" id="eeAllowUploads">
 		
@@ -176,7 +176,7 @@ $eeOutput .= '
 		<h2>' . __('Allow File Overwrite', 'ee-simple-file-list') . '</h2>
 
 		<fieldset>
-		<legend>' . __('Overwrite or Save as New', 'ee-simple-file-list-pro') . '</legend>
+		<legend>' . __('Overwrite or Save as New', 'ee-simple-file-list') . '</legend>
 		<div><label>' . __('Overwrite', 'ee-simple-file-list') . '
 		<input type="checkbox" name="eeAllowOverwrite" value="YES" id="eeAllowOverwrite"';
 		
@@ -198,7 +198,7 @@ $eeOutput .= '
 
 		<fieldset>
 		
-		<legend>' . __('Upload Description', 'ee-simple-file-list-pro') . '</legend>
+		<legend>' . __('Upload Description', 'ee-simple-file-list') . '</legend>
 		<div><label>' . __('Show Input', 'ee-simple-file-list') . '
 		<input type="checkbox" name="eeGetUploaderDesc" value="YES" id="eeGetUploaderDesc"';
 		
@@ -213,7 +213,7 @@ $eeOutput .= '
 		
 		<fieldset>
 		
-		<legend>' . __('Submitter Information', 'ee-simple-file-list-pro') . '</legend>
+		<legend>' . __('Submitter Information', 'ee-simple-file-list') . '</legend>
 		<div><label>' . __('Require', 'ee-simple-file-list') . '
 		<input type="checkbox" name="eeGetUploaderInfo" value="YES" id="eeGetUploaderInfo"';
 		

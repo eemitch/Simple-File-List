@@ -116,6 +116,8 @@ if(strlen($eeSFL_Settings['FileListDir']) > 1) {
 		
 		<span id="eeSFL_UploadProgress"><em class="eeHide">' . __('Processing the Upload', 'ee-simple-file-list') . '</em></span>
 		
+		<div id="eeSFL_FileUploadQueue"></div>
+		
 		<button type="button" class="button" name="eeSFL_UploadGo" id="eeSFL_UploadGo" onclick="eeSFL_BASE_UploadProcessor(eeSFL_FileObjects);">' . __('Upload', 'ee-simple-file-list') . '</button>';
 		
 		if($eeEmail AND !$eeAdmin) { $eeOutput .= '<p>' . __('Submitter:', 'ee-simple-file-list') . ' ' . $eeName . ' (' . $eeEmail . ')</p>'; }

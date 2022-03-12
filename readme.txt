@@ -230,7 +230,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.4.9 - Various Fixes and Improvements
+* 5.0.3 - Major Update
 
 
 == Screenshots ==
@@ -242,20 +242,21 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
-= 5.0.2 =
+= 5.0.3 =
 * Major UI and code base improvements.
-* NEW -> Added option to choose from three file list styles: Table, Tiles or Flex
+* NEW -> Added ability to give a file a "Nice Name". This displays in place of the real file and can contain characters that are not allowed in file names.
+* NEW -> Added option to choose from three responsive file list styles: Table, Tiles or Flex
 * NEW -> Added option to choose from three theme options: Light, Dark or None.
 * NEW -> Added option to allow the upload form to appear either above or below the file list.
 * NEW -> Added to choose the date type displayed. This shows the selected date type (added or modified) despite the sort settings.
-* NEW -> Separated the 'Get Uploader Info' form settings. Now you can get the description and/or the submitter's information, rather than just both.
+* NEW -> Separated the 'Get Uploader Info' form settings. Now you can get the description and/or the submitter's information, rather than only both.
 * NEW -> Added inputs for customizing the description and file submitter label text.
 * NEW -> Added an option to bypass the post-upload results page and go straight to the file list.
 * NEW -> Added shortcode display with copy-to-clipboard button to admin UI (top-right)
+* Improved the upload form to display a list of the files to be uploaded. You can also remove individual files if needed.
 * The file list table is now responsive, shifting to a vertical block display on small screens.
-* Removed the Shortcode Builder -> Shortcode attributes have been over-used :-(
-If you need to over-ride existing list settings, refer to: https://simplefilelist.com/shortcode/
-* Now Requires PHP 7
+* Removed the Shortcode Builder. If you need to over-ride existing list settings, refer to: https://simplefilelist.com/shortcode/ for a list of attributes.
+* Now Requires PHP 7 +
 
 
 = 4.4.9 =
