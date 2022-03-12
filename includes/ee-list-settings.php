@@ -357,7 +357,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		}
 		
 		if( $eeSFL_BASE_Env['eeOS'] == 'WINDOWS' ) { 
-			$eeMissing .= ' <em>Windows ' . __('not yet supported for PDF thumbnails.', 'ee-simple-file-list') . '</em>';
+			$eeMissing .= ' <em>Windows: ' . __('Not yet supported for PDF thumbnails.', 'ee-simple-file-list') . '</em>';
 		}
 		
 		$eeOutput .= '</p>

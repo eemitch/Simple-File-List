@@ -37,7 +37,7 @@ $eeOutput .= '
 	
 	<ul>
 		<li>' . __('Create folders and unlimited levels of sub-folders.', 'ee-simple-file-list') . '</li>
-		<li>' . __('Use the shortcode to display specific folders: ', 'ee-simple-file-list') . '<br />
+		<li>' . __('Use the shortcode to display specific folders:', 'ee-simple-file-list') . '<br />
 		<code>[eeSFL showfolder="Folder-A"]</code><br />
 		<code>[eeSFL showfolder="Folder-A/Folder-B"]</code></li>
 		<li>' . __('Display different folders in different places on your site.', 'ee-simple-file-list') . '
