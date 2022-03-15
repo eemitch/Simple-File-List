@@ -688,13 +688,11 @@ class eeSFL_BASE_MainClass {
 			if( $eeSFL_Settings['UploadMaxFileSize'] > $eeActual ) { 
 				$eeSFL_Settings['UploadMaxFileSize'] = $eeActual;
 				update_option('eeSFL_Settings_' . $eeSFL_ID, $eeSFL_Settings); // Set to Actual Max
-			}
-		    
-		    return $eeFileArrayWorking; 
+			} 
 		
-		} else {
-			return FALSE;
 		}
+		    
+		return $eeFileArrayWorking; // Return empty or not
     }
 	
 	

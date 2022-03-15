@@ -126,22 +126,28 @@ function eeSFL_BASE_ManageLists() {
 				
 				<div class="eeColHalfRight">';
 				
-				// Get File Count
-				$eeFileCount = count($eeSFL_Files);
+				// Check Array and Get File Count
+				if(is_array($eeSFL_Files)) { 
+					
+					$eeFileCount = count($eeSFL_Files);
+					
+					// Calc Date Last Changed
+					$eeArray = array();
+					foreach( $eeSFL_Files as $eeKey => $eeFileArray) { $eeArray[] = $eeFileArray['FileDateAdded']; }
+					rsort($eeArray); // Most recent at the top	
+					
+					$eeOutput .= '<small>' . $eeFileCount . ' ' . __('Files', 'ee-simple-file-list') . ' - ' . __('Sorted by', 'ee-simple-file-list') . ' ' . ucwords($eeSFL_Settings['SortBy']);
+					
+					if($eeSFL_Settings['SortBy'] == 'Ascending') { $eeOutput .= ' &uarr;'; } else { $eeOutput .= ' &darr;'; } 
+					
+					$eeOutput .= '<br />' . 
+					__('Last Changed', 'ee-simple-file-list') . ': ' . date_i18n( get_option('date_format'), strtotime( $eeArray[0] ) ) . '</small>';
+					
+					unset($eeArray);
 				
-				// Calc Date Last Changed
-				$eeArray = array();
-				foreach( $eeSFL_Files as $eeKey => $eeFileArray) { $eeArray[] = $eeFileArray['FileDateAdded']; }
-				rsort($eeArray); // Most recent at the top	
-				
-				$eeOutput .= '<small>' . $eeFileCount . ' ' . __('Files', 'ee-simple-file-list') . ' - ' . __('Sorted by', 'ee-simple-file-list') . ' ' . ucwords($eeSFL_Settings['SortBy']);
-				
-				if($eeSFL_Settings['SortBy'] == 'Ascending') { $eeOutput .= ' &uarr;'; } else { $eeOutput .= ' &darr;'; } 
-				
-				$eeOutput .= '<br />' . 
-				__('Last Changed', 'ee-simple-file-list') . ': ' . date_i18n( get_option('date_format'), strtotime( $eeArray[0] ) ) . '</small>';
-				
-				unset($eeArray);
+				} else { 
+					$eeSFL_Files = array('' => ''); // No files found :-(
+				}
 				
 				$eeOutput .= '</div>';
 			}

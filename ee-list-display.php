@@ -18,8 +18,8 @@ $eeSFL_BASE_Log['RunTime'][] = 'Loaded: ee-list-display';
 
 if( !isset($eeSFL_Files) ) { // Might be Set in Admin
 	$eeSFL_Files = $eeSFL_BASE->eeSFL_UpdateFileListArray();
-	
 }
+if( !is_array($eeSFL_Files) ) { $eeSFL_Files = array('' => ''); }
 
 // Save for later
 $eeSFL_FileTotalCount = 0;
