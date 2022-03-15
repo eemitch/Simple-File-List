@@ -454,6 +454,7 @@ eeSFL_Admin * + * {
 	background: var(--ee-admin-dark-background);
 	padding: .2em .5em;
 	margin-right: .5em;
+	margin-bottom: .25em;
 	border-radius: .2em;
 	text-decoration: none;
 }
@@ -469,6 +470,15 @@ eeSFL_Admin * + * {
 	text-align: center;
 }
 
+#eeSFL_LangOption {
+	display: block;
+	float: right;
+	max-width: 33%;
+	text-align: right;
+}
+#eeSFL_LangOption p {
+	margin-bottom: .25em
+}
 
 .eeSFL_Admin p.eeAlert {
 	font-size: 125%;

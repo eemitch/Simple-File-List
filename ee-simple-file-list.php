@@ -61,6 +61,21 @@ function eeSFL_BASE_aioseo_filter_conflicting_shortcodes( $conflictingShortcodes
    return $conflictingShortcodes;
 }
 
+// Custom Hook
+function eeSFL_BASE_UploadCompleted() {
+    do_action('eeSFL_BASE_UploadCompleted'); // To be fired post-upload
+}
+
+function eeSFL_BASE_UploadCompletedAdmin() {
+    do_action('eeSFL_BASE_UploadCompletedAdmin'); // To be fired post-upload
+}
+
+
+// Language Enabler
+function eeSFL_BASE_Textdomain() {
+	load_plugin_textdomain( 'ee-simple-file-list', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+}
+
 
 
 // Plugin Setup
@@ -111,28 +126,16 @@ function eeSFL_BASE_Setup() {
 		$eeSFL_BASE_Log['errors'][] = 'The upload directory is acting up.';
 	}
 	
-	eeSFL_BASE_Textdomain(); // Language Setup
+	// Back-end native or English?
+	if( is_admin() AND get_option('eeSFL_Lang') != 'en_US' ) {
+		eeSFL_BASE_Textdomain(); // Language Setup
+	}
 	
 	return TRUE;
 }
 add_action('init', 'eeSFL_BASE_Setup');
 
 
-
-// Custom Hook
-function eeSFL_BASE_UploadCompleted() {
-    do_action('eeSFL_BASE_UploadCompleted'); // To be fired post-upload
-}
-
-function eeSFL_BASE_UploadCompletedAdmin() {
-    do_action('eeSFL_BASE_UploadCompletedAdmin'); // To be fired post-upload
-}
-
-
-// Language Enabler
-function eeSFL_BASE_Textdomain() {
-    load_plugin_textdomain( 'ee-simple-file-list', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
-}
 
 
 // Shortcode

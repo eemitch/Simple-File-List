@@ -180,6 +180,10 @@
 	height: auto;
 }
 
+.eeClear {
+	clear: both;
+}
+
 .eeClearFix::after {
   display: block;
   content: " ";

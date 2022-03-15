@@ -253,6 +253,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 * NEW -> Added inputs for customizing the description and file submitter label text.
 * NEW -> Added an option to bypass the post-upload results page and go straight to the file list.
 * NEW -> Added shortcode display with copy-to-clipboard button to admin UI (top-right)
+* NEW -> Added ability to override the locale setting in order to display English on the back-end list and settings tabs.
 * Improved the upload form to display a list of the files to be uploaded. You can also remove individual files if needed.
 * The file list table is now responsive, shifting to a vertical block display on small screens.
 * Removed the Shortcode Builder. If you need to over-ride existing list settings, refer to: https://simplefilelist.com/shortcode/ for a list of attributes.
