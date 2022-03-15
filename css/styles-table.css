@@ -74,6 +74,11 @@
 	white-space: nowrap;
 }
 
+.eeSFL table.eeFiles .eeSFL_ListFileActions {
+	display: block;
+	padding-top: .5em;
+}
+
 .eeSFL table.eeFiles .eeSFL_ListFileActions a {
 	display: inline-block;
 	color: var(--ee-color-action-link-text);

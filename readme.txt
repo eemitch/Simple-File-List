@@ -249,12 +249,13 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 * NEW -> Added option to choose from three theme options: Light, Dark or None.
 * NEW -> Added option to allow the upload form to appear either above or below the file list.
 * NEW -> Added to choose the date type displayed. This shows the selected date type (added or modified) despite the sort settings.
-* NEW -> Separated the 'Get Uploader Info' form settings. Now you can get the description and/or the submitter's information, rather than only both.
 * NEW -> Added inputs for customizing the description and file submitter label text.
 * NEW -> Added an option to bypass the post-upload results page and go straight to the file list.
 * NEW -> Added shortcode display with copy-to-clipboard button to admin UI (top-right)
 * NEW -> Added ability to override the locale setting in order to display English on the back-end list and settings tabs.
+* Redesigned the File Edit dialog to open in a modal dialog box rather than inline with the file. All changes can be saved at once now.
 * Improved the upload form to display a list of the files to be uploaded. You can also remove individual files if needed.
+* Separated the 'Get Uploader Info' form settings. Now you can get the description and/or the submitter's information, rather than only both.
 * The file list table is now responsive, shifting to a vertical block display on small screens.
 * Removed the Shortcode Builder. If you need to over-ride existing list settings, refer to: https://simplefilelist.com/shortcode/ for a list of attributes.
 * Now Requires PHP 7 +

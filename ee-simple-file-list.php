@@ -15,7 +15,7 @@ Text Domain: ee-simple-file-list
 Domain Path: /languages
 */
 
-$eeSFL_BASE_DevMode = TRUE; // TRUE/FALSE = Enables visible logging or not
+$eeSFL_BASE_DevMode = FALSE; // TRUE/FALSE = Enables visible logging or not
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

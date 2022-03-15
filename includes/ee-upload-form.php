@@ -16,8 +16,6 @@ $eeSFL_BASE_Log['RunTime'][] = $eeSFL_Settings['FileListDir'];
 // File limit fallback
 if(!$eeSFL_Settings['UploadLimit']) { $eeSFL_Settings['UploadLimit'] = $eeSFL_BASE->eeDefaultUploadLimit; }
 
-/*
-echo '<pre>'; print_r($eeSFL_BASE_Log); echo '</pre>'; exit;
 
 // User Messaging	
 if(count($eeSFL_BASE_Log['messages']) AND $eeSFL_BASE_ListRun == 1) { 
@@ -28,7 +26,6 @@ if(count($eeSFL_BASE_Log['errors'])) {
 	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE_Log['errors'], 'notice-error');
 	$eeSFL_BASE_Log['errors'] = ''; // Clear
 }
-*/
 	
 
 if(strlen($eeSFL_Settings['FileListDir']) > 1) {
@@ -120,7 +117,7 @@ if(strlen($eeSFL_Settings['FileListDir']) > 1) {
 		
 		<button type="button" class="button" name="eeSFL_UploadGo" id="eeSFL_UploadGo" onclick="eeSFL_BASE_UploadProcessor(eeSFL_FileObjects);">' . __('Upload', 'ee-simple-file-list') . '</button>';
 		
-		if($eeEmail AND !$eeAdmin) { $eeOutput .= '<p>' . __('Submitter:', 'ee-simple-file-list') . ' ' . $eeName . ' (' . $eeEmail . ')</p>'; }
+		// if($eeEmail AND !$eeAdmin) { $eeOutput .= '<p>' . __('Submitter:', 'ee-simple-file-list') . ' ' . $eeName . ' (' . $eeEmail . ')</p>'; }
 		
 		if($eeSFL_Settings['ShowUploadLimits'] == 'YES') {
 		
