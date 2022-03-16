@@ -47,41 +47,22 @@ class eeSFL_BASE_MainClass {
 		'ListTitle' => 'Simple File List', // List Title (Not currently used)
 		'FileListDir' => 'wp-content/uploads/simple-file-list/', // List Directory Name (relative to ABSPATH)
 		'ShowList' => 'YES', // Show the File List (YES, ADMIN, USER, NO)
-		
 		'ShowListStyle' => 'Table', // Table, Tiles, or Flex
 		'ShowListTheme' => 'Light', // Light, Dark or None
-		
 		'AdminRole' => 5, // Who can access settings, based on WP role (5 = Admin ... 1 = Subscriber)
-		
 		'ShowFileThumb' => 'YES', // Display the File Thumbnail (YES or NO)
 		'ShowFileDate' => 'YES', // Display the File Date (YES or NO)
-		
 		'ShowFileDateAs' => 'Added', // Which date to show: added or modified
-		
 		'ShowFileSize' => 'YES', // Display the File Size (YES or NO)
-		
 		'ShowFileDesc' => 'YES', // Display the File Description (YES or NO)
-		
 		'LabelThumb' => 'Thumb', // Label for the thumbnail
 		'LabelName' => 'Name', // Label for the file name
 		'LabelDate' => 'Date', // Label for the file date
 		'LabelSize' => 'Size', // Label for the file size
-		
 		'LabelDesc' => 'Description', // Label for the file description
 		'LabelOwner' => 'Submitter', // Label for the file owner
-		
 		'SortBy' => 'DateChanged', // Sort By (Name, Date, DateChanged, Size, Random) -- DateChanged added in 4.3
 		'SortOrder' => 'Descending', // Descending or Ascending
-		
-		// Upload Settings
-		'AllowUploads' => 'USER', // Allow File Uploads (YES, ADMIN, USER, NO)
-		'UploadLimit' => 10, // Limit Files Per Upload Job (Quantity)
-		'UploadMaxFileSize' => 8, // Maximum Size per File (MB)
-		'FileFormats' => 'jpg, jpeg, png, tif, pdf, mov, mp4, mp3, zip', // Allowed Formats
-		'AllowOverwrite' => 'NO', // Number new files with same name, or just overwrite.
-		
-		'UploadConfirm' => 'YES', // Show the upload confirmation screen, or go right back to the list.
-		'UploadPosition' => 'Above', // Above or Below the list
 		
 		// Display Settings
 		'GenerateImgThumbs' => 'YES', // Create thumbnail images for images if possible.
@@ -96,13 +77,20 @@ class eeSFL_BASE_MainClass {
 		'ShowFileExtension' => 'YES', // Show the file extension, or not.
 		'ShowHeader' => 'YES', // Show the File List's Table Header (YES or NO)
 		'ShowUploadLimits' => 'YES', // Show the upload limitations text.
-		
-		'GetUploaderDesc' => 'NO', // Show the Description Form
-		'GetUploaderInfo' => 'NO', // Show the User Info Form
-		
 		'ShowSubmitterInfo' => 'NO', // Show who uploaded the file (name linked to their email)
 		'AllowFrontManage' => 'NO', // Allow front-side users to manage files (YES or NO)
 		'SmoothScroll' => 'YES', // Use the awesome and cool JavaScript smooth scroller after an upload
+		
+		// Upload Settings
+		'AllowUploads' => 'USER', // Allow File Uploads (YES, ADMIN, USER, NO)
+		'UploadLimit' => 10, // Limit Files Per Upload Job (Quantity)
+		'UploadMaxFileSize' => 8, // Maximum Size per File (MB)
+		'FileFormats' => 'jpg, jpeg, png, tif, pdf, mov, mp4, mp3, zip', // Allowed Formats
+		'AllowOverwrite' => 'NO', // Number new files with same name, or just overwrite.
+		'UploadConfirm' => 'YES', // Show the upload confirmation screen, or go right back to the list.
+		'UploadPosition' => 'Above', // Above or Below the list
+		'GetUploaderDesc' => 'NO', // Show the Description Form
+		'GetUploaderInfo' => 'NO', // Show the User Info Form
 		
 		// Notifications
 		'Notify' => 'NO', // Send Notifications (YES or NO)
@@ -143,7 +131,7 @@ class eeSFL_BASE_MainClass {
     public $eeSFL_Files = array(
 	    
 		0 => array( // The File ID (We copy this to the array on-the-fly when sorting)
-			'FileList' => 1, // The ID of the File List, contained in the above array.
+			// 'FileList' => 1, // The ID of the File List, contained in the above array.
 		    'FilePath' => '', // Path to file, relative to the list root
 		    'FileExt' => '', // The file extension
 		    'FileMIME' => '', // The MIME Type
@@ -152,6 +140,7 @@ class eeSFL_BASE_MainClass {
 			'FileDateChanged' => '', // Last date the file was renamed or otherwise changed
 			'FileDescription' => '', // A short description of the file
 			'FileNiceName' => '', // A name that will replace the actual file name
+			'FileOwner' => '', // The logged-in user who added the file
 			'SubmitterName' => '', // Who uploaded the file
 			'SubmitterEmail' => '', // Their email
 			'SubmitterComments' => '', // What they said

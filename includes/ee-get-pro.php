@@ -79,6 +79,8 @@ $eeOutput .= '
 	
 	<p class="eeCentered">' . $eeSFL_Button . '</p>
 	
+	<br class="eeClear" />
+	
 </article>';	
 
 ?>

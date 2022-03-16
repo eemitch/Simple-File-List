@@ -6,6 +6,7 @@
 
 
 .eeSFL_Admin { /* <main> */
+	
 	box-sizing: border-box;
 	padding: .5em;
 	padding-top: 0;
@@ -24,7 +25,7 @@
 	--ee-admin-upsell-background: #d0ffd8;
 	--ee-admin-upload-progress-bar: #23e100;
 	--ee-admin-disabled-action-background: #e0e0e1;
-	--ee-admin-caution-background: #cc0000;
+	--ee-admin-caution-background: #FFFF00;
 	
 }
 
@@ -461,6 +462,7 @@ eeSFL_Admin * + * {
 .eeSFL_Admin > footer > a.eeCaution {
 	font-weight: bold;
 	background-color: var(--ee-admin-caution-background);
+	color: var(--ee-admin-dark-text);
 }
 
 .eeSFL_Admin > footer > p.ee-plugin-version {

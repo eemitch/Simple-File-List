@@ -20,11 +20,11 @@ if(!$eeSFL_Settings['UploadLimit']) { $eeSFL_Settings['UploadLimit'] = $eeSFL_BA
 // User Messaging	
 if(count($eeSFL_BASE_Log['messages']) AND $eeSFL_BASE_ListRun == 1) { 
 	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE_Log['messages'], 'notice-success');
-	$eeSFL_BASE_Log['messages'] = ''; // Clear
+	$eeSFL_BASE_Log['messages'] = array(); // Clear
 }	
 if(count($eeSFL_BASE_Log['errors'])) { 
 	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE_Log['errors'], 'notice-error');
-	$eeSFL_BASE_Log['errors'] = ''; // Clear
+	$eeSFL_BASE_Log['errors'] = array(); // Clear
 }
 	
 

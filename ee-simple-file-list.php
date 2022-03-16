@@ -780,7 +780,7 @@ function eeSFL_BASE_AdminMenu() {
 		__($eeSFL_BASE->eePluginMenuTitle, $eeSFL_BASE->eePluginSlug), // Menu Title
 		'activate_plugins', // User status required to see the menu
 		$eeSFL_BASE->eePluginSlug, // Slug
-		'eeSFL_BASE_ManageLists', // Function that displays the menu page
+		'eeSFL_BASE_BackEnd', // Function that displays the menu page
 		'dashicons-index-card' // Icon used
 	);
 	

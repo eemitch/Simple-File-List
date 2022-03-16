@@ -6,7 +6,7 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' )) exit('ERROR 98'); // Exit i
 $eeSFL_BASE_Log['RunTime'][] = 'Loaded: ee-admin-page';
 
 // Admin-Side Display
-function eeSFL_BASE_ManageLists() {
+function eeSFL_BASE_BackEnd() {
 	
 	global $eeSFL_BASE, $eeSFL_BASE_Log, $eeSFL_BASE_DevMode, $eeSFL_Settings, $eeSFL_BASE_Env, $eeSFL_BASE_ListRun;
 	
@@ -21,13 +21,13 @@ function eeSFL_BASE_ManageLists() {
 	$eeSFL_Nonce = wp_create_nonce('eeInclude');
 	include('includes/ee-admin-header.php');
 
-	// Get the new tab's query string value. We will only use values to display tabs that we are expecting.
-	if( isset( $_GET[ 'tab' ] ) ) { $active_tab = sanitize_text_field($_GET[ 'tab' ]); } else { $active_tab = 'file_list'; }
-
 	// Upsell to Pro
 	if( $eeAdmin AND !$_POST AND count($eeSFL_BASE_Log['messages']) === 0 ) {
-		// $eeSFL_BASE_Log['messages'] = $eeUpSell;
+		$eeSFL_BASE_Log['messages'][] = $eeUpSell;
 	}
+
+	// Get the new tab's query string value. We will only use values to display tabs that we are expecting.
+	if( isset( $_GET[ 'tab' ] ) ) { $active_tab = sanitize_text_field($_GET[ 'tab' ]); } else { $active_tab = 'file_list'; }
 	
 	$eeOutput .= '
 	<h2 class="nav-tab-wrapper">';
