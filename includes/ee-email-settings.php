@@ -24,6 +24,11 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 			
 			$eeAddresses = $eeSFL_BASE->eeSFL_SanitizeEmailString($_POST['eeNotify' . $eeField]);
 			$eeSFL_Settings['Notify' . $eeField] = $eeAddresses;
+		
+		} elseif(!$_POST['eeNotify' . $eeField]) {
+			
+			$eeSFL_Settings['Notify' . $eeField] = '';
+		
 		}
 	}
 	
@@ -40,19 +45,14 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 	$eeSFL_Settings['NotifyMessage'] = eeSFL_BASE_ProcessTextInput('NotifyMessage', 'textarea');
 	
 	// Update DB
-	if( update_option('eeSFL_Settings_1', $eeSFL_Settings) ) {
-		$eeConfirm = __('Settings Saved', 'ee-simple-file-list');
-		$eeSFL_BASE_Log['RunTime'][] = 'Settings Saved';
-	} else {
-		$eeSFL_BASE_Log['RunTime'][] = '!!! The database was not updated.';
-	}
+	update_option('eeSFL_Settings_1', $eeSFL_Settings );
+	
+	$eeConfirm = __('Notification Settings Saved', 'ee-simple-file-list-pro');
 }
 
 
 
 // Settings Display =========================================
-	
-$eeOutput .= '<div class="eeSFL_Admin">';
 	
 if( count($eeSFL_BASE_Log['errors']) ) { 
 	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE_Log['errors'], 'notice-error');
@@ -73,7 +73,7 @@ $eeOutput .= '
 				
 	<div class="eeColHalfLeft">
 	
-		<h1>' . __('File Upload Settings', 'ee-simple-file-list') . '</h1>
+		<h1>' . __('Notifications Settings', 'ee-simple-file-list') . '</h1>
 		<a class="" href="https://simplefilelist.com/notification-settings/" target="_blank">' . __('Instructions', 'ee-simple-file-list') . '</a>
 	
 	</div>
@@ -125,8 +125,6 @@ $eeOutput .= '
 		
 		<fieldset>
 		
-		<legend>' . __('Recipients', 'ee-simple-file-list') . '</legend>
-		
 		<div><label class="eeBlock">' . __('Notice Email', 'ee-simple-file-list') . '
 		<input type="text" name="eeNotifyTo" value="' . $eeSFL_Settings['NotifyTo'] . '" id="eeNotifyTo" /></label></div>
 		<div class="eeNote">' . __('Send an email here whenever a file is uploaded.', 'ee-simple-file-list') . '</div>
@@ -136,11 +134,9 @@ $eeOutput .= '
 		<input type="text" name="eeNotifyCc" value="' . $eeSFL_Settings['NotifyCc'] . '" id="eeNotifyCc" /></label></div>
 		<div class="eeNote">' . __('Copy all notice emails here.', 'ee-simple-file-list') . '</div>
 		
-		
 		<div><label class="eeBlock">' . __('Blind Copy to Email', 'ee-simple-file-list') . '<br />
 		<input class="eeFullWidth" type="text" name="eeNotifyBcc" value="' . $eeSFL_Settings['NotifyBcc'] . '" id="eeNotifyBcc" /></label></div>
 		<div class="eeNote">' . __('Blind copy all notice emails here.', 'ee-simple-file-list') . '</div>
-		
 		<div class="eeNote">* ' . __('Separate multiple addresses with a comma.', 'ee-simple-file-list') . '</div>
 		
 		</fieldset>
@@ -160,23 +156,13 @@ $eeOutput .= '
 		
 		<fieldset>	
 		
-		<legend>Sender Details</legend>
-		
-		<div><label class="eeBlock">' . __('Message Subject', 'ee-simple-file-list') . '<br />
-		<input class="eeFullWidth" type="text" name="eeNotifySubject" value="' . stripslashes($eeSFL_Settings['NotifySubject']) . '" id="eeNotifySubject" /></label></div>
-		
-		<div class="eeNote">' . __('The notification message subject line.', 'ee-simple-file-list') . '</div>
+		<div><label class="eeBlock">' . __('Your Name', 'ee-simple-file-list') . '<br />
+		<input class="eeFullWidth" type="text" name="eeNotifyFromName" value="' . stripslashes($eeSFL_Settings['NotifyFromName']) . '" id="eeNotifyFromName" /></label></div>
+		<div class="eeNote">' . __('The visible name in the From field.', 'ee-simple-file-list') . '</div>	
 		
 		<div><label class="eeBlock">' . __('Reply Address', 'ee-simple-file-list') . '<br />
 		<input class="eeFullWidth" type="email" name="eeNotifyFrom" value="' . $eeSFL_Settings['NotifyFrom'] . '" id="eeNotifyFrom" /></label></div>
-		
 		<div class="eeNote">' . __('The notification message\'s reply-to address.', 'ee-simple-file-list') . '</div>
-		
-		
-		<div><label class="eeBlock">' . __('Your Name', 'ee-simple-file-list') . '<br />
-		<input class="eeFullWidth" type="text" name="eeNotifyFromName" value="' . stripslashes($eeSFL_Settings['NotifyFromName']) . '" id="eeNotifyFromName" /></label></div>
-		
-		<div class="eeNote">' . __('The visible name in the From field.', 'ee-simple-file-list') . '</div>
 		
 		</fieldset>
 		
@@ -192,25 +178,32 @@ $eeOutput .= '
 		
 <fieldset>
 		
-<h2>' . __('Message Body', 'ee-simple-file-list') . '</h2>';
+<h2>' . __('Message Details', 'ee-simple-file-list') . '</h2>';
 
 if(!@$eeSFL_Settings['NotifyMessage']) { $eeSFL_Settings['NotifyMessage'] = $eeSFL_BASE->eeNotifyMessageDefault; }
 	
 $eeOutput .= '
 
+<div><label class="eeBlock">' . __('Message Subject', 'ee-simple-file-list') . '<br />
+<input class="eeFullWidth" type="text" name="eeNotifySubject" value="' . stripslashes($eeSFL_Settings['NotifySubject']) . '" id="eeNotifySubject" /></label></div>
+		
+<div class="eeNote">' . __('The notification message subject line.', 'ee-simple-file-list') . '</div>
+
 <div><label class="eeBlock">' . __('Message Body', 'ee-simple-file-list') . '<br />
 <textarea class="eeFullWidth" name="eeNotifyMessage" id="eeNotifyMessage" cols="64" rows="12" >' . stripslashes($eeSFL_Settings['NotifyMessage']) . '</textarea></label></div>
 	
-<div class="eeNote">' . __('This is the text for all file upload notification messages.', 'ee-simple-file-list') . '<br />' . __('To insert links to the files, use this shortcode:', 'ee-simple-file-list') . ' [file-list]' . '<br />'  . __('To insert a link pointing to the file list page, use this shortcode:', 'ee-simple-file-list') . ' [web-page]</div>
+<div class="eeNote">' . __('This is the text for all file upload notification messages.', 'ee-simple-file-list') . ' ' . __('To insert links to the files, use this shortcode:', 'ee-simple-file-list') . ' [file-list]' . ' '  . __('To insert a link pointing to the file list page, use this shortcode:', 'ee-simple-file-list') . ' [web-page]</div>
+
+</fieldset>
 
 </div>
-	
 
 <div class="eeColInline eeSettingsTile">
 				
 	<input class="button" type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" />
 			
 </div>
+
 	
 </form>
 

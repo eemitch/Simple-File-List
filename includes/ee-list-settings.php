@@ -42,6 +42,7 @@ if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settin
 		,'LabelDesc'
 		,'LabelOwner'
 		,'ShowList'
+		,'AdminRole'
 		,'ShowListStyle'
 		,'ShowListTheme'
 		,'SortBy'
@@ -58,14 +59,10 @@ if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settin
 	ksort($eeSFL_Settings);
 	
 	// Update DB
-	if( update_option('eeSFL_Settings_1', $eeSFL_Settings) ) {
-		$eeConfirm = __('Settings Saved', 'ee-simple-file-list');
-		$eeSFL_BASE_Log['RunTime'][] = $eeConfirm;
-	} else {
-		$eeSFL_BASE_Log['errors'][] = __('The Database Update Failed', 'ee-simple-file-list') . ' :-(';
-	}
+	update_option('eeSFL_Settings_1', $eeSFL_Settings);
+	$eeConfirm = __('Settings Saved', 'ee-simple-file-list');
+	$eeSFL_BASE_Log['RunTime'][] = $eeConfirm;
 	
-	delete_transient('eeSFL_FileList_1');
 }
 
 // Settings Display =========================================
@@ -79,7 +76,7 @@ if( count($eeSFL_BASE_Log['errors']) ) {
 // Begin the Form	
 $eeOutput .= '
 
-<form action="' . admin_url() . '?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings&subtab=list_settings" method="post" id="eeSFL_Settings">
+<form action="' . $eeURL . '" method="post" id="eeSFL_Settings">
 <input type="hidden" name="eePost" value="TRUE" />';	
 		
 $eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce', TRUE, FALSE);
@@ -118,70 +115,113 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 	
 	<div class="eeColLeft">
 	
-		
-		
 		<div class="eeSettingsTile">
 		
 		<h2>' . __('File List Access', 'ee-simple-file-list') . '</h2>
 	
-		<p><label for="eeShowList">' . __('Front-Side Display', 'ee-simple-file-list') . '</label>
+		<fieldset>
+			
+			<legend>' . __('Front-Side Display', 'ee-simple-file-list-pro') . '</legend>
 		
-		<select name="eeShowList" id="eeShowList">
+			<div><label for="eeShowList">' . __('Show To', 'ee-simple-file-list-pro') . '</label>
+			
+			<select name="eeShowList" id="eeShowList">
+			
+				<option value="YES"';
+	
+				if($eeSFL_Settings['ShowList'] == 'YES') { $eeOutput .= ' selected'; }
+				
+				$eeOutput .= '>' . __('Everyone', 'ee-simple-file-list-pro') . '</option>
+				
+				<option value="USER"';
+	
+				if($eeSFL_Settings['ShowList'] == 'USER') { $eeOutput .= ' selected'; }
+				
+				$eeOutput .= '>' . __('Only Logged in Users', 'ee-simple-file-list-pro') . '</option>
+				
+				<option value="ADMIN"';
+	
+				if($eeSFL_Settings['ShowList'] == 'ADMIN') { $eeOutput .= ' selected'; }
+				
+				$eeOutput .= '>' . __('Only Logged in Admins', 'ee-simple-file-list-pro') . '</option>
+				
+				<option value="NO"';
+	
+				if($eeSFL_Settings['ShowList'] == 'NO') { $eeOutput .= ' selected'; }
+				
+				$eeOutput .= '>' . __('Hide Completely', 'ee-simple-file-list-pro') . '</option>
+			
+			</select></div>
+			<div class="eeNote">' . __('Determine who you will show the front-side list to.', 'ee-simple-file-list-pro') . '</div>
+			
+			</fieldset>
+			<fieldset>
+			
+			<legend>' . __('Back-End Access', 'ee-simple-file-list-pro') . '</legend>
+			
+			<div><label for="eeAdminRole">' . __('Choose Role', 'ee-simple-file-list-pro') . '</label>
+			
+			<select name="eeAdminRole" id="eeAdminRole">
+			
+				<option value="1"'; // 1
+
+				if($eeSFL_Settings['AdminRole'] == '1') { $eeOutput .= ' selected'; }
+				
+				$eeOutput .= '>' . __('Subscribers and Above', 'ee-simple-file-list-pro') . '</option>
+				
+				
+				<option value="2"'; // 2
+
+				if($eeSFL_Settings['AdminRole'] == '2') { $eeOutput .= ' selected'; }
+				
+				$eeOutput .= '>' . __('Contributers and Above', 'ee-simple-file-list-pro') . '</option>
+				
+				
+				<option value="3"'; // 3
+
+				if($eeSFL_Settings['AdminRole'] == '3') { $eeOutput .= ' selected'; }
+				
+				$eeOutput .= '>' . __('Authors and Above', 'ee-simple-file-list-pro') . '</option>
+				
+				
+				<option value="4"'; // 4
+
+				if($eeSFL_Settings['AdminRole'] == '4') { $eeOutput .= ' selected'; }
+				
+				$eeOutput .= '>' . __('Editors and Above', 'ee-simple-file-list-pro') . '</option>
+				
+				
+				<option value="5"'; // 5
+
+				if($eeSFL_Settings['AdminRole'] == '5') { $eeOutput .= ' selected'; }
+				
+				$eeOutput .= '>' . __('Admins Only', 'ee-simple-file-list-pro') . '</option>
+			
+			</select></div>
+			
+			<div class="eeNote">' . __('Determine who can access the back-side settings.', 'ee-simple-file-list-pro') . '</div>
+			
+			</fieldset>
+			
+			<fieldset>
 		
-			<option value="YES"';
-
-			if($eeSFL_Settings['ShowList'] == 'YES') { $eeOutput .= ' selected'; }
+			<legend>' . __('Front-End Management', 'ee-simple-file-list-pro') . '</legend>
 			
-			$eeOutput .= '>' . __('Show to Everyone', 'ee-simple-file-list') . '</option>
+			<div><label for="eeAllowFrontManage">' . __('Allow', 'ee-simple-file-list-pro') . ':</label>
+			<input type="checkbox" name="eeAllowFrontManage" value="YES" id="eeAllowFrontManage"';
 			
-			<option value="USER"';
-
-			if($eeSFL_Settings['ShowList'] == 'USER') { $eeOutput .= ' selected'; }
+			if( $eeSFL_Settings['AllowFrontManage'] == 'YES') { $eeOutput .= ' checked="checked"'; }
 			
-			$eeOutput .= '>' . __('Show to Only Logged in Users', 'ee-simple-file-list') . '</option>
+			$eeOutput .= ' /></div>
 			
-			<option value="ADMIN"';
-
-			if($eeSFL_Settings['ShowList'] == 'ADMIN') { $eeOutput .= ' selected'; }
-			
-			$eeOutput .= '>' . __('Show to Only Logged in Admins', 'ee-simple-file-list') . '</option>
-			
-			<option value="NO"';
-
-			if($eeSFL_Settings['ShowList'] == 'NO') { $eeOutput .= ' selected'; }
-			
-			$eeOutput .= '>' . __('Hide the File List Completely', 'ee-simple-file-list') . '</option>
-		
-		</select></p>
-		<div class="eeNote">' . __('Determine who you will show the front-side list to.', 'ee-simple-file-list') . '</div>
-		
-		<div class="eeNote"><a href="https://get.simplefilelist.com/" target="_blank">' .  __('Upgrade to PRO', 'ee-simple-file-list') . '</a> ' . __('Upgrade to allow much more precise user and role access to file lists.', 'ee-simple-file-list') . '</div>
+			<div class="eeNote">' . __('Allow file deletion, file renaming, editing descriptions and dates.', 'ee-simple-file-list-pro') . '</div>
+			<div class="eeNote"><a href="https://get.simplefilelist.com/" target="_blank">' .  __('Upgrade to PRO', 'ee-simple-file-list-pro') . '</a> ' . __('Upgrade to allow greater file management control for specific users and roles.', 'ee-simple-file-list-pro') . '<br />
+			</div>
 		
 		</div>
 		
 		
-		
-		
-		
-		<div class="eeSettingsTile">
-		
-		<h2>' . __('Front-End Management', 'ee-simple-file-list') . '</h2>
-		
-		<p><label for="eeAllowFrontManage">' . __('Allow File Management', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeAllowFrontManage" value="YES" id="eeAllowFrontManage"';
-		
-		if( $eeSFL_Settings['AllowFrontManage'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-		
-		$eeOutput .= ' /></p>
-		
-		<div class="eeNote">' . __('Allow file deletion, file renaming, editing descriptions and dates.', 'ee-simple-file-list') . '</div>
-		<div class="eeNote"><a href="https://get.simplefilelist.com/" target="_blank">' .  __('Upgrade to PRO', 'ee-simple-file-list') . '</a> ' . __('Upgrade to allow greater file management control for specific users and roles.', 'ee-simple-file-list') . '<br />
-		</div>
-			
-		</div>
-		
-		
-		
+				
 		
 		
 		<div class="eeSettingsTile">
@@ -401,22 +441,6 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		</div>
 		
 		
-		<div class="eeSettingsTile">
-		
-		<h2>' . __('Smooth-Scroll', 'ee-simple-file-list') . '</h2>
-		
-		<p><label for="eeSmoothScroll">' . __('Use Smooth-Scroll', 'ee-simple-file-list') . ':</label>
-		<input type="checkbox" name="eeSmoothScroll" value="YES" id="eeSmoothScroll"';
-		
-		if( $eeSFL_Settings['SmoothScroll'] == 'YES') { $eeOutput .= ' checked="checked"'; }
-		
-		$eeOutput .= ' /></p>
-		
-		<div class="eeNote">' . __('Uses a JavaScript effect to scroll down to the top of the list after an action. This can be helpful if the list is not located close to the top of the page.', 'ee-simple-file-list') . '</div>
-		
-		</div>
-		
-		
 		
 	</div>
 	
@@ -505,7 +529,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		<div><label>' . __('Show', 'ee-simple-file-list') . '</label><input type="checkbox" name="eeShowFileDate" value="YES" id="eeShowFileDate"'; 
 		if($eeSFL_Settings['ShowFileDate'] == 'YES') { $eeOutput .= ' checked'; }
 		$eeOutput .= ' />
-		<input type="text" name="eeLabelDate" value="';
+		<input class="eeFortyPercent" type="text" name="eeLabelDate" value="';
 		if( isset($eeSFL_Settings['LabelDate'])) { $eeOutput .= stripslashes($eeSFL_Settings['LabelDate']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelDate']; }
 		$eeOutput .= '" size="32" />
 		
@@ -604,6 +628,25 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		</fieldset>
 		
 		</div>
+		
+		
+		
+		<div class="eeSettingsTile">
+		
+		<h2>' . __('Smooth-Scroll', 'ee-simple-file-list') . '</h2>
+		
+		<p><label for="eeSmoothScroll">' . __('Use Smooth-Scroll', 'ee-simple-file-list') . ':</label>
+		<input type="checkbox" name="eeSmoothScroll" value="YES" id="eeSmoothScroll"';
+		
+		if( $eeSFL_Settings['SmoothScroll'] == 'YES') { $eeOutput .= ' checked="checked"'; }
+		
+		$eeOutput .= ' /></p>
+		
+		<div class="eeNote">' . __('Uses a JavaScript effect to scroll down to the top of the list after an action. This can be helpful if the list is not located close to the top of the page.', 'ee-simple-file-list') . '</div>
+		
+		</div>
+		
+		
 
 	</div>
 		

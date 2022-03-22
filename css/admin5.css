@@ -333,7 +333,7 @@ eeSFL_Admin * + * {
 	background-color: var(--ee-admin-input-background);
 }
 .eeSettingsTile fieldset input[type=text] {
-	width: 40%;
+/* 	width: 40%; */
 	background-color: var(--ee-admin-input-background);
 }
 .eeSettingsTile fieldset textarea {
@@ -496,6 +496,10 @@ eeSFL_Admin * + * {
 .eeSFL article.eeSFL_Tile {
 	margin-top: .5em;
 	background-color: #FFF;
+}
+
+.eeFortyPercent {
+	width: 40% !important;
 }
 
 

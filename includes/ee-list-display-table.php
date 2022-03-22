@@ -15,14 +15,14 @@ if($eeSFL_Settings['ShowHeader'] == 'YES' OR $eeAdmin) { $eeOutput .= '<thead><t
 		
 		$eeOutput .= '<th class="eeSFL_Thumbnail">';
 		
-		if(@$eeSFL_Settings['LabelThumb']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelThumb']); } 
+		if($eeSFL_Settings['LabelThumb']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelThumb']); } 
 			else { $eeOutput .= __('Thumb', 'ee-simple-file-list'); }
 		
 		$eeOutput .= '</th>';
 	}
 	
 	
-	$eeOutput .= '<th class="eeSFL_Sortable eeSFL_FileName">';
+	$eeOutput .= '<th class="eeSFL_FileName">';
 		
 	if($eeSFL_Settings['LabelName']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelName']); } 
 		else { $eeOutput .= __('Name', 'ee-simple-file-list'); }
@@ -32,9 +32,9 @@ if($eeSFL_Settings['ShowHeader'] == 'YES' OR $eeAdmin) { $eeOutput .= '<thead><t
 	
 	if($eeAdmin OR $eeSFL_Settings['ShowFileSize'] == 'YES') { 
 		
-		$eeOutput .= '<th class="eeSFL_Sortable eeSFL_FileSize">';
+		$eeOutput .= '<th class="eeSFL_FileSize">';
 		
-		if(@$eeSFL_Settings['LabelSize']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelSize']); } 
+		if($eeSFL_Settings['LabelSize']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelSize']); } 
 			else { $eeOutput .= __('Size', 'ee-simple-file-list'); }
 		
 		$eeOutput .= '</th>';
@@ -43,9 +43,9 @@ if($eeSFL_Settings['ShowHeader'] == 'YES' OR $eeAdmin) { $eeOutput .= '<thead><t
 	
 	if($eeAdmin OR $eeSFL_Settings['ShowFileDate'] == 'YES') { 
 		
-		$eeOutput .= '<th class="eeSFL_Sortable eeSFL_FileDate">';
+		$eeOutput .= '<th class="eeSFL_FileDate">';
 		
-		if(@$eeSFL_Settings['LabelDate']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelDate']); } 
+		if($eeSFL_Settings['LabelDate']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelDate']); } 
 			else { $eeOutput .= __('Date', 'ee-simple-file-list'); }
 		
 		$eeOutput .= '</th>';

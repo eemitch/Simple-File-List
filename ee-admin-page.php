@@ -10,7 +10,7 @@ function eeSFL_BASE_BackEnd() {
 	
 	global $eeSFL_BASE, $eeSFL_BASE_Log, $eeSFL_BASE_DevMode, $eeSFL_Settings, $eeSFL_BASE_Env, $eeSFL_BASE_ListRun;
 	
-	$eeSFL_Files = FALSE;
+	$eeSFL_Files = array();
 	$eeConfirm = FALSE;
 	$eeForceSort = FALSE; // Only used in shortcode
 	$eeURL = eeSFL_BASE_GetThisURL();
@@ -83,7 +83,7 @@ function eeSFL_BASE_BackEnd() {
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
 		require_once($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-check.php');
 	
-		// Scan the Disk
+		// Get the File Array
 		$eeSFL_Files = $eeSFL_BASE->eeSFL_UpdateFileListArray();
 		
 		$eeOutput .= '
@@ -197,7 +197,7 @@ function eeSFL_BASE_BackEnd() {
 	    </div>
 	    </h2>
 	    
-	    <article class="eeSFL_Settings">'; 
+	    <section class="eeSFL_Settings">'; 
 	    
 		// Sub-Tab Content
 		if($active_subtab == 'uploader_settings') {
@@ -218,7 +218,7 @@ function eeSFL_BASE_BackEnd() {
 		
 		$eeOutput .= '
 		
-		</article>';
+		</section>';
 		
 	} elseif($active_tab == 'pro') { // Instructions Tab Display...
 			

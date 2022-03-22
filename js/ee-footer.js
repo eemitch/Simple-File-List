@@ -25,7 +25,7 @@ jQuery(document).ready(function($) {
 // SFL FUNCTIONS ---------------------------
 
 // Strip Slashes
-String.prototype.eeStripSlashes = function(){
+String.prototype.eeSFL_BASE_StripSlashes = function(){
     return this.replace(/\\(.)/mg, "$1");
 }
 

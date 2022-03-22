@@ -80,17 +80,13 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 		else { $eeSFL_Settings['UploadPosition'] = 'Below'; }
 	
 	// Update DB
-	if( update_option('eeSFL_Settings_1', $eeSFL_Settings) ) {
-		$eeConfirm = __('Settings Saved', 'ee-simple-file-list');
-		$eeSFL_BASE_Log['RunTime'][] = $eeConfirm;
-	} else {
-		$eeSFL_BASE_Log['RunTime'][] = '!!! The database was not updated.';
-	}
+	update_option('eeSFL_Settings_1', $eeSFL_Settings);
+	
+	$eeConfirm = __('Settings Saved', 'ee-simple-file-list');
+	$eeSFL_BASE_Log['RunTime'][] = $eeConfirm;
 }
 
 // Settings Display =========================================
-	
-$eeOutput .= '<div class="eeSFL_Admin">';
 	
 if( count($eeSFL_BASE_Log['errors']) ) { 
 	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE_Log['errors'], 'notice-error');
@@ -100,7 +96,7 @@ if( count($eeSFL_BASE_Log['errors']) ) {
 	
 $eeOutput .= '
 
-<form action="' . admin_url() . '?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings&subtab=uploader_settings" method="post" id="eeSFL_Settings">
+<form action="' . $eeURL . '" method="post" id="eeSFL_Settings">
 <input type="hidden" name="eePost" value="TRUE" />';	
 $eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce', TRUE, FALSE);
 $eeOutput .= '

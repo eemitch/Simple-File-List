@@ -172,7 +172,7 @@ if($eeAdmin OR $eeSFL_Settings['AllowFrontManage'] == 'YES') {
 		<input type="text" id="eeSFL_FileNiceNameNew" name="eeSFL_FileNiceNameNew" value="" size="64" />
 		<small class="eeSFL_ModalNote">' . __('Enter a name that will be shown in place of the real file name.', 'ee-simple-file-list') . ' ' . __('You may use special characters not allowed in the file name.', 'ee-simple-file-list') . '</small>
 		
-		<label for="eeSFL_FileDescriptionNew">' . __('Description', 'ee-simple-file-list') . '</label>
+		<label for="eeSFL_FileDescriptionNew">' . __('File Description', 'ee-simple-file-list') . '</label>
 		<textarea cols="64" rows="3" id="eeSFL_FileDescriptionNew" name="eeSFL_FileDescriptionNew"></textarea>
 		<small class="eeSFL_ModalNote">' . __('Add a description.', 'ee-simple-file-list') . ' ' . __('Use this field to describe this file and apply keywords for searching.', 'ee-simple-file-list') . '</small>
 		

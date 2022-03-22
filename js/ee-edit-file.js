@@ -47,7 +47,7 @@ function eeSFL_BASE_OpenEditModal(eeSFL_FileID) {
 	jQuery('#eeSFL_FileNameNew').val(eeSFL_FileNameOld);
 	
 	eeSFL_FileNiceNameOld = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_FileNiceName').text();
-	eeSFL_FileNiceNameOld = eeSFL_FileNiceNameOld.eeStripSlashes();
+	eeSFL_FileNiceNameOld = eeSFL_FileNiceNameOld.eeSFL_BASE_StripSlashes();
 	jQuery('#eeSFL_FileNiceNameNew').val(eeSFL_FileNiceNameOld);
 	
 	eeSFL_FileDescriptionOld = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' .eeSFL_FileDesc').text();
