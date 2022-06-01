@@ -4,7 +4,7 @@ Donate link: http://simplefilelist.com
 Tags: file sharing, file list, file uploader, upload files, share files, exchange files, host files, sort files, dropbox, ftp
 Requires at least: 4.0
 Requires PHP: 5.6.40
-Tested up to: 5.9
+Tested up to: 6.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -241,6 +241,10 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Changelog ==
+
+= 4.4.11 =
+* WordPress 6.0 Approved
+* Bug Fix where a fatal error occurred if the file list was empty on PHP 8+
 
 = 4.4.9 =
 * Added ability to create video thumbnails for the WebM format.

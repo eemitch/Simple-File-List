@@ -22,10 +22,12 @@ $eeSFL_FREE_Log['RunTime'][] = 'Loaded: ee-list-display';
 // Scan the Disk
 $eeSFL_Files = $eeSFL_FREE->eeSFL_UpdateFileListArray();
 
+if(!is_array($eeSFL_Files)) { $eeSFL_Files = array(); } // PHP 8 Fix
+
 // Save for later
 $eeSFL_FileTotalCount = 0;
 $eeSFL_ItemTotalCount = $eeSFL_FileTotalCount; //  + $eeSFL_FolderTotalCount
-$eeSFL_FileTotalCount = count($eeSFL_Files,0);
+$eeSFL_FileTotalCount = count($eeSFL_Files);
 
 
 // Check for Upload Job
