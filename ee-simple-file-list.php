@@ -23,9 +23,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 define('eeSFL_BASE_Version', '5.0.3'); // Plugin version - DON'T FORGET TO UPDATE ABOVE TOO !!!
 define('eeSFL_BASE_DB_Version', '4.7'); // Database structure version - used for eeSFL_BASE_VersionCheck()
 
-// LEGACY
-if( !defined('eeSFL_Version') ) { define('eeSFL_Version', eeSFL_BASE_Version); } // Fix for Folder Extension Need, post 4.2.12
-
 // Our Core
 $eeSFL_BASE = FALSE; // Our main class
 $eeSFL_Settings = array(); // All List Info
