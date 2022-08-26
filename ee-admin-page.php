@@ -8,7 +8,7 @@ $eeSFL_FREE_Log['RunTime'][] = 'Loaded: ee-admin-page';
 // Admin-Side Display
 function eeSFL_FREE_ManageLists() {
 	
-	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_FREE_DevMode, $eeSFL_Settings, $eeSFL_FREE_Env, $eeSFL_FREE_ListRun;
+	global $eeSFL_FREE, $eeSFL_FREE_Log, $eeSFL_FREE_DevMode, $eeSFL_Settings, $eeSFL_FREE_Env, $eeSFL_FREE_ListRun;	 
 	
 	$eeSFL_Files = FALSE;
 	$eeForceSort = FALSE; // Only used in shortcode
@@ -41,7 +41,7 @@ function eeSFL_FREE_ManageLists() {
 	if($eeSFL_FREE_DevMode) { $eeOutput .= '<p class="eeAlert">' . __('DEVELOPMENT MODE ON', 'ee-simple-file-list') . '</p>'; }
 	
 	// Get the new tab's query string value. We will only use values to display tabs that we are expecting.
-	if( isset( $_GET[ 'tab' ] ) ) { $active_tab = sanitize_text_field($_GET[ 'tab' ]); } else { $active_tab = 'file_list'; }
+	if( isset( $_GET[ 'tab' ] ) ) { $active_tab = esc_js(sanitize_text_field($_GET[ 'tab' ])); } else { $active_tab = 'file_list'; }
 	
 	$eeOutput .= '<h2 class="nav-tab-wrapper">';
 	
@@ -104,7 +104,7 @@ function eeSFL_FREE_ManageLists() {
 	} elseif($active_tab == 'settings') {
 		
 		// Sub Tabs
-		if( isset( $_GET[ 'subtab' ] ) ) { $active_subtab = sanitize_text_field($_GET['subtab']); } else { $active_subtab = 'list_settings'; }
+		if( isset( $_GET[ 'subtab' ] ) ) { $active_subtab = esc_js(sanitize_text_field($_GET['subtab'])); } else { $active_subtab = 'list_settings'; }
 	    	
     	$eeOutput .= '<p class="eeTitle">' . __('File List Settings', 'ee-simple-file-list') . '</p>
     	
