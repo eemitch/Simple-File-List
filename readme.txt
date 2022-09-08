@@ -242,6 +242,9 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
+= 4.4.13 =
+* 
+
 = 4.4.12 =
 * Fixed a low threat Admin+ Reflected Cross-Site Scripting vulnerability.
 
