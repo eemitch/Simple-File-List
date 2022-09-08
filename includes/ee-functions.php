@@ -516,12 +516,12 @@ function eeSFL_FREE_ProcessTextInput($eeTerm, $eeType = 'text') {
 	
 	} elseif($eeType == 'textarea') {
 		
-		$eeValue = sanitize_textarea_field( @$_POST['ee' . $eeTerm] );
+		$eeValue = esc_textarea(sanitize_textarea_field( @$_POST['ee' . $eeTerm] ));
 		
 	} else {
 		
 		$eeValue = strip_tags(@$_POST['ee' . $eeTerm]);
-		$eeValue = sanitize_text_field($eeValue);
+		$eeValue = esc_textarea(sanitize_text_field($eeValue));
 	}
 	
 	return $eeValue;

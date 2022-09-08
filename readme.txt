@@ -230,7 +230,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.4.9 - Various Fixes and Improvements
+* 4.4.13 - Bug Fixes and Improvements
 
 
 == Screenshots ==
@@ -243,7 +243,8 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 == Changelog ==
 
 = 4.4.13 =
-* 
+* Removed the shortcode Builder functionality, as this was mostly unnecessary and was often misused.
+* Improved security for table heading labels.
 
 = 4.4.12 =
 * Fixed a low threat Admin+ Reflected Cross-Site Scripting vulnerability.

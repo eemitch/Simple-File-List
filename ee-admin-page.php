@@ -68,12 +68,6 @@ function eeSFL_FREE_ManageLists() {
     $active_tab == 'settings' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Settings', 'ee-simple-file-list') . '</a>';
     
-    // Shortcode Builder
-    $eeOutput .= '<a href="?page=' . $eeSFL_FREE->eePluginSlug . '&tab=shortcode" class="nav-tab tabSettings ';  
-	if($active_tab == 'shortcode') {$eeOutput .= '  eeActiveTab '; }   
-    $active_tab == 'support' ? 'nav-tab-active' : ''; 
-    $eeOutput .= $active_tab . '">' . __('Create Shortcode', 'ee-simple-file-list') . '</a>';
-    
     // You should Buy the PRO Version
     $eeOutput .= '<a href="?page=' . $eeSFL_FREE->eePluginSlug . '&tab=pro" class="nav-tab tabSupport ';   
 	if($active_tab == 'pro') {$eeOutput .= '  eeActiveTab '; }  
@@ -146,13 +140,6 @@ function eeSFL_FREE_ManageLists() {
 			include($eeSFL_FREE_Env['pluginDir'] . 'includes/ee-list-settings.php'); // The File List Settings
 		}
 		
-	} elseif($active_tab == 'shortcode') { // Shortcode Builder Tab Display...
-			
-		// Get the instructions page
-		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		include($eeSFL_FREE_Env['pluginDir'] . 'includes/ee-shortcode-builder.php');
-	
-	
 	} elseif($active_tab == 'pro') { // Instructions Tab Display...
 			
 		// Get the sales page

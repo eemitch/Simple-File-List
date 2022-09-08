@@ -161,52 +161,6 @@ function eeSFL_FREE_Textdomain() {
 }
 
 
-// Createing a New Post with Shortcode
-function eeSFL_FREE_CreatePostwithShortcode() { 
-	
-	if(@$_POST['eeCreatePostType']) {
-		
-		global $eeSFL_FREE_Log;
-		
-		$eeShortcode = FALSE;
-		$eeCreatePostType = FALSE;
-		$eePostTitle = FALSE;
-		
-		$eeCreatePostType = sanitize_text_field(@$_POST['eeCreatePostType']);
-		$eeShortcode = sanitize_text_field(@$_POST['eeShortcode']);
-		$eePostTitle = sanitize_text_field(@$_POST['eePostTitle']);
-		
-		if(!$eeShortcode) { $eeShortcode = '[eeSFL]'; }
-		
-		if(!$eePostTitle) {
-			$eePostTitle = 'My Simple File List ' . $eeCreatePostType;
-		}
-			
-		if(($eeCreatePostType == "Post" OR $eeCreatePostType == "Page") AND $eeShortcode) {
-			
-			// Create Post Object
-			$eeNewPost = array(
-				'post_type'		=> $eeCreatePostType,
-				'post_title'    => $eePostTitle,
-				'post_content'  => '<div>' . $eeShortcode . '</div>',
-				'post_status'   => 'draft'
-			);
-			
-			// Create Post
-			$eeNewPostID = wp_insert_post( $eeNewPost );
-			
-			if($eeNewPostID) {
-				
-				header('Location: /?p=' . $eeNewPostID);
-			}
-			
-			return TRUE;
-		}
-	}
-}
-add_action( 'wp_loaded', 'eeSFL_FREE_CreatePostwithShortcode' );
-
-
 
 // Shortcode
 function eeSFL_FREE_Shortcode($atts, $content = null) {
