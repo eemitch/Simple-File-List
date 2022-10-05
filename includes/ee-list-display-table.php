@@ -62,10 +62,10 @@ $eeOutput .= '
 <tbody>';
 				
 
-$eeSFL_BASE->eeLog['notice'][] = 'Listing Files in Table View...';
+$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Listing Files in Table View...';
 						
 // Loop through array
-foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<---------------------------- BEGIN FILE LIST LOOP ----------------<<<	 
+foreach($eeSFL_BASE->eeAllFiles as $eeFileKey => $eeFileArray) { // <<<---------------------------- BEGIN FILE LIST LOOP ----------------<<<	 
 	
 	// echo '<pre>'; print_r($eeFileArray); echo '</pre>'; exit;
 	
@@ -155,7 +155,7 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 
 	}
 
-} // END $eeSFL_Files loop
+} // END $eeSFL_BASE->eeAllFiles loop
 
 
 $eeOutput .= '

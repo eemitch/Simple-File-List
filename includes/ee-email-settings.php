@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_BASE->eeLog['notice'][] = 'Loading Email Settings Page ...';
+$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loading Email Settings Page ...';
 
 // Check for POST and Nonce
 if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {
@@ -54,8 +54,8 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-settings', 'e
 
 // Settings Display =========================================
 	
-if( count($eeSFL_BASE->eeLog['errors']) ) { 
-	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog['errors'], 'notice-error');
+if( count($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors']) ) { 
+	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'], 'notice-error');
 } elseif($eeConfirm) { 
 	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeConfirm, 'notice-success');
 }
@@ -63,7 +63,7 @@ if( count($eeSFL_BASE->eeLog['errors']) ) {
 // Begin the Form	
 $eeOutput .= '
 
-<form action="' . admin_url() . '?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings&subtab=email_settings" method="post" id="eeSFL_Settings">
+<form action="' . admin_url() . '?page=' . eeSFL_BASE_PluginSlug . '&tab=settings&subtab=email_settings" method="post" id="eeSFL_Settings">
 <input type="hidden" name="eePost" value="TRUE" />';	
 $eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce', TRUE, FALSE);
 

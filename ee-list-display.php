@@ -3,34 +3,32 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeFileArray = FALSE;
-$eeSFL_ListClass = 'eeSFL'; // The basic list's CSS class. Extensions might change this.
+// $eeSFL_ListClass = 'eeSFL'; // The basic list's CSS class. Extensions might change this.
 $eeClass = ''; // Meaning, CSS class
-$eeSFL_AllowFrontManage = 'NO'; // Front-side freedom
+// $eeSFL_AllowFrontManage = 'NO'; // Front-side freedom
+
 $eeUploadedFiles = FALSE;
 $eeSFL_ActionNonce = wp_create_nonce('eeSFL_ActionNonce'); // Security for Ajax
 $eeURL = eeSFL_BASE_GetThisURL();
-global $eeSFL_BASE->eeListRun;
+$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loaded: ee-list-display';
 
-$eeSFL_BASE->eeLog['notice'][] = 'Loaded: ee-list-display';
+// echo '<pre>'; print_r($eeSFL_BASE->eeAllFiles); echo '</pre>'; exit;
 
-// echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
-
-if( !isset($eeSFL_Files) ) { // Might be Set in Admin
-	$eeSFL_Files = $eeSFL_BASE->eeSFL_UpdateFileListArray();
+if( !isset($eeSFL_BASE->eeAllFiles) ) { // Might be Set in Admin
+	$eeSFL_BASE->eeAllFiles = $eeSFL_BASE->eeSFL_UpdateFileListArray();
 }
-if( !is_array($eeSFL_Files) ) { $eeSFL_Files = array('' => ''); }
+if( !is_array($eeSFL_BASE->eeAllFiles) ) { $eeSFL_BASE->eeAllFiles = array('' => ''); }
 
 // Save for later
 $eeSFL_FileTotalCount = 0;
-$eeSFL_FileTotalCount = count($eeSFL_Files, 0);
+$eeSFL_FileTotalCount = count($eeSFL_BASE->eeAllFiles, 0);
 
 // Check for Upload Job
 if( isset($_POST['eeSFL_Upload']) ) {
 	
-	// echo '<pre>'; print_r($eeSFL_Files); echo '</pre>'; exit;
+	// echo '<pre>'; print_r($eeSFL_BASE->eeAllFiles); echo '</pre>'; exit;
 	
-	foreach( $eeSFL_Files as $eeThisKey => $eeFileArray ) {
+	foreach( $eeSFL_BASE->eeAllFiles as $eeThisKey => $eeFileArray ) {
 		
 		if( in_array($eeFileArray['FilePath'], $eeSFL_BASE->eeEnvironment['UploadedFiles']) ) {
 			$eeUploadedFiles[] = $eeFileArray;
@@ -40,33 +38,33 @@ if( isset($_POST['eeSFL_Upload']) ) {
 	if($eeSFL_BASE->eeListSettings['UploadConfirm'] == 'YES') {
 		
 		// Show Only File(s) Just Uploaded
-		$eeSFL_Files = $eeUploadedFiles;
+		$eeSFL_BASE->eeAllFiles = $eeUploadedFiles;
 		
 	} else {
 		
 		// Refresh
-		$eeSFL_Files = $eeSFL_BASE->eeSFL_UpdateFileListArray();
-		$eeSFL_FileTotalCount = count($eeSFL_Files, 0);
+		$eeSFL_BASE->eeAllFiles = $eeSFL_BASE->eeSFL_UpdateFileListArray();
+		$eeSFL_FileTotalCount = count($eeSFL_BASE->eeAllFiles, 0);
 	}
 	
 	if(count($eeUploadedFiles) < 1) {
 		
-		$eeSFL_Files = array();
-		$eeSFL_BASE->eeLog['errors'][] = __('Upload Processing Error. Files may not have been added properly.', 'ee-simple-file-list');
+		$eeSFL_BASE->eeAllFiles = array();
+		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'][] = __('Upload Processing Error. Files may not have been added properly.', 'ee-simple-file-list');
 	}	
 }
 
 // User Messaging
-if(isset($eeSFL_BASE->eeLog['messages'])) {	
-	if($eeSFL_BASE->eeLog['messages'] AND $eeSFL_BASE->eeListRun == 1) { 
-		$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog['messages'], 'notice-success');
-		$eeSFL_BASE->eeLog['messages'] = array(); // Clear
+if(isset($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'])) {	
+	if($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'] AND $eeSFL_BASE->eeListRun == 1) { 
+		$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'], 'notice-success');
+		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'] = array(); // Clear
 	}
 }
-if(isset($eeSFL_BASE->eeLog['errors'])) {		
-	if($eeSFL_BASE->eeLog['errors']) { 
-		$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog['errors'], 'notice-error');
-		$eeSFL_BASE->eeLog['errors'] = array(); // Clear
+if(isset($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'])) {		
+	if($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors']) { 
+		$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'], 'notice-error');
+		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'] = array(); // Clear
 	}
 }
 
@@ -98,13 +96,13 @@ if(!$eeAdmin AND $eeUploadedFiles AND $eeSFL_BASE->eeListSettings['UploadConfirm
 	';
 }
 
-// $eeSFL_Files = array_values($eeSFL_Files);
+// $eeSFL_BASE->eeAllFiles = array_values($eeSFL_BASE->eeAllFiles);
 
-// echo '<pre>'; print_r($eeSFL_Files); echo '</pre>';
+// echo '<pre>'; print_r($eeSFL_BASE->eeAllFiles); echo '</pre>';
 
-if( is_array($eeSFL_Files) ) {
+if( is_array($eeSFL_BASE->eeAllFiles) ) {
 	
-	if(!count($eeSFL_Files)) { return; } // Bail if no files
+	if(!count($eeSFL_BASE->eeAllFiles)) { return; } // Bail if no files
 
 	if($eeSFL_BASE->eeListSettings['ShowListStyle'] == 'Tiles') {
 		
@@ -125,7 +123,7 @@ if( is_array($eeSFL_Files) ) {
 
 } else {
 	
-	$eeSFL_BASE->eeLog['notice'][] = 'There are no files here :-(';
+	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'There are no files here :-(';
 	
 	if($eeAdmin) {
 		$eeOutput .= '<div>

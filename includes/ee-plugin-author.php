@@ -3,7 +3,7 @@
 defined( 'ABSPATH' ) or die( 'No direct access is allowed' );
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_BASE->eeLog['notice'][] = 'Loaded: ee-plugin-author';
+$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loaded: ee-plugin-author';
 	
 // Plugin Contributors Array - Format: Name|URL|DESCRIPTION Example: Thnaks to <a href="URL">NAME</a> DESCRIPTION
 // Values here are inserted below

@@ -3,14 +3,13 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' )) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_BASE->eeLog['notice'][] = 'Loaded: ee-admin-page';
+$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loaded: ee-admin-page';
 
 // Admin-Side Display
 function eeSFL_BASE_BackEnd() {
 	
 	global $eeSFL_BASE;
 	
-	$eeSFL_Files = array();
 	$eeConfirm = FALSE;
 	$eeForceSort = FALSE; // Only used in shortcode
 	$eeURL = eeSFL_BASE_GetThisURL();
@@ -22,8 +21,8 @@ function eeSFL_BASE_BackEnd() {
 	include('includes/ee-admin-header.php');
 
 	// Upsell to Pro
-	if( $eeAdmin AND !$_POST AND count($eeSFL_BASE->eeLog['messages']) === 0 ) {
-		$eeSFL_BASE->eeLog['messages'][] = $eeUpSell;
+	if( $eeAdmin AND !$_POST AND count($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages']) === 0 ) {
+		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'][] = $eeUpSell;
 	}
 
 	// Get the new tab's query string value. We will only use values to display tabs that we are expecting.
@@ -39,7 +38,7 @@ function eeSFL_BASE_BackEnd() {
 	
 	<span class="nav-tab-wrapper-left">
 	
-	<a href="?page=' . $eeSFL_BASE->eePluginSlug . '&tab=file_list" class="nav-tab ';  
+	<a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=file_list" class="nav-tab ';  
 	if($active_tab == 'file_list') {$eeOutput .= ' eeActiveTab '; }    
     $active_tab == 'file_list' ? 'nav-tab-active' : '';
     $eeOutput .= $active_tab . '">' . __('File List', 'ee-simple-file-list') . '</a>';
@@ -47,12 +46,12 @@ function eeSFL_BASE_BackEnd() {
 	
 	// Settings
     $eeOutput .= '
-    <a href="?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings" class="nav-tab ';   
+    <a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=settings" class="nav-tab ';   
 	if($active_tab == 'settings') {$eeOutput .= ' eeActiveTab '; }  
     $active_tab == 'settings' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('List Settings', 'ee-simple-file-list') . '</a>
     
-    <a href="?page=' . $eeSFL_BASE->eePluginSlug . '&tab=pro" class="nav-tab ';   
+    <a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=pro" class="nav-tab ';   
 	if($active_tab == 'pro') {$eeOutput .= ' eeActiveTab '; }  
     $active_tab == 'pro' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Upgrade Version', 'ee-simple-file-list') . '</a>
@@ -62,7 +61,7 @@ function eeSFL_BASE_BackEnd() {
     <span class="nav-tab-wrapper-right">
     
     
-    <a href="?page=' . $eeSFL_BASE->eePluginSlug . '&tab=author" class="nav-tab ';   
+    <a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=author" class="nav-tab ';   
 	if($active_tab == 'author') {$eeOutput .= ' eeActiveTab '; }  
     $active_tab == 'author' ? 'nav-tab-active' : ''; 
     $eeOutput .= $active_tab . '">' . __('Author', 'ee-simple-file-list') . '</a>';
@@ -84,7 +83,7 @@ function eeSFL_BASE_BackEnd() {
 		require_once($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-upload-check.php');
 	
 		// Get the File Array
-		$eeSFL_Files = $eeSFL_BASE->eeSFL_UpdateFileListArray();
+		$eeSFL_BASE->eeAllFiles = $eeSFL_BASE->eeSFL_UpdateFileListArray();
 		
 		$eeOutput .= '
 		
@@ -127,13 +126,13 @@ function eeSFL_BASE_BackEnd() {
 				<div class="eeColHalfRight">';
 				
 				// Check Array and Get File Count
-				if(is_array($eeSFL_Files)) { 
+				if(is_array($eeSFL_BASE->eeAllFiles)) { 
 					
-					$eeFileCount = count($eeSFL_Files);
+					$eeFileCount = count($eeSFL_BASE->eeAllFiles);
 					
 					// Calc Date Last Changed
 					$eeArray = array();
-					foreach( $eeSFL_Files as $eeKey => $eeFileArray) { $eeArray[] = $eeFileArray['FileDateAdded']; }
+					foreach( $eeSFL_BASE->eeAllFiles as $eeKey => $eeFileArray) { $eeArray[] = $eeFileArray['FileDateAdded']; }
 					rsort($eeArray); // Most recent at the top	
 					
 					$eeOutput .= '<small>' . $eeFileCount . ' ' . __('Files', 'ee-simple-file-list') . ' - ' . __('Sorted by', 'ee-simple-file-list') . ' ' . ucwords($eeSFL_BASE->eeListSettings['SortBy']);
@@ -146,7 +145,7 @@ function eeSFL_BASE_BackEnd() {
 					unset($eeArray);
 				
 				} else { 
-					$eeSFL_Files = array('' => ''); // No files found :-(
+					$eeSFL_BASE->eeAllFiles = array('' => ''); // No files found :-(
 				}
 				
 				$eeOutput .= '</div>';
@@ -174,19 +173,19 @@ function eeSFL_BASE_BackEnd() {
     	<div class="ee-nav-sub-tabs">';
 		
 		// List Settings
-		$eeOutput .= '<a href="?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings&subtab=list_settings" class="nav-tab ';  
+		$eeOutput .= '<a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=settings&subtab=list_settings" class="nav-tab ';  
 		if($active_subtab == 'list_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'list_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('File List Settings', 'ee-simple-file-list') . '</a>';
 	    
 	    // Uploader Settings
-		$eeOutput .= '<a href="?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings&subtab=uploader_settings" class="nav-tab ';  
+		$eeOutput .= '<a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=settings&subtab=uploader_settings" class="nav-tab ';  
 		if($active_subtab == 'uploader_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'uploader_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('File Upload Settings', 'ee-simple-file-list') . '</a>';
 	    
 	    // Notifications Settings
-		$eeOutput .= '<a href="?page=' . $eeSFL_BASE->eePluginSlug . '&tab=settings&subtab=email_settings" class="nav-tab ';  
+		$eeOutput .= '<a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=settings&subtab=email_settings" class="nav-tab ';  
 		if($active_subtab == 'email_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $active_subtab == 'email_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('Notification Settings', 'ee-simple-file-list') . '</a>';

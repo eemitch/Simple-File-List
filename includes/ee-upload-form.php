@@ -5,26 +5,24 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
 // Upload Form --------------------
-
-global $eeSFL_BASE->eeListRun;
 $eeSFL_UploadNonce = wp_create_nonce('ee-simple-file-list-upload'); // Checked in the upload engine.
 
-$eeSFL_BASE->eeLog['notice'][] = 'Loaded: ee-uploader';
-$eeSFL_BASE->eeLog['notice'][] = 'Uploading to...';
-$eeSFL_BASE->eeLog['notice'][] = $eeSFL_BASE->eeListSettings['FileListDir'];
+$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loaded: ee-uploader';
+$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Uploading to...';
+$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = $eeSFL_BASE->eeListSettings['FileListDir'];
 
 // File limit fallback
 if(!$eeSFL_BASE->eeListSettings['UploadLimit']) { $eeSFL_BASE->eeListSettings['UploadLimit'] = $eeSFL_BASE->eeDefaultUploadLimit; }
 
 
 // User Messaging	
-if(count($eeSFL_BASE->eeLog['messages']) AND $eeSFL_BASE->eeListRun == 1) { 
-	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog['messages'], 'notice-success');
-	$eeSFL_BASE->eeLog['messages'] = array(); // Clear
+if(count($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages']) AND $eeSFL_BASE->eeListRun == 1) { 
+	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'], 'notice-success');
+	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'] = array(); // Clear
 }	
-if(count($eeSFL_BASE->eeLog['errors'])) { 
-	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog['errors'], 'notice-error');
-	$eeSFL_BASE->eeLog['errors'] = array(); // Clear
+if(count($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'])) { 
+	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'], 'notice-error');
+	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'] = array(); // Clear
 }
 	
 
@@ -142,7 +140,7 @@ if(strlen($eeSFL_BASE->eeListSettings['FileListDir']) > 1) {
 	
 } else {
 	$eeOutput .= __('No upload directory configured.', 'ee-simple-file-list');
-	$eeSFL_BASE->eeLog['errors'][] = 'No upload directory configured.';
+	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'][] = 'No upload directory configured.';
 }
 
 ?>

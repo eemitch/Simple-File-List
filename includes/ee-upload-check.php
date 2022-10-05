@@ -8,7 +8,7 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit 
 // Check for an upload job, then run notification routine.
 if(isset($_POST['eeSFL_Upload'])) {
 	
-	$eeSFL_BASE->eeLog['notice'][] = 'Processing Upload Job...';
+	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Processing Upload Job...';
 	
 	$eeSFL_Uploaded = TRUE; // Show the results page
 	
