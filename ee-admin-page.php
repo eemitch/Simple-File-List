@@ -3,12 +3,12 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' )) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_BASE_Log['RunTime'][] = 'Loaded: ee-admin-page';
+$eeSFL_BASE->eeLog['notice'][] = 'Loaded: ee-admin-page';
 
 // Admin-Side Display
 function eeSFL_BASE_BackEnd() {
 	
-	global $eeSFL_BASE, $eeSFL_BASE_Log, $eeSFL_BASE_DevMode, $eeSFL_Settings, $eeSFL_BASE_Env, $eeSFL_BASE_ListRun;
+	global $eeSFL_BASE;
 	
 	$eeSFL_Files = array();
 	$eeConfirm = FALSE;
@@ -22,8 +22,8 @@ function eeSFL_BASE_BackEnd() {
 	include('includes/ee-admin-header.php');
 
 	// Upsell to Pro
-	if( $eeAdmin AND !$_POST AND count($eeSFL_BASE_Log['messages']) === 0 ) {
-		$eeSFL_BASE_Log['messages'][] = $eeUpSell;
+	if( $eeAdmin AND !$_POST AND count($eeSFL_BASE->eeLog['messages']) === 0 ) {
+		$eeSFL_BASE->eeLog['messages'][] = $eeUpSell;
 	}
 
 	// Get the new tab's query string value. We will only use values to display tabs that we are expecting.
@@ -81,7 +81,7 @@ function eeSFL_BASE_BackEnd() {
 	if($active_tab == 'file_list') {
 		
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		require_once($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-check.php');
+		require_once($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-upload-check.php');
 	
 		// Get the File Array
 		$eeSFL_Files = $eeSFL_BASE->eeSFL_UpdateFileListArray();
@@ -95,7 +95,7 @@ function eeSFL_BASE_BackEnd() {
 		
 		// The Upload Form
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-form.php');
+		include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-upload-form.php');
 		
 		$eeOutput .= '</div>
 		
@@ -105,7 +105,7 @@ function eeSFL_BASE_BackEnd() {
 			<div class="eeColInline">';
 		
 			// If showing just-uploaded files
-			if($eeSFL_Uploaded AND $eeSFL_Settings['UploadConfirm'] == 'YES') { 
+			if($eeSFL_Uploaded AND $eeSFL_BASE->eeListSettings['UploadConfirm'] == 'YES') { 
 				
 				$eeOutput .= '
 				
@@ -136,9 +136,9 @@ function eeSFL_BASE_BackEnd() {
 					foreach( $eeSFL_Files as $eeKey => $eeFileArray) { $eeArray[] = $eeFileArray['FileDateAdded']; }
 					rsort($eeArray); // Most recent at the top	
 					
-					$eeOutput .= '<small>' . $eeFileCount . ' ' . __('Files', 'ee-simple-file-list') . ' - ' . __('Sorted by', 'ee-simple-file-list') . ' ' . ucwords($eeSFL_Settings['SortBy']);
+					$eeOutput .= '<small>' . $eeFileCount . ' ' . __('Files', 'ee-simple-file-list') . ' - ' . __('Sorted by', 'ee-simple-file-list') . ' ' . ucwords($eeSFL_BASE->eeListSettings['SortBy']);
 					
-					if($eeSFL_Settings['SortBy'] == 'Ascending') { $eeOutput .= ' &uarr;'; } else { $eeOutput .= ' &darr;'; } 
+					if($eeSFL_BASE->eeListSettings['SortBy'] == 'Ascending') { $eeOutput .= ' &uarr;'; } else { $eeOutput .= ' &darr;'; } 
 					
 					$eeOutput .= '<br />' . 
 					__('Last Changed', 'ee-simple-file-list') . ': ' . date_i18n( get_option('date_format'), strtotime( $eeArray[0] ) ) . '</small>';
@@ -159,7 +159,7 @@ function eeSFL_BASE_BackEnd() {
 		</section>';
 		
 		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-		include($eeSFL_BASE_Env['pluginDir'] . 'ee-list-display.php'); // The File List	
+		include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'ee-list-display.php'); // The File List	
 		
 			
 	
@@ -203,17 +203,17 @@ function eeSFL_BASE_BackEnd() {
 		if($active_subtab == 'uploader_settings') {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-upload-settings.php'); // The Uploader Settings
+			include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-upload-settings.php'); // The Uploader Settings
 		
 		} elseif($active_subtab == 'email_settings') {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-email-settings.php'); // The Notifications Settings
+			include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-email-settings.php'); // The Notifications Settings
 		
 		} else {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-list-settings.php'); // The File List Settings			
+			include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-list-settings.php'); // The File List Settings			
 		}
 		
 		$eeOutput .= '
@@ -224,23 +224,23 @@ function eeSFL_BASE_BackEnd() {
 			
 		// Get the sales page
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-get-pro.php');
+		include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-get-pro.php');
 	
 	
 	} elseif($active_tab == 'help') { // Email Support Tab Display...
 		
-		$eePlugin = $eeSFL_BASE->eePluginName;
+		$eePlugin = eeSFL_PluginName;
 			
 		// Get the support page
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		include($eeSFL_BASE_Env['pluginDir'] . 'support/ee-get-help.php');
+		include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'support/ee-get-help.php');
 	
 	
 	} else { // Author
 					
 		// Get the support page
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		include($eeSFL_BASE_Env['pluginDir'] . 'includes/ee-plugin-author.php');
+		include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-plugin-author.php');
 		
 	} // END Tab Content
 	
@@ -250,7 +250,7 @@ function eeSFL_BASE_BackEnd() {
 	
 	// Timer
 	$eeSFL_Time = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
-	$eeSFL_BASE_Log[] = 'Execution Time: ' . round($eeSFL_Time,3);
+	$eeSFL_BASE->eeLog[] = 'Execution Time: ' . round($eeSFL_Time,3);
 	
 	// Logging
 	$eeOutput .= $eeSFL_BASE->eeSFL_WriteLogData(); // Only adds output if DevMode is ON

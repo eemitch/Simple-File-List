@@ -27,8 +27,8 @@ $eeOutput .= '
 
 	<p class="eeFloatRight">' . $eeSFL_Button . '</p>
 	
-	<a href="' . $eeSFL_BASE_Env['pluginURL'] . 'images/Folder-Demo.jpg" target="_blank">
-		<img src="' . $eeSFL_BASE_Env['pluginURL'] . 'images/Folder-Demo.jpg" width="663" height="721" class="eeFloatRight" alt="Screenshot of front-end file list" />
+	<a href="' . $eeSFL_BASE->eeEnvironment['pluginURL'] . 'images/Folder-Demo.jpg" target="_blank">
+		<img src="' . $eeSFL_BASE->eeEnvironment['pluginURL'] . 'images/Folder-Demo.jpg" width="663" height="721" class="eeFloatRight" alt="Screenshot of front-end file list" />
 	</a>
 	
 	<p>' . __('The Pro version adds features not available in the free version and is also extendable, allowing you to add more specific functionality as needed.', 'simple-file-list') . '</p>
@@ -49,8 +49,8 @@ $eeOutput .= '
 	</ul>
 	
 	
-	<a href="' . $eeSFL_BASE_Env['pluginURL'] . 'images/SFL-Pro-Admin.jpg" target="_blank">
-		<img src="' . $eeSFL_BASE_Env['pluginURL'] . 'images/SFL-Pro-Admin.jpg" width="949" height="786" class="eeFloatRight" alt="Screenshot of back-end file list" />
+	<a href="' . $eeSFL_BASE->eeEnvironment['pluginURL'] . 'images/SFL-Pro-Admin.jpg" target="_blank">
+		<img src="' . $eeSFL_BASE->eeEnvironment['pluginURL'] . 'images/SFL-Pro-Admin.jpg" width="949" height="786" class="eeFloatRight" alt="Screenshot of back-end file list" />
 	</a>
 	
 	<h3>' . __('More Pro Features', 'ee-simple-file-list') . '</h3>

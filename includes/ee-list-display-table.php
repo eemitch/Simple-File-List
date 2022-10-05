@@ -9,13 +9,13 @@ $eeFileID = 0; // Assign an ID number to each row
 
 $eeOutput .= '<table class="eeFiles">';
 
-if($eeSFL_Settings['ShowHeader'] == 'YES' OR $eeAdmin) { $eeOutput .= '<thead><tr>';
+if($eeSFL_BASE->eeListSettings['ShowHeader'] == 'YES' OR $eeAdmin) { $eeOutput .= '<thead><tr>';
 						
-	if($eeAdmin OR $eeSFL_Settings['ShowFileThumb'] == 'YES') { 
+	if($eeAdmin OR $eeSFL_BASE->eeListSettings['ShowFileThumb'] == 'YES') { 
 		
 		$eeOutput .= '<th class="eeSFL_Thumbnail">';
 		
-		if($eeSFL_Settings['LabelThumb']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelThumb']); } 
+		if($eeSFL_BASE->eeListSettings['LabelThumb']) { $eeOutput .= stripslashes($eeSFL_BASE->eeListSettings['LabelThumb']); } 
 			else { $eeOutput .= __('Thumb', 'ee-simple-file-list'); }
 		
 		$eeOutput .= '</th>';
@@ -24,28 +24,28 @@ if($eeSFL_Settings['ShowHeader'] == 'YES' OR $eeAdmin) { $eeOutput .= '<thead><t
 	
 	$eeOutput .= '<th class="eeSFL_FileName">';
 		
-	if($eeSFL_Settings['LabelName']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelName']); } 
+	if($eeSFL_BASE->eeListSettings['LabelName']) { $eeOutput .= stripslashes($eeSFL_BASE->eeListSettings['LabelName']); } 
 		else { $eeOutput .= __('Name', 'ee-simple-file-list'); }
 	
 	$eeOutput .= '</th>';
 	
 	
-	if($eeAdmin OR $eeSFL_Settings['ShowFileSize'] == 'YES') { 
+	if($eeAdmin OR $eeSFL_BASE->eeListSettings['ShowFileSize'] == 'YES') { 
 		
 		$eeOutput .= '<th class="eeSFL_FileSize">';
 		
-		if($eeSFL_Settings['LabelSize']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelSize']); } 
+		if($eeSFL_BASE->eeListSettings['LabelSize']) { $eeOutput .= stripslashes($eeSFL_BASE->eeListSettings['LabelSize']); } 
 			else { $eeOutput .= __('Size', 'ee-simple-file-list'); }
 		
 		$eeOutput .= '</th>';
 	}
 	
 	
-	if($eeAdmin OR $eeSFL_Settings['ShowFileDate'] == 'YES') { 
+	if($eeAdmin OR $eeSFL_BASE->eeListSettings['ShowFileDate'] == 'YES') { 
 		
 		$eeOutput .= '<th class="eeSFL_FileDate">';
 		
-		if($eeSFL_Settings['LabelDate']) { $eeOutput .= stripslashes($eeSFL_Settings['LabelDate']); } 
+		if($eeSFL_BASE->eeListSettings['LabelDate']) { $eeOutput .= stripslashes($eeSFL_BASE->eeListSettings['LabelDate']); } 
 			else { $eeOutput .= __('Date', 'ee-simple-file-list'); }
 		
 		$eeOutput .= '</th>';
@@ -62,7 +62,7 @@ $eeOutput .= '
 <tbody>';
 				
 
-$eeSFL_BASE_Log['RunTime'][] = 'Listing Files in Table View...';
+$eeSFL_BASE->eeLog['notice'][] = 'Listing Files in Table View...';
 						
 // Loop through array
 foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<---------------------------- BEGIN FILE LIST LOOP ----------------<<<	 
@@ -84,7 +84,7 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 		
 		
 		// Thumbnail
-		if($eeAdmin OR $eeSFL_Settings['ShowFileThumb'] == 'YES') {
+		if($eeAdmin OR $eeSFL_BASE->eeListSettings['ShowFileThumb'] == 'YES') {
 			
 			$eeOutput .= '<td class="eeSFL_Thumbnail">';
 			
@@ -111,16 +111,16 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 			
 			
 			// Show File Description
-			if(!$eeAdmin OR $eeSFL_Settings['ShowFileDesc'] == 'NO') { $eeClass = 'eeHide'; }
+			if(!$eeAdmin OR $eeSFL_BASE->eeListSettings['ShowFileDesc'] == 'NO') { $eeClass = 'eeHide'; }
 			
 			// This is always here in case of editing, but hidden if empty
 			$eeOutput .= '<p class="eeSFL_FileDesc ' . $eeClass . '">' . stripslashes($eeSFL_BASE->eeFileDescription) . '</p>';
 			
 			
 			// Submitter Info
-			if($eeAdmin OR $eeSFL_Settings['ShowSubmitterInfo'] == 'YES') {	
+			if($eeAdmin OR $eeSFL_BASE->eeListSettings['ShowSubmitterInfo'] == 'YES') {	
 				if( strlen($eeSFL_BASE->eeFileSubmitterName) > 1 ) {
-					$eeOutput .= '<p class="eeSFL_FileSubmitter"><span>' . $eeSFL_Settings['LabelOwner'] . ': </span>
+					$eeOutput .= '<p class="eeSFL_FileSubmitter"><span>' . $eeSFL_BASE->eeListSettings['LabelOwner'] . ': </span>
 						<a href="mailto:' . $eeSFL_BASE->eeFileSubmitterEmail . '">' . stripslashes($eeSFL_BASE->eeFileSubmitterName) . '</a></p>';
 				}
 			}
@@ -135,14 +135,14 @@ foreach($eeSFL_Files as $eeFileKey => $eeFileArray) { // <<<--------------------
 		
 		
 		// File Size
-		if($eeAdmin OR $eeSFL_Settings['ShowFileSize'] == 'YES') {
+		if($eeAdmin OR $eeSFL_BASE->eeListSettings['ShowFileSize'] == 'YES') {
 		
 			$eeOutput .= '<td class="eeSFL_FileSize">' . $eeSFL_BASE->eeFileSize . '</td>';
 		}
 		
 		
 		// File Modification Date
-		if($eeAdmin OR $eeSFL_Settings['ShowFileDate'] == 'YES') {
+		if($eeAdmin OR $eeSFL_BASE->eeListSettings['ShowFileDate'] == 'YES') {
 			
 			$eeOutput .= '<td class="eeSFL_FileDate">' . $eeSFL_BASE->eeFileDate . '</td>';
 		}

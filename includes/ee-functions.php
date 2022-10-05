@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Functions' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_BASE_Log['RunTime'][] = 'Loaded: ee-functions';
+$eeSFL_BASE->eeLog['notice'][] = 'Loaded: ee-functions';
 
 
 // Get Actual Max Upload Size
@@ -25,7 +25,7 @@ function eeSFL_BASE_ActualUploadMax() {
 
 function eeSFL_BASE_CheckSupported() {
 	
-	global $eeSFL_BASE_Log, $eeSFL_BASE_Env;
+	global $eeSFL_BASE;
 	
 	// Check for supported technologies
 	$eeSupported = array();
@@ -38,27 +38,27 @@ function eeSFL_BASE_CheckSupported() {
 			$eeSFL_Log['Supported'][] = 'Supported: ffMpeg';
 		}
     } else {
-	    $eeSFL_BASE_Log['Trouble'] = '---> shell_exec() NOT SUPPORTED'; 
+	    $eeSFL_BASE->eeLog['Trouble'] = '---> shell_exec() NOT SUPPORTED'; 
     }
     
-    if($eeSFL_BASE_Env['eeOS'] != 'WINDOWS') {
+    if($eeSFL_BASE->eeEnvironment['eeOS'] != 'WINDOWS') {
 		
 		// Check for ImageMagick
 		$phpExt = 'imagick'; 
 		if(extension_loaded($phpExt)) {
 			$eeSupported[] = 'ImageMagick';
-			$eeSFL_BASE_Log['Supported'][] = 'Supported: ImageMagick';
+			$eeSFL_BASE->eeLog['Supported'][] = 'Supported: ImageMagick';
 		}
 		
 		// Check for GhostScript
-		if($eeSFL_BASE_Env['eeOS'] == 'LINUX') { // TO DO - Make it work for IIS
+		if($eeSFL_BASE->eeEnvironment['eeOS'] == 'LINUX') { // TO DO - Make it work for IIS
 		
 			if(function_exists('shell_exec')) {
 			
 				$phpExt = 'gs'; // <<<---- This will be different for Windows
 				if(shell_exec($phpExt . ' --version') >= 1.0) { // <<<---- This will be different for Windows too
 					$eeSupported[] = 'GhostScript';
-					$eeSFL_BASE_Log['Supported'][] = 'Supported: GhostScript';
+					$eeSFL_BASE->eeLog['Supported'][] = 'Supported: GhostScript';
 				}
 			}
 		}
@@ -81,9 +81,9 @@ function eeSFL_BASE_CheckSupported() {
 // Detect upward path traversal
 function eeSFL_BASE_DetectUpwardTraversal($eeFilePath) {
 
-	global $eeSFL_BASE_Env;
+	global $eeSFL_BASE;
 	
-	if($eeSFL_BASE_Env['eeOS'] == 'LINUX') {
+	if($eeSFL_BASE->eeEnvironment['eeOS'] == 'LINUX') {
 	
 		$eeFilePath = str_replace('//', '/', $eeFilePath); // Strip double slashes, which will cause failure
 		
@@ -144,7 +144,7 @@ function eeSFL_BASE_FileListDirCheck($eeFileListDir) {
 	
 	if(!$eeFileListDir) { return FALSE; }
 	
-	global $eeSFL_BASE_Log, $eeSFL_BASE, $eeSFL_BASE_Env;
+	global $eeSFL_BASE;
 	
 	// Check if FileListDir has a trailing slash...
 	$eeLastChar = substr($eeFileListDir, -1);
@@ -152,52 +152,52 @@ function eeSFL_BASE_FileListDirCheck($eeFileListDir) {
 	
 	// Set some standards
 	if(strpos($eeFileListDir, '.') === 0 OR strpos($eeFileListDir, 'p-admin') OR strpos($eeFileListDir, 'p-includes') ) {
-		$eeSFL_BASE_Log['errors'][] = 'This File List Location is Not Allowed: ' . $eeFileListDir;
+		$eeSFL_BASE->eeLog['errors'][] = 'This File List Location is Not Allowed: ' . $eeFileListDir;
 		return FALSE;
 	}
 	
 	// Check Transient First
 	if( !is_dir(ABSPATH . $eeFileListDir) ) { // Directory Changed or New Install
 	
-		$eeSFL_BASE_Log['RunTime'][] = 'New Install or Directory Change...';
+		$eeSFL_BASE->eeLog['notice'][] = 'New Install or Directory Change...';
 		
 		if( !is_writable( ABSPATH . $eeFileListDir ) ) {
 			
-			$eeSFL_BASE_Log['RunTime'][] = 'No Directory Found';
-			$eeSFL_BASE_Log['RunTime'][] = 'Creating new file list directory ...';
+			$eeSFL_BASE->eeLog['notice'][] = 'No Directory Found';
+			$eeSFL_BASE->eeLog['notice'][] = 'Creating new file list directory ...';
 			
-			if ($eeSFL_BASE_Env['eeOS'] == 'WINDOWS') {
+			if ($eeSFL_BASE->eeEnvironment['eeOS'] == 'WINDOWS') {
 			    
 			    if( !mkdir(ABSPATH . $eeFileListDir) ) { // Linux - Need to set permissions
 				    
-				    $eeSFL_BASE_Log['errors'][] = 'Cannot Create Windows Directory: ' . $eeFileListDir;
+				    $eeSFL_BASE->eeLog['errors'][] = 'Cannot Create Windows Directory: ' . $eeFileListDir;
 				}
 			
-			} elseif($eeSFL_BASE_Env['eeOS'] == 'LINUX') {
+			} elseif($eeSFL_BASE->eeEnvironment['eeOS'] == 'LINUX') {
 			    
 			    if( !mkdir(ABSPATH . $eeFileListDir , 0755) ) { // Linux - Need to set permissions
 				    
-				    $eeSFL_BASE_Log['errors'][] = 'Cannot Create Linux Directory: ' . $eeFileListDir;
+				    $eeSFL_BASE->eeLog['errors'][] = 'Cannot Create Linux Directory: ' . $eeFileListDir;
 				}
 			} else {
-				$eeSFL_BASE_Log['errors'][] = 'ERROR: Could not detect operating system';
+				$eeSFL_BASE->eeLog['errors'][] = 'ERROR: Could not detect operating system';
 				return FALSE;
 			}
 			
 			if(!is_writable( ABSPATH . $eeFileListDir )) {
-				$eeSFL_BASE_Log['errors'][] = 'Cannot create the upload directory: ' . $eeFileListDir;
-				$eeSFL_BASE_Log['errors'][] = 'Please check directory permissions';
+				$eeSFL_BASE->eeLog['errors'][] = 'Cannot create the upload directory: ' . $eeFileListDir;
+				$eeSFL_BASE->eeLog['errors'][] = 'Please check directory permissions';
 				
 				return FALSE;
 			
 			} else {
 				
-				$eeSFL_BASE_Log['RunTime'][] = '"FileListDir" Has Been Created!';
-				$eeSFL_BASE_Log['RunTime'][] = $eeFileListDir;
+				$eeSFL_BASE->eeLog['notice'][] = '"FileListDir" Has Been Created!';
+				$eeSFL_BASE->eeLog['notice'][] = $eeFileListDir;
 			}
 		
 		} else {
-			$eeSFL_BASE_Log['RunTime'][] = 'FileListDir Looks Good';
+			$eeSFL_BASE->eeLog['notice'][] = 'FileListDir Looks Good';
 		}
 		
 		// Check index.html, create if needed.	
@@ -211,7 +211,7 @@ function eeSFL_BASE_FileListDirCheck($eeFileListDir) {
 					
 					if(!@is_readable($eeFile)) {
 					    
-						$eeSFL_BASE_Log['errors'][] = 'ERROR: Could not write index.html';
+						$eeSFL_BASE->eeLog['errors'][] = 'ERROR: Could not write index.html';
 						
 						return FALSE;
 						
@@ -240,9 +240,9 @@ function eeSFL_BASE_FileListDirCheck($eeFileListDir) {
 // Post-process an upload job
 function eeSFL_BASE_ProcessUpload() {
 	
-	global $eeSFL_BASE, $eeSFL_Settings, $eeSFL_BASE_Env, $eeSFL_BASE_Log;
+	global $eeSFL_BASE;
 	
-	$eeSFL_BASE_Log['RunTime'][] = 'Function Called: eeSFL_ProcessUpload()';
+	$eeSFL_BASE->eeLog['notice'][] = 'Function Called: eeSFL_ProcessUpload()';
 	
 	if(strpos($_POST['eeSFL_FileList'], ']')) {
 		
@@ -270,7 +270,7 @@ function eeSFL_BASE_ProcessUpload() {
 	
 	if($eeFileCount) {
 	
-		$eeSFL_BASE_Log['RunTime'][] = $eeFileCount . ' Files Uploaded';
+		$eeSFL_BASE->eeLog['notice'][] = $eeFileCount . ' Files Uploaded';
 		
 		// Check for Nonce
 		if(check_admin_referer( 'ee-simple-file-list-upload', 'ee-simple-file-list-upload-nonce')) {
@@ -289,7 +289,7 @@ function eeSFL_BASE_ProcessUpload() {
 				}
 			}
 			
-			$eeSFL_BASE_Env['UploadedFiles'] = $eeFileListArray; // Used for the Results Page
+			$eeSFL_BASE->eeEnvironment['UploadedFiles'] = $eeFileListArray; // Used for the Results Page
 			
 			
 			// echo '<p>Old Name: ' . $eeFileName . '<br />';
@@ -321,9 +321,9 @@ function eeSFL_BASE_ProcessUpload() {
 							
 					$eeFound = FALSE;
 					
-					if( is_file(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeFile) ) { // Check to be sure the file is there
+					if( is_file(ABSPATH . $eeSFL_BASE->eeListSettings['FileListDir'] . $eeFile) ) { // Check to be sure the file is there
 						
-						if($eeSFL_Settings['AllowOverwrite'] == 'YES') { // Look for existing file array
+						if($eeSFL_BASE->eeListSettings['AllowOverwrite'] == 'YES') { // Look for existing file array
 							
 							foreach( $eeFileArrayWorking as $eeThisKey => $eeThisFileArray ) {
 								$eeFound = FALSE;
@@ -380,8 +380,8 @@ function eeSFL_BASE_ProcessUpload() {
 							}
 						}
 						
-						$eeSFL_BASE_Log['RunTime'][] = '——> Done';
-						$eeSFL_BASE_Log['RunTime'][] = $eeNewFileArray;
+						$eeSFL_BASE->eeLog['notice'][] = '——> Done';
+						$eeSFL_BASE->eeLog['notice'][] = $eeNewFileArray;
 						
 						// To add or modify
 						if($eeFound) { 
@@ -391,13 +391,13 @@ function eeSFL_BASE_ProcessUpload() {
 						}
 						
 						// Create thumbnail if needed
-						if($eeSFL_Settings['UploadConfirm'] == 'YES') {
-							$eeSFL_BASE->eeSFL_CheckThumbnail($eeNewFileArray['FilePath'], $eeSFL_Settings);
+						if($eeSFL_BASE->eeListSettings['UploadConfirm'] == 'YES') {
+							$eeSFL_BASE->eeSFL_CheckThumbnail($eeNewFileArray['FilePath'], $eeSFL_BASE->eeListSettings);
 						}
 						
 						// Notification Info
 						$eeUploadJob .=  $eeFile . PHP_EOL . 
-							$eeSFL_Settings['FileListURL'] . $eeFile . PHP_EOL . 
+							$eeSFL_BASE->eeListSettings['FileListURL'] . $eeFile . PHP_EOL . 
 								"(" . eeSFL_BASE_FormatFileSize($eeNewFileArray['FileSize']) . ")" . PHP_EOL . PHP_EOL;
 					}
 				}
@@ -407,7 +407,7 @@ function eeSFL_BASE_ProcessUpload() {
 				
 				// delete_transient('eeSFL_FileList_1'); // Force a re-scan
 					
-				$eeSFL_BASE_Log['messages'][] = __('File Upload Complete', 'ee-simple-file-list');
+				$eeSFL_BASE->eeLog['messages'][] = __('File Upload Complete', 'ee-simple-file-list');
 				
 				if( is_admin() ) {
 					
@@ -416,7 +416,7 @@ function eeSFL_BASE_ProcessUpload() {
 				} else  {
 					
 					// Send Email Notice
-					if($eeSFL_Settings['Notify'] == 'YES') {
+					if($eeSFL_BASE->eeListSettings['Notify'] == 'YES') {
 						
 						// Send the Email Notification
 						$eeSFL_BASE->eeSFL_NotificationEmail($eeUploadJob);
@@ -433,7 +433,7 @@ function eeSFL_BASE_ProcessUpload() {
 		}
 	
 	} else {
-		$eeSFL_BASE_Log['errors'][] = 'ERROR 96';
+		$eeSFL_BASE->eeLog['errors'][] = 'ERROR 96';
 		return FALSE;
 	}
 }
@@ -534,11 +534,11 @@ function eeSFL_BASE_ProcessTextInput($eeTerm, $eeType = 'text') {
 // Check if a file already exists, then number it so file will not be over-written.
 function eeSFL_BASE_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Path from WP home
 	
-	global $eeSFL_BASE, $eeSFL_BASE_Log;
+	global $eeSFL_BASE;
 	
-	$eeSFL_Settings = $eeSFL_BASE->eeSFL_GetSettings();
+	$eeSFL_BASE->eeListSettings = $eeSFL_BASE->eeSFL_GetSettings();
 	
-	if($eeSFL_Settings['AllowOverwrite'] == 'YES') { // Overwriting files allowed
+	if($eeSFL_BASE->eeListSettings['AllowOverwrite'] == 'YES') { // Overwriting files allowed
 		return $eeSFL_FilePathAdded;
 	}
 	
@@ -557,13 +557,13 @@ function eeSFL_BASE_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Path from W
 			// Check if duplicate
 			if( $eeSFL_FilePathAdded == $eeArray['FilePath'] ) { // Duplicate found
 			
-				if( is_file(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeSFL_FilePathAdded) ) { // Confirm the file is really there
+				if( is_file(ABSPATH . $eeSFL_BASE->eeListSettings['FileListDir'] . $eeSFL_FilePathAdded) ) { // Confirm the file is really there
 					
 					for ($i = 1; $i <= $eeCopyLimit; $i++) { // Look for existing copies
 						
 						$eeSFL_FilePathAdded = $eeNameOnly . '_' . $i . '.' . $eeExtension; // Indicate the copy number
 						
-						if(!is_file(ABSPATH . $eeSFL_Settings['FileListDir'] . $eeSFL_FilePathAdded)) { break; } // If no copy is there, we're done.
+						if(!is_file(ABSPATH . $eeSFL_BASE->eeListSettings['FileListDir'] . $eeSFL_FilePathAdded)) { break; } // If no copy is there, we're done.
 					}							
 				}
 			}

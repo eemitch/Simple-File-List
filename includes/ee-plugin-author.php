@@ -3,7 +3,7 @@
 defined( 'ABSPATH' ) or die( 'No direct access is allowed' );
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_BASE_Log['RunTime'][] = 'Loaded: ee-plugin-author';
+$eeSFL_BASE->eeLog['notice'][] = 'Loaded: ee-plugin-author';
 	
 // Plugin Contributors Array - Format: Name|URL|DESCRIPTION Example: Thnaks to <a href="URL">NAME</a> DESCRIPTION
 // Values here are inserted below
@@ -17,7 +17,7 @@ $eeOutput .= '
 	
 	<h1>' . __('Thank You', 'ee-simple-file-list') . '</h1>
 
-	<img class="eeFloatRight" src="' . $eeSFL_BASE_Env['pluginURL'] . 'images/Mitchell-Bennis-Head-Shot.jpg" alt="Mitchell Bennis" />
+	<img class="eeFloatRight" src="' . $eeSFL_BASE->eeEnvironment['pluginURL'] . 'images/Mitchell-Bennis-Head-Shot.jpg" alt="Mitchell Bennis" />
 
 	<p>' . __('Thank you for using my plugin. I am proud of this work and am committed to supporting it.', 'ee-simple-file-list') . ' ' . __('The goal is to keep it simple, yet make it do what you need it to do.', 'ee-simple-file-list') . ' ' . __('Tell me about the features that you want.', 'ee-simple-file-list') . ' </p>
 

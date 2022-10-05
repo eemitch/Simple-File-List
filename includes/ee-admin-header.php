@@ -36,7 +36,7 @@ $eeOutput = '
 		<div>
 		
 			<a href="https://get.simplefilelist.com/index.php" target="_blank" />
-			<img src="' . $eeSFL_BASE_Env['pluginURL'] . '/images/icon-128x128.png" alt="Simple File List ' . __('Logo', 'ee-simple-file-list') . '" title="Simple File List" /></a>
+			<img src="' . $eeSFL_BASE->eeEnvironment['pluginURL'] . '/images/icon-128x128.png" alt="Simple File List ' . __('Logo', 'ee-simple-file-list') . '" title="Simple File List" /></a>
 			
 		</div>
 		
