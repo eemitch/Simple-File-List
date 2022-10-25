@@ -7,10 +7,6 @@ var eeSFL_FileCount = 0; // How many to upload
 var eeSFL_Uploaded = 0; // How many have uploaded
 var eeSFL_Error = false; // Bad things have happened
 
-if(eeSFL_FileFormats.length > 1) {
-	var eeSFL_FormatsArray = eeSFL_FileFormats.split(","); // An array of the things.
-}
-
 
 // Receive files from input[type=file]
 function eeSFL_BASE_FileInputHandler(eeEvent) {
@@ -40,7 +36,7 @@ function eeSFL_BASE_DragOverHandler(eeEvent) {
 }
 
 
-function eeSFL_QueueRemove(eeID) {
+function eeSFL_BASE_QueueRemove(eeID) {
 	
 	eeSFL_FileObjects.splice(eeID, 1); // Remove from the object
 	
@@ -94,7 +90,11 @@ function eeSFL_BASE_AddFilesToQueue(eeSFL_Files) { // The files object
 	        }
 	        
 	        // Type
-	        var eeSFL_Extension = eeSFL_File.name.split(".").pop();
+	        if(eeSFL_FileFormats.length > 1) {
+				var eeSFL_FormatsArray = eeSFL_FileFormats.split(","); // An array of the things.
+			}
+			
+			var eeSFL_Extension = eeSFL_File.name.split(".").pop();
 	        eeSFL_Extension = eeSFL_Extension.toLowerCase();
 	        
 	        if(eeSFL_FormatsArray.indexOf(eeSFL_Extension) == -1) {

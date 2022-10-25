@@ -83,7 +83,10 @@ function eeSFL_BASE_BackEnd() {
 		require_once($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-upload-check.php');
 	
 		// Get the File Array
-		$eeSFL_BASE->eeAllFiles = $eeSFL_BASE->eeSFL_UpdateFileListArray();
+		$eeSFL_BASE->eeSFL_UpdateFileListArray();
+		
+		// echo '<pre>'; print_r($eeSFL_BASE->eeAllFiles); echo '</pre>';
+		// echo '<pre>'; print_r($eeSFL_BASE->eeLog); echo '</pre>'; exit;
 		
 		$eeOutput .= '
 		

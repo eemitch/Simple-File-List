@@ -12,12 +12,15 @@ $eeContributors = array('dmhendricks|https://github.com/dmhendricks/file-icon-ve
 // $eePageSlug = $_GET['page'];
 	
 // The Content
-$eeOutput .= '
+$eeOutput .= '<section class="eeSFL_Settings">
+
+<div class="eeSettingsTile">
+
 <article>
-	
-	<h1>' . __('Thank You', 'ee-simple-file-list') . '</h1>
 
 	<img class="eeFloatRight" src="' . $eeSFL_BASE->eeEnvironment['pluginURL'] . 'images/Mitchell-Bennis-Head-Shot.jpg" alt="Mitchell Bennis" />
+	
+	<h1>' . __('Thank You', 'ee-simple-file-list') . '</h1>
 
 	<p>' . __('Thank you for using my plugin. I am proud of this work and am committed to supporting it.', 'ee-simple-file-list') . ' ' . __('The goal is to keep it simple, yet make it do what you need it to do.', 'ee-simple-file-list') . ' ' . __('Tell me about the features that you want.', 'ee-simple-file-list') . ' </p>
 
@@ -45,6 +48,10 @@ $eeOutput .= '
 		$eeOutput .= '</p>';
 	}
 		
-	$eeOutput .= '</article>';
+	$eeOutput .= '</article>
+	
+	</div>
+	
+	</section>';
 
 ?>

@@ -1,3 +1,10 @@
+/*
+// Simple File List Pro - Copyright 2022
+// Author: Mitchell Bennis | support@simplefilelist.com | https://simplefilelist.com
+// License: EULA | https://simplefilelist.com/end-user-license-agreement/
+// All changes to, modifications to, or re-uses of this script are prohibited without prior consent.
+*/
+
 .eeSFL,
 #eeSFL_UploadForm {
 	
@@ -40,6 +47,7 @@
 	
 	
 	/* TILES */
+	--ee-color-tile-filename-text: #DDD;
 	--ee-color-tile-border: #333;
 	--ee-color-tile-header-background: #67676c;
 	--ee-color-tile-background: rgba(33, 33, 33, 0.1);

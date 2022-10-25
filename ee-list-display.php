@@ -14,10 +14,9 @@ $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loaded: ee-list-display';
 
 // echo '<pre>'; print_r($eeSFL_BASE->eeAllFiles); echo '</pre>'; exit;
 
-if( !isset($eeSFL_BASE->eeAllFiles) ) { // Might be Set in Admin
-	$eeSFL_BASE->eeAllFiles = $eeSFL_BASE->eeSFL_UpdateFileListArray();
+if( empty($eeSFL_BASE->eeAllFiles) ) { // Might be Set in Admin
+	$eeSFL_BASE->eeSFL_UpdateFileListArray();
 }
-if( !is_array($eeSFL_BASE->eeAllFiles) ) { $eeSFL_BASE->eeAllFiles = array('' => ''); }
 
 // Save for later
 $eeSFL_FileTotalCount = 0;
@@ -55,6 +54,7 @@ if( isset($_POST['eeSFL_Upload']) ) {
 }
 
 // User Messaging
+/*
 if(isset($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'])) {	
 	if($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'] AND $eeSFL_BASE->eeListRun == 1) { 
 		$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'], 'notice-success');
@@ -67,17 +67,21 @@ if(isset($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'])) {
 		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'] = array(); // Clear
 	}
 }
+*/
 
 
 // DISPLAY ===================================================
 
 $eeOutput .= '
 
-<!-- File List -->
+<span id="eeSFL_FileListTop"><!-- Simple File List - File List Top --></span>
 
-<div class="eeSFL" id="eeSFL">
+<div class="eeSFL" id="eeSFL">';
 
-<span class="eeHide" id="eeSFL_ActionNonce">' . $eeSFL_ActionNonce . '</span>
+// User Messaging
+$eeOutput .= eeSFL_BASE_UserMessaging();
+
+$eeOutput .= '<span class="eeHide" id="eeSFL_ActionNonce">' . $eeSFL_ActionNonce . '</span>
 
 <script>
 	var eeSFL_PluginURL = "' . $eeSFL_BASE->eeEnvironment['pluginURL'] . '";
@@ -164,13 +168,15 @@ if($eeAdmin OR $eeSFL_BASE->eeListSettings['AllowFrontManage'] == 'YES') {
 		
 		<label for="eeSFL_FileNameNew">' . __('File Name', 'ee-simple-file-list') . '</label>
 		<input type="text" id="eeSFL_FileNameNew" name="eeSFL_FileNameNew" value="??" size="64" />
-		<small class="eeSFL_ModalNote">' . __('Change the name.', 'ee-simple-file-list') . ' ' . __('Some characters are not allowed. These will be automatically replaced.', 'ee-simple-file-list') . '</small>
+		<small class="eeSFL_ModalNote">' . __('Change the name.', 'ee-simple-file-list') . ' ' . __('Some characters are not allowed. These will be automatically replaced.', 'ee-simple-file-list') . '</small>';
 		
-		<label for="eeSFL_FileNiceNameNew">' . __('File Nice Name', 'ee-simple-file-list') . '</label>
+		if($eeSFL_BASE->eeListSettings['PreserveName'] == 'YES') {
+			
+		$eeOutput .= '<label for="eeSFL_FileNiceNameNew">' . __('File Nice Name', 'ee-simple-file-list') . '</label>
 		<input type="text" id="eeSFL_FileNiceNameNew" name="eeSFL_FileNiceNameNew" value="" size="64" />
-		<small class="eeSFL_ModalNote">' . __('Enter a name that will be shown in place of the real file name.', 'ee-simple-file-list') . ' ' . __('You may use special characters not allowed in the file name.', 'ee-simple-file-list') . '</small>
+		<small class="eeSFL_ModalNote">' . __('Enter a name that will be shown in place of the real file name.', 'ee-simple-file-list') . ' ' . __('You may use special characters not allowed in the file name.', 'ee-simple-file-list') . '</small>'; }
 		
-		<label for="eeSFL_FileDescriptionNew">' . __('File Description', 'ee-simple-file-list') . '</label>
+		$eeOutput .= '<label for="eeSFL_FileDescriptionNew">' . __('File Description', 'ee-simple-file-list') . '</label>
 		<textarea cols="64" rows="3" id="eeSFL_FileDescriptionNew" name="eeSFL_FileDescriptionNew"></textarea>
 		<small class="eeSFL_ModalNote">' . __('Add a description.', 'ee-simple-file-list') . ' ' . __('Use this field to describe this file and apply keywords for searching.', 'ee-simple-file-list') . '</small>
 		

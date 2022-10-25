@@ -1,3 +1,10 @@
+/*
+// Simple File List Pro - Copyright 2022
+// Author: Mitchell Bennis | support@simplefilelist.com | https://simplefilelist.com
+// License: EULA | https://simplefilelist.com/end-user-license-agreement/
+// All changes to, modifications to, or re-uses of this script are prohibited without prior consent.
+*/
+
 
 /* Tiles Container */
 .eeSFL section.eeFiles {
@@ -29,6 +36,7 @@
 }
 .eeSFL article.eeSFL_Tile h4 a {
 	text-decoration: none;
+	color: var(--ee-color-tile-filename-text);
 }
 .eeSFL article.eeSFL_Tile p {
 	margin: .25em 0;
@@ -71,8 +79,8 @@
 	border-top: 1px solid var(--ee-color-tile-border);
 }
 
-.eeSFL article.eeSFL_Tile .eeSFL_FileSize,
-.eeSFL article.eeSFL_Tile .eeSFL_FileDate {
+.eeSFL article.eeSFL_Tile .eeSFL_FileDetails .eeSFL_FileSize,
+.eeSFL article.eeSFL_Tile .eeSFL_FileDetails .eeSFL_FileDate {
 	display: inline-block;
 	margin: 0 .5em;
 }

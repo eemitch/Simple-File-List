@@ -1,10 +1,15 @@
-/* Simple File List | Author: Mitchell Bennis | support@simplefilelist.com */
+/*
+// Simple File List Pro - Copyright 2022
+// Author: Mitchell Bennis | support@simplefilelist.com | https://simplefilelist.com
+// License: EULA | https://simplefilelist.com/end-user-license-agreement/
+// All changes to, modifications to, or re-uses of this script are prohibited without prior consent.
+*/
 
 /* DEFAULT TABLE STYLES */
 
 .eeSFL table.eeFiles {
 	width: 100%;
-	margin: 1em auto;
+	margin: 0 auto 1em;
 	border-collapse: collapse;
 	background-color: var(--ee-color-table-background);
 	border: 1px solid var(--ee-color-table-border);
@@ -36,11 +41,16 @@
 	width: auto;
 }
 .eeSFL table.eeFiles td.eeSFL_Thumbnail {
-	width: 64px;
+	width: 80px;
+}
+.eeSFL table.eeFiles td.eeSFL_Thumbnail a {
+	display: inline-block;
+	width: 100%;
 }
 .eeSFL table.eeFiles td.eeSFL_Thumbnail img {
 	display: block;
-	margin-left: .33em;
+	margin-left: auto;
+	margin-right: auto;
 }
 .eeSFL table.eeFiles td.eeSFL_FileName {
 	text-align: left;
@@ -64,8 +74,8 @@
 .eeSFL table.eeFiles td a {
 	text-decoration: none;
 }
-.eeSFL table.eeFiles .eeSFL_FileSize,
-.eeSFL table.eeFiles .eeSFL_FileDate {
+.eeSFL table.eeFiles td.eeSFL_FileSize,
+.eeSFL table.eeFiles td.eeSFL_FileDate {
 	font-size: 80%;
 	padding-left: 1em;
 	padding-right: 1em;

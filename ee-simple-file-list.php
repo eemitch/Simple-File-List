@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 5.0.4
+Version: 6.0.1
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // CONSTANTS
 define('eeSFL_BASE_DevMode', TRUE);
-define('eeSFL_BASE_Version', '5.0.4'); // Plugin version
+define('eeSFL_BASE_Version', '6.0.1'); // Plugin version
 define('eeSFL_BASE_PluginName', 'Simple File List');
 define('eeSFL_BASE_PluginSlug', 'ee-simple-file-list');
 define('eeSFL_BASE_PluginDir', 'simple-file-list');
@@ -169,9 +169,7 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 			'hidename' => '', // Hide the name matches
 			'getinfo' => '', // YES or NO to show the upload info form
 			'frontmanage' => '' // Allow Front Manage or Not
-		), $atts );
-		
-		
+		), $atts );		
 		
 		// Show the Shortcode in the Log
 		$eeShortcode = '[eeSFL';
@@ -209,7 +207,7 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 		if($hidename) { $eeSFL_HideName = strtolower($hidename); } else { $eeSFL_HideName = FALSE; }
 		
 	} else {
-		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'] = 'No Shortcode Attributes';
+		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'No Shortcode Attributes';
 	}
 	
 	// Javascript
@@ -262,18 +260,22 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 			$eeSFL_BASE->eeListSettings['AllowUploads'] = 'NO'; // Show Nothing
 	}
 	
+	$eeShowUploadForm = FALSE;
 	
 	if($eeSFL_BASE->eeListSettings['AllowUploads'] != 'NO' AND !$eeSFL_BASE->eeUploadFormRun) {
 		
 		wp_enqueue_style('ee-simple-file-list-css-upload');
 		wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js', $eeDependents , eeSFL_BASE_Version, TRUE);
-		
-		if(!$eeSFL_Uploaded) {
-			$eeSFL_Nonce = wp_create_nonce('eeInclude');
-			include($eeSFL_BASE->eeEnvironment['pluginDir'] . '/includes/ee-upload-form.php');
-		}
+		$eeSFL_Nonce = wp_create_nonce('eeInclude');
+		$eeSFL_UploadFormRun = TRUE;
+		$eeShowUploadForm = TRUE;
 	}
 	
+	if(!$eeSFL_Uploaded AND $eeSFL->eeListSettings['UploadPosition'] == 'Above') {
+		$eeSFL_Nonce = wp_create_nonce('eeInclude');
+		include($eeSFL_BASE->eeEnvironment['pluginDir'] . '/includes/ee-upload-form.php');
+	}	
+		
 	// Who Can View the List?
 	switch ($eeSFL_BASE->eeListSettings['ShowList']) {
 	    case 'YES':
@@ -295,6 +297,11 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 		
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
 		include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'ee-list-display.php');
+	}
+	
+	if(!$eeSFL_Uploaded AND $eeSFL->eeListSettings['UploadPosition'] == 'Below') {
+		$eeSFL_Nonce = wp_create_nonce('eeInclude');
+		include($eeSFL_BASE->eeEnvironment['pluginDir'] . '/includes/ee-upload-form.php');
 	}
 	
 	// Smooth Scrolling is AWESOME!
@@ -417,12 +424,12 @@ add_action( 'wp_ajax_simplefilelist_edit_job', 'simplefilelist_edit_job' );
 // File Upload Engine
 function eeSFL_BASE_FileUploader() {
 	
-	// return 'TEST';
-	
 	global $eeSFL_BASE;
 	
 	// The FILE object
-	if(empty($_FILES)) { return 'Missing File Input'; }
+	if(empty($_FILES)) { 
+		return 'Missing File Input';
+	}
 	
 	if( !is_admin() ) { // Front-side protections
 	
@@ -440,19 +447,12 @@ function eeSFL_BASE_FileUploader() {
 			default: // Don't allow at all
 				return 'ERROR 97';
 		}
-	}
+	} 
 	
-	// The Upload Destination - Relative to WP home dir
-	if(@$_POST['eeSFL_FileUploadDir']) {
-		
-		$eeSFL_FileUploadDir = sanitize_text_field( urldecode($_POST['eeSFL_FileUploadDir']) );
-		
-		if(!$eeSFL_FileUploadDir) { return('Bad Upload Folder'); }
-			
-	} else { 
-		return 'No Upload Folder Given';
-	}
-	
+	// Get this List's Settings
+	$eeSFL_BASE->eeSFL_GetSettings(1);	
+	$eeSFL_FileUploadDir = $eeSFL_BASE->eeListSettings['FileListDir'];
+
 	// Check size
 	$eeSFL_FileSize = filter_var($_FILES['file']['size'], FILTER_VALIDATE_INT);
 	$eeSFL_UploadMaxFileSize = $eeSFL_BASE->eeListSettings['UploadMaxFileSize']*1024*1024; // Convert MB to B
@@ -462,7 +462,7 @@ function eeSFL_BASE_FileUploader() {
 	}
 	
 	// Go...
-	if($eeSFL_FileUploadDir AND is_dir(ABSPATH . $eeSFL_FileUploadDir)) {
+	if(is_dir(ABSPATH . $eeSFL_FileUploadDir)) {
 			
 		if(wp_verify_nonce(@$_POST['ee-simple-file-list-upload'], 'ee-simple-file-list-upload')) {
 			
@@ -471,6 +471,11 @@ function eeSFL_BASE_FileUploader() {
 			
 			// Clean up messy names
 			$eeSFL_FileName = eeSFL_BASE_SanitizeFileName($_FILES['file']['name']);
+			
+			// Check if it already exists
+			if($eeSFL_BASE->eeListSettings['AllowOverwrite'] == 'NO') { 
+				$eeSFL_FileName = eeSFL_BASE_CheckForDuplicateFile($eeSFL_FileUploadDir . $eeSFL_FileName);
+			}
 			
 			eeSFL_BASE_DetectUpwardTraversal($eeSFL_FileUploadDir . $eeSFL_FileName); // Die if foolishness
 			
@@ -485,10 +490,9 @@ function eeSFL_BASE_FileUploader() {
 				return 'File type not allowed: (' . $eeSFL_Extension . ')';	
 			}
 			
-			// Assemble full path, checking if it already exists
-			$eeSFL_FileName = eeSFL_BASE_CheckForDuplicateFile($eeSFL_FileName);
-			$eeSFL_TargetFile = $eeSFL_FileUploadDir . $eeSFL_FileName;
-
+			// Assemble FilePath
+			$eeSFL_TargetFile = $eeSFL_FileUploadDir . $eeSFL_FileNameAlone . '.' . $eeSFL_Extension;
+			
 			// Check if the name has changed
 			if($_FILES['file']['name'] != $eeSFL_FileName) {
 				
@@ -501,15 +505,16 @@ function eeSFL_BASE_FileUploader() {
 			
 			$eeTarget = ABSPATH . $eeSFL_TargetFile;
 			
+			// return $eeTarget;
+			
 			// Save the file
 			if( move_uploaded_file($eeTempFile, $eeTarget) ) {
 				
 				if(!is_file($eeTarget)) {
 					return 'Error - File System Error.'; // No good.
-				
 				} else {
 					
-					// Check for currupt images
+					// Check for corrupt images
 					if( in_array($eeSFL_Extension, $eeSFL_BASE->eeDynamicImageThumbFormats) ) {
 						
 						$eeString = implode('...', getimagesize($eeTarget) );
@@ -529,6 +534,15 @@ function eeSFL_BASE_FileUploader() {
 						touch($eeTarget, $eeDate);  // Do nothing if bad date
 					}
 					
+					// Build Image thumbs right away right away. We'll set other types to use the background job within eeSFL_ProcessUpload()
+					if($eeSFL_BASE->eeListSettings['ShowFileThumb'] == 'YES') {
+						if( in_array($eeSFL_Extension, $eeSFL_BASE->eeDynamicImageThumbFormats) ) {
+				
+							$eeSFL_TargetFile = str_replace($eeSFL_BASE->eeListSettings['FileListDir'], '', $eeSFL_TargetFile); // Strip the FileListDir
+							$eeSFL_BASE->eeSFL_CheckThumbnail($eeSFL_TargetFile, $eeSFL_BASE->eeListSettings);
+						}
+					}
+					
 					return 'SUCCESS';
 				}
 				 
@@ -538,7 +552,7 @@ function eeSFL_BASE_FileUploader() {
 		
 		} else {
 			
-			return 'ERROR 98';
+			return 'ERROR 98 - FileUploader';
 		}
 		
 	} else {
@@ -658,7 +672,7 @@ function eeSFL_BASE_FileEditor() {
 					eeSFL_BASE_DetectUpwardTraversal($eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileNameNew ); 
 					
 					// Check for Duplicate File
-					$eeFileNameNew  = eeSFL_BASE_CheckForDuplicateFile($eeFileNameNew );
+					$eeFileNameNew  = eeSFL_BASE_CheckForDuplicateFile( $eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileNameNew );
 					
 					// Rename File On Disk
 					$eeOldFilePath = ABSPATH . $eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileName;

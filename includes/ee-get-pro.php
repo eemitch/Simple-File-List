@@ -20,16 +20,17 @@ if(filter_var($eeSFL_ThisDomain, FILTER_VALIDATE_URL)) {
 $eeSFL_Button = '<a class="button eeGet" target="_blank" href="' . $eeOrderURL . '&eeExtension=ee-simple-file-list-pro">' . __('Upgrade to Pro Now', 'ee-simple-file-list') . '</a>';
 
 // The Content
-$eeOutput .= '
-<article>
-	
-	<h1>' . __('Upgrade to Simple File List Pro', 'ee-simple-file-list') . '</h1>
+$eeOutput .= '<section class="eeSFL_Settings">
 
-	<p class="eeFloatRight">' . $eeSFL_Button . '</p>
+<div class="eeSettingsTile">
+
+<article>
 	
 	<a href="' . $eeSFL_BASE->eeEnvironment['pluginURL'] . 'images/Folder-Demo.jpg" target="_blank">
 		<img src="' . $eeSFL_BASE->eeEnvironment['pluginURL'] . 'images/Folder-Demo.jpg" width="663" height="721" class="eeFloatRight" alt="Screenshot of front-end file list" />
 	</a>
+	
+	<h1>' . __('Upgrade to Simple File List Pro', 'ee-simple-file-list') . '</h1>
 	
 	<p>' . __('The Pro version adds features not available in the free version and is also extendable, allowing you to add more specific functionality as needed.', 'simple-file-list') . '</p>
 	
@@ -77,10 +78,14 @@ $eeOutput .= '
 		</li>
 	</ul>
 	
-	<p class="eeCentered">' . $eeSFL_Button . '</p>
-	
 	<br class="eeClear" />
 	
-</article>';	
+	<p>' . $eeSFL_Button . '</p>
+	
+</article>
+
+</div>
+
+</section>';	
 
 ?>

@@ -61,16 +61,6 @@ function eeSFL_BASE_ValidateEmail(eeSFL_CheckEmail) {
 }
 
 
-// Smooth Scroll
-function eeSFL_BASE_ScrollToIt() {
-	
-	jQuery('html, body').animate({ scrollTop: jQuery('.eeSFL').offset().top }, 1000);
-	
-	return false;
-	
-}
-
-
 // File Size Formatting
 function eeSFL_BASE_GetFileSize(bytes) {
     

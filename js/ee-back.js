@@ -68,10 +68,7 @@ jQuery(document).ready(function() {
 	
 	// Admin side uploader view control
 	jQuery('#uploadFilesDiv').hide();
-	
-	if(eeSFL_ID > 1) {
-		eeBaseShortcode = eeBaseShortcode + ' list="' + eeSFL_ID + '"';
-	}
+	jQuery('#eeSFL_UploadFilesButtonSwap').hide();
 	
 	jQuery('#eeSFL_ShortCode').val('[' + eeBaseShortcode + ']');
 	jQuery('input[name="eeShortcode"]').val('[' + eeBaseShortcode + ']');

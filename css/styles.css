@@ -1,10 +1,113 @@
-/* Simple File List Script: eeStyle.css | Author: Mitchell Bennis | support@simplefilelist.com */
+/*
+// Simple File List Pro - Copyright 2022
+// Author: Mitchell Bennis | support@simplefilelist.com | https://simplefilelist.com
+// License: EULA | https://simplefilelist.com/end-user-license-agreement/
+// All changes to, modifications to, or re-uses of this script are prohibited without prior consent.
+*/
 
 
-/* File List Container */
+/* FILE LIST CONTAINER */
 .eeSFL {
 	box-sizing: border-box;
 }
+
+
+/* BREADCRUMB TRAIL */
+.eeSFL_BreadCrumb {
+	width: 100%;
+	padding: .25em;
+	margin-bottom: .5em;
+}
+.eeSFL_BreadCrumb span.eeSFL_Crumb {
+	display: block;
+	float: left;
+	margin-right: .5em;
+	margin-bottom: .5em;
+}
+
+.eeSFL_BreadCrumb .eeSFL_Crumb a {
+	display: block;
+	padding: .5em .75em;
+	background-color: var(--ee-color-action-link-background);
+	border: 1px solid var(--ee-color-table-border);
+	border-radius: 3px;
+	text-decoration: none;
+	color: var(--ee-color-action-link-text);
+}
+.eeSFL_BreadCrumb .eeSFL_Crumb a:hover {
+	text-decoration: none;
+	background-color: var(--ee-color-action-link-background-hover);	
+	color: var(--ee-color-action-link-text-hover);
+}
+.eeSFL_BreadCrumb .eeSFL_Crumb:last-child {
+	background-color: var(--ee-color-action-link-background);
+	border: 1px solid var(--ee-color-action-link-background);
+	padding: .5em .75em;
+}
+
+
+
+/* FILE OPS BAR  */
+.eeSFL_ListOpsBar,
+.eeSFL_BulkDownloadBar {
+	display: flex;
+	font-size: 16px;
+	line-height: 1;
+	margin: 1em 0;
+}
+
+
+.eeSFL .eeSFL_ListOpsBar form,
+.eeSFL .eeSFL_BulkDownloadBar form {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+}
+.eeSFL .eeSFL_ListOpsBar select,
+.eeSFL .eeSFL_ListOpsBar input[type=text],
+.eeSFL .eeSFL_BulkDownloadBar input[type=text],
+.eeSFL .eeSFL_ListOpsBar input[type="submit"],
+.eeSFL .eeSFL_BulkDownloadBar input[type="submit"] {
+	display: block;
+	font-family: sans-serif;
+}
+.eeSFL #eeSFL_FileOpsAction,
+.eeSFL .eeSFL_BulkDownloadBar label {
+	flex: 2;
+	margin-right: .5em;
+}
+.eeSFL .eeSFL_BulkDownloadBar label {
+	text-align: right;
+}
+
+.eeSFL .eeSFL_ListOpsBar input[type=text],
+.eeSFL .eeSFL_BulkDownloadBar input[type=text],
+.eeSFL #eeSFL_MoveToFolder {
+	flex: 5;
+	margin-right: .5em;
+	max-width: none;
+}
+.eeSFL .eeSFL_ListOpsBar input[type="submit"],
+.eeSFL .eeSFL_BulkDownloadBar input[type="submit"] {
+	flex: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .eeSFL_Modal {
 	display: none;
@@ -19,6 +122,7 @@
 }
 .eeSFL_Modal .eeSFL_ModalBody {
 	position: fixed;
+	z-index: 100;
 	top: 10em;
 	bottom: 10em;
 	right: 20%;
@@ -35,21 +139,63 @@
 }
 .eeSFL_Modal .eeSFL_ModalBody label,
 .eeSFL_Modal .eeSFL_ModalBody input[type=text],
+.eeSFL_Modal .eeSFL_ModalBody input[type=email],
+.eeSFL_Modal .eeSFL_ModalBody input[type=url],
 .eeSFL_Modal .eeSFL_ModalBody textarea,
+.eeSFL_Modal .eeSFL_ModalBody select,
 .eeSFL_Modal .eeSFL_ModalBody small {
 	display: block;
 	width: 100%;
+	max-width: none;
 	font-size: 120%;
 }
+
+
+.eeSFL_Modal .eeSFL_ModalBody label.eeCheckboxLabel  {
+	display: inline-block;
+	width: auto;
+}
+
+.eeSFL_Modal .eeSFL_ModalBody input[type=checkbox] {
+	display: inline-block;
+}
+
+
+
 .eeSFL_Modal .eeSFL_ModalBody input[type=text],
+.eeSFL_Modal .eeSFL_ModalBody input[type=email],
+.eeSFL_Modal .eeSFL_ModalBody input[type=url],
 .eeSFL_Modal .eeSFL_ModalBody textarea {
 	padding: .3em;
+}
+.eeSFL_Modal .eeSFL_ModalBody select {
+	margin: .5em 0;
+}
+.eeSFL_Modal .eeSFL_DateNew {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.eeSFL_Modal .eeSFL_DateNew label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 1 1 30%;
+	padding: 0;
+}
+.eeSFL_Modal .eeSFL_DateNew input[type=number] {
+	margin: 0 .5em;
+	width: 80%;
 }
 .eeSFL_Modal .eeSFL_ModalBody small {
 	margin: .5em 0 1.5em 0;
 	font-size: 80%;
 }
-.eeSFL_Modal .eeSFL_ModalBody button {
+.eeSFL_Modal .eeSFL_ModalBody h4 {
+	border-bottom: 1px solid #333;
+}
+.eeSFL_Modal .eeSFL_ModalBody button,
+.eeSFL_Modal .eeSFL_ModalBody input[type=submit] {
 	float: right;
 	clear: both;
 	font-size: 150%;
@@ -60,9 +206,6 @@
 	border-bottom: 2px solid #666;
 	margin-bottom: 2em;
 }
-
-
-
 .eeSFL_Modal .eeSFL_ModalClose {
 	position: absolute;
 	top: 1em;
@@ -76,6 +219,10 @@
 
 
 
+
+
+
+
 #eeMessageDisplay ul {
 	list-style: none;
 }
@@ -84,7 +231,9 @@
 }
 
 
+
 .eeFlex {
+	width: 100%;
 	display: flex;
 	align-content: center;
 	justify-content: center;
@@ -95,6 +244,9 @@
 }
 .eeFlex2 {
 	flex: 2;
+}
+.eeFlex3 {
+	flex: 3;
 }
 
 .eeFullWidth {
@@ -118,6 +270,14 @@
 	height: auto;
 }
 
+.eeFont100p {
+	font-size: 100% !important;
+}
+.eeInline {
+	display: inline-block !important;
+	float: none !important;
+}
+
 .eeClear {
 	clear: both;
 }
@@ -128,15 +288,14 @@
   clear: both;
 }
 
-.eeHide, 
+.eeHide { display: none; }
+ 
 .eeSFL_FileRenameEntry, 
 .eeOldFileName,
 .eeSFL_SavedDesc { display: none !important; }
 
 
-
 .wp-core-ui .button, .wp-core-ui .button-secondary {
 	vertical-align: middle;
 }
-
 

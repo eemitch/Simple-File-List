@@ -230,7 +230,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 5.0.3 - Major Update
+* 6.0.1 - Major Update
 
 
 == Screenshots ==
@@ -242,7 +242,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Changelog ==
 
-= 5.0.3 =
+= 6.0.1 =
 * Major UI and code base improvements.
 * NEW -> Added ability to give a file a "Nice Name". This displays in place of the real file and can contain characters that are not allowed in file names.
 * NEW -> Added option to choose from three responsive file list styles: Table, Tiles or Flex

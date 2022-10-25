@@ -90,7 +90,7 @@ class eeSFL_BASE_MainClass {
 		'GenerateImgThumbs' => 'YES', // Create thumbnail images for images if possible.
 		'GeneratePDFThumbs' => 'YES', // Create thumbnail images for PDFs if possible.
 		'GenerateVideoThumbs' => 'YES', // Create thumbnail images for videos if possible.
-		'PreserveSpaces' => 'NO', // Replace ugly hyphens with spaces
+		'PreserveName' => 'YES', // Show the original file name if it had to be sanitized.
 		'ShowFileDescription' => 'YES', // Display the File Description (YES or NO)
 		'ShowFileActions' => 'YES', // Display the File Action Links Section (below each file name) (YES or NO)
 		'ShowFileOpen' => 'YES', // Show this operation
@@ -414,10 +414,12 @@ class eeSFL_BASE_MainClass {
 				
 				
 				// File Nice Name
-				if( isset($eeFileArray['FileNiceName']) ) {
-					if( strlen($eeFileArray['FileNiceName']) >= 1 ) {
-						$this->eeFileNiceName = $eeFileArray['FileNiceName'];
-						$this->eeFileName = $eeFileArray['FileNiceName'];
+				if($this->eeListSettings['PreserveName'] == 'YES') {
+					if( isset($eeFileArray['FileNiceName']) ) {
+						if( strlen($eeFileArray['FileNiceName']) >= 1 ) {
+							$this->eeFileNiceName = $eeFileArray['FileNiceName'];
+							$this->eeFileName = $eeFileArray['FileNiceName'];
+						}
 					}
 				}
 				
@@ -429,7 +431,7 @@ class eeSFL_BASE_MainClass {
 						$this->eeFileName = $eePathParts['filename'];
 					}
 					
-					// Replace hyphens with spaces?
+					// LEGACY - Replace hyphens with spaces?
 					if(!$eeAdmin AND $this->eeListSettings['PreserveSpaces'] == 'YES') {
 						$this->eeFileName = eeSFL_BASE_PreserveSpaces($this->eeRealFileName); 
 					}
@@ -497,7 +499,7 @@ class eeSFL_BASE_MainClass {
 		
 		if( is_readable(ABSPATH . $this->eeListSettings['FileListDir'] . $eeFilePath) ) {
 		
-			$eeFileArray = $this->eeSFL_Files[0]; // Get the file array template
+			$eeFileArray = $this->eeFileTemplate[0]; // Get the file array template
 			$eeFileArray['FilePath'] = $eeFilePath; // Path to file, relative to the list root
 			
 			if(isset($eePathParts['extension'])) { $eeExt = strtolower($eePathParts['extension']); } else { $eeExt = 'folder'; }
@@ -551,7 +553,7 @@ class eeSFL_BASE_MainClass {
     
     
     // Scan the real files and create or update array as needed.
-    public function eeSFL_UpdateFileListArray() {
+    public function eeSFL_UpdateFileListArray_OLD() {
 	    
 	    $this->eeLog[eeSFL_BASE_Go]['notice'][] = 'Calling Method: eeSFL_UpdateFileListArray()';
 	    $this->eeLog[eeSFL_BASE_Go]['notice'][] = 'Scanning File List...';
@@ -563,13 +565,12 @@ class eeSFL_BASE_MainClass {
 	    // List the actual files on the disk
 	    $eeFilePathsArray = $this->eeSFL_IndexFileListDir($this->eeListSettings['FileListDir']);
 	    
+	    echo '<pre>'; print_r($eeFilePathsArray); echo '</pre>'; exit;
+	    
 	    if(!count($eeFilePathsArray)) {
 		    $this->eeLog[eeSFL_BASE_Go]['notice'][] = 'No Files Found';
 		    return FALSE; // Quit and leave DB alone
 	    }
-	    
-	    // Create an array we'll fill with files
-	    $eeFileArrayWorking = array();
 	    
 	    // No List in the DB, Creating New...
 	    if( !count($eeFilesDBArray) ) {
@@ -708,63 +709,301 @@ class eeSFL_BASE_MainClass {
 		    
 		return $eeFileArrayWorking; // Return empty or not
     }
+    
+    
+    
+    
+    
+    // Scan the real files and create or update array as needed.
+    public function eeSFL_UpdateFileListArray() {
+	    
+	    $this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Re-Indexing the File List ...';
+	    
+	    if(empty($this->eeListSettings)) {
+		    $this->eeListSettings = get_option('eeSFL_Settings_1');
+	    }
+	    
+	    // Double-check the Disk Directory
+	    if( !eeSFL_BASE_FileListDirCheck($this->eeListSettings['FileListDir']) ) { return FALSE; }
+	    
+	    // Get the File List Array
+	    $this->eeAllFiles = get_option('eeSFL_FileList_1');
+	    if(!is_array($this->eeAllFiles)) { $this->eeAllFiles = array(); }
+	    
+	    $this->eeSFL_IndexFileListDir();
+	    
+	    // echo '<pre>'; print_r($eeFilePathsArray); echo '</pre>';
+	    // echo '<pre>'; print_r($this->eeLog[eeSFL_BASE_Go]['notice']); echo '</pre>'; exit;
+	    
+		// echo '<pre>'; print_r($this->eeSFL_FileScanArray); echo '</pre>';
+		// echo '<pre>'; print_r($this->eeSanitizedFiles); echo '</pre>';
+		// echo '<pre>'; print_r($this->eeLog); echo '</pre>';
+		// exit;
+		
+		
+		if(empty($this->eeSFL_FileScanArray)) {
+		    $this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - No Files Found';
+		    update_option('eeSFL_FileList_1', array() ); // There are no files, so clear the file array
+		    return FALSE; // Quit and leave DB alone	    
+		}
+	    
+	    // No List in the DB, Creating New...
+	    if( empty($this->eeAllFiles) ) { 
+			
+			$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - No List Found! Creating from scratch...';
+			
+			foreach( $this->eeSFL_FileScanArray as $eeKey => $eeFilePath) {
+					
+				// Add the new item
+				$eeNewArray = $this->eeSFL_BuildFileArray($eeFilePath); // Path relative to FileListDir
+				
+				if( isset($eeNewArray['FilePath']) ) {
+					
+					if( isset($this->eeSanitizedFiles[$eeFilePath]) ) {
+						$eeNewArray['FileNiceName'] = basename($this->eeSanitizedFiles[$eeFilePath]);
+					}
+					
+					$this->eeAllFiles[] = $eeNewArray;
+				}
+			}
+			
+			
+			$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - ' .  count($this->eeSFL_FileScanArray) . ' Items Added';
+			
+			// echo '<pre>'; print_r($this->eeSFL_FileScanArray); echo '</pre>';
+			// echo '<pre>'; print_r($this->eeSanitizedFiles); echo '</pre>';
+			// echo '<pre>'; print_r($this->eeAllFiles); echo '</pre>';
+			// echo '<pre>'; print_r($this->eeLog); echo '</pre>'; exit;
+		
+		
+		} else { // Update file info
+			
+			// Check to be sure each file is there...
+			foreach( $this->eeAllFiles as $eeKey => $eeFileSet) {
+				
+				if( isset($eeFileSet['FilePath']) ) {
+				
+					// Build full path
+					$eeFile = ABSPATH . $this->eeListSettings['FileListDir'] . $eeFileSet['FilePath'];
+					
+					if( is_file($eeFile) ) { // Update file size
+						
+						// Update file size
+						$this->eeAllFiles[$eeKey]['FileSize'] = filesize($eeFile);
+						
+					} else { // Get rid of it
+						
+						$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Removing: ' . $eeFile;
+						
+						unset($this->eeAllFiles[$eeKey]);
+						continue;
+					}
+						
+					// Update modification date
+					$this->eeAllFiles[$eeKey]['FileDateChanged'] = date("Y-m-d H:i:s", @filemtime($eeFile));
+					
+					// Merge-in Default File Attributes
+					$this->eeAllFiles[$eeKey] = array_merge($this->eeFileTemplate[0], $this->eeAllFiles[$eeKey]);
+				
+				} else {
+					unset($this->eeAllFiles[$eeKey]); // If no FilePath, get rid of it.
+				}
+			}
+			
+			
+			if(count($this->eeSFL_FileScanArray)) {
+				
+				// Check if any new files have been added
+				foreach( $this->eeSFL_FileScanArray as $eeKey => $eeFile ) {
+					
+					$eeFound = FALSE;
+					
+					// Look for this file in our array
+					foreach( $this->eeAllFiles as $eeKey2 => $eeFileArray ) {
+						
+						if($eeFile == $eeFileArray['FilePath']) { $eeFound = TRUE; break; } // Found this file, on to the next.
+					}
+					
+					if($eeFound === FALSE) { // New Item Found
+						
+						$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - New Item Found: ' . $eeFile;
+						
+						// Build a new file array
+						$eeNewArray = $this->eeSFL_BuildFileArray($eeFile); // Path relative to FileListDir
+						
+						if( isset($eeNewArray['FilePath']) ) {
+							
+							if( isset($this->eeSanitizedFiles[$eeFile]) ) {
+								$eeNewArray['FileNiceName'] = basename($this->eeSanitizedFiles[$eeFile]);
+							}
+							
+							$this->eeAllFiles[] = $eeNewArray;
+						}
+						
+					}
+				}
+			}
+		}
+		
+		
+		// Finish Up
+		if(!empty($this->eeAllFiles)) {
+			
+			// echo '<pre>'; print_r($this->eeAllFiles); echo '</pre>'; exit;
+			
+			$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Finishing Up ...';
+			
+			// Sort - Passing a reference to the file array
+		    $this->eeSFL_SortFiles($this->eeListSettings['SortBy'], $this->eeListSettings['SortOrder']);
+		    
+		    // Remove any duplicates
+			$this->eeAllFiles = array_map("unserialize", array_unique(array_map("serialize", $this->eeAllFiles)));
+			
+			// echo '<pre>'; print_r($this->eeAllFiles); echo '</pre>'; exit;
+			
+			// Remove empty array keys to reduce array size
+		    foreach( $this->eeAllFiles as $eeFileID => $eeArray) {
+		    	
+		    	foreach( $eeArray as $eeName => $eeValue) {
+		    		
+		    		if( empty($eeValue) AND $eeValue !== 0 ) {
+			    		unset( $this->eeAllFiles[$eeFileID][$eeName] );
+		    		}
+		    	}
+		    }
+		    
+		    
+		    // Check Thumbnails...
+		    if( $this->eeListSettings['ShowFileThumb'] == 'YES' ) {
+		    
+			    $this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Checking Thumbnails ...';
+			    
+			    eeSFL_BASE_CheckSupported();
+				
+				// Check for and create thumbnail if needed...
+				if( $this->eeListSettings['GeneratePDFThumbs'] == 'YES' OR $this->eeListSettings['GenerateImgThumbs'] == 'YES' OR $this->eeListSettings['GenerateVideoThumbs'] == 'YES' ) {
+						
+					foreach( $this->eeAllFiles as $eeKey => $eeFile ) {
+					
+						if(is_string($eeFile['FilePath'])) {
+							$this->eeSFL_CheckThumbnail($eeFile['FilePath'], $this->eeListSettings);
+						}
+					}
+					
+				} else {
+			    	$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Skipped Thumbnail Checks';
+		    	}
+			    
+		    } else {
+			    $this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Skipped Thumbnail Checks';
+		    }
+		    
+		    // Check for Enviroment Changes
+		    $eeActual = eeSFL_BASE_ActualUploadMax();
+			if( $this->eeListSettings['UploadMaxFileSize'] > $eeActual ) { 
+				$this->eeListSettings['UploadMaxFileSize'] = $eeActual;
+				update_option('eeSFL_Settings_' . $this->eeListID, $this->eeListSettings); // Set to Actual Max
+			}
+			
+			$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Re-Index Completed';
+		    
+		    // echo '<pre>'; print_r($this->eeAllFiles); echo '</pre>';
+		    // echo '<pre>'; print_r($this->eeLog); echo '</pre>'; exit;
+			
+			// Update the DB
+		    update_option('eeSFL_FileList_1', $this->eeAllFiles);
+		    
+		    return TRUE;
+		
+		} else {
+			
+			$this->eeAllFiles = array('' => ''); // No files found :-(
+			
+			return FALSE;
+		}
+		
+		// exit('THUD');
+    }
+    
+    
+    
 	
+	// Files on the Disk
+	private $eeSFL_FileScanArray = array();
 	
-	
+	// Original and Sanitized Names
+	private $eeSanitizedFiles = array(); 
 	
 	// Get All the Files
-	private function eeSFL_IndexFileListDir($eeFileListDir) {
+	private function eeSFL_IndexFileListDir() {
 	    
-	    $eeFilesArray = array();
+	    $eeThisItemPath = ''; // BASE Never Has a Folder Path
 	    
-	    if(!is_dir(ABSPATH . $eeFileListDir)) {
+	    if(!is_dir(ABSPATH . $this->eeListSettings['FileListDir'])) {
 		    
 		    $this->eeLog[eeSFL_BASE_Go]['errors'][] = 'The directory is Gone :-0  Re-Creating...';
 		    
-		    eeSFL_BASE_FileListDirCheck($eeFileListDir);
-		    return $eeFilesArray;
+		    eeSFL_BASE_FileListDirCheck($this->eeListSettings['FileListDir']);
 	    }
 		    
-	    $this->eeLog[eeSFL_BASE_Go]['notice'][] = 'Getting files from: ' . $eeFileListDir; 
+	    $this->eeLog[eeSFL_BASE_Go]['notice'][] = 'Indexing files from: ' . $this->eeListSettings['FileListDir']; 
 	    
-	    $eeFileNameOnlyArray = scandir(ABSPATH . $eeFileListDir);
+	    $eeFileScanArray = scandir(ABSPATH . $this->eeListSettings['FileListDir']);
 	    
-	    foreach($eeFileNameOnlyArray as $eeValue) {
+	    foreach($eeFileScanArray as $eeThisItemName) {
 	    	
-	    	$eePathParts = pathinfo($eeValue);
+	    	$eePathParts = pathinfo($eeThisItemName);
 			if(isset($eePathParts['extension'])) {
-				if( in_array($eePathParts['extension'], $this->eeForbiddenTypes) ) { $eeValue = '.forbidden'; }
+				if( in_array($eePathParts['extension'], $this->eeForbiddenTypes) ) { continue; }
 			}
 	    	
-	    	if(strpos($eeValue, '.') !== 0 ) { // Not hidden
+	    	if(strpos($eeThisItemName, '.') === 0 ) { continue; }
 		    	
-		    	if(is_file(ABSPATH . $eeFileListDir . $eeValue)) { // Is a regular file
+	    	if(is_file(ABSPATH . $this->eeListSettings['FileListDir'] . $eeThisItemName)) { // Is a regular file
+	    	
+		    	if(in_array($eeThisItemName, $this->eeExcludedFileNames) )  { continue; } // Excluded
 		    	
-			    	if(!in_array($eeValue, $this->eeExcludedFileNames) )  { // Not excluded
-				    	
-				    	$eeNewItem = eeSFL_BASE_SanitizeFileName($eeValue);
-			            if($eeNewItem != $eeValue) {
-				            
-				            $this->eeLog[eeSFL_BASE_Go]['Trouble'][] = 'OLD --> BAD File Name: ' . $eeValue;
-				            
-				            if(rename(ABSPATH . $eeFileListDir . $eeValue, ABSPATH . $eeFileListDir . $eeNewItem)) {
-					        	
-					        	$eeValue = $eeNewItem;
-								$this->eeLog[eeSFL_BASE_Go]['Trouble'][] = 'NEW --> File Name Sanitized: ' . $eeValue;
-				        	}
-			            }
-			            
-				    	$eeFilesArray[] = $eeValue; // Add the path
-			    	}
-		    	}
-	    	}
-	    }
-	    
-	    if(!count($eeFilesArray)) {
-		    $this->eeLog[eeSFL_BASE_Go]['notice'][] = 'No Files Found';
+		        $this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - File Found: ' . $eeThisItemName;
+		        
+		        $eeNewItemName = sanitize_file_name($eeThisItemName);
+		        
+		        if($eeNewItemName != $eeThisItemName) { // Sanitized
+		        
+					$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - OLD --> Problematic File Name: ' . $eeThisItemName;
+		        
+		        	// Prevent over-writing another file that has been sanitized
+			        if( in_array($eeNewItemName, $this->eeSFL_FileScanArray) ) {
+				        
+				        $eePathParts = pathinfo($eeNewItemName);
+						$eeNameOnly = $eePathParts['filename'];
+						$eeExtension = $eePathParts['extension'];
+				        
+				        for ($i = 1; $i <= 10000; $i++) { // Loop thru
+							
+							$eeNewItemName = $eeNameOnly . '_' . $i . '.' . $eeExtension; // Add the copy number
+							
+							if(!in_array($eeThisItemPath . $eeNewItemName, $this->eeSFL_FileScanArray)) { break; } // If no copy is there, we're done.
+							
+						}
+			        }
+		            
+		            if(rename(ABSPATH . $this->eeListSettings['FileListDir'] . $eeThisItemName, ABSPATH . $this->eeListSettings['FileListDir'] . $eeNewItemName)) {
+			        	
+			        	$this->eeSanitizedFiles[$eeThisItemPath . $eeNewItemName] = $eeThisItemPath . $eeThisItemName;
+			        	
+			        	$eeThisItemName = $eeNewItemName;
+			        	
+						$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - NEW --> File Name Sanitized: ' . $eeNewItemName;
+		        	}
+	            }
+	            
+	            $this->eeSFL_FileScanArray[] = $eeThisItemName;
+
+			}
+	    	
 	    }
 
-		return $eeFilesArray;
+		return;
 	}
 	
 	
@@ -1147,100 +1386,53 @@ class eeSFL_BASE_MainClass {
 	
 	
 	// Move the sort item to the array key and then sort. Preserve the key (File ID) in a new element
-	public function eeSFL_SortFiles($eeFiles, $eeSortBy, $eeSortOrder) {
+	public function eeSFL_SortFiles($eeSortBy, $eeSortOrder) {
 		
-		// echo '<pre>'; print_r($eeFiles); echo '</pre>'; exit;
+		global $eeSFL, $eeSFLF;
 		
-		if(is_array($eeFiles)) {
+		if(empty($this->eeAllFiles)) { return; }
+		
+		$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Sorting the File Array';
 			
-			if( count($eeFiles) <= 1 ) { return $eeFiles; } // No point if none or one
+		// Legacy check
+		if( !array_key_exists(1, $this->eeAllFiles) ) {
+			$this->eeAllFiles = array_values($this->eeAllFiles); // Reset the keys to numbers
+		}
 			
-			// Clean the Array
-			foreach( $eeFiles as $eeKey => $eeFileArray) {
-				if( !isset($eeFileArray['FilePath']) ) { unset($eeFiles[$eeKey]); } // Get rid of bad arrays.
-			}
-			
+		// echo '<pre>'; print_r($this->eeAllFiles); echo '</pre>'; exit;
+		
+		if($eeSortBy == 'Random') {
+			return shuffle($this->eeAllFiles);
+		} elseif($eeSortBy == 'Size') {
+			$eeSort = 'FileSize';
+		} elseif($eeSortBy == 'Date') {
+			$eeSort = 'FileDateAdded';
+		} elseif($eeSortBy == 'DateMod') {
+			$eeSort = 'FileDateChanged';
 		} else {
-			return FALSE;
+			$eeSort = 'FilePath'; // Name
 		}
 		
-		$this->eeLog[eeSFL_BASE_Go]['notice'][] = 'Sorting by...';
-		$this->eeLog[eeSFL_BASE_Go]['notice'][] = $eeSortBy . ' > ' . $eeSortOrder;
+		if($eeSortOrder == 'Descending') { $eeOrder = SORT_DESC; } 
+			else { $eeOrder = SORT_ASC; }
+			
+		// exit($eeSort . ' - ' . $eeOrder);
 		
-		$eeFilesSorted = array();
-			
-		if($eeSortBy == 'Date') { // Files by Date Added (the Original)
-			
-			foreach($eeFiles as $eeKey => $eeFileArray) {
-				
-				$eeFilesSorted[ $eeFileArray['FileDateAdded'] . ' ' . $eeKey ] = $eeFileArray;
-			}
-			
-		} elseif($eeSortBy == 'DateChanged') { // Files by Date Modified (By Customer Request)
-			
-			foreach($eeFiles as $eeKey => $eeFileArray) {
-					
-				$eeFilesSorted[ $eeFileArray['FileDateChanged'] . ' ' . $eeKey ] = $eeFileArray; // Add the file key to preserve files with same date or size.
-			}
-			
-		} elseif($eeSortBy == 'Size') { // Files by Size
-			
-			foreach($eeFiles as $eeKey => $eeFileArray) {
-				
-				// Add the file key to preserve files with same size.
-				$eeFilesSorted[ $eeFileArray['FileSize'] . '.' . $eeKey ] = $eeFileArray;
-			}
-	
-		} elseif($eeSortBy == 'Name') { // Alpha
-			
-			foreach($eeFiles as $eeKey => $eeFileArray) {
-				
-				// Use Nice Name if Available
-				if( strlen($eeFileArray['FileNiceName']) ) {
-					$eeFileLowerCase = strtolower($eeFileArray['FileNiceName']); // Make lower case so name sorting works properly
-					$eeFileLowerCase = eeSFL_BASE_SanitizeFileName($eeFileLowerCase); // Get rid of troublsome chars
-				} else {
-					$eeFileLowerCase = strtolower($eeFileArray['FilePath']); // Make lower case so name sorting works properly
-				}
-				
-				$eeFilesSorted[ $eeFileLowerCase ] = $eeFileArray; // These keys shall always be unique
-			}
+		// Sort
+		$eeArray1 = array_column($this->eeAllFiles, $eeSort);
+		// echo '<pre>'; print_r($eeArray1); echo '</pre>';
 		
-		} else { // Random
-			
-			foreach($eeFiles as $eeKey => $eeFileArray) {
-				
-				$eeFilesSorted[ $eeFileArray['FilePath'] ] = $eeFileArray;
-			}
-			
-			$eeKeys = array_keys($eeFilesSorted);
-
-	        shuffle($eeKeys);
-	
-	        foreach($eeKeys as $eeKey) {
-	            $eeNewArray[$eeKey] = $eeFilesSorted[$eeKey];
-	        }
-	
-	        $eeFilesSorted = $eeNewArray;
-			
-			return $eeFilesSorted;
+		$eeArray2 = array_column($this->eeAllFiles, 'FileExt');
+		// echo '<pre>'; print_r($eeArray2); echo '</pre>'; exit;
+		
+		// Sort Multi-Dimesional Array Like a Pro
+		if( count($eeArray1) == count($eeArray2) ) {
+			array_multisort($eeArray1, $eeOrder, SORT_NATURAL|SORT_FLAG_CASE, $eeArray2, SORT_ASC, $this->eeAllFiles);
 		}
 		
+		// echo '<pre>'; print_r($this->eeAllFiles); echo '</pre>'; exit;
 		
-		// Sort by the key
-		ksort($eeFilesSorted); 
-		
-		// echo '<pre>'; print_r($eeFilesSorted); echo '</pre>'; exit;
-		
-		// If Descending
-		if($eeSortOrder == 'Descending') {
-			$eeFilesSorted = array_reverse($eeFilesSorted);
-		}
-		
-		// Reindex the array keys
-		$eeFilesSorted = array_values($eeFilesSorted);
-
-		return $eeFilesSorted;
+		$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Files Sorted: ' . $eeSortBy . ' (' . $eeSortOrder . ')';
 	}
 	
 	

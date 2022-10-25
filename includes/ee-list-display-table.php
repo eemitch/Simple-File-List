@@ -111,7 +111,7 @@ foreach($eeSFL_BASE->eeAllFiles as $eeFileKey => $eeFileArray) { // <<<---------
 			
 			
 			// Show File Description
-			if(!$eeAdmin OR $eeSFL_BASE->eeListSettings['ShowFileDesc'] == 'NO') { $eeClass = 'eeHide'; }
+			if(!$eeAdmin AND $eeSFL_BASE->eeListSettings['ShowFileDesc'] == 'NO') { $eeClass = 'eeHide'; }
 			
 			// This is always here in case of editing, but hidden if empty
 			$eeOutput .= '<p class="eeSFL_FileDesc ' . $eeClass . '">' . stripslashes($eeSFL_BASE->eeFileDescription) . '</p>';

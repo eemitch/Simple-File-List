@@ -22,7 +22,7 @@ if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settin
 		,'ShowHeader'
 		,'SmoothScroll'
 		,'ShowSubmitterInfo'
-		,'PreserveSpaces'
+		,'PreserveName'
 		,'ShowFileExtension'
 		,'GenerateImgThumbs'
 		,'GeneratePDFThumbs'
@@ -617,13 +617,13 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		
 		
 		<fieldset>
-		<legend>' . __('Preserve Spaces', 'ee-simple-file-list') . '</legend>
-		<div><label>' . __('Show', 'ee-simple-file-list') . '</label><input type="checkbox" name="eePreserveSpaces" value="YES" id="eePreserveSpaces"'; 
-		if($eeSFL_BASE->eeListSettings['PreserveSpaces'] == 'YES') { $eeOutput .= ' checked'; }
+		<legend>' . __('Preserve File Name', 'ee-simple-file-list') . '</legend>
+		<div><label>' . __('Show', 'ee-simple-file-list') . '</label><input type="checkbox" name="eePreserveName" value="YES" id="eePreserveName"'; 
+		if($eeSFL_BASE->eeListSettings['PreserveName'] == 'YES') { $eeOutput .= ' checked'; }
 		$eeOutput .= ' /></div>
 				
-		<div class="eeNote">' . __('Spaces in file names are replaced with hyphens in order to make the URL legal.', 'ee-simple-file-list') . ' ' . 
-			__('This setting will revert this action for display.', 'ee-simple-file-list') . '</div>
+		<div class="eeNote">' . __('Files with illegal characters are renamed to ensure good URLs.', 'ee-simple-file-list') . ' ' . 
+			__('This setting will preserve and show the original name as the Nice Name.', 'ee-simple-file-list') . '</div>
 		
 		</fieldset>
 		
