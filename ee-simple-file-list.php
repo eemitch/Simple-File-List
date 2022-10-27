@@ -118,8 +118,8 @@ function eeSFL_BASE_Setup() {
 		// Populate the Settings Array
 		$eeSFL_BASE->eeSFL_GetSettings(1);
 		
-		// echo '<pre>'; print_r($eeSFL->eeListSettings); echo '</pre>';
-		// echo '<pre>'; print_r($eeSFL->eeLog); echo '</pre>'; exit;
+		// echo '<pre>'; print_r($eeSFL_BASE->eeListSettings); echo '</pre>';
+		// echo '<pre>'; print_r($eeSFL_BASE->eeLog); echo '</pre>'; exit;
 	}
 	
 	// Install or Update if Needed.
@@ -271,7 +271,7 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 		$eeShowUploadForm = TRUE;
 	}
 	
-	if(!$eeSFL_Uploaded AND $eeSFL->eeListSettings['UploadPosition'] == 'Above') {
+	if(!$eeSFL_Uploaded AND $eeSFL_BASE->eeListSettings['UploadPosition'] == 'Above') {
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
 		include($eeSFL_BASE->eeEnvironment['pluginDir'] . '/includes/ee-upload-form.php');
 	}	
@@ -299,7 +299,7 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 		include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'ee-list-display.php');
 	}
 	
-	if(!$eeSFL_Uploaded AND $eeSFL->eeListSettings['UploadPosition'] == 'Below') {
+	if(!$eeSFL_Uploaded AND $eeSFL_BASE->eeListSettings['UploadPosition'] == 'Below') {
 		$eeSFL_Nonce = wp_create_nonce('eeInclude');
 		include($eeSFL_BASE->eeEnvironment['pluginDir'] . '/includes/ee-upload-form.php');
 	}
