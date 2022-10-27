@@ -94,6 +94,10 @@ eeSFL_Admin * + * {
 	margin-left: 1em;
 	margin-bottom: .5em;
 }
+.eeSFL_Admin ul li ul li {
+	margin-left: 1em;
+	margin-bottom: .5em;
+}
 .eeSFL_Admin ul code {
 	line-height: 2;
 }
@@ -101,10 +105,36 @@ eeSFL_Admin * + * {
 	margin: 1.5em 0 1.5em .5em;
 }
 
+.eeGoPro h1 {
+	font-weight: 600;
+	font-size: 2em;
+	line-height: 1;
+	margin-bottom: .5em;
+}
+.eeGoPro h2 {
+	font-weight: 500;
+	font-size: 1.5em;
+	line-height: 1;
+	margin-bottom: .5em;
+}
+.eeGoPro p {
+	padding-bottom: 2em;
+}
+.eeGoPro ul {
+	padding-bottom: 2em;
+}
+.eeGoPro .button {
+	font-size: 1.5em;
+}
+
 #eeGoProBanner {
 	background-color: var(--ee-admin-upsell-background);
 	padding: 10px;
 	border: 1px solid var(--ee-admin-border);
+}
+main.eeSFL_Admin div.notice.notice-success.is-dismissible ul {
+	list-style: none;
+	list-style-type: none;
 }
 #eeGoProBanner p {
 	font-size: 100%;

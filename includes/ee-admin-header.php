@@ -11,8 +11,7 @@ $eeUpSell = '<div id="eeGoProBanner" class="eeClearFix">
 <small><a href="https://demo.simple-file-list.com/?pr=free" class="eeFloatRight" target="_blank">Try the Demo</a></small>
 	
 <p><strong>' . __('Upgrade to Pro', 'ee-simple-file-list') . '</strong> - ' . 
-__('Add sub-folder support, bulk file editing, send files by email, directory location customization and more.', 'ee-simple-file-list') . ' ' . 
-__('Plus, add extensions for larger file lists and flexible user management.', 'ee-simple-file-list') . ' ' . __('The low cost is just once per domain.', 'ee-simple-file-list') . '</p>
+__('Add sub-folder support, bulk file editing, directory location customization and add extensions for searching and more flexible user and role file restrictions.', 'ee-simple-file-list') . ' ' . __('The low cost is just once per domain. No recurring fees.', 'ee-simple-file-list') . '</p>
 	
 </div>';
 
