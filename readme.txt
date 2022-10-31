@@ -85,6 +85,12 @@ Simple File List is also a good alternative for organizations using clumsy FTP o
 * Simple lightweight design, easy to style and customize.
 * Committed and responsive support from the developer.
 
+###Try the Demo
+
+Try out the free demo:
+
+[Simple File List Demo](https://free.simple-file-list.com)
+
 
 ##Upgrade to the PRO Version to Add Sub-Folder Support
 
