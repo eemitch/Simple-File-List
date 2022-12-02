@@ -295,7 +295,7 @@ $eeOutput .= '
 				 	 
 		$eeOutput .= '<div class="eeNote">' . __('Read a video file and create a representative thumbnail image at the 1 second mark.', 'ee-simple-file-list') . '</div>';
 		
-		if(count($eeMissing)) {
+		if(!empty($eeMissing)) {
 			$eeOutput .= '<p><strong><em>' . __('Please install the missing PHP extensions to activate the disabled features.', 'ee-simple-file-list') . '</em></strong></p>';
 		}	
 			

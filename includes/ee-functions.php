@@ -66,7 +66,7 @@ function eeSFL_FREE_CheckSupported() {
 	
 	// echo '<pre>'; print_r($eeSupported); echo '</pre>'; exit;
 	
-	if(count($eeSupported)) {
+	if(!empty($eeSupported)) {
 		update_option('eeSFL_Supported', $eeSupported);
 	} else {
 		update_option('eeSFL_Supported', array('None'));
@@ -298,7 +298,7 @@ function eeSFL_FREE_ProcessUpload() {
 			
 			
 			// Notification
-			if( count($eeFileListArray) ) {
+			if( !empty($eeFileListArray) ) {
 				
 				$eeUploadJob = ''; // This will be what happened
 				

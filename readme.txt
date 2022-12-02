@@ -230,7 +230,7 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 == Upgrade Notice ==
 
-* 4.4.13 - Bug Fixes and Improvements
+* 4.4.14 - Bug Fix
 
 
 == Screenshots ==
@@ -241,6 +241,9 @@ A: I got tired of the difficulties of getting files back and forth between mysel
 
 
 == Changelog ==
+
+= 4.4.14 =
+* Fixed an issue where the count() function would throw a fatal error on PHP 8
 
 = 4.4.13 =
 * Removed the shortcode Builder functionality, as this was mostly unnecessary and was often misused.

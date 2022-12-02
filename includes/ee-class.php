@@ -282,7 +282,7 @@ class eeSFL_FREE_MainClass {
 	    // List the actual files on the disk
 	    $eeFilePathsArray = $this->eeSFL_IndexFileListDir($eeSFL_Settings['FileListDir']);
 	    
-	    if(!count($eeFilePathsArray)) {
+	    if(empty($eeFilePathsArray)) {
 		    $eeSFL_FREE_Log['RunTime'][] = 'No Files Found';
 		    return FALSE; // Quit and leave DB alone
 	    }
@@ -291,7 +291,7 @@ class eeSFL_FREE_MainClass {
 	    $eeFileArrayWorking = array();
 	    
 	    // No List in the DB, Creating New...
-	    if( !count($eeFilesDBArray) ) {
+	    if( empty($eeFilesDBArray) ) {
 			
 			$eeSFL_FREE_Log['RunTime'][] = 'No List Found! Creating from scratch...';
 			
@@ -378,7 +378,7 @@ class eeSFL_FREE_MainClass {
 		
 		
 		// Sort...
-		if(count($eeFileArrayWorking)) {
+		if(!empty($eeFileArrayWorking)) {
 			
 			// Sort
 		    $eeFileArrayWorking = $this->eeSFL_SortFiles($eeFileArrayWorking, $eeSFL_Settings['SortBy'], $eeSFL_Settings['SortOrder']);
@@ -478,7 +478,7 @@ class eeSFL_FREE_MainClass {
 	    	}
 	    }
 	    
-	    if(!count($eeFilesArray)) {
+	    if(empty($eeFilesArray)) {
 		    $eeSFL_FREE_Log['RunTime'][] = 'No Files Found';
 	    }
 
@@ -1005,11 +1005,7 @@ class eeSFL_FREE_MainClass {
 			}
 			
 			// Show if no extensions installed
-			if( @count($eeSFL_FREE_Env['installed']) < 1 OR strlen($eeSFL_Body) < 3) { // Or if no content
-				
-				$eeSFL_Body .= PHP_EOL . PHP_EOL . "----------------------------------"  . 
-				PHP_EOL . "Powered by Simple File List - simplefilelist.com";
-			}
+			$eeSFL_Body .= PHP_EOL . PHP_EOL . "----------------------------------"  . PHP_EOL . "Powered by Simple File List - simplefilelist.com";
 		
 			if($eeSFL_Settings['NotifyFrom']) {
 				$eeSFL_NotifyFrom = $eeSFL_Settings['NotifyFrom'];

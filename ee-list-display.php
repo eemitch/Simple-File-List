@@ -31,7 +31,7 @@ $eeSFL_FileTotalCount = count($eeSFL_Files);
 
 
 // Check for Upload Job
-if(count($eeSFL_FREE_Env['UploadedFiles'])) {
+if(!empty($eeSFL_FREE_Env['UploadedFiles'])) {
 	
 	foreach( $eeSFL_Files as $eeThisKey => $eeFileArray ) {
 		
@@ -40,7 +40,7 @@ if(count($eeSFL_FREE_Env['UploadedFiles'])) {
 		}
 	}
 	
-	if(count($eeUploadedFiles)) {
+	if(!empty($eeUploadedFiles)) {
 		$eeSFL_Files = $eeUploadedFiles;
 	} else {
 		$eeSFL_Files = array();
@@ -49,7 +49,7 @@ if(count($eeSFL_FREE_Env['UploadedFiles'])) {
 	}	
 }
 
-if( $eeAdmin AND !is_array($eeUploadedFiles) AND count($eeSFL_FREE_Log['messages']) === 0 ) {
+if( $eeAdmin AND !is_array($eeUploadedFiles) AND empty($eeSFL_FREE_Log['messages']) ) {
 	$eeSFL_FREE_Log['messages'] = $eeUpSell;
 }
 
@@ -110,7 +110,7 @@ if($eeAdmin) {
 		
 		// Calc Date Last Changed
 		$eeArray = array();
-		if(count($eeSFL_Files)) {
+		if(!empty($eeSFL_Files)) {
 			foreach( $eeSFL_Files as $eeKey => $eeFileArray) { $eeArray[] = $eeFileArray['FileDateChanged']; }
 			rsort($eeArray); // Most recent at the top	
 		} else {
@@ -147,7 +147,7 @@ if($eeAdmin) {
 
 if( isset($eeSFL_Files) ) {
 	
-	if(!is_array($eeSFL_Files) OR !count($eeSFL_Files)) { return; } // Bail if no files
+	if(!is_array($eeSFL_Files) OR empty($eeSFL_Files)) { return; } // Bail if no files
 	
 	$eeRowID = '0'; // Assign an ID number to each row
 	
