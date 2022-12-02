@@ -266,7 +266,6 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 		
 		wp_enqueue_style('ee-simple-file-list-css-upload');
 		wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js', $eeDependents , eeSFL_BASE_Version, TRUE);
-		$eeSFL_Nonce = wp_create_nonce('eeInclude');
 		$eeSFL_UploadFormRun = TRUE;
 		$eeShowUploadForm = TRUE;
 	}

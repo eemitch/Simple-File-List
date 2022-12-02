@@ -1472,12 +1472,8 @@ class eeSFL_BASE_MainClass {
 				}
 			}
 			
-			// Show if no extensions installed
-			if( @count($this->eeEnvironment['installed']) < 1 OR strlen($eeSFL_Body) < 3) { // Or if no content
-				
-				$eeSFL_Body .= PHP_EOL . PHP_EOL . "----------------------------------"  . 
+			$eeSFL_Body .= PHP_EOL . PHP_EOL . "----------------------------------"  . 
 				PHP_EOL . "Powered by Simple File List - simplefilelist.com";
-			}
 		
 			if($this->eeListSettings['NotifyFrom']) {
 				$eeSFL_NotifyFrom = $this->eeListSettings['NotifyFrom'];

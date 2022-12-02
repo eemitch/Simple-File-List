@@ -51,7 +51,7 @@ function eeSFL_BASE_CopyLinkToClipboard(eeSFL_FileURL) {
 // Email Validation
 function eeSFL_BASE_ValidateEmail(eeSFL_CheckEmail) {
 
-	var eeSFL_EmailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	var eeSFL_EmailFormat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	
 	if (eeSFL_CheckEmail.match(eeSFL_EmailFormat)) {
     	return 'GOOD';

@@ -46,12 +46,18 @@ if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settin
 		,'ShowListStyle'
 		,'ShowListTheme'
 		,'SortBy'
-		,'SortOrder'
 		,'ShowFileDateAs'
 	);
 	
 	foreach( $eeTextInputs as $eeTerm){
 		$eeSFL_BASE->eeListSettings[$eeTerm] = eeSFL_BASE_ProcessTextInput($eeTerm);
+	}
+	
+	
+	if(isset($_POST['eeSortOrder'])) {
+		$eeSFL_BASE->eeListSettings['SortOrder'] = 'Descending';
+	} else {
+		$eeSFL_BASE->eeListSettings['SortOrder'] = 'Ascending';
 	}
 	
 	

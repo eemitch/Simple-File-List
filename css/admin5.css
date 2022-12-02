@@ -65,8 +65,8 @@
 }
 
 
-eeSFL_Admin * + * {
-	margin-top: 1.5em;
+.eeSFL_Admin {
+	min-width: 800px;
 	
 }
 .eeSFL_Admin h1,
