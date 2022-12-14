@@ -18,7 +18,7 @@ Domain Path: /languages
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // CONSTANTS
-define('eeSFL_BASE_DevMode', TRUE);
+define('eeSFL_BASE_DevMode', FALSE);
 define('eeSFL_BASE_Version', '6.0.1'); // Plugin version
 define('eeSFL_BASE_PluginName', 'Simple File List');
 define('eeSFL_BASE_PluginSlug', 'ee-simple-file-list');
@@ -873,7 +873,7 @@ function eeSFL_BASE_VersionCheck() {
 		// If Updating
 		if( !empty($eeSettings) ) {
 			
-			$eeSettings = array_merge($eeSettings, $eeSFL_BASE->DefaultListSettings);
+			$eeSettings = array_merge($eeSFL_BASE->DefaultListSettings, $eeSettings);
 			
 			// $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'] = $eeSettings;
 			
@@ -886,17 +886,6 @@ function eeSFL_BASE_VersionCheck() {
 				$wpdb->query( $eeQuery );
 			}
 			
-			// Adjustments
-			if(!$eeSettings['NotifyTo']) {
-				$eeSettings['NotifyTo'] = $wpAdminEmail;
-			}
-			if(!$eeSettings['NotifyFrom']) {
-				$eeSettings['NotifyFrom'] = $wpAdminEmail;
-			}
-			if(!$eeSettings['NotifyMessage']) {
-				$eeSettings['NotifyMessage'] = $eeSFL_BASE->eeNotifyMessageDefault;
-			}	
-			
 			$eeLog = get_option('eeSFL-Log');
 			if($eeLog) {
 				add_option('eeSFL_BASE_Log', $eeLog); // In with the new
@@ -908,9 +897,8 @@ function eeSFL_BASE_VersionCheck() {
 			delete_transient('eeSFL_FileList-1'); // DB 4.2 and earlier
 			delete_option('eeSFL-Version'); // Out with the old
 			delete_option('eeSFL-DB-Version'); // Out with the old
-			delete_option('eeSFL-FREE-DB-Version'); // Out with the old
-			delete_option('eeSFL_BASE_Version'); // Out with the old
-			delete_option('eeSFL-FREE-Log'); // Out with the old
+			delete_option('eeSFL_FREE_DB_Version'); // Out with the old
+			delete_option('eeSFL_FREE_Log'); // Out with the old
 			delete_option('eeSFLA-Settings'); // Out with the old
 			delete_option('eeSFL-Legacy'); // Don't need this anymore
 		
@@ -932,6 +920,17 @@ function eeSFL_BASE_VersionCheck() {
 			$eeCopyTo = ABSPATH . '/' . $eeSettings['FileListDir'] . 'Simple-File-List.pdf';
 			copy($eeCopyFrom, $eeCopyTo);
 		
+		}
+		
+		// Add Default Values
+		if(!$eeSettings['NotifyTo']) {
+			$eeSettings['NotifyTo'] = $wpAdminEmail;
+		}
+		if(!$eeSettings['NotifyFrom']) {
+			$eeSettings['NotifyFrom'] = $wpAdminEmail;
+		}
+		if(!$eeSettings['NotifyMessage']) {
+			$eeSettings['NotifyMessage'] = $eeSFL_BASE->eeNotifyMessageDefault;
 		}
 		
 		// Update Database
