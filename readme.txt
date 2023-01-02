@@ -231,7 +231,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Changelog ==
 
-= 6.0.1 =
+= 6.0.2 =
 * Major UI and code base improvements.
 * NEW -> Added ability to give a file a "Nice Name". This displays in place of the real file and can contain characters that are not allowed in file names.
 * NEW -> Added option to choose from three responsive file list styles: Table, Tiles or Flex
