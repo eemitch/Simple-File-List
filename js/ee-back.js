@@ -30,30 +30,6 @@ jQuery(function() {
 		document.execCommand('copy');
     
    });
-   
-   
-/*   
-   // Select or deselect all the checkboxes
-   jQuery('#eeSFL_SelectAll').on('click', function() {
-	   
-	   var eeState = jQuery('#eeSFL_SelectAll').prop("checked"); 
-	   
-	   if(eeState) {
-		   jQuery('.eeDeleteFile').prop( "checked", true );
-	   } else {
-		   jQuery('.eeDeleteFile').prop( "checked", false );  
-	   }
-	});
-	
-	
-	// Show or Hide the Delete Files Button
-
-	jQuery('input[type=checkbox]').on('click', function( event ) { 
-		
-		jQuery('.eeDeleteCheckedButton').fadeIn();
-		
-	});
-*/
 	
 });
 

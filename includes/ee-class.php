@@ -69,12 +69,12 @@ class eeSFL_BASE_MainClass {
 		'ListTitle' => 'Simple File List', // List Title (Not currently used)
 		'FileListDir' => 'wp-content/uploads/simple-file-list/', // List Directory Name (relative to ABSPATH)
 		'ShowList' => 'YES', // Show the File List (YES, ADMIN, USER, NO)
-		'ShowListStyle' => 'Table', // Table, Tiles, or Flex
-		'ShowListTheme' => 'Light', // Light, Dark or None
+		'ShowListStyle' => 'TABLE', // Table, Tiles, or Flex
+		'ShowListTheme' => 'LIGHT', // Light, Dark or None
 		'AdminRole' => 5, // Who can access settings, based on WP role (5 = Admin ... 1 = Subscriber)
 		'ShowFileThumb' => 'YES', // Display the File Thumbnail (YES or NO)
 		'ShowFileDate' => 'YES', // Display the File Date (YES or NO)
-		'ShowFileDateAs' => 'Added', // Which date to show: added or modified
+		'ShowFileDateAs' => 'Changed', // Which date to show: Added or Changed
 		'ShowFileSize' => 'YES', // Display the File Size (YES or NO)
 		'ShowFileDesc' => 'YES', // Display the File Description (YES or NO)
 		'LabelThumb' => 'Thumb', // Label for the thumbnail
@@ -225,7 +225,8 @@ class eeSFL_BASE_MainClass {
     }
 	
 	
-	public $eeAllFiles = array();
+	public $eeAllFiles = array(); 
+	public $eeDisplayFiles = array();
 	
 	public $eeIsFile = FALSE;
 	public $eeFilePath = FALSE;
@@ -432,8 +433,10 @@ class eeSFL_BASE_MainClass {
 					}
 					
 					// LEGACY - Replace hyphens with spaces?
-					if(!$eeAdmin AND $this->eeListSettings['PreserveSpaces'] == 'YES') {
-						$this->eeFileName = eeSFL_BASE_PreserveSpaces($this->eeRealFileName); 
+					if(isset($this->eeListSettings['PreserveSpaces'])) {
+						if(!$eeAdmin AND $this->eeListSettings['PreserveSpaces'] == 'YES') {
+							$this->eeFileName = eeSFL_BASE_PreserveSpaces($this->eeRealFileName); 
+						}
 					}
 				}
 				

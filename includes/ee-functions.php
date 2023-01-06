@@ -480,31 +480,8 @@ function eeSFL_BASE_ProcessUpload() {
 								}
 							}
 							
-/*
-							// Create thumbnail if needed
-							if($eeSFL_BASE->eeListSettings['ShowFileThumb'] == 'YES') {
-								
-								if(
-								
-								( $eeSFL_BASE->eeListSettings['GeneratePDFThumbs'] == 'YES' AND $eeNewFileArray['FileExt'] == 'pdf' ) 
-								
-								OR 
-								
-								( $eeSFL_BASE->eeListSettings['GenerateVideoThumbs'] == 'YES' AND in_array($eeNewFileArray['FileExt'], $eeSFL_BASE->eeDynamicVideoThumbFormats) )
-								
-								) {
-											
-									// Start the background function: eeSFL_Background_GenerateThumbs()
-									if(is_array($eeSFL_Tasks)) {
-										$eeSFL_Tasks[$eeSFL_BASE->eeListID]['GenerateThumbs'] = 'YES'; 
-										update_option('eeSFL_Tasks', $eeSFL_Tasks);
-									}
-								}
-							}
-*/
-							
 							// Notification Info
-							$eeFileURL = $eeSFL_BASE->eeListSettings['FileListURL'] . $eeSFL_BASE->eeListSettings['FileListDir'] . $eeFile;
+							$eeFileURL = $eeSFL_BASE->eeListSettings['FileListURL'] . $eeFile;
 							
 							$eeUploadJob .=  $eeFile . " (" . eeSFL_BASE_FormatFileSize($eeNewFileArray['FileSize']) . ")" . PHP_EOL;
 							$eeUploadJob .=  $eeFileURL . PHP_EOL . PHP_EOL;

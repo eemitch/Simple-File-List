@@ -219,7 +219,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Upgrade Notice ==
 
-* 6.0.1 - Major Update
+* 6.0.4 - Improvements and Bug Fixes
 
 
 == Screenshots ==
@@ -230,6 +230,15 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 
 == Changelog ==
+
+= 6.0.4 = 
+* Added additional shortcode attributes: style and theme
+* Bug fix where eeSFL_ScrollToIt was not defined.
+* Bug fix where the file link within the notice email was broken.
+
+= 6.0.3 =
+* Bug Fix where upload form appeared even if turned off.
+* Bug fix where PHP Warning was thrown on missing array key.
 
 = 6.0.2 =
 * Major UI and code base improvements.

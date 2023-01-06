@@ -242,21 +242,21 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		
 		<select name="eeShowListStyle" id="eeShowListStyle">
 		
-			<option value="Table"';
+			<option value="TABLE"';
 
-			if($eeSFL_BASE->eeListSettings['ShowListStyle'] == 'Table') { $eeOutput .= ' selected'; }
+			if($eeSFL_BASE->eeListSettings['ShowListStyle'] == 'TABLE') { $eeOutput .= ' selected'; }
 			
 			$eeOutput .= '>' . __('Standard Table Display', 'ee-simple-file-list') . '</option>
 			
-			<option value="Tiles"';
+			<option value="TILES"';
 
-			if($eeSFL_BASE->eeListSettings['ShowListStyle'] == 'Tiles') { $eeOutput .= ' selected'; }
+			if($eeSFL_BASE->eeListSettings['ShowListStyle'] == 'TILES') { $eeOutput .= ' selected'; }
 			
 			$eeOutput .= '>' . __('Tiles Displayed in Columns', 'ee-simple-file-list') . '</option>
 			
-			<option value="Flex"';
+			<option value="FLEX"';
 
-			if($eeSFL_BASE->eeListSettings['ShowListStyle'] == 'Flex') { $eeOutput .= ' selected'; }
+			if($eeSFL_BASE->eeListSettings['ShowListStyle'] == 'FLEX') { $eeOutput .= ' selected'; }
 			
 			$eeOutput .= '>' . __('Flexible List Display', 'ee-simple-file-list') . '</option>
 		
@@ -274,15 +274,15 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		
 		<select name="eeShowListTheme" id="eeShowListTheme">
 		
-			<option value="Light"';
+			<option value="LIGHT"';
 
-			if($eeSFL_BASE->eeListSettings['ShowListTheme'] == 'Light') { $eeOutput .= ' selected'; }
+			if($eeSFL_BASE->eeListSettings['ShowListTheme'] == 'LIGHT') { $eeOutput .= ' selected'; }
 			
 			$eeOutput .= '>' . __('Light Theme', 'ee-simple-file-list') . '</option>
 			
-			<option value="Dark"';
+			<option value="DARK"';
 
-			if($eeSFL_BASE->eeListSettings['ShowListTheme'] == 'Dark') { $eeOutput .= ' selected'; }
+			if($eeSFL_BASE->eeListSettings['ShowListTheme'] == 'DARK') { $eeOutput .= ' selected'; }
 			
 			$eeOutput .= '>' . __('Dark Theme', 'ee-simple-file-list') . '</option>
 			
