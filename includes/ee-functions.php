@@ -819,20 +819,30 @@ function eeSFL_BASE_ProcessEmailString($eeString) {
 
 
 // Get what's in the address bar
-function eeSFL_BASE_GetThisURL($eeInclude_Request_URI = TRUE) {
+function eeSFL_BASE_GetThisURL($eeIncludeQuery = TRUE) {
 	
 	// Protocal
-	$thisUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
+	$eeURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
 
 	// Host
-	$thisUrl .= $_SERVER['HTTP_HOST'];
+	$eeURL .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; // The whole Path with args
 	
-	// Arguments
-	if($eeInclude_Request_URI) {
-		$thisUrl .= $_SERVER['REQUEST_URI']; // ?this=that&that=this
+	if(strpos($eeURL, '?')) { // Check for Query String
+		
+		$eeArray = explode('?', $eeURL);
+		
+		$eeURL = $eeArray[0]; // The path part
+	
+		if($eeIncludeQuery) {
+		
+			$eeURL .= '?' . $eeArray[1]; // Add query string 
+		
+			$eeURL = remove_query_arg('eeReScan', $eeURL); // This can get stuck
+		}
+	
 	}
-	 
-	return $thisUrl;
+	
+	return $eeURL;
 }
 
 ?>

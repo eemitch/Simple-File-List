@@ -19,6 +19,7 @@
 
 .eeSFL article.eeSFL_Tile {
 	flex: 1 0 29%;
+	min-width: 0;
 	margin: 0 1% 1em 1%;
 	padding: 0 0 1% 0;
 	background-color: var(--ee-color-tile-background);
@@ -31,7 +32,6 @@
 	padding: .5em;
 	font-weight: bold;
 	font-size: 1.2em;
-	white-space: nowrap;
 	background-color: var(--ee-color-tile-header-background);
 }
 .eeSFL article.eeSFL_Tile h4 a {

@@ -13,6 +13,7 @@
 	background-color: var(--ee-color-upload-form-background);
 	border: 2px solid var(--ee-color-table-border);
 	margin: 0;
+	margin-bottom: 1em;
 }
 
 #eeSFL_UploadForm h2,

@@ -4,16 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' )) exit('ERROR 98'); // Exit if nonce fails
 
 $eeLocale = get_locale();
-
-if(isset($_POST['eeLangOptionSubmit'])) {
-	
-	if($_POST['eeLangOption'] == 'en_US') {
-		update_option('eeSFL_Lang', 'en_US');
-	} else {
-		update_option('eeSFL_Lang', $eeLocale);
-	}
-}
-
 $eeLocaleSetting = get_option('eeSFL_Lang');
 	
 $eeOutput .= '
@@ -24,7 +14,7 @@ $eeOutput .= '
 	
 		$eeOutput .= '
 		
-		<form id="eeSFL_LangOption" action="' . $eeURL . '" method="post">	
+		<form id="eeSFL_LangOption" action="' . eeSFL_BASE_GetThisURL() . '" method="post">	
 		
 			<p>' . __('Use English on the Back-End', 'ee-simple-file-list') . '</p>
 				

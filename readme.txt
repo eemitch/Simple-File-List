@@ -231,6 +231,10 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Changelog ==
 
+= 6.0.5 =
+* Bug fix where the footer language selector was not working.
+* General code improvements.
+
 = 6.0.4 = 
 * Added additional shortcode attributes: style and theme
 * Bug fix where eeSFL_ScrollToIt was not defined.

@@ -56,6 +56,7 @@ $eeOutput .= '<span class="eeHide" id="eeSFL_ActionNonce">' . $eeSFL_ActionNonce
 <script>
 	var eeSFL_PluginURL = "' . $eeSFL_BASE->eeEnvironment['pluginURL'] . '";
 	var eeSFL_FileListDir = "' . $eeSFL_BASE->eeListSettings['FileListDir'] . '";
+	var eeSFL_ShowListStyle = "' . $eeSFL_BASE->eeListSettings['ShowListStyle'] . '";
 </script>
 ';
 
@@ -74,24 +75,22 @@ if(!$eeAdmin AND $eeSFL_Uploaded AND $eeSFL_BASE->eeListSettings['UploadConfirm'
 
 // echo '<pre>'; print_r($eeSFL_BASE->eeAllFiles); echo '</pre>';
 
-if( is_array($eeSFL_BASE->eeAllFiles) ) {
-	
-	if(!count($eeSFL_BASE->eeAllFiles)) { return; } // Bail if no files
+if( !empty($eeSFL_BASE->eeAllFiles) ) {
 
-	if($eeSFL_BASE->eeListSettings['ShowListStyle'] == 'TILES') {
+	if($eeAdmin OR $eeSFL_BASE->eeListSettings['ShowListStyle'] == 'TABLE') {
+		
+		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
+		include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-list-display-table.php');
+		
+	} elseif($eeSFL_BASE->eeListSettings['ShowListStyle'] == 'TILES') {
 		
 		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
 		include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-list-display-tiles.php');
 		
-	} elseif($eeSFL_BASE->eeListSettings['ShowListStyle'] == 'FLEX') {
-		
-		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-		include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-list-display-flex.php');
-		
 	} else {
 		
 		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-		include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-list-display-table.php');
+		include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-list-display-flex.php');
 		
 	}
 

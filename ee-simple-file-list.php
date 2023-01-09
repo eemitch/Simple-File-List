@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 6.0.4
+Version: 6.0.5
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // CONSTANTS
 define('eeSFL_BASE_DevMode', FALSE);
-define('eeSFL_BASE_Version', '6.0.4'); // Plugin version
+define('eeSFL_BASE_Version', '6.0.5'); // Plugin version
 define('eeSFL_BASE_PluginName', 'Simple File List');
 define('eeSFL_BASE_PluginSlug', 'ee-simple-file-list');
 define('eeSFL_BASE_PluginDir', 'simple-file-list');
@@ -125,7 +125,21 @@ function eeSFL_BASE_Setup() {
 		// echo '<pre>'; print_r($eeSFL_BASE->eeLog); echo '</pre>'; exit;
 	}
 	
-	eeSFL_BASE_Textdomain(); // Language Setup
+	// Language Setup
+	if(isset($_POST['eeLangOptionSubmit'])) {
+	
+		if($_POST['eeLangOption'] == 'en_US') {
+			update_option('eeSFL_Lang', 'en_US');
+		} else {
+			delete_option('eeSFL_Lang');
+		}
+	}
+	
+	$eeLocaleSetting = get_option('eeSFL_Lang');
+	
+	if(!is_admin() OR !$eeLocaleSetting OR $eeLocaleSetting != 'en_US') {
+		eeSFL_BASE_Textdomain(); 
+	}
 	
 	return TRUE;
 }
@@ -184,6 +198,8 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 		extract($atts);
 		
 		if($showlist) { $eeSFL_BASE->eeListSettings['ShowList'] = strtoupper($showlist); }
+		if($style) { $eeSFL_BASE->eeListSettings['ShowListStyle'] = strtoupper($style); }
+		if($theme) { $eeSFL_BASE->eeListSettings['ShowListTheme'] = strtoupper($theme); }
 		if($allowuploads) { $eeSFL_BASE->eeListSettings['AllowUploads'] = strtoupper($allowuploads); }
 		if($showthumb) { $eeSFL_BASE->eeListSettings['ShowFileThumb'] = strtoupper($showthumb); }
 		if($showdate) { $eeSFL_BASE->eeListSettings['ShowFileDate'] = strtoupper($showdate); }
@@ -215,13 +231,7 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 	
 	// Javascript
 
-	$eeDependents = array('jquery'); // Requires jQuery
-/*	wp_enqueue_style('ee-simple-file-list-css');
-	wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js', $eeDependents, eeSFL_BASE_Version); // Head
-	wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js', $eeDependents, eeSFL_BASE_Version, TRUE); // Footer
-	wp_localize_script( 'ee-simple-file-list-js-foot', 'eesfl_vars', $eeSFL_BASE_VarsForJS );
-*/
-    
+	$eeDependents = array('jquery'); // Requires jQuery    
     
     if($eeSFL_BASE->eeListSettings['AllowFrontManage'] != 'NO') {
     	wp_enqueue_script('ee-simple-file-list-js-edit-file', plugin_dir_url(__FILE__) . 'js/ee-edit-file.js', $eeDependents, eeSFL_BASE_Version, TRUE);

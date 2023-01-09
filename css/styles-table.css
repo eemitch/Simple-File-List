@@ -31,13 +31,12 @@
 	background-color: var(--ee-color-table-background);
 	border-bottom: 1px solid var(--ee-color-table-border);
 	text-align: center;
-	overflow: hidden;
 	vertical-align: middle;
 	width: auto;
 }
 .eeSFL table.eeFiles th,
 .eeSFL table.eeFiles td {
-	word-break: normal;
+	word-break: break-word;
 	width: auto;
 }
 .eeSFL table.eeFiles td.eeSFL_Thumbnail {

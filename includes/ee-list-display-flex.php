@@ -21,7 +21,7 @@ foreach($eeSFL_BASE->eeAllFiles as $eeFileKey => $eeFileArray) { // <<<---------
 
 		$eeOutput .= '
 		
-		<article id="eeSFL_FileID-' . $eeFileID . '" class="eeSFL_File">
+		<article id="eeSFL_FileID-' . $eeFileID . '" class="eeSFL_Item">
 		
 		<span class="eeSFL_RealFileName eeHide">' . $eeSFL_BASE->eeRealFileName . '</span>
 		<span class="eeSFL_FileNiceName eeHide">' . $eeSFL_BASE->eeFileNiceName . '</span>

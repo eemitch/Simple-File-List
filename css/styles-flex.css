@@ -15,7 +15,7 @@
 	font-size: 14px;
 }
 
-.eeSFL article.eeSFL_File {
+.eeSFL article.eeSFL_Item {
 	flex: 1;
 	width: 100%;
 	padding: 0;
@@ -47,6 +47,7 @@
 
 .eeSFL div.eeSFL_FlexRow .eeSFL_FileInfo {
 	flex: 3;
+	min-width: 0;
 	padding-left: 1em;
 }
 .eeSFL div.eeSFL_FlexRow .eeSFL_FileLink {

@@ -80,7 +80,7 @@ foreach($eeSFL_BASE->eeAllFiles as $eeFileKey => $eeFileArray) { // <<<---------
 	
 		$eeOutput .= '
 		
-		<tr class="eeSFL_Row" id="eeSFL_FileID-' . $eeFileID . '">'; // Add an ID to use in javascript
+		<tr class="eeSFL_Item" id="eeSFL_FileID-' . $eeFileID . '">'; // Add an ID to use in javascript
 		
 		
 		// Thumbnail
