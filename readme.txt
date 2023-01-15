@@ -219,7 +219,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Upgrade Notice ==
 
-* 6.0.4 - Improvements and Bug Fixes
+* 6.0.6 - Bug Fix
 
 
 == Screenshots ==
@@ -230,6 +230,9 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 
 == Changelog ==
+
+= 6.0.6 =
+* Bug fix where leading slash within the FileListDir settings was causing directory read failure.
 
 = 6.0.5 =
 * Bug fix where the footer language selector was not working.
