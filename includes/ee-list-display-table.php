@@ -119,7 +119,7 @@ foreach($eeSFL_BASE->eeAllFiles as $eeFileKey => $eeFileArray) { // <<<---------
 			
 			// Submitter Info
 			if($eeAdmin OR $eeSFL_BASE->eeListSettings['ShowSubmitterInfo'] == 'YES') {	
-				if( strlen($eeSFL_BASE->eeFileSubmitterName) > 1 ) {
+				if( $eeSFL_BASE->eeFileSubmitterName ) {
 					$eeOutput .= '<p class="eeSFL_FileSubmitter"><span>' . $eeSFL_BASE->eeListSettings['LabelOwner'] . ': </span>
 						<a href="mailto:' . $eeSFL_BASE->eeFileSubmitterEmail . '">' . stripslashes($eeSFL_BASE->eeFileSubmitterName) . '</a></p>';
 				}

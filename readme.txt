@@ -219,7 +219,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Upgrade Notice ==
 
-* 6.0.6 - Bug Fix
+* 6.0.7 - The never ending quest for perfection.
 
 
 == Screenshots ==
@@ -230,6 +230,9 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 
 == Changelog ==
+
+= 6.0.7 =
+* Improved the fail condition if bad file list directory.
 
 = 6.0.6 =
 * Bug fix where leading slash within the FileListDir settings was causing directory read failure.

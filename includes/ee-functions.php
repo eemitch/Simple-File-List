@@ -139,6 +139,12 @@ function eeSFL_BASE_DetectUpwardTraversal($eeFilePath) {
 	if($eeSFL_BASE->eeEnvironment['eeOS'] == 'LINUX') {
 	
 		$eeFilePath = str_replace('//', '/', $eeFilePath); // Strip double slashes, which will cause failure
+		
+		if(empty($eeFilePath)) {
+			$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'][] = __('Bad Folder Path Given', 'ee-simple-file-list');
+			return FALSE;
+		}
+		
 		$eeUserPath = ABSPATH . dirname($eeFilePath);  // This could be problematic with things like ../
 		$eeRealPath = realpath( ABSPATH . dirname($eeFilePath) ); // Expunge the badness and then compare...
 		
@@ -146,7 +152,7 @@ function eeSFL_BASE_DetectUpwardTraversal($eeFilePath) {
 		    wp_die('Error 99 :-( ' . $eeUserPath . ' != ' . $eeRealPath); // Bad guy found, bail out :-( // Bad guy found, bail out :-(
 		}
 		
-		return TRUE;
+		return FALSE;
 	
 	} else {
 
