@@ -392,6 +392,7 @@ class eeSFL_BASE_MainClass {
 				$this->eeIsFile = TRUE;
 				
 				// Thumbnail
+				$eeThumbSet = FALSE;
 				$eeHasCreatedThumb = FALSE;
 				if( in_array($this->eeFileExt,  $this->eeDynamicImageThumbFormats) AND $this->eeListSettings['GenerateImgThumbs'] == 'YES' ) { $eeHasCreatedThumb = TRUE; }
 				if( in_array($this->eeFileExt,  $this->eeDynamicVideoThumbFormats) AND isset($this->eeEnvironment['ffMpeg']) AND $this->eeListSettings['GenerateVideoThumbs'] == 'YES' ) { $eeHasCreatedThumb = TRUE; }
@@ -400,18 +401,26 @@ class eeSFL_BASE_MainClass {
 				if($eeHasCreatedThumb) { // Images use .jpg files
 	
 					$eePathParts = pathinfo($this->eeFilePath);
-					$eeFileThumbURL = $this->eeListSettings['FileListURL'];
-					if($eePathParts['dirname']) { $eeFileThumbURL .= $eePathParts['dirname'] . '/'; }
-					$this->eeFileThumbURL = $eeFileThumbURL . '.thumbnails/thumb_' . $eePathParts['filename'] . '.jpg';
-	
-				} else { // Others use our awesome .svg files
 					
-					if( !in_array($this->eeFileExt, $this->eeDefaultThumbFormats) ) { $eeDefaultThumb = '!default.svg'; } // What the heck is this? 
-						else { $eeDefaultThumb = $this->eeFileExt . '.svg'; } // Use our sweet icon
+					$eeFileThumbPath = ABSPATH . $this->eeListSettings['FileListDir'] . '.thumbnails/thumb_' . $eePathParts['filename'] . '.jpg';
 					
-					$this->eeFileThumbURL = $this->eeEnvironment['pluginURL'] . 'images/thumbnails/' . $eeDefaultThumb;
+					if( is_readable($eeFileThumbPath) ) {
+						$eeFileThumbURL = $this->eeListSettings['FileListURL'];
+						if($eePathParts['dirname']) { $eeFileThumbURL .= $eePathParts['dirname'] . '/'; }
+						$this->eeFileThumbURL = $eeFileThumbURL . '.thumbnails/thumb_' . $eePathParts['filename'] . '.jpg';
+						$eeThumbSet = TRUE;
+					}
 				}
 				
+				if(!$eeThumbSet) {
+					
+					// Use our awesome .svg files
+					if( !in_array($this->eeFileExt, $this->eeDefaultThumbFormats) ) { $eeDefaultThumb = '!default.svg'; } // What the heck is this? 
+							else { $eeDefaultThumb = $this->eeFileExt . '.svg'; } // Use our sweet icon
+						
+					$this->eeFileThumbURL = $this->eeEnvironment['pluginURL'] . 'images/thumbnails/' . $eeDefaultThumb;
+				
+				}
 				
 				
 				// File Nice Name
@@ -734,15 +743,6 @@ class eeSFL_BASE_MainClass {
 	    if(!is_array($this->eeAllFiles)) { $this->eeAllFiles = array(); }
 	    
 	    $this->eeSFL_IndexFileListDir();
-	    
-	    // echo '<pre>'; print_r($eeFilePathsArray); echo '</pre>';
-	    // echo '<pre>'; print_r($this->eeLog[eeSFL_BASE_Go]['notice']); echo '</pre>'; exit;
-	    
-		// echo '<pre>'; print_r($this->eeSFL_FileScanArray); echo '</pre>';
-		// echo '<pre>'; print_r($this->eeSanitizedFiles); echo '</pre>';
-		// echo '<pre>'; print_r($this->eeLog); echo '</pre>';
-		// exit;
-		
 		
 		if(empty($this->eeSFL_FileScanArray)) {
 		    $this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - No Files Found';

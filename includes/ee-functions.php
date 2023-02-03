@@ -492,7 +492,14 @@ function eeSFL_BASE_ProcessUpload() {
 							$eeUploadJob .=  $eeFile . " (" . eeSFL_BASE_FormatFileSize($eeNewFileArray['FileSize']) . ")" . PHP_EOL;
 							$eeUploadJob .=  $eeFileURL . PHP_EOL . PHP_EOL;
 						}
+						
+						$eeFileNiceName = FALSE;
 					}
+					
+					// Add the Description
+					if(!empty($eeNewFileArray['FileDescription'])) {
+						$eeUploadJob .= $eeNewFileArray['FileDescription'] . PHP_EOL . PHP_EOL;
+					}				
 					
 					$eeSFL_BASE->eeSFL_SortFiles($eeSFL_BASE->eeListSettings['SortBy'], $eeSFL_BASE->eeListSettings['SortOrder']);
 					

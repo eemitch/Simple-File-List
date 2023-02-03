@@ -2,7 +2,7 @@
 Contributors: eemitch
 Donate link: http://simplefilelist.com
 Tags: file list, file sharing, file upload form, upload files, exchange files, host files, zip files, dropbox, ftp
-Requires at least: 4.0
+Requires at least: 5.0
 Requires PHP: 7
 Tested up to: 6.1
 Stable tag: trunk
@@ -233,6 +233,9 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 = 6.0.7 =
 * Improved the fail condition if bad file list directory.
+* Improved thumbnails display to use the default icon should the source thumb file be missing.
+* Bug fix where if preserving the file name, that name was also used for subsequent files in the upload job.
+* Bug fix where the upload description was missing on the notification message.
 
 = 6.0.6 =
 * Bug fix where leading slash within the FileListDir settings was causing directory read failure.
