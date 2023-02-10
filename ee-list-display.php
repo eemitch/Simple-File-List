@@ -8,6 +8,12 @@ $eeSFL_ActionNonce = wp_create_nonce('eeSFL_ActionNonce'); // Security for Ajax
 $eeURL = eeSFL_BASE_GetThisURL();
 $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loaded: ee-list-display';
 
+global $eeSFL_HideName, $eeSFL_HideType;
+
+// Who is accessing this list?
+$eeThisUser = get_current_user_id();
+$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - USER ID: ' . $eeThisUser ;
+
 // echo '<pre>'; print_r($eeSFL_BASE->eeAllFiles); echo '</pre>'; exit;
 
 if( empty($eeSFL_BASE->eeAllFiles) ) { // Might be Set in Admin

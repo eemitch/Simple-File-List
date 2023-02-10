@@ -219,7 +219,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Upgrade Notice ==
 
-* 6.0.7 - The never ending quest for perfection.
+* 6.0.8 - The never ending quest for perfection.
 
 
 == Screenshots ==
@@ -230,6 +230,11 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 
 == Changelog ==
+
+= 6.0.8 =
+* Cleaned up file list display by not showing the item owner/submitter information for yourself.
+* Fixed an issue where item submitter info was being unnecessarily recorded on the back-end.
+* Took care of some undefined variable notices.
 
 = 6.0.7 =
 * Improved the fail condition if bad file list directory.

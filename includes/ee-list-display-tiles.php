@@ -46,12 +46,21 @@ foreach($eeSFL_BASE->eeAllFiles as $eeFileKey => $eeFileArray) { // <<<---------
 		$eeOutput .= '<p class="eeSFL_FileDesc ' . $eeClass . '">' . stripslashes($eeSFL_BASE->eeFileDescription) . '</p>'; // Always here for JS
 		
 		// Submitter Info
-		if($eeAdmin OR $eeSFL_BASE->eeListSettings['ShowSubmitterInfo'] == 'YES') {	
-			if($eeSFL_BASE->eeFileSubmitterName) {
-				$eeOutput .= '<small class="eeSFL_FileSubmitter"><span>' . $eeSFL_BASE->eeListSettings['LabelOwner'] . ': </span>
-					<a href="mailto:' . $eeSFL_BASE->eeFileSubmitterEmail . '">' . stripslashes($eeSFL_BASE->eeFileSubmitterName) . '</a></small>';
+		$eeShowIt = FALSE;
+		if($eeAdmin AND $eeThisUser != $eeSFL_BASE->eeFileOwner) {
+			$eeShowIt = TRUE;
+		} elseif($eeSFL_BASE->eeListSettings['ShowSubmitterInfo'] == 'YES' ) { 
+			if($eeThisUser AND $eeThisUser != $eeSFL_BASE->eeFileOwner) {
+				$eeShowIt = TRUE;
+			} elseif( !$eeThisUser ) { // Not logged in
+				$eeShowIt = TRUE;
 			}
 		}
+		if($eeShowIt AND $eeSFL_BASE->eeFileSubmitterName) {
+			$eeOutput .= '<p class="eeSFL_FileSubmitter"><span>' . $eeSFL_BASE->eeListSettings['LabelOwner'] . ': </span>
+				<a href="mailto:' . $eeSFL_BASE->eeFileSubmitterEmail . '">' . stripslashes($eeSFL_BASE->eeFileSubmitterName) . '</a></p>';
+		}
+		$eeShowIt = FALSE;
 		
 		$eeOutput .= '<div class="eeSFL_FileDetails">';
 

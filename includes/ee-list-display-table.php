@@ -118,12 +118,22 @@ foreach($eeSFL_BASE->eeAllFiles as $eeFileKey => $eeFileArray) { // <<<---------
 			
 			
 			// Submitter Info
-			if($eeAdmin OR $eeSFL_BASE->eeListSettings['ShowSubmitterInfo'] == 'YES') {	
-				if( $eeSFL_BASE->eeFileSubmitterName ) {
-					$eeOutput .= '<p class="eeSFL_FileSubmitter"><span>' . $eeSFL_BASE->eeListSettings['LabelOwner'] . ': </span>
-						<a href="mailto:' . $eeSFL_BASE->eeFileSubmitterEmail . '">' . stripslashes($eeSFL_BASE->eeFileSubmitterName) . '</a></p>';
+			$eeShowIt = FALSE;
+			if($eeAdmin AND $eeThisUser != $eeSFL_BASE->eeFileOwner) {
+				$eeShowIt = TRUE;
+			} elseif($eeSFL_BASE->eeListSettings['ShowSubmitterInfo'] == 'YES' ) { 
+				if($eeThisUser AND $eeThisUser != $eeSFL_BASE->eeFileOwner) {
+					$eeShowIt = TRUE;
+				} elseif( !$eeThisUser ) { // Not logged in
+					$eeShowIt = TRUE;
 				}
 			}
+			if($eeShowIt AND $eeSFL_BASE->eeFileSubmitterName) {
+				$eeOutput .= '<p class="eeSFL_FileSubmitter"><span>' . $eeSFL_BASE->eeListSettings['LabelOwner'] . ': </span>
+					<a href="mailto:' . $eeSFL_BASE->eeFileSubmitterEmail . '">' . stripslashes($eeSFL_BASE->eeFileSubmitterName) . '</a></p>';
+			}
+			$eeShowIt = FALSE;
+			
 			
 			// File Actions
 			$eeOutput .= $eeSFL_BASE->eeSFL_ReturnFileActions($eeFileID);

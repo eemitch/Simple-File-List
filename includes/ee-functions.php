@@ -418,35 +418,42 @@ function eeSFL_BASE_ProcessUpload() {
 							// If sanitized, use original is Nice Name
 							if($eeFileNiceName) { $eeNewFileArray['FileNiceName'] = $eeFileNiceName; }
 							
-							// Set these if available
-							if( isset($_POST['eeSFL_FileOwner']) ) { // Expecting a number
-								
-								if( is_numeric($_POST['eeSFL_FileOwner']) ) {
-									$eeNewFileArray['FileOwner'] = $_POST['eeSFL_FileOwner']; // Logged-in owner
-								}
 							
-							} else { // Don't need this if we have the owner's ID
+							// Save Owner Info
+							if( !is_admin() ) { // Front-end only
 								
-								if( isset($_POST['eeSFL_Name'])) {
-									
-									$eeString = sanitize_text_field($_POST['eeSFL_Name']);
-									
-									if($eeString) {
-										
-										$eeNewFileArray['SubmitterName'] = $eeString; // Who uploaded the file
-									}
-								}
+								$eeID = get_current_user_id();
 								
-								if( isset($_POST['eeSFL_Email'])) {
+								if($eeID === 0) {
 									
-									$eeString = filter_var( sanitize_email($_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL);
-									
-									if($eeString) {
+									$eeNewFileArray['FileOwner'] = '0'; // Public
+								
+									if( isset($_POST['eeSFL_Name'])) {
+											
+										$eeString = sanitize_text_field($_POST['eeSFL_Name']);
 										
-										$eeNewFileArray['SubmitterEmail'] = $eeString; // Their email
+										if($eeString) {
+											
+											$eeNewFileArray['SubmitterName'] = $eeString; // Who uploaded the file
+										}
 									}
+									
+									if( isset($_POST['eeSFL_Email'])) {
+										
+										$eeString = filter_var( sanitize_email($_POST['eeSFL_Email']), FILTER_VALIDATE_EMAIL);
+										
+										if($eeString) {
+											
+											$eeNewFileArray['SubmitterEmail'] = $eeString; // Their email
+										}
+									}
+								
+								} else {
+									$eeNewFileArray['FileOwner'] = $eeID;
 								}
 							}
+							
+							
 							
 							if( isset($_POST['eeSFL_FileDesc'])) {
 								
