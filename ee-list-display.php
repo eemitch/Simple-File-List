@@ -8,7 +8,8 @@ $eeSFL_ActionNonce = wp_create_nonce('eeSFL_ActionNonce'); // Security for Ajax
 $eeURL = eeSFL_BASE_GetThisURL();
 $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loaded: ee-list-display';
 
-global $eeSFL_HideName, $eeSFL_HideType;
+if(!isset($eeSFL_HideName)) { $eeSFL_HideName = FALSE; }
+if(!isset($eeSFL_HideType)) { $eeSFL_HideType = FALSE; }
 
 // Who is accessing this list?
 $eeThisUser = get_current_user_id();

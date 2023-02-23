@@ -18,7 +18,6 @@ if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settin
 		,'ShowFileDownload'
 		,'ShowFileCopyLink'
 		,'ShowFileDesc'
-		,'GetUploaderDesc'
 		,'ShowHeader'
 		,'SmoothScroll'
 		,'ShowSubmitterInfo'

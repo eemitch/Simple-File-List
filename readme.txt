@@ -219,7 +219,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Upgrade Notice ==
 
-* 6.0.8 - The never ending quest for perfection.
+* 6.0.9 - The never ending quest for perfection.
 
 
 == Screenshots ==
@@ -230,6 +230,10 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 
 == Changelog ==
+
+= 6.0.9 =
+* Bug fix where files with uppercase extensions which were added outside of the plugin would not create a thumbnail file.
+* Other minor fixes and improvements.
 
 = 6.0.8 =
 * Cleaned up file list display by not showing the item owner/submitter information for yourself.

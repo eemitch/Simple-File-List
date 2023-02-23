@@ -905,7 +905,7 @@ class eeSFL_BASE_MainClass {
 		    $eeActual = eeSFL_BASE_ActualUploadMax();
 			if( $this->eeListSettings['UploadMaxFileSize'] > $eeActual ) { 
 				$this->eeListSettings['UploadMaxFileSize'] = $eeActual;
-				update_option('eeSFL_Settings_' . $this->eeListID, $this->eeListSettings); // Set to Actual Max
+				update_option('eeSFL_Settings_1', $this->eeListSettings); // Set to Actual Max
 			}
 			
 			$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Re-Index Completed';
@@ -968,7 +968,7 @@ class eeSFL_BASE_MainClass {
 		    	
 		        $this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - File Found: ' . $eeThisItemName;
 		        
-		        $eeNewItemName = sanitize_file_name($eeThisItemName);
+		        $eeNewItemName = eeSFL_BASE_SanitizeFileName($eeThisItemName);
 		        
 		        if($eeNewItemName != $eeThisItemName) { // Sanitized
 		        
