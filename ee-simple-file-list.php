@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 6.0.9
+Version: 6.0.10
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // CONSTANTS
 define('eeSFL_BASE_DevMode', FALSE);
-define('eeSFL_BASE_Version', '6.0.9'); // Plugin version
+define('eeSFL_BASE_Version', '6.0.10'); // Plugin version
 define('eeSFL_BASE_PluginName', 'Simple File List');
 define('eeSFL_BASE_PluginSlug', 'ee-simple-file-list');
 define('eeSFL_BASE_PluginDir', 'simple-file-list');
@@ -33,6 +33,9 @@ define('eeSFL_BASE_Go', date('Y-m-d h:m:s') ); // Log Entry Key
 // Our Core
 $eeSFL_BASE = FALSE; // Our main class
 $eeSFL_BASE_VarsForJS = array(); // Strings for JS
+
+// Extensions
+$eeSFLM = FALSE; // Media Player
 
 // simplefilelist_upload_job <<<----- File Upload Action Hooks (Ajax)
 add_action( 'wp_ajax_simplefilelist_upload_job', 'simplefilelist_upload_job' );

@@ -8,7 +8,7 @@ $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loaded: ee-admin-page';
 // Admin-Side Display
 function eeSFL_BASE_BackEnd() {
 	
-	global $eeSFL_BASE;
+	global $eeSFL_BASE, $eeSFLM;
 	
 	$eeConfirm = FALSE;
 	$eeForceSort = FALSE; // Only used in shortcode
@@ -193,6 +193,12 @@ function eeSFL_BASE_BackEnd() {
 	    $active_subtab == 'email_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('Notification Settings', 'ee-simple-file-list') . '</a>';
 	    
+	    // Extension Settings
+		$eeOutput .= '<a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=settings&subtab=extension_settings" class="nav-tab ';  
+		if($active_subtab == 'extension_settings') {$eeOutput .= '  eeActiveTab ';}    
+		$active_subtab == 'extension_settings' ? 'nav-tab-active' : '';    
+		$eeOutput .= $active_subtab . '">' . __('Extension Settings', 'ee-simple-file-list') . '</a>';
+	    
 	    // END Subtabs
 	    $eeOutput .= '
 	    
@@ -211,6 +217,11 @@ function eeSFL_BASE_BackEnd() {
 			
 			$eeSFL_Nonce = wp_create_nonce('eeInclude');
 			include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-email-settings.php'); // The Notifications Settings
+		
+		} elseif($active_subtab == 'extension_settings') {
+			
+			$eeSFL_Nonce = wp_create_nonce('eeInclude');
+			include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-extension-settings.php'); // Extension Settings
 		
 		} else {
 			

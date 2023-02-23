@@ -41,8 +41,8 @@ if( $eeSFL_Uploaded ) {
 
 	if(count($eeSFL_BASE->eeAllFiles) == 0) {
 		$eeSFL_BASE->eeAllFiles = array();
-		$eeSFL_BASE->eeLog[eeSFL_Go]['errors'][] = 'Upload Processing Error.';
-		$eeSFL_BASE->eeLog[eeSFL_Go]['errors'][] = $eeSFL_BASE->eeEnvironment['UploadedFiles'];
+		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'][] = 'Upload Processing Error.';
+		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'][] = $eeSFL_BASE->eeEnvironment['UploadedFiles'];
 	}
 }
 
