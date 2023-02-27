@@ -193,11 +193,13 @@ function eeSFL_BASE_BackEnd() {
 	    $active_subtab == 'email_settings' ? 'nav-tab-active' : '';    
 	    $eeOutput .= $active_subtab . '">' . __('Notification Settings', 'ee-simple-file-list') . '</a>';
 	    
-	    // Extension Settings
+	    // Extension Settings (Coming Soon)
+/*
 		$eeOutput .= '<a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=settings&subtab=extension_settings" class="nav-tab ';  
 		if($active_subtab == 'extension_settings') {$eeOutput .= '  eeActiveTab ';}    
 		$active_subtab == 'extension_settings' ? 'nav-tab-active' : '';    
 		$eeOutput .= $active_subtab . '">' . __('Extension Settings', 'ee-simple-file-list') . '</a>';
+*/
 	    
 	    // END Subtabs
 	    $eeOutput .= '

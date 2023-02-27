@@ -219,7 +219,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Upgrade Notice ==
 
-* 6.0.9 - The never ending quest for perfection.
+* 6.0.10 - The never ending quest for perfection.
 
 
 == Screenshots ==
@@ -230,6 +230,9 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 
 == Changelog ==
+
+= 6.0.10 =
+* Fixed some low threat XXS vulnerabilities.
 
 = 6.0.9 =
 * Bug fix where files with uppercase extensions which were added outside of the plugin would not create a thumbnail file.

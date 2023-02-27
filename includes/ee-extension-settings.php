@@ -10,7 +10,7 @@ if(isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-setting
 	
 	// Email File Sending
 	if($eeSFLM) {
-		$eeSFLE_Nonce = wp_create_nonce('eeSFLM_Include'); // Security
+		$eeSFLM_Nonce = wp_create_nonce('eeSFLM_Include'); // Security
 		// include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-media/includes/ee-media-settings-process.php');
 	}
 	
@@ -64,7 +64,7 @@ $eeOutput .= '<input type="hidden" name="eePost" value="TRUE" />
 // Media Player
 if($eeSFLM) { $eeOutput .= $eeSFLM->eeSFLM_SettingsInputsDisplay(); } 
 	else {
-		$eeSFL_Nonce = wp_create_nonce('eeSFLA');
+		$eeSFL_Nonce = wp_create_nonce('eeSFL');
 		include_once($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-plugin-extension-SFLM.php');
 }
 
@@ -75,7 +75,8 @@ $eeOutput .= '</div>
 <div class="eeColRight">';
 
 // Go Pro
-
+$eeSFL_Nonce = wp_create_nonce('eeSFL');
+include_once($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-plugin-extension-SFL-PRO.php');
 
 $eeOutput .= '
 
@@ -84,7 +85,7 @@ $eeOutput .= '
 
 <div class="eeColInline eeSettingsTile">
 				
-	<input class="button" type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list-pro') . '" />
+	<input class="button" type="submit" name="submit" value="' . __('SAVE', 'ee-simple-file-list') . '" />
 			
 </div>
 		
