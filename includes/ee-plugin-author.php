@@ -8,8 +8,6 @@ $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loaded: ee-plugin-author';
 // Plugin Contributors Array - Format: Name|URL|DESCRIPTION Example: Thnaks to <a href="URL">NAME</a> DESCRIPTION
 // Values here are inserted below
 $eeContributors = array('dmhendricks|https://github.com/dmhendricks/file-icon-vectors| for the awesome file type icons');  // else it's FALSE;
-
-// $eePageSlug = $_GET['page'];
 	
 // The Content
 $eeOutput .= '<section class="eeSFL_Settings">

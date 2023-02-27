@@ -26,7 +26,7 @@ function eeSFL_BASE_BackEnd() {
 	}
 
 	// Get the new tab's query string value. We will only use values to display tabs that we are expecting.
-	if( isset( $_GET[ 'tab' ] ) ) { $active_tab = sanitize_text_field($_GET[ 'tab' ]); } else { $active_tab = 'file_list'; }
+	if( isset( $_GET[ 'tab' ] ) ) { $active_tab = esc_js(sanitize_text_field($_GET[ 'tab' ])); } else { $active_tab = 'file_list'; }
 	
 	$eeOutput .= '
 	<h2 class="nav-tab-wrapper">';
@@ -168,7 +168,7 @@ function eeSFL_BASE_BackEnd() {
 	} elseif($active_tab == 'settings') {
 		
 		// Sub Tabs
-		if( isset( $_GET[ 'subtab' ] ) ) { $active_subtab = sanitize_text_field($_GET['subtab']); } else { $active_subtab = 'list_settings'; }
+		if( isset( $_GET[ 'subtab' ] ) ) { $active_subtab = esc_js(sanitize_text_field($_GET['subtab'])); } else { $active_subtab = 'list_settings'; }
 	    	
     	$eeOutput .= '
     	

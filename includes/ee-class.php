@@ -1458,7 +1458,7 @@ class eeSFL_BASE_MainClass {
 				
 				$eeSFL_Body .= PHP_EOL . PHP_EOL . __('Uploader Information', 'ee-simple-file-list') . PHP_EOL;
 				
-				$eeSFL_Name = substr(sanitize_text_field(@$_POST['eeSFL_Name']), 0, 64);
+				$eeSFL_Name = esc_textarea(substr(sanitize_text_field(@$_POST['eeSFL_Name']), 0, 64));
 				$eeSFL_Name = strip_tags($eeSFL_Name);
 				if($eeSFL_Name) { 
 					$eeSFL_Body .= __('Uploaded By', 'ee-simple-file-list') . ': ' . ucwords($eeSFL_Name) . " - ";
@@ -1468,7 +1468,7 @@ class eeSFL_BASE_MainClass {
 				$eeSFL_Body .= strtolower($eeSFL_Email) . PHP_EOL;
 				$eeSFL_ReplyTo = $eeSFL_Name . ' <' . $eeSFL_Email . '>';
 				
-				$eeSFL_FileDesc = substr(sanitize_text_field(@$_POST['eeSFL_FileDesc']), 0, 5012);
+				$eeSFL_FileDesc = esc_textarea(substr(sanitize_text_field(@$_POST['eeSFL_FileDesc']), 0, 5012));
 				$eeSFL_FileDesc = strip_tags($eeSFL_FileDesc);
 				if($eeSFL_FileDesc) {
 					$eeSFL_Body .= $eeSFL_FileDesc . PHP_EOL . PHP_EOL;

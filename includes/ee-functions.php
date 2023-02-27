@@ -333,7 +333,7 @@ function eeSFL_BASE_ProcessUpload() {
 	
 	if( isset($_POST['eeSFL_UploadFolder']) ) { 
 		
-		$eeSFL_UploadFolder = sanitize_text_field( urldecode($_POST['eeSFL_UploadFolder']) );
+		$eeSFL_UploadFolder = esc_textarea(sanitize_text_field( urldecode($_POST['eeSFL_UploadFolder']) ));
 	
 	} else { $eeSFL_UploadFolder = FALSE; }
 	
@@ -430,7 +430,7 @@ function eeSFL_BASE_ProcessUpload() {
 								
 									if( isset($_POST['eeSFL_Name'])) {
 											
-										$eeString = sanitize_text_field($_POST['eeSFL_Name']);
+										$eeString = esc_textarea(sanitize_text_field($_POST['eeSFL_Name']));
 										
 										if($eeString) {
 											
@@ -457,7 +457,7 @@ function eeSFL_BASE_ProcessUpload() {
 							
 							if( isset($_POST['eeSFL_FileDesc'])) {
 								
-								$eeString = sanitize_text_field($_POST['eeSFL_FileDesc']);
+								$eeString = esc_textarea(sanitize_text_field($_POST['eeSFL_FileDesc']));
 								
 								if($eeString) {
 									
@@ -628,12 +628,12 @@ function eeSFL_BASE_ProcessTextInput($eeTerm, $eeType = 'text') {
 	
 	} elseif($eeType == 'textarea') {
 		
-		$eeValue = sanitize_textarea_field( @$_POST['ee' . $eeTerm] );
+		$eeValue = esc_textarea(sanitize_textarea_field( @$_POST['ee' . $eeTerm] ));
 		
 	} else {
 		
 		$eeValue = strip_tags(@$_POST['ee' . $eeTerm]);
-		$eeValue = sanitize_text_field($eeValue);
+		$eeValue = esc_textarea(sanitize_text_field($eeValue));
 	}
 	
 	return $eeValue;

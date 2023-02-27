@@ -620,7 +620,7 @@ function eeSFL_BASE_FileUploader() {
 					}
 					
 					// Update the File Date
-					$eeDate = sanitize_text_field($_POST['eeSFL_FileDate']);
+					$eeDate = esc_textarea(sanitize_text_field($_POST['eeSFL_FileDate']));
 					$eeDate = strtotime($eeDate);
 					if($eeDate) {
 						touch($eeTarget, $eeDate);  // Do nothing if bad date
@@ -677,7 +677,7 @@ function eeSFL_BASE_FileEditor() {
 		if( !$eeFileAction ) { return "Missing the Action"; }
 		
 		// The Current File Name
-		if( strlen($_POST['eeFileName']) ) { $eeFileName = sanitize_text_field($_POST['eeFileName']); }
+		if( strlen($_POST['eeFileName']) ) { $eeFileName = esc_textarea(sanitize_text_field($_POST['eeFileName'])); }
 		if(!$eeFileName) { return "Missing the File Name"; }
 		
 		// Folder Path - PRO ONLY
@@ -721,7 +721,7 @@ function eeSFL_BASE_FileEditor() {
 			
 			// The Nice Name - Might be empty
 			if($_POST['eeFileNiceNameNew'] != 'false') {
-				$eeFileNiceNameNew = trim(sanitize_text_field($_POST['eeFileNiceNameNew']));
+				$eeFileNiceNameNew = trim(esc_textarea(sanitize_text_field($_POST['eeFileNiceNameNew'])));
 				if(!$eeFileNiceNameNew) { $eeFileNiceNameNew = ''; } 
 				$eeSFL_BASE->eeSFL_UpdateFileDetail($eeFileName, 'FileNiceName', $eeFileNiceNameNew);
 			}
@@ -731,7 +731,7 @@ function eeSFL_BASE_FileEditor() {
 			// The Description - Might be empty
 			if($_POST['eeFileDescNew'] != 'false') {
 			
-				$eeFileDescriptionNew = trim(sanitize_text_field($_POST['eeFileDescNew']));
+				$eeFileDescriptionNew = trim(esc_textarea(sanitize_text_field($_POST['eeFileDescNew'])));
 				
 				if(!$eeFileDescriptionNew) { $eeFileDescriptionNew = ''; }
 				
