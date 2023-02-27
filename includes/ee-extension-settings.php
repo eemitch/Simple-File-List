@@ -8,14 +8,13 @@ $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - L
 // Check for POST and Nonce
 if(isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {
 	
-	// Email File Sending
+	// Media Player Settings Process
 	if($eeSFLM) {
-		$eeSFLM_Nonce = wp_create_nonce('eeSFLM_Include'); // Security
-		// include_once(WP_PLUGIN_DIR . '/ee-simple-file-list-media/includes/ee-media-settings-process.php');
+		$eeSFLM->eeSFLM_SettingsProcess('_BASE', eeSFL_BASE_Go, 1);
 	}
 	
 	// Update DB
-	update_option('eeSFL_Settings_1', $eeSFL_BASE->eeListSettings );
+	// update_option('eeSFL_Settings_1', $eeSFL_BASE->eeListSettings );
 	
 	$eeConfirm = __('List Settings Saved', 'ee-simple-file-list');
 }

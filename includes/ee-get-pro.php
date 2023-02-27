@@ -19,9 +19,10 @@ $eeOutput .= '<section class="eeSFL_Settings">
 		<img src="' . $eeSFL_BASE->eeEnvironment['pluginURL'] . 'images/SFL-Pro-Admin-List.jpg" width="663" height="721" class="eeFloatRight" alt="Screenshot of back-end file list" />
 	</a>
 	
-	<p>' . __('The Pro version adds new features and is also extendable, allowing you to add more specific features as needed.', 'simple-file-list') . ' ' . __('Cost is just once per domain, including one staging domain. There are no recurring fees.', 'ee-simple-file-list') . '</p>
+	<p>' . __('The Pro version adds new features and is further extendable.', 'simple-file-list') . '</p>
+	<p>' . __('Cost is just once per domain. This includes all first-level sub-domains, plus a separate staging domain. There are no recurring fees.', 'ee-simple-file-list') . '</p>
 	
-	<h2>' . __('Create Unlimited Sub-Folders', 'ee-simple-file-list') . '</h2>
+	<h2>Pro Features</h2>
 	
 	<ul>
 		<li>' . __('Create folders and unlimited levels of sub-folders.', 'ee-simple-file-list') . '</li>
@@ -34,40 +35,30 @@ $eeOutput .= '<section class="eeSFL_Settings">
 		<li>' . __('Front-side users cannot navigate above the folder you specify.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Sort folders first or sort along with the files.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Display folder sizes and the count of items within.', 'ee-simple-file-list') . '</li>
-		
-	</ul>
-	
-	<h2>' . __('Get More Features', 'ee-simple-file-list') . '</h2>
-	<ul>	
-		
 		<li>' . __('Optionally define a custom directory for your file list.', 'ee-simple-file-list') . '*</li>
 		<li>' . __('Bulk file editing allows you to download, move, delete or add descriptions to many files or folders at once.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Edit file dates. Change the date added or the modification date of any file or folder.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Allow front-end users to download entire folders, or multiple files or folders at once as a zip file.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Use the Shortcode Builder to create custom snippets for secondary file list location.', 'ee-simple-file-list') . '</li>
 		<li>' . __('A Tools Tab allows you to reset settings, the file list array and delete orphaned thumbnails.', 'ee-simple-file-list') . '</li>
-		<li>' . __('Go Pro and recieve much improved customer support.', 'ee-simple-file-list') . '</li>
 		<li>' . __('Updating Pro to newer versions works just like the free plugin.', 'ee-simple-file-list') . '</li>
 	</ul>
 	
-	<h2>' . __('Pro is Extendable', 'ee-simple-file-list') . '</h2>
+	<h2>' . __('Pro is More Extendable', 'ee-simple-file-list') . '</h2>
+	
+	<p>' . __('Pro extensions to give you even more features:', 'ee-simple-file-list') . '</p>
 	
 	<ul>
-		<li>' . __('Add extensions to give you even more features:', 'ee-simple-file-list') . '
-			<ul>
-				<li><a href="https://simplefilelist.com/file-access-manager/?pr=free" target="_blank">' . __('File Access Manager', 'ee-simple-file-list') . '</a><br />' . 
-				__('Create additional file lists, each with its own directory, settings and access restrictions.', 'ee-simple-file-list') . ' ' . 
-				__( 'Limit list or file access by WordPress user or role.', 'ee-simple-file-list') . '</li>
-				<li><a href="https://simplefilelist.com/add-search-pagination/?pr=free" target="_blank">' . __('Search and Pagination', 'ee-simple-file-list') . '</a><br />' . 
-				__('Search for files by name, description, date range or file owner.', 'ee-simple-file-list') . ' ' . 
-				__('Add pagination to break up large file lists into smaller sections.', 'ee-simple-file-list') . '</li>
-				<li><a href="https://simplefilelist.com/send-files-by-email/?pr=free" target="_blank">' . __('Send Files by Email', 'ee-simple-file-list') . '</a><br />' . 
-				__('Send an email with links to your files. Send to multiple recipients and CC more.', 'ee-simple-file-list') . '</li>
-				<li><a href="https://simplefilelist.com/send-files-by-media/?pr=free" target="_blank">' . __('Media Player', 'ee-simple-file-list') . '</a><br />' . 
-				__('Adds a HTML5 media player below each audio file.', 'ee-simple-file-list') . '</li>
-			</ul>
-		</li>
+		<li><a href="https://simplefilelist.com/file-access-manager/?pr=free" target="_blank">' . __('File Access Manager', 'ee-simple-file-list') . '</a><br />' . 
+		__('Create additional file lists, each with its own directory, settings and access restrictions.', 'ee-simple-file-list') . ' ' . 
+		__( 'Limit list or file access by WordPress user or role.', 'ee-simple-file-list') . '</li>
+		<li><a href="https://simplefilelist.com/add-search-pagination/?pr=free" target="_blank">' . __('Search and Pagination', 'ee-simple-file-list') . '</a><br />' . 
+		__('Search for files by name, description, date range or file owner.', 'ee-simple-file-list') . ' ' . 
+		__('Add pagination to break up large file lists into smaller sections.', 'ee-simple-file-list') . '</li>
+		<li><a href="https://simplefilelist.com/send-files-by-email/?pr=free" target="_blank">' . __('Send Files by Email', 'ee-simple-file-list') . '</a><br />' . 
+		__('Send an email with links to your files. Send to multiple recipients and CC more.', 'ee-simple-file-list') . '</li>
 	</ul>
+
 	<p><a class="button eeGet" target="_blank" href="https://demo.simple-file-list.com/">' . __('Try the Pro Demo', 'ee-simple-file-list') . '</a> 
 	<a class="button eeGet" target="_blank" href="https://get.simplefilelist.com/index.php?eeDomain=' . urlencode(eeSFL_BASE_GetThisURL(FALSE)) . '&eeExtension=ee-simple-file-list-pro&eeEmail=' . urlencode($eeSFL_ThisEmail) . '">' . __('Upgrade to Pro Now', 'ee-simple-file-list') . '</a></p>
 	

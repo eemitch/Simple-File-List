@@ -231,6 +231,10 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Changelog ==
 
+= 6.0.11 =
+* Added Extensions tab to the List Settings.
+* Added first available extension: Media Player
+
 = 6.0.10 =
 * Fixed some low threat XXS vulnerabilities.
 
