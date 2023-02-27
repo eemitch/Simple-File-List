@@ -34,7 +34,12 @@ define('eeSFL_BASE_Go', date('Y-m-d h:m:s') ); // Log Entry Key
 $eeSFL_BASE = FALSE; // Our main class
 $eeSFL_BASE_VarsForJS = array(); // Strings for JS
 
-// Extensions
+// Supported Extensions
+$eeSFL_BASE_Extensions = array( // Slug => Required Version
+	'ee-simple-file-list-media' => '1' // Total Appearance Control
+);
+
+// Extension Objects
 $eeSFLM = FALSE; // Media Player
 
 // simplefilelist_upload_job <<<----- File Upload Action Hooks (Ajax)
@@ -77,7 +82,12 @@ function eeSFL_BASE_Textdomain() {
 // Plugin Setup
 function eeSFL_BASE_Setup() {
 	
-	global $eeSFL_BASE, $eeSFL_BASE_VarsForJS;
+	global $eeSFL_BASE, $eeSFL_BASE_VarsForJS, $eeSFL_BASE_Extensions;
+	
+	// A required resource...
+	if(!function_exists('is_plugin_active')) {
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' ); 
+	}
 	
 	// Translation strings to pass to javascript as eesfl_vars
 	$eeProtocol = isset( $_SERVER['HTTPS'] ) ? 'https://' : 'http://';
@@ -143,6 +153,55 @@ function eeSFL_BASE_Setup() {
 	if(!is_admin() OR !$eeLocaleSetting OR $eeLocaleSetting != 'en_US') {
 		eeSFL_BASE_Textdomain(); 
 	}
+	
+	
+	// Extensions
+	if(isset($eeSFL_BASE_Extensions)) {
+	
+		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Checking for Extensions ...';
+	
+		// Loop thru and set up
+		foreach($eeSFL_BASE_Extensions as $eeSFL_Extension => $eeReqVersion) {
+		
+			if( is_plugin_active( $eeSFL_Extension . '/' . $eeSFL_Extension . '.php' ) ) { // Is the extension active?
+		
+				// Check for old plugins
+				$eeVersionFile = WP_PLUGIN_DIR . '/' . $eeSFL_Extension . '/version.txt';
+				
+				if(file_exists($eeVersionFile)) {
+					
+					$eeVersion = file_get_contents($eeVersionFile);
+					
+					if(version_compare( $eeVersion , $eeReqVersion, '>=')) {
+						
+						$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['active'][] = $eeSFL_Extension; // Need this for later
+				
+						$eeSFL_Nonce = wp_create_nonce('eeSFL_Include'); // Used in all extension INI files
+				
+						include_once(WP_PLUGIN_DIR . '/' . $eeSFL_Extension . '/ee-ini.php'); // Run initialization
+					
+					} else {
+					
+						$eeERROR = '<strong>' . $eeSFL_Extension . ' &larr; ' . __('EXTENSION DISABLED', 'ee-simple-file-list') . '</strong><br />' . 
+							__('Please go to Plugins and update the extension to the latest version.', 'ee-simple-file-list');
+						
+						if( is_admin() AND @$_GET['page'] == 'ee-simple-file-list') {
+							$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'][] = $eeERROR;
+						}
+					}
+					
+				} else {
+					
+					continue; // Ignore really old extensions
+				}	
+			}
+		}
+	}
+	
+	
+	
+	
+	
 	
 	return TRUE;
 }

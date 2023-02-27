@@ -62,10 +62,10 @@ $eeOutput .= '<input type="hidden" name="eePost" value="TRUE" />
 <div class="eeColLeft">';
 
 // Media Player
-if($eeSFLM) { $eeOutput .= $eeSFLM->eeSFLS_SettingsInputsDisplay(); } 
+if($eeSFLM) { $eeOutput .= $eeSFLM->eeSFLM_SettingsInputsDisplay(); } 
 	else {
 		$eeSFL_Nonce = wp_create_nonce('eeSFLA');
-		// include_once($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-plugin-extension-SFLM.php');
+		include_once($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-plugin-extension-SFLM.php');
 }
 
 $eeOutput .= '</div>
