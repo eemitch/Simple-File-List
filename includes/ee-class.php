@@ -23,7 +23,7 @@ class eeSFL_BASE_MainClass {
     	'eps', 'flv', 'gz', 'indd', 'iso', 'jpeg', 'jpg', 'm4v', 'mov', 'mp3', 'mp4', 'mpeg', 'mpg', 'pdf', 'png', 
 		'pps', 'ppsx', 'ppt', 'pptx', 'psd', 'tar', 'tgz', 'tif', 'tiff', 'txt', 'wav', 'wma', 'wmv', 'xls', 'xlsx', 'zip');
 	
-	public $eeOpenableFileFormats = array('aif', 'aiff', 'avi', 'bmp', 'flv', 'jpeg', 'jpg', 'gif', 'm4v', 'mov', 'mp3', 'mp4', 'mpeg', 'mpg', 'pdf', 'png', 
+	public $eeOpenableFileFormats = array('aif', 'aiff', 'avi', 'bmp', 'flv', 'jpeg', 'jpg', 'gif', 'm4v', 'mov', 'mp3', 'mp4', 'mpeg', 'mpg', 'ogg', 'pdf', 'png', 
 		'txt', 'wav', 'wma', 'wmv', 'htm', 'html');
     
     public $eeExcludedFileNames = array('error_log', 'index.html');
@@ -360,6 +360,7 @@ class eeSFL_BASE_MainClass {
 			$this->eeFileExt = basename($eeFileArray['FileExt']); // Just the name
 			$this->eeFileURL = $this->eeEnvironment['wpSiteURL'] . $this->eeListSettings['FileListDir'] . $this->eeFilePath; // Clickable URL
 			$this->eeFileSize = eeSFL_BASE_FormatFileSize($eeFileArray['FileSize']); // Formatted Size
+			$this->eeFileMIME = $eeFileArray['FileMIME'];
 			
 			// Reset These
 			$this->eeFileNiceName = FALSE;

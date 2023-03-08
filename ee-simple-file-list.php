@@ -36,7 +36,7 @@ $eeSFL_BASE_VarsForJS = array(); // Strings for JS
 
 // Supported Extensions
 $eeSFL_BASE_Extensions = array( // Slug => Required Version
-	'ee-simple-file-list-media' => '1' // Total Appearance Control
+	'ee-simple-file-list-media' => '1' // AV File Playback
 );
 
 // Extension Objects
