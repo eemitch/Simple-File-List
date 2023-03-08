@@ -232,8 +232,8 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 == Changelog ==
 
 = 6.0.11 =
-* Added Extensions tab to the List Settings.
-* Added first available extension: Media Player
+* Added support for the new Simple File List Media extension.
+** Go to the new List Settings > Extension Settings tab to access it.
 
 = 6.0.10 =
 * Fixed some low threat XXS vulnerabilities.
