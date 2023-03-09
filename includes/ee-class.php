@@ -520,6 +520,8 @@ class eeSFL_BASE_MainClass {
 			
 			if(function_exists('mime_content_type')) {
 				$eeFileArray['FileMIME'] = mime_content_type(ABSPATH . $this->eeListSettings['FileListDir'] . $eeFilePath); // MIME Type
+			} else {
+				$eeFileArray['FileMIME'] = 'no/mime';
 			}
 			
 			$eeFileArray['FileSize'] = filesize(ABSPATH . $this->eeListSettings['FileListDir'] . $eeFilePath);
@@ -801,6 +803,15 @@ class eeSFL_BASE_MainClass {
 						
 						unset($this->eeAllFiles[$eeKey]);
 						continue;
+					}
+					
+					// MIME Type
+					if(!isset($this->eeAllFiles[$eeKey]['FileMIME'])) {
+						if(function_exists('mime_content_type')) {
+							$this->eeAllFiles[$eeKey]['FileMIME'] = mime_content_type($eeFile); // MIME Type
+						} else {
+							$this->eeAllFiles[$eeKey]['FileMIME'] = 'no/mime';
+						}
 					}
 						
 					// Update modification date
