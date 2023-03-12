@@ -219,7 +219,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Upgrade Notice ==
 
-* 6.0.10 - The never ending quest for perfection.
+* 6.0.12 - The never ending quest for perfection.
 
 
 == Screenshots ==
@@ -230,6 +230,9 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 
 == Changelog ==
+
+= 6.0.12 =
+* Rewrote the entire upload routine to improve speed, efficiency and improve failure notices.
 
 = 6.0.11 =
 * Added support for the new Simple File List Media extension.

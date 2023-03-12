@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 6.0.11
+Version: 6.0.12
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // CONSTANTS
 define('eeSFL_BASE_DevMode', FALSE);
-define('eeSFL_BASE_Version', '6.0.11'); // Plugin version
+define('eeSFL_BASE_Version', '6.0.12'); // Plugin version
 define('eeSFL_BASE_PluginName', 'Simple File List');
 define('eeSFL_BASE_PluginSlug', 'ee-simple-file-list');
 define('eeSFL_BASE_PluginDir', 'simple-file-list');
@@ -31,8 +31,9 @@ define('eeSFL_BASE_AdminEmail', 'admin@simplefilelist.com');
 define('eeSFL_BASE_Go', date('Y-m-d h:m:s') ); // Log Entry Key
 
 // Our Core
-$eeSFL_BASE = FALSE; // Our main class
-$eeSFL_BASE_VarsForJS = array(); // Strings for JS
+$eeSFL_BASE = FALSE; // Our Main Class
+$eeSFLU_BASE = FALSE; // Our Upload Class
+$eeSFL_BASE_VarsForJS = array(); // Strings to Pass to JavaScript
 
 // Supported Extensions
 $eeSFL_BASE_Extensions = array( // Slug => Required Version
@@ -82,7 +83,7 @@ function eeSFL_BASE_Textdomain() {
 // Plugin Setup
 function eeSFL_BASE_Setup() {
 	
-	global $eeSFL_BASE, $eeSFL_BASE_VarsForJS, $eeSFL_BASE_Extensions;
+	global $eeSFL_BASE, $eeSFLU_BASE, $eeSFL_BASE_VarsForJS, $eeSFL_BASE_Extensions;
 	
 	// A required resource...
 	if(!function_exists('is_plugin_active')) {
@@ -118,8 +119,13 @@ function eeSFL_BASE_Setup() {
 		// Main Class
 		$eeSFL_Nonce = wp_create_nonce('eeSFL_Class'); // Security
 		require_once(plugin_dir_path(__FILE__) . 'includes/ee-class.php'); 
-		$eeSFL_BASE = new eeSFL_BASE_MainClass(); // CREATE INSTANCE OF SIMPLE FILE LIST CLASS
+		$eeSFL_BASE = new eeSFL_BASE_MainClass();
 		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Simple File List is Loading...';
+		
+		// Upload Class
+		$eeSFL_Nonce = wp_create_nonce('eeSFL_Class'); // Security
+		require_once(plugin_dir_path(__FILE__) . 'includes/ee-class-uploads.php'); 
+		$eeSFLU_BASE = new eeSFL_BASE_UploadClass();
 		
 		// Initialize the Log
 		$eeSFL_StartTime = round( microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"], 3); // Starting Time
@@ -213,7 +219,7 @@ add_action('init', 'eeSFL_BASE_Setup');
 // Shortcode
 function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSFL]
 	
-	global $eeSFL_BASE, $eeSFL_BASE_VarsForJS;
+	global $eeSFL_BASE, $eeSFLU_BASE, $eeSFL_BASE_VarsForJS;
     
     $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Shortcode Function Loading ...';
 	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_GetThisURL();
@@ -490,7 +496,9 @@ add_action('admin_enqueue_scripts', 'eeSFL_BASE_AdminHead');
 // Function name must be the same as the action name to work on front side ?
 function simplefilelist_upload_job() {
 
-	$eeResult = eeSFL_BASE_FileUploader();
+	global $eeSFLU_BASE;
+	
+	$eeResult = $eeSFLU_BASE->eeSFL_FileUploader();
 
 	echo $eeResult;
 
@@ -514,143 +522,17 @@ add_action( 'wp_ajax_simplefilelist_edit_job', 'simplefilelist_edit_job' );
 
 
 // File Upload Engine
+/*
 function eeSFL_BASE_FileUploader() {
 	
-	global $eeSFL_BASE;
+	global $eeSFLU_BASE;
 	
-	// The FILE object
-	if(empty($_FILES)) { 
-		return 'Missing File Input';
-	}
+	$eeReturn = $eeSFLU_BASE->eeSFL_FileUploader();
 	
-	if( !is_admin() ) { // Front-side protections
+	return $eeReturn;
 	
-		// Who should be uploading?
-		switch ($eeSFL_BASE->eeListSettings['AllowUploads']) {
-		    case 'YES':
-		        break; // Allow it, even if it's dangerous.
-		    case 'USER':
-		        // Allow it if logged in at all
-		        if( get_current_user_id() ) { break; } else { return 'ERROR 97'; }
-		    case 'ADMIN':
-		        // Allow it if admin only.
-		        if(current_user_can('manage_options')) { break; } else { return 'ERROR 97'; }
-		        break;
-			default: // Don't allow at all
-				return 'ERROR 97';
-		}
-	} 
-	
-	// Get this List's Settings
-	$eeSFL_BASE->eeSFL_GetSettings(1);	
-	$eeSFL_FileUploadDir = $eeSFL_BASE->eeListSettings['FileListDir'];
-
-	// Check size
-	$eeSFL_FileSize = filter_var($_FILES['file']['size'], FILTER_VALIDATE_INT);
-	$eeSFL_UploadMaxFileSize = $eeSFL_BASE->eeListSettings['UploadMaxFileSize']*1024*1024; // Convert MB to B
-	
-	if($eeSFL_FileSize > $eeSFL_UploadMaxFileSize) {
-		return "File size is too large.";
-	}
-	
-	// Go...
-	if(is_dir(ABSPATH . $eeSFL_FileUploadDir)) {
-			
-		if(wp_verify_nonce(@$_POST['ee-simple-file-list-upload'], 'ee-simple-file-list-upload')) {
-			
-			// Temp file
-			$eeTempFile = $_FILES['file']['tmp_name'];
-			
-			// Clean up messy names
-			$eeSFL_FileName = eeSFL_BASE_SanitizeFileName($_FILES['file']['name']);
-			
-			// Check if it already exists
-			if($eeSFL_BASE->eeListSettings['AllowOverwrite'] == 'NO') { 
-				$eeSFL_FileName = eeSFL_BASE_CheckForDuplicateFile($eeSFL_FileUploadDir . $eeSFL_FileName);
-			}
-			
-			eeSFL_BASE_DetectUpwardTraversal($eeSFL_FileUploadDir . $eeSFL_FileName); // Die if foolishness
-			
-			$eeSFL_PathParts = pathinfo($eeSFL_FileName);
-			$eeSFL_FileNameAlone = $eeSFL_PathParts['filename'];
-			$eeSFL_Extension = strtolower($eeSFL_PathParts['extension']); // We need to do this here and in eeSFL_ProcessUpload()
-			
-			// Format Check
-			$eeSFL_FileFormatsArray = array_map('trim', explode(',', $eeSFL_BASE->eeListSettings['FileFormats']));
-			
-			if(!in_array($eeSFL_Extension, $eeSFL_FileFormatsArray) OR in_array($eeSFL_Extension, $eeSFL_BASE->eeForbiddenTypes)) {
-				return 'File type not allowed: (' . $eeSFL_Extension . ')';	
-			}
-			
-			// Assemble FilePath
-			$eeSFL_TargetFile = $eeSFL_FileUploadDir . $eeSFL_FileNameAlone . '.' . $eeSFL_Extension;
-			
-			// Check if the name has changed
-			if($_FILES['file']['name'] != $eeSFL_FileName) {
-				
-				// Set a transient with the new name so we can get it in ProcessUpload() after the form is submitted
-				$eeOldFilePath = 'eeSFL-Renamed-' . str_replace($eeSFL_BASE->eeListSettings['FileListDir'], '', $eeSFL_FileUploadDir . $_FILES['file']['name']); // Strip the FileListDir
-				$eeOldFilePath = esc_sql(urlencode($eeOldFilePath));
-				$eeNewFilePath = str_replace($eeSFL_BASE->eeListSettings['FileListDir'], '', $eeSFL_TargetFile); // Strip the FileListDir
-				set_transient($eeOldFilePath, $eeNewFilePath, 900); // Expires in 15 minutes
-			}
-			
-			$eeTarget = ABSPATH . $eeSFL_TargetFile;
-			
-			// return $eeTarget;
-			
-			// Save the file
-			if( move_uploaded_file($eeTempFile, $eeTarget) ) {
-				
-				if(!is_file($eeTarget)) {
-					return 'Error - File System Error.'; // No good.
-				} else {
-					
-					// Check for corrupt images
-					if( in_array($eeSFL_Extension, $eeSFL_BASE->eeDynamicImageThumbFormats) ) {
-						
-						$eeString = implode('...', getimagesize($eeTarget) );
-						
-						if(!strpos($eeString, 'width=') OR !strpos($eeString, 'height=')) { // Make sure it's really an image
-							
-							unlink($eeTarget);
-							
-							return 'ERROR 99';
-						}
-					}
-					
-					// Update the File Date
-					$eeDate = esc_textarea(sanitize_text_field($_POST['eeSFL_FileDate']));
-					$eeDate = strtotime($eeDate);
-					if($eeDate) {
-						touch($eeTarget, $eeDate);  // Do nothing if bad date
-					}
-					
-					// Build Image thumbs right away right away. We'll set other types to use the background job within eeSFL_ProcessUpload()
-					if($eeSFL_BASE->eeListSettings['ShowFileThumb'] == 'YES') {
-						if( in_array($eeSFL_Extension, $eeSFL_BASE->eeDynamicImageThumbFormats) ) {
-				
-							$eeSFL_TargetFile = str_replace($eeSFL_BASE->eeListSettings['FileListDir'], '', $eeSFL_TargetFile); // Strip the FileListDir
-							$eeSFL_BASE->eeSFL_CheckThumbnail($eeSFL_TargetFile, $eeSFL_BASE->eeListSettings);
-						}
-					}
-					
-					return 'SUCCESS';
-				}
-				 
-			} else {
-				return 'Cannot save the uploaded file: ' . $eeSFL_TargetFile;
-			}
-		
-		} else {
-			
-			return 'ERROR 98 - FileUploader';
-		}
-		
-	} else {
-		return 'Upload Path Not Found: ' . $eeSFL_FileUploadDir;
-	}
 }
+*/
 
 
 

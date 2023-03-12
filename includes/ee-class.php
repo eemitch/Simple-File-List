@@ -204,7 +204,7 @@ class eeSFL_BASE_MainClass {
 		
 		$eeEnv['wpUserID'] = get_current_user_id();
 		
-		$eeEnv['UploadedFiles'] = array(); // Holder for upload job
+		// $eeEnv['UploadedFiles'] = array(); // Holder for upload job
 		
 		// Check Server technologies available (i.e. ffMpeg)
 		$eeSupported = get_option('eeSFL_Supported');

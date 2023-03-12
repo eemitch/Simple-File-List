@@ -11,7 +11,8 @@ if(isset($_POST['eeSFL_Upload'])) {
 	
 	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Processing Upload Job...';
 	
-	eeSFL_BASE_ProcessUpload();
+	// eeSFL_BASE_ProcessUpload();
+	$eeSFLU_BASE->eeSFL_ProcessUploadJob();
 	
 	if( is_admin() ) {
 		eeSFL_BASE_UploadCompletedAdmin(); // Action Hook: eeSFL_UploadCompletedAdmin  <-- Admin side
