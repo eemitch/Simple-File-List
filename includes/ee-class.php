@@ -360,7 +360,11 @@ class eeSFL_BASE_MainClass {
 			$this->eeFileExt = basename($eeFileArray['FileExt']); // Just the name
 			$this->eeFileURL = $this->eeEnvironment['wpSiteURL'] . $this->eeListSettings['FileListDir'] . $this->eeFilePath; // Clickable URL
 			$this->eeFileSize = eeSFL_BASE_FormatFileSize($eeFileArray['FileSize']); // Formatted Size
-			$this->eeFileMIME = $eeFileArray['FileMIME'];
+			if(isset($eeFileArray['FileMIME'])) {
+				$this->eeFileMIME = $eeFileArray['FileMIME'];
+			} else {
+				$this->eeFileMIME = 'no/mime';
+			}
 			
 			// Reset These
 			$this->eeFileNiceName = FALSE;
