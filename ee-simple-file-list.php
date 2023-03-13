@@ -521,20 +521,6 @@ add_action( 'wp_ajax_simplefilelist_edit_job', 'simplefilelist_edit_job' );
 
 
 
-// File Upload Engine
-/*
-function eeSFL_BASE_FileUploader() {
-	
-	global $eeSFLU_BASE;
-	
-	$eeReturn = $eeSFLU_BASE->eeSFL_FileUploader();
-	
-	return $eeReturn;
-	
-}
-*/
-
-
 
 // File Editor Engine
 function eeSFL_BASE_FileEditor() {

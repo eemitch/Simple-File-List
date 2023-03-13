@@ -163,6 +163,8 @@ class eeSFL_BASE_MainClass {
 	// Get Environment
     public function eeSFL_GetEnv() {
 	    
+	    global $eeSFLU_BASE;
+	    
 	    $eeEnv = array();
 	    
 	    // Detect OS
@@ -198,7 +200,7 @@ class eeSFL_BASE_MainClass {
 		
 		$eeEnv['php_memory_limit'] = ini_get('memory_limit');
 		
-		$eeEnv['the_max_upload_size'] = eeSFL_BASE_ActualUploadMax();
+		$eeEnv['the_max_upload_size'] = $eeSFLU_BASE->eeSFL_ActualUploadMax();
 		
 		$eeEnv['supported'] = get_option('eeSFL_Supported'); // Server technologies available (i.e. FFMPEG)
 		
@@ -574,6 +576,8 @@ class eeSFL_BASE_MainClass {
     // Scan the real files and create or update array as needed.
     public function eeSFL_UpdateFileListArray_OLD() {
 	    
+	    global $eeSFLU_BASE;
+	    
 	    $this->eeLog[eeSFL_BASE_Go]['notice'][] = 'Calling Method: eeSFL_UpdateFileListArray()';
 	    $this->eeLog[eeSFL_BASE_Go]['notice'][] = 'Scanning File List...';
 	    
@@ -718,7 +722,7 @@ class eeSFL_BASE_MainClass {
 		    }
 		    
 		    // Check for Enviroment Changes
-		    $eeActual = eeSFL_BASE_ActualUploadMax();
+		    $eeActual = $eeSFLU_BASE->eeSFL_ActualUploadMax();
 			if( $this->eeListSettings['UploadMaxFileSize'] > $eeActual ) { 
 				$this->eeListSettings['UploadMaxFileSize'] = $eeActual;
 				update_option('eeSFL_Settings_' . $eeSFL_ID, $this->eeListSettings); // Set to Actual Max
@@ -735,6 +739,8 @@ class eeSFL_BASE_MainClass {
     
     // Scan the real files and create or update array as needed.
     public function eeSFL_UpdateFileListArray() {
+	    
+	    global $eeSFLU_BASE;
 	    
 	    $this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Re-Indexing the File List ...';
 	    
@@ -918,7 +924,7 @@ class eeSFL_BASE_MainClass {
 		    }
 		    
 		    // Check for Enviroment Changes
-		    $eeActual = eeSFL_BASE_ActualUploadMax();
+		    $eeActual = $eeSFLU_BASE->eeSFL_ActualUploadMax();;
 			if( $this->eeListSettings['UploadMaxFileSize'] > $eeActual ) { 
 				$this->eeListSettings['UploadMaxFileSize'] = $eeActual;
 				update_option('eeSFL_Settings_1', $this->eeListSettings); // Set to Actual Max
