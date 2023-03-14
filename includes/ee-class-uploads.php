@@ -29,8 +29,6 @@ class eeSFL_BASE_UploadClass {
 		
 		$eeSFL_UploadFolder = FALSE;
 		
-		// echo '<pre>'; print_r($_POST); echo '</pre>'; exit;
-		
 		$eeObject->eeLog[$eeGo]['notice'][] = $eeTime . ' - Processing the Upload Job...';
 		
 		// Get a list of the original file names that were uploaded. JSON STRING
@@ -91,7 +89,7 @@ class eeSFL_BASE_UploadClass {
 						$eeFileSanitized = urldecode($eeFileSanitized); // The sanitized name
 						delete_transient('eeSFL-Renamed-' . $eeFile); // Thank you
 						$eeFile = $eeFileSanitized;
-						
+					
 					} else {
 						$eeFile = urldecode($eeFile);
 					}
@@ -297,7 +295,7 @@ class eeSFL_BASE_UploadClass {
 	}
 
 
-
+	// --------------------------------------------------------------------------
 
 
 
@@ -352,6 +350,7 @@ class eeSFL_BASE_UploadClass {
 		} else {
 			$eeSFL_FileUploadDir = $eeObject->eeListSettings['FileListDir'];
 		}
+		
 	
 		// Check size
 		$eeSFL_FileSize = filter_var($_FILES['file']['size'], FILTER_VALIDATE_INT);

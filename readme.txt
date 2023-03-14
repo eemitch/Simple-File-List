@@ -235,6 +235,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 * Added support for the new Simple File List Media extension.
 ** Go to the new List Settings > Extension Settings tab to access it.
 * Rewrote the entire upload routine to improve reliability and efficiency.
+* Now recording file owner Id on back-end uploads too.
 * Bug fix where if preserving the file name, that name was also used for subsequent files in the upload job.
 * File Nice Name option is now available in the edit dialog even if Preserve File Name is OFF.
 
