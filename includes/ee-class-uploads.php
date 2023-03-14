@@ -22,7 +22,7 @@ class eeSFL_BASE_UploadClass {
 		} else { 
 			global $eeSFL, $eeSFLF, $eeSFLA, $eeSFL_Tasks;
 			$eeObject = $eeSFL;
-			$eeListID = $eeSFL->eeListID;
+			if(isset($_POST['eeListID'])) { $eeListID = preg_replace("/[^0-9]/i", '', $_POST['eeListID']); } else { $eeListID = 1; };
 			$eeGo = eeSFL_Go;
 			$eeTime = eeSFL_noticeTimer();
 		}
@@ -75,8 +75,6 @@ class eeSFL_BASE_UploadClass {
 			
 			// Loop through the uploaded files, original names.
 			if(count($eeFileListArray)) {
-							
-				// $eeFound = FALSE;
 				
 				foreach($eeFileListArray as $eeKey => $eeFile) { 
 					
@@ -93,6 +91,9 @@ class eeSFL_BASE_UploadClass {
 						$eeFileSanitized = urldecode($eeFileSanitized); // The sanitized name
 						delete_transient('eeSFL-Renamed-' . $eeFile); // Thank you
 						$eeFile = $eeFileSanitized;
+						
+					} else {
+						$eeFile = urldecode($eeFile);
 					}
 					
 					// Check to be sure the file is there
@@ -121,14 +122,14 @@ class eeSFL_BASE_UploadClass {
 						
 						// Use Original as the Nice Name
 						if($eeFileOriginal AND $eeObject->eeListSettings['PreserveName'] == 'YES') {
-							$eeNewFileArray['FileNiceName'] = urldecode(basename($eeFileOriginal)); // The original name
+							$eeNewFileArray['FileNiceName'] = basename(urldecode($eeFileOriginal)); // The original name
 						}
 						
 						
 						// Save Owner Info
+						$eeID = get_current_user_id();
+						
 						if( !is_admin() ) { // Front-end only
-							
-							$eeID = get_current_user_id();
 							
 							if($eeID === 0) {
 								
@@ -157,6 +158,8 @@ class eeSFL_BASE_UploadClass {
 							} else {
 								$eeNewFileArray['FileOwner'] = $eeID;
 							}
+						} else {
+							$eeNewFileArray['FileOwner'] = $eeID;
 						}
 						
 						
@@ -304,8 +307,18 @@ class eeSFL_BASE_UploadClass {
 		global $eeSFL_BASE;
 		
 		// Detect Which SFL
-		if(is_object($eeSFL_BASE)) { $eeObject = $eeSFL_BASE; $eeListID = 1; $eeGo = eeSFL_BASE_Go; } 
-			else { global $eeSFL; $eeObject = $eeSFL; $eeListID = $eeSFL->eeListID; $eeGo = eeSFL_Go; }
+		if(is_object($eeSFL_BASE)) { 
+			$eeObject = $eeSFL_BASE;
+			$eeListID = 1;
+			$eeGo = eeSFL_BASE_Go;
+			$eeTime = eeSFL_BASE_noticeTimer();
+		} else { 
+			global $eeSFL, $eeSFLF, $eeSFLA, $eeSFL_Tasks;
+			$eeObject = $eeSFL;
+			if(isset($_POST['eeSFL_ID'])) { $eeListID = preg_replace("/[^0-9]/i", '', $_POST['eeSFL_ID']); } else { $eeListID = 1; };
+			$eeGo = eeSFL_Go;
+			$eeTime = eeSFL_noticeTimer();
+		}
 		
 		// The FILE object
 		if(empty($_FILES)) { return 'The File Object is Empty'; }
@@ -329,8 +342,16 @@ class eeSFL_BASE_UploadClass {
 		} 
 		
 		// Get this List's Settings
-		$eeObject->eeSFL_GetSettings(1);	
+		$eeObject->eeSFL_GetSettings($eeListID);	
 		$eeSFL_FileUploadDir = $eeObject->eeListSettings['FileListDir'];
+		
+		
+		// The Upload Destination - Relative to FileListDir dir
+		if(isset($_POST['eeSFL_FileUploadDir'])) {
+			$eeSFL_FileUploadDir = $eeObject->eeListSettings['FileListDir'] . sanitize_text_field( urldecode($_POST['eeSFL_FileUploadDir']) );	
+		} else {
+			$eeSFL_FileUploadDir = $eeObject->eeListSettings['FileListDir'];
+		}
 	
 		// Check size
 		$eeSFL_FileSize = filter_var($_FILES['file']['size'], FILTER_VALIDATE_INT);
