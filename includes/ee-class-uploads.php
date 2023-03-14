@@ -14,14 +14,24 @@ class eeSFL_BASE_UploadClass {
 		global $eeSFL_BASE;
 		
 		// Detect Which SFL
-		if(is_object($eeSFL_BASE)) { $eeObject = $eeSFL_BASE; $eeListID = 1; $eeGo = eeSFL_BASE_Go; } 
-			else { global $eeSFL; $eeObject = $eeSFL; $eeListID = $eeSFL->eeListID; $eeGo = eeSFL_Go; }
+		if(is_object($eeSFL_BASE)) { 
+			$eeObject = $eeSFL_BASE;
+			$eeListID = 1;
+			$eeGo = eeSFL_BASE_Go;
+			$eeTime = eeSFL_BASE_noticeTimer();
+		} else { 
+			global $eeSFL, $eeSFLF, $eeSFLA, $eeSFL_Tasks;
+			$eeObject = $eeSFL;
+			$eeListID = $eeSFL->eeListID;
+			$eeGo = eeSFL_Go;
+			$eeTime = eeSFL_noticeTimer();
+		}
 		
 		$eeSFL_UploadFolder = FALSE;
 		
 		// echo '<pre>'; print_r($_POST); echo '</pre>'; exit;
 		
-		$eeObject->eeLog[$eeGo]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Processing the Upload Job...';
+		$eeObject->eeLog[$eeGo]['notice'][] = $eeTime . ' - Processing the Upload Job...';
 		
 		// Get a list of the original file names that were uploaded. JSON STRING
 		$eeFileListString = stripslashes($_POST['eeSFL_FileList']); // ["Sunset2.jpg","Sunset.jpg","Boats.jpg"]
@@ -43,7 +53,7 @@ class eeSFL_BASE_UploadClass {
 		}
 		
 			
-		$eeObject->eeLog[$eeGo]['notice'][] = $eeFileCount . ' Files Uploaded';
+		$eeObject->eeLog[$eeGo]['notice'][] = $eeTime . ' - ' . $eeFileCount . ' Files Uploaded';
 		
 		// Check for Form Nonce
 		if(check_admin_referer( 'ee-simple-file-list-upload-form', 'ee-simple-file-list-upload-form-nonce')) {
@@ -88,7 +98,7 @@ class eeSFL_BASE_UploadClass {
 					// Check to be sure the file is there
 					if( is_file(ABSPATH . $eeObject->eeListSettings['FileListDir'] . $eeFile) ) { 
 						
-						$eeObject->eeLog[$eeGo]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Creating File Array: ' . $eeFile;
+						$eeObject->eeLog[$eeGo]['notice'][] = $eeTime . ' - Creating File Array: ' . $eeFile;
 							
 						$eeFound = FALSE;
 						
@@ -110,7 +120,7 @@ class eeSFL_BASE_UploadClass {
 						
 						
 						// Use Original as the Nice Name
-						if($eeFileOriginal AND $eeObject->eeListSettings['PreserveName'] = 'YES') {
+						if($eeFileOriginal AND $eeObject->eeListSettings['PreserveName'] == 'YES') {
 							$eeNewFileArray['FileNiceName'] = urldecode(basename($eeFileOriginal)); // The original name
 						}
 						
@@ -162,8 +172,8 @@ class eeSFL_BASE_UploadClass {
 							}
 						}
 						
-						$eeObject->eeLog[$eeGo]['notice'][] = '——> Done';
-						$eeObject->eeLog[$eeGo]['notice'][] = $eeNewFileArray;
+						$eeObject->eeLog[$eeGo]['notice'][] = $eeTime . ' ——> Done';
+						// $eeObject->eeLog[$eeGo]['notice'][] = $eeNewFileArray;
 						
 						$eeNewFileArray = array_filter($eeNewFileArray); // Remove empty elements
 						
@@ -189,10 +199,49 @@ class eeSFL_BASE_UploadClass {
 							}
 						}
 						
-						// Notification Info
-						$eeFileURL = $eeObject->eeListSettings['FileListURL'] . $eeFile;
 						
-						$eeUploadJob .=  $eeFile . " (" . eeSFL_BASE_FormatFileSize($eeNewFileArray['FileSize']) . ")" . PHP_EOL;
+						// If in a folder, update the folder dates
+						if(isset($eeSFLF) AND $eeSFL_UploadFolder) {
+								
+							$eePathPieces = explode('/', $eeSFL_UploadFolder);
+							$eePartPaths = '';
+							if(is_array($eePathPieces)) {
+								foreach( $eePathPieces as $eePart ) {
+									if($eePart) {
+										$eePartPaths .= $eePart . '/';
+										$eeObject->eeSFL_UpdateFileDetail($eePartPaths, 'FileDateChanged', date("Y-m-d H:i:s") );
+									}
+								}
+							}
+						}
+						
+						
+						// Create thumbnail if needed
+						if(isset($eeSFL_Tasks) AND $eeObject->eeListSettings['ShowFileThumb'] == 'YES') {
+							
+							if(( $eeObject->eeListSettings['GeneratePDFThumbs'] == 'YES' AND $eeNewFileArray['FileExt'] == 'pdf' ) 
+							
+							OR ( $eeObject->eeListSettings['GenerateVideoThumbs'] == 'YES' AND in_array($eeNewFileArray['FileExt'], $eeObject->eeDynamicVideoThumbFormats) )
+							
+							) {
+										
+								// Start the background function: eeSFL_Background_GenerateThumbs()
+								if(is_array($eeSFL_Tasks)) {
+									$eeSFL_Tasks[$eeObject->eeListID]['GenerateThumbs'] = 'YES'; 
+									update_option('eeSFL_Tasks', $eeSFL_Tasks);
+								}
+							}
+						}
+						
+						
+						// Notification Info
+						if(isset($eeSFLA)) {
+							$eeFileURL = $eeObject->eeEnvironment['wpSiteURL'] . 'ee-get-file/?list=' . $eeSFL->eeListID . '&file=' . $eeFile;
+						} else {
+							$eeFileURL = $eeObject->eeListSettings['FileListURL'] . $eeFile;
+						}
+						
+						$eeUploadJob .=  $eeFile . " (" . $eeObject->eeSFL_FormatFileSize($eeNewFileArray['FileSize']) . ")" . PHP_EOL;
 						$eeUploadJob .=  $eeFileURL . PHP_EOL . PHP_EOL;
 					}
 					
@@ -206,6 +255,9 @@ class eeSFL_BASE_UploadClass {
 				}				
 				
 				$eeObject->eeSFL_SortFiles($eeObject->eeListSettings['SortBy'], $eeObject->eeListSettings['SortOrder']);
+				
+				// If uploading into a folder, increment the counts and sizes.
+				if(isset($eeSFLF) AND $eeSFL_UploadFolder) { $eeSFLF->eeSFLF_UpdateFolderSizes(); }
 				
 				// Save the new array
 				update_option('eeSFL_FileList_' . $eeListID, $eeObject->eeAllFiles);
@@ -297,14 +349,14 @@ class eeSFL_BASE_UploadClass {
 				$eeTempFile = $_FILES['file']['tmp_name'];
 				
 				// Clean up messy names
-				$eeSFL_FileName = eeSFL_BASE_SanitizeFileName($_FILES['file']['name']);
+				$eeSFL_FileName = $eeObject->eeSFL_SanitizeFileName($_FILES['file']['name']);
 				
 				// Check if it already exists
 				if($eeObject->eeListSettings['AllowOverwrite'] == 'NO') { 
-					$eeSFL_FileName = eeSFL_BASE_CheckForDuplicateFile($eeSFL_FileUploadDir . $eeSFL_FileName);
+					$eeSFL_FileName = $eeObject->eeSFL_CheckForDuplicateFile($eeSFL_FileUploadDir . $eeSFL_FileName);
 				}
 				
-				eeSFL_BASE_DetectUpwardTraversal($eeSFL_FileUploadDir . $eeSFL_FileName); // Die if foolishness
+				$eeObject->eeSFL_DetectUpwardTraversal($eeSFL_FileUploadDir . $eeSFL_FileName); // Die if foolishness
 				
 				$eeSFL_PathParts = pathinfo($eeSFL_FileName);
 				$eeSFL_FileNameAlone = $eeSFL_PathParts['filename'];

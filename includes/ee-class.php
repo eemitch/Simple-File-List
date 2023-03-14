@@ -206,8 +206,6 @@ class eeSFL_BASE_MainClass {
 		
 		$eeEnv['wpUserID'] = get_current_user_id();
 		
-		// $eeEnv['UploadedFiles'] = array(); // Holder for upload job
-		
 		// Check Server technologies available (i.e. ffMpeg)
 		$eeSupported = get_option('eeSFL_Supported');
 		
@@ -361,7 +359,7 @@ class eeSFL_BASE_MainClass {
 			$this->eeRealFileName = $this->eeFileName; // Never changed
 			$this->eeFileExt = basename($eeFileArray['FileExt']); // Just the name
 			$this->eeFileURL = $this->eeEnvironment['wpSiteURL'] . $this->eeListSettings['FileListDir'] . $this->eeFilePath; // Clickable URL
-			$this->eeFileSize = eeSFL_BASE_FormatFileSize($eeFileArray['FileSize']); // Formatted Size
+			$this->eeFileSize = $this->eeSFL_FormatFileSize($eeFileArray['FileSize']); // Formatted Size
 			if(isset($eeFileArray['FileMIME'])) {
 				$this->eeFileMIME = $eeFileArray['FileMIME'];
 			} else {
@@ -990,7 +988,7 @@ class eeSFL_BASE_MainClass {
 		    	
 		        $this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - File Found: ' . $eeThisItemName;
 		        
-		        $eeNewItemName = eeSFL_BASE_SanitizeFileName($eeThisItemName);
+		        $eeNewItemName = $this->eeSFL_SanitizeFileName($eeThisItemName);
 		        
 		        if($eeNewItemName != $eeThisItemName) { // Sanitized
 		        
@@ -1597,6 +1595,140 @@ class eeSFL_BASE_MainClass {
 		}
 		
 		return $eeAddressSanitized;
+	}
+	
+	
+	
+	// Return the general size of a file in a nice format.
+	public function eeSFL_FormatFileSize($eeFileSizeBytes) {  
+    
+	    $bytes = $eeFileSizeBytes;
+	    $kilobyte = 1024;
+	    $megabyte = $kilobyte * 1024;
+	    $gigabyte = $megabyte * 1024;
+	    $terabyte = $gigabyte * 1024;
+	    $precision = 2;
+	   
+	    if (($bytes >= 0) && ($bytes < $kilobyte)) {
+	        return $bytes . ' B';
+	 
+	    } elseif (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
+	        return round($bytes / $kilobyte, $precision) . ' KB';
+	 
+	    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
+	        return round($bytes / $megabyte, $precision) . ' MB';
+	 
+	    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
+	        return round($bytes / $gigabyte, $precision) . ' GB';
+	 
+	    } elseif ($bytes >= $terabyte) {
+	        return round($bytes / $terabyte, $precision) . ' TB';
+	    } else {
+	        return $bytes . ' B';
+	    }
+	}
+	
+	
+	
+	
+	// Make sure the file name is acceptable
+	public function eeSFL_SanitizeFileName($eeSFL_FileName) {
+		
+		// Make sure file has an extension
+		$eeSFL_PathParts = pathinfo($eeSFL_FileName);
+		$eeSFL_FileNameAlone = str_replace('.', '_', $eeSFL_PathParts['filename']); // Get rid of dots
+		$eeSFL_Extension = strtolower($eeSFL_PathParts['extension']);
+		$eeSFL_FileName = sanitize_file_name( $eeSFL_FileNameAlone . '.' . $eeSFL_Extension );
+	    
+	    return $eeSFL_FileName;
+	}
+	
+	
+	
+	// Check if a file already exists, then number it so file will not be over-written.
+	public function eeSFL_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Path from ABSPATH
+		
+		$eePathInfo = pathinfo($eeSFL_FilePathAdded);
+		$eeFileName = $eePathInfo['basename'];
+		$eeNameOnly = $eePathInfo['filename'];
+		$eeExtension = strtolower($eePathInfo['extension']);
+		$eeDir = dirname($eeSFL_FilePathAdded) . '/';
+		$eeFolderPath = str_replace($this->eeListSettings['FileListDir'], '', $eeDir);
+		$eeCopyLimit = 1000; // File copies limit
+		
+		if(empty($this->eeAllFiles)) {
+			$this->eeAllFiles = get_option('eeSFL_FileList_1');
+		}
+		
+		foreach($this->eeAllFiles as $eeFileArray) { // Loop through file array and look for a match.
+			
+			if( $eeFolderPath . $eeFileName == $eeFileArray['FilePath'] ) { // Duplicate found
+			
+				$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Duplicate Item Found: ' . $eeFolderPath . $eeFileName;
+				
+				if( is_file(ABSPATH . $eeSFL_FilePathAdded) ) { // Confirm the file is really there
+					
+					for ($i = 1; $i <= $eeCopyLimit; $i++) { // Look for existing copies
+						
+						$eeFileName = $eeNameOnly . '_' . $i . '.' . $eeExtension; // Indicate the copy number
+						
+						if(!is_file(ABSPATH . $eeDir . $eeFileName)) { break; } // We're done.
+					}							
+				}
+			}
+		}
+		
+		return 	$eeFileName; // Return the new file name
+	}
+	
+	
+	
+	
+	// Detect upward path traversal
+	function eeSFL_DetectUpwardTraversal($eeFilePath) { // Relative to ABSPATH
+		
+		if($this->eeEnvironment['eeOS'] == 'LINUX') {
+			
+			$eeFilePath = str_replace('//', '/', $eeFilePath); // Strip double slashes, which will cause failure
+			
+			if(empty($eeFilePath)) {
+				$this->eeLog[eeSFL_Go]['errors'][] = __('Bad Folder Path Given', 'ee-simple-file-list-pro');
+				return FALSE;
+			}
+			
+			$eeUserPath = ABSPATH . dirname($eeFilePath);  // This could be problematic with things like ../
+			$eeRealPath = realpath( ABSPATH . dirname($eeFilePath) ); // Expunge the badness and then compare...
+			
+			if ($eeUserPath != $eeRealPath) { // They must match
+			    
+			    $this->eeLog[eeSFL_Go]['errors'][] = eeSFL_noticeTimer() . ' - ERROR 99: ' . $eeFilePath;
+			    $this->eeLog[eeSFL_Go]['errors'][] = eeSFL_noticeTimer() . ' ---> ' . $eeUserPath . ' != ' . $eeRealPath;
+			    $this->eeSFL_WriteLogData();
+			    
+			    wp_die('Error 99 :-( ' . $eeUserPath . ' != ' . $eeRealPath); // Bad guy found, bail out :-(
+			}
+		
+			$this->eeLog[eeSFL_Go]['notice'][] = eeSFL_noticeTimer() . ' - Traversal Check OK (' . $this->eeEnvironment['eeOS'] . ')';
+			
+			return FALSE;
+		
+		} else {
+	
+			$eeFilePath = urldecode($eeFilePath);
+			
+			if(strpos($eeFilePath, '..') OR strpos($eeFilePath, '..') === 0) {
+				
+				$this->eeLog[eeSFL_Go]['errors'][] = eeSFL_noticeTimer() . ' - ERROR 99:';
+				$this->eeLog[eeSFL_Go]['errors'][] = eeSFL_noticeTimer() . ' --->' . eeFilePath;
+			    $this->eeSFL_WriteLogData();
+				
+				wp_die('Error 99 :-(' . $eeFilePath); // Bad guy found, bail out :-(
+			}
+		
+			$this->eeLog[eeSFL_Go]['notice'][] = eeSFL_noticeTimer() . ' - Traversal Check OK (' . $this->eeEnvironment['eeOS'] . ')';
+				
+			return TRUE;
+		}
 	}
 
 		

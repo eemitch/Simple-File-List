@@ -8,7 +8,7 @@ $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loaded: ee-admin-page';
 // Admin-Side Display
 function eeSFL_BASE_BackEnd() {
 	
-	global $eeSFL_BASE, $eeSFLM;
+	global $eeSFL_BASE, $eeSFLU_BASE, $eeSFLM;
 	
 	$eeConfirm = FALSE;
 	$eeForceSort = FALSE; // Only used in shortcode

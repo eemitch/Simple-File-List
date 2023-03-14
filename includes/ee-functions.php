@@ -42,7 +42,7 @@ function eeSFL_BASE_UserMessaging() {
 // Get Elapsed Time
 function eeSFL_BASE_noticeTimer() {
 	
-	global $eeSFL_BASE_StartTime, $eeSFL_BASE_MemoryUsedStart; // Time SFL got going
+	global $eeSFL_BASE, $eeSFL_BASE_StartTime, $eeSFL_BASE_MemoryUsedStart; // Time SFL got going
 	
 	$eeTime = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]; // Time Right Now
 	
@@ -50,7 +50,7 @@ function eeSFL_BASE_noticeTimer() {
 	
 	$eeTime = number_format($eeTime, 3); // Format to 0.000
 	
-	$eeMemory = eeSFL_BASE_FormatFileSize(memory_get_usage() - $eeSFL_BASE_MemoryUsedStart);
+	$eeMemory = $eeSFL_BASE->eeSFL_FormatFileSize(memory_get_usage() - $eeSFL_BASE_MemoryUsedStart);
 	
 	return $eeTime . ' S | ' . $eeMemory;
 }
@@ -114,42 +114,6 @@ function eeSFL_BASE_CheckSupported() {
 }
 
 
-// Detect upward path traversal
-function eeSFL_BASE_DetectUpwardTraversal($eeFilePath) {
-
-	global $eeSFL_BASE;
-	
-	if($eeSFL_BASE->eeEnvironment['eeOS'] == 'LINUX') {
-	
-		$eeFilePath = str_replace('//', '/', $eeFilePath); // Strip double slashes, which will cause failure
-		
-		if(empty($eeFilePath)) {
-			$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'][] = __('Bad Folder Path Given', 'ee-simple-file-list');
-			return FALSE;
-		}
-		
-		$eeUserPath = ABSPATH . dirname($eeFilePath);  // This could be problematic with things like ../
-		$eeRealPath = realpath( ABSPATH . dirname($eeFilePath) ); // Expunge the badness and then compare...
-		
-		if ($eeUserPath != $eeRealPath) { // They must match
-		    wp_die('Error 99 :-( ' . $eeUserPath . ' != ' . $eeRealPath); // Bad guy found, bail out :-( // Bad guy found, bail out :-(
-		}
-		
-		return FALSE;
-	
-	} else {
-
-		$eeFilePath = urldecode($eeFilePath);
-		
-		if(strpos($eeFilePath, '..') OR strpos($eeFilePath, '..') === 0) {
-			wp_die('Error 99 :-( ' . $eeFilePath); // Bad guy found, bail out :-( // Bad guy found, bail out :-(
-		}
-			
-		return TRUE;
-	}
-}
-
-
 
 
 // LEGACY - Convert hyphens to spaces for display only
@@ -175,8 +139,6 @@ function eeSFL_BASE_AppendProperUrlOp($eeURL) {
 	
 	return $eeURL;
 }
-
-
 
 
 
@@ -324,17 +286,6 @@ function eeSFL_BASE_GetFileSize($eeSFL_File) {
 
 
 
-// Make sure the file name is acceptable
-function eeSFL_BASE_SanitizeFileName($eeSFL_FileName) {
-	
-	// Make sure file has an extension
-	$eeSFL_PathParts = pathinfo($eeSFL_FileName);
-	$eeSFL_FileNameAlone = str_replace('.', '_', $eeSFL_PathParts['filename']); // Get rid of dots
-	$eeSFL_Extension = strtolower($eeSFL_PathParts['extension']);
-	$eeSFL_FileName = sanitize_file_name( $eeSFL_FileNameAlone . '.' . $eeSFL_Extension );
-    
-    return $eeSFL_FileName;
-}
 
 
 
@@ -373,75 +324,12 @@ function eeSFL_BASE_ProcessTextInput($eeTerm, $eeType = 'text') {
 
 
 
-// Check if a file already exists, then number it so file will not be over-written.
-function eeSFL_BASE_CheckForDuplicateFile($eeSFL_FilePathAdded) { // Path from ABSPATH
-	
-	global $eeSFL_BASE;
-	
-	$eePathInfo = pathinfo($eeSFL_FilePathAdded);
-	$eeFileName = $eePathInfo['basename'];
-	$eeNameOnly = $eePathInfo['filename'];
-	$eeExtension = strtolower($eePathInfo['extension']);
-	$eeDir = dirname($eeSFL_FilePathAdded) . '/';
-	$eeFolderPath = str_replace($eeSFL_BASE->eeListSettings['FileListDir'], '', $eeDir);
-	$eeCopyLimit = 1000; // File copies limit
-	
-	if(empty($eeSFL_BASE->eeAllFiles)) {
-		$eeSFL_BASE->eeAllFiles = get_option('eeSFL_FileList_1');
-	}
-	
-	foreach($eeSFL_BASE->eeAllFiles as $eeFileArray) { // Loop through file array and look for a match.
-		
-		if( $eeFolderPath . $eeFileName == $eeFileArray['FilePath'] ) { // Duplicate found
-		
-			$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Duplicate Item Found: ' . $eeFolderPath . $eeFileName;
-			
-			if( is_file(ABSPATH . $eeSFL_FilePathAdded) ) { // Confirm the file is really there
-				
-				for ($i = 1; $i <= $eeCopyLimit; $i++) { // Look for existing copies
-					
-					$eeFileName = $eeNameOnly . '_' . $i . '.' . $eeExtension; // Indicate the copy number
-					
-					if(!is_file(ABSPATH . $eeDir . $eeFileName)) { break; } // We're done.
-				}							
-			}
-		}
-	}
-	
-	return 	$eeFileName; // Return the new file name
-}
 
 
 
 
-// Return the general size of a file in a nice format.
-function eeSFL_BASE_FormatFileSize($eeFileSizeBytes) {  
-    
-    $bytes = $eeFileSizeBytes;
-    $kilobyte = 1024;
-    $megabyte = $kilobyte * 1024;
-    $gigabyte = $megabyte * 1024;
-    $terabyte = $gigabyte * 1024;
-    $precision = 2;
-   
-    if (($bytes >= 0) && ($bytes < $kilobyte)) {
-        return $bytes . ' B';
- 
-    } elseif (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
-        return round($bytes / $kilobyte, $precision) . ' KB';
- 
-    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
-        return round($bytes / $megabyte, $precision) . ' MB';
- 
-    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
-        return round($bytes / $gigabyte, $precision) . ' GB';
- 
-    } elseif ($bytes >= $terabyte) {
-        return round($bytes / $terabyte, $precision) . ' TB';
-    } else {
-        return $bytes . ' B';
-    }
-}
+
+
 
 
 

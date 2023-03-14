@@ -113,17 +113,17 @@ function eeSFL_BASE_Setup() {
 	if(!class_exists('eeSFL_BASE')) {
 		
 		// Get Functions File
-		$eeSFL_Nonce = wp_create_nonce('eeSFL_Functions'); // Security
-		include_once(plugin_dir_path(__FILE__) . 'includes/ee-functions.php'); // Our Functions
+		$eeSFL_Nonce = wp_create_nonce('eeSFL_Functions');
+		include_once(plugin_dir_path(__FILE__) . 'includes/ee-functions.php');
 		
 		// Main Class
-		$eeSFL_Nonce = wp_create_nonce('eeSFL_Class'); // Security
+		$eeSFL_Nonce = wp_create_nonce('eeSFL_Class');
 		require_once(plugin_dir_path(__FILE__) . 'includes/ee-class.php'); 
 		$eeSFL_BASE = new eeSFL_BASE_MainClass();
 		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Simple File List is Loading...';
 		
 		// Upload Class
-		$eeSFL_Nonce = wp_create_nonce('eeSFL_Class'); // Security
+		$eeSFL_Nonce = wp_create_nonce('eeSFL_Class');
 		require_once(plugin_dir_path(__FILE__) . 'includes/ee-class-uploads.php'); 
 		$eeSFLU_BASE = new eeSFL_BASE_UploadClass();
 		
@@ -553,7 +553,7 @@ function eeSFL_BASE_FileEditor() {
 		// Delete the File
 		if($eeFileAction == 'Delete') {
 			
-			eeSFL_BASE_DetectUpwardTraversal($eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileName); // Die if foolishness
+			$eeSFL_BASE->eeSFL_DetectUpwardTraversal($eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileName); // Die if foolishness
 			
 			$eeFilePath = ABSPATH . $eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileName;
 			
@@ -617,7 +617,7 @@ function eeSFL_BASE_FileEditor() {
 				
 				$eeFileNameNew = sanitize_text_field($_POST['eeFileNameNew']);
 				$eeFileNameNew  = urldecode( $eeFileNameNew );
-				$eeFileNameNew  = eeSFL_BASE_SanitizeFileName( $eeFileNameNew );
+				$eeFileNameNew  = $eeSFL_BASE->eeSFL_SanitizeFileName( $eeFileNameNew );
 				
 				if( strlen($eeFileNameNew) >= 3 ) { // a.b
 				
@@ -629,10 +629,10 @@ function eeSFL_BASE_FileEditor() {
 					if($eeOldExtension != $eeNewExtension) { return "Changing File Extensions is Not Allowed"; }
 				
 					// Die if foolishness
-					eeSFL_BASE_DetectUpwardTraversal($eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileNameNew ); 
+					$eeSFL_BASE->eeSFL_DetectUpwardTraversal($eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileNameNew ); 
 					
 					// Check for Duplicate File
-					$eeFileNameNew  = eeSFL_BASE_CheckForDuplicateFile( $eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileNameNew );
+					$eeFileNameNew  = $eeSFL_BASE->eeSFL_CheckForDuplicateFile( $eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileNameNew );
 					
 					// Rename File On Disk
 					$eeOldFilePath = ABSPATH . $eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileName;

@@ -232,7 +232,9 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 == Changelog ==
 
 = 6.0.12 =
-* Rewrote the entire upload routine to improve speed, efficiency and improve failure notices.
+* Rewrote the entire upload routine to improve speed and efficiency.
+* Bug fix where if preserving the file name, that name was also used for subsequent files in the upload job.
+* File Nice Name option is now available in the edit dialog even if Preserve File Name is OFF.
 
 = 6.0.11 =
 * Added support for the new Simple File List Media extension.
@@ -253,7 +255,6 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 = 6.0.7 =
 * Improved the fail condition if bad file list directory.
 * Improved thumbnails display to use the default icon should the source thumb file be missing.
-* Bug fix where if preserving the file name, that name was also used for subsequent files in the upload job.
 * Bug fix where the upload description was missing on the notification message.
 
 = 6.0.6 =
