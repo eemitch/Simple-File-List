@@ -96,7 +96,7 @@ $eeOutput .= '</div>
 
 <script>
 		
-var eeSFL_FileUploadDir = "' . urlencode($eeSFL_BASE->eeListSettings['FileListDir'] . $eeSFL_BASE->eeCurrentFolder) . '";
+var eeSFL_FileUploadDir = ""; // Sub-Folder
 var eeSFL_FileLimit = ' . $eeSFL_BASE->eeListSettings['UploadLimit'] . '; // Maximum number of files allowed
 var eeSFL_UploadMaxFileSize = ' . (($eeSFL_BASE->eeListSettings['UploadMaxFileSize']*1024)*1024) . ';
 var eeSFL_FileFormats = "' . str_replace(' ' , '', $eeSFL_BASE->eeListSettings['FileFormats']) . '"; // Allowed file extensions

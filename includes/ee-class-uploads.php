@@ -27,7 +27,7 @@ class eeSFL_BASE_UploadClass {
 			$eeTime = eeSFL_noticeTimer();
 		}
 		
-		$eeSFL_UploadFolder = FALSE;
+		$eeUploadFolder = FALSE;
 		
 		$eeObject->eeLog[$eeGo]['notice'][] = $eeTime . ' - Processing the Upload Job...';
 		
@@ -47,7 +47,7 @@ class eeSFL_BASE_UploadClass {
 		
 		
 		if( isset($_POST['eeSFL_UploadFolder']) ) { // Pro
-			$eeSFL_UploadFolder = esc_textarea(sanitize_text_field( urldecode($_POST['eeSFL_UploadFolder']) ));
+			$eeUploadFolder = esc_textarea(sanitize_text_field( urldecode($_POST['eeSFL_UploadFolder']) ));
 		}
 		
 			
@@ -77,7 +77,7 @@ class eeSFL_BASE_UploadClass {
 				foreach($eeFileListArray as $eeKey => $eeFile) { 
 					
 					$eeFile = sanitize_text_field($eeFile);
-					$eeFile = urlencode($eeSFL_UploadFolder . $eeFile); // Tack on any sub-folder of FileListDir
+					$eeFile = urlencode($eeUploadFolder . $eeFile); // Tack on any sub-folder of FileListDir
 					
 					// Check if Name was Sanitized
 					$eeFileOriginal = FALSE; // Transient is named using the original file name and has a value of the sanitized name
@@ -186,9 +186,9 @@ class eeSFL_BASE_UploadClass {
 						}
 						
 						// If in a folder, update the folder dates
-						if($eeSFL_UploadFolder) {
+						if($eeUploadFolder) {
 								
-							$eePathPieces = explode('/', $eeSFL_UploadFolder);
+							$eePathPieces = explode('/', $eeUploadFolder);
 							$eePartPaths = '';
 							if(is_array($eePathPieces)) {
 								foreach( $eePathPieces as $eePart ) {
@@ -202,9 +202,9 @@ class eeSFL_BASE_UploadClass {
 						
 						
 						// If in a folder, update the folder dates
-						if(isset($eeSFLF) AND $eeSFL_UploadFolder) {
+						if(isset($eeSFLF) AND $eeUploadFolder) {
 								
-							$eePathPieces = explode('/', $eeSFL_UploadFolder);
+							$eePathPieces = explode('/', $eeUploadFolder);
 							$eePartPaths = '';
 							if(is_array($eePathPieces)) {
 								foreach( $eePathPieces as $eePart ) {
@@ -258,7 +258,7 @@ class eeSFL_BASE_UploadClass {
 				$eeObject->eeSFL_SortFiles($eeObject->eeListSettings['SortBy'], $eeObject->eeListSettings['SortOrder']);
 				
 				// If uploading into a folder, increment the counts and sizes.
-				if(isset($eeSFLF) AND $eeSFL_UploadFolder) { $eeSFLF->eeSFLF_UpdateFolderSizes(); }
+				if(isset($eeSFLF) AND $eeUploadFolder) { $eeSFLF->eeSFLF_UpdateFolderSizes(); }
 				
 				// Save the new array
 				update_option('eeSFL_FileList_' . $eeListID, $eeObject->eeAllFiles);
@@ -304,6 +304,8 @@ class eeSFL_BASE_UploadClass {
 		
 		global $eeSFL_BASE;
 		
+		// return print_r($_POST, FALSE);
+		
 		// Detect Which SFL
 		if(is_object($eeSFL_BASE)) { 
 			$eeObject = $eeSFL_BASE;
@@ -341,27 +343,25 @@ class eeSFL_BASE_UploadClass {
 		
 		// Get this List's Settings
 		$eeObject->eeSFL_GetSettings($eeListID);	
-		$eeSFL_FileUploadDir = $eeObject->eeListSettings['FileListDir'];
+		$eeFileUploadDir = $eeObject->eeListSettings['FileListDir'];
 		
 		
-		// The Upload Destination - Relative to FileListDir dir
-		if(isset($_POST['eeSFL_FileUploadDir'])) {
-			$eeSFL_FileUploadDir = $eeObject->eeListSettings['FileListDir'] . sanitize_text_field( urldecode($_POST['eeSFL_FileUploadDir']) );	
-		} else {
-			$eeSFL_FileUploadDir = $eeObject->eeListSettings['FileListDir'];
+		// Sub-Folder - Relative to FileListDir
+		if(!empty($_POST['eeSFL_FileUploadDir'])) {
+			$eeFileUploadDir .= sanitize_text_field( urldecode($_POST['eeSFL_FileUploadDir']) );	
 		}
 		
 	
 		// Check size
-		$eeSFL_FileSize = filter_var($_FILES['file']['size'], FILTER_VALIDATE_INT);
-		$eeSFL_UploadMaxFileSize = $eeObject->eeListSettings['UploadMaxFileSize']*1024*1024; // Convert MB to B
+		$eeFileSize = filter_var($_FILES['file']['size'], FILTER_VALIDATE_INT);
+		$eeUploadMaxFileSize = $eeObject->eeListSettings['UploadMaxFileSize']*1024*1024; // Convert MB to B
 		
-		if($eeSFL_FileSize > $eeSFL_UploadMaxFileSize) {
-			return "File size is too large.";
+		if($eeFileSize > $eeUploadMaxFileSize) {
+			return __('File size is too large.', 'ee-simple-file-list');
 		}
 		
 		// Go...
-		if(is_dir(ABSPATH . $eeSFL_FileUploadDir)) {
+		if(is_dir(ABSPATH . $eeFileUploadDir)) {
 				
 			if(wp_verify_nonce(@$_POST['ee-simple-file-list-upload'], 'ee-simple-file-list-upload')) {
 				
@@ -369,40 +369,40 @@ class eeSFL_BASE_UploadClass {
 				$eeTempFile = $_FILES['file']['tmp_name'];
 				
 				// Clean up messy names
-				$eeSFL_FileName = $eeObject->eeSFL_SanitizeFileName($_FILES['file']['name']);
+				$eeFileName = $eeObject->eeSFL_SanitizeFileName($_FILES['file']['name']);
 				
 				// Check if it already exists
 				if($eeObject->eeListSettings['AllowOverwrite'] == 'NO') { 
-					$eeSFL_FileName = $eeObject->eeSFL_CheckForDuplicateFile($eeSFL_FileUploadDir . $eeSFL_FileName);
+					$eeSFL_FileName = $eeObject->eeSFL_CheckForDuplicateFile($eeFileUploadDir . $eeFileName);
 				}
 				
-				$eeObject->eeSFL_DetectUpwardTraversal($eeSFL_FileUploadDir . $eeSFL_FileName); // Die if foolishness
+				$eeObject->eeSFL_DetectUpwardTraversal($eeFileUploadDir . $eeFileName); // Die if foolishness
 				
-				$eeSFL_PathParts = pathinfo($eeSFL_FileName);
-				$eeSFL_FileNameAlone = $eeSFL_PathParts['filename'];
-				$eeSFL_Extension = strtolower($eeSFL_PathParts['extension']); // We need to do this here and in eeSFL_ProcessUpload()
+				$eePathParts = pathinfo($eeFileName);
+				$eeFileNameAlone = $eePathParts['filename'];
+				$eeExtension = strtolower($eePathParts['extension']); // We need to do this here and in eeSFL_ProcessUpload()
 				
 				// Format Check
-				$eeSFL_FileFormatsArray = array_map('trim', explode(',', $eeObject->eeListSettings['FileFormats']));
+				$eeFileFormatsArray = array_map('trim', explode(',', $eeObject->eeListSettings['FileFormats']));
 				
-				if(!in_array($eeSFL_Extension, $eeSFL_FileFormatsArray) OR in_array($eeSFL_Extension, $eeObject->eeForbiddenTypes)) {
-					return 'File type not allowed: (' . $eeSFL_Extension . ')';	
+				if(!in_array($eeExtension, $eeFileFormatsArray) OR in_array($eeExtension, $eeObject->eeForbiddenTypes)) {
+					return __('File type not allowed', 'ee-simple-file-list') . ': (' . $eeExtension . ')';	
 				}
 				
 				// Assemble FilePath
-				$eeSFL_TargetFile = $eeSFL_FileUploadDir . $eeSFL_FileNameAlone . '.' . $eeSFL_Extension;
+				$eeTargetFile = $eeFileUploadDir . $eeFileNameAlone . '.' . $eeExtension;
 				
 				// Check if the name has changed
-				if($_FILES['file']['name'] != $eeSFL_FileName) {
+				if($_FILES['file']['name'] != $eeFileName) {
 					
 					// Set a transient with the new name so we can get it in ProcessUpload() after the form is submitted
-					$eeOldFilePath = 'eeSFL-Renamed-' . str_replace($eeObject->eeListSettings['FileListDir'], '', $eeSFL_FileUploadDir . $_FILES['file']['name']); // Strip the FileListDir
+					$eeOldFilePath = 'eeSFL-Renamed-' . str_replace($eeObject->eeListSettings['FileListDir'], '', $eeFileUploadDir . $_FILES['file']['name']); // Strip the FileListDir
 					$eeOldFilePath = esc_sql(urlencode($eeOldFilePath));
-					$eeNewFilePath = str_replace($eeObject->eeListSettings['FileListDir'], '', $eeSFL_TargetFile); // Strip the FileListDir
+					$eeNewFilePath = str_replace($eeObject->eeListSettings['FileListDir'], '', $eeTargetFile); // Strip the FileListDir
 					set_transient($eeOldFilePath, $eeNewFilePath, 900); // Expires in 15 minutes
 				}
 				
-				$eeTarget = ABSPATH . $eeSFL_TargetFile;
+				$eeTarget = ABSPATH . $eeTargetFile;
 				
 				// return $eeTarget;
 				
@@ -414,7 +414,7 @@ class eeSFL_BASE_UploadClass {
 					} else {
 						
 						// Check for corrupt images
-						if( in_array($eeSFL_Extension, $eeObject->eeDynamicImageThumbFormats) ) {
+						if( in_array($eeExtension, $eeObject->eeDynamicImageThumbFormats) ) {
 							
 							$eeString = implode('...', getimagesize($eeTarget) );
 							
@@ -435,10 +435,10 @@ class eeSFL_BASE_UploadClass {
 						
 						// Build Image thumbs right away right away. We'll set other types to use the background job within eeSFL_ProcessUpload()
 						if($eeObject->eeListSettings['ShowFileThumb'] == 'YES') {
-							if( in_array($eeSFL_Extension, $eeObject->eeDynamicImageThumbFormats) ) {
+							if( in_array($eeExtension, $eeObject->eeDynamicImageThumbFormats) ) {
 					
-								$eeSFL_TargetFile = str_replace($eeObject->eeListSettings['FileListDir'], '', $eeSFL_TargetFile); // Strip the FileListDir
-								$eeObject->eeSFL_CheckThumbnail($eeSFL_TargetFile, $eeObject->eeListSettings);
+								$eeTargetFile = str_replace($eeObject->eeListSettings['FileListDir'], '', $eeTargetFile); // Strip the FileListDir
+								$eeObject->eeSFL_CheckThumbnail($eeTargetFile, $eeObject->eeListSettings);
 							}
 						}
 						
@@ -446,7 +446,7 @@ class eeSFL_BASE_UploadClass {
 					}
 					 
 				} else {
-					return 'Cannot save the uploaded file: ' . $eeSFL_TargetFile;
+					return 'Cannot save the uploaded file: ' . $eeTargetFile;
 				}
 			
 			} else {
@@ -455,7 +455,7 @@ class eeSFL_BASE_UploadClass {
 			}
 			
 		} else {
-			return 'Upload Path Not Found: ' . $eeSFL_FileUploadDir;
+			return 'Upload Path Not Found: ' . $eeFileUploadDir;
 		}
 	}
 

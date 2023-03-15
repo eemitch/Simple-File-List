@@ -1692,7 +1692,7 @@ class eeSFL_BASE_MainClass {
 			$eeFilePath = str_replace('//', '/', $eeFilePath); // Strip double slashes, which will cause failure
 			
 			if(empty($eeFilePath)) {
-				$this->eeLog[eeSFL_Go]['errors'][] = __('Bad Folder Path Given', 'ee-simple-file-list-pro');
+				$this->eeLog[eeSFL_BASE_Go]['errors'][] = __('Bad Folder Path Given', 'ee-simple-file-list');
 				return FALSE;
 			}
 			
@@ -1701,14 +1701,14 @@ class eeSFL_BASE_MainClass {
 			
 			if ($eeUserPath != $eeRealPath) { // They must match
 			    
-			    $this->eeLog[eeSFL_Go]['errors'][] = eeSFL_noticeTimer() . ' - ERROR 99: ' . $eeFilePath;
-			    $this->eeLog[eeSFL_Go]['errors'][] = eeSFL_noticeTimer() . ' ---> ' . $eeUserPath . ' != ' . $eeRealPath;
+			    $this->eeLog[eeSFL_BASE_Go]['errors'][] = eeSFL_BASE_noticeTimer() . ' - ERROR 99: ' . $eeFilePath;
+			    $this->eeLog[eeSFL_BASE_Go]['errors'][] = eeSFL_BASE_noticeTimer() . ' ---> ' . $eeUserPath . ' != ' . $eeRealPath;
 			    $this->eeSFL_WriteLogData();
 			    
 			    wp_die('Error 99 :-( ' . $eeUserPath . ' != ' . $eeRealPath); // Bad guy found, bail out :-(
 			}
 		
-			$this->eeLog[eeSFL_Go]['notice'][] = eeSFL_noticeTimer() . ' - Traversal Check OK (' . $this->eeEnvironment['eeOS'] . ')';
+			$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Traversal Check OK (' . $this->eeEnvironment['eeOS'] . ')';
 			
 			return FALSE;
 		
@@ -1718,14 +1718,14 @@ class eeSFL_BASE_MainClass {
 			
 			if(strpos($eeFilePath, '..') OR strpos($eeFilePath, '..') === 0) {
 				
-				$this->eeLog[eeSFL_Go]['errors'][] = eeSFL_noticeTimer() . ' - ERROR 99:';
-				$this->eeLog[eeSFL_Go]['errors'][] = eeSFL_noticeTimer() . ' --->' . eeFilePath;
+				$this->eeLog[eeSFL_BASE_Go]['errors'][] = eeSFL_BASE_noticeTimer() . ' - ERROR 99:';
+				$this->eeLog[eeSFL_BASE_Go]['errors'][] = eeSFL_BASE_noticeTimer() . ' --->' . eeFilePath;
 			    $this->eeSFL_WriteLogData();
 				
 				wp_die('Error 99 :-(' . $eeFilePath); // Bad guy found, bail out :-(
 			}
 		
-			$this->eeLog[eeSFL_Go]['notice'][] = eeSFL_noticeTimer() . ' - Traversal Check OK (' . $this->eeEnvironment['eeOS'] . ')';
+			$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Traversal Check OK (' . $this->eeEnvironment['eeOS'] . ')';
 				
 			return TRUE;
 		}
