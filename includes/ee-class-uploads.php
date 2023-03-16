@@ -8,21 +8,60 @@ class eeSFL_BASE_UploadClass {
 	public $eeUploadedFiles = array(); // Save the original file names for an upload job
 	
 	
+	// Check for an Upload Job
+	public function eeSFL_UploadCheck($eeListRun) {
+		
+		if($eeListRun > 1 ) { return; }
+		
+		global $eeSFL_BASE;
+		$eeListID = 1;
+		
+		$eeUploaded = FALSE; // Show Confirmation
+
+		// Check for an upload job, then run notification routine.
+		if(isset($_POST['eeSFL_Upload'])) {
+		
+			// Detect Which SFL
+			if(is_object($eeSFL_BASE)) { $eeObject = $eeSFL_BASE; } else { global $eeSFL; $eeObject = $eeSFL; }
+			
+			if(isset($_POST['eeListID'])) {
+				$eeListID = preg_replace("/[^0-9]/i", '', $_POST['eeListID']);
+			}
+			
+			if( $eeListID >=1 ) { $this->eeSFL_ProcessUploadJob($eeListID); $eeObject->eeListID = $eeListID; }
+			
+			if(is_object($eeSFL_BASE)) {
+				
+				if( is_admin() ) { eeSFL_BASE_UploadCompletedAdmin(); // Action Hook: eeSFL_UploadCompletedAdmin  <-- Admin side
+					} else { eeSFL_BASE_UploadCompleted(); } // Action Hook: eeSFL_UploadCompleted <-- Front side
+				
+			} else {
+				
+				if( is_admin() ) { eeSFL_UploadCompletedAdmin(); // Action Hook: eeSFL_UploadCompletedAdmin  <-- Admin side
+					} else { eeSFL_UploadCompleted(); } // Action Hook: eeSFL_UploadCompleted <-- Front side
+			}
+			
+			if($eeObject->eeListSettings['UploadConfirm'] == 'YES' OR is_admin() ) { $eeUploaded = TRUE; }
+			
+		}
+		
+		return $eeUploaded;
+	}
+	
+	
 	// Process an Upload Job, Update the DB as Needed and Return the Results in a Nice Message
-	public function eeSFL_ProcessUploadJob() {
+	public function eeSFL_ProcessUploadJob($eeListID) {
 	
 		global $eeSFL_BASE;
 		
 		// Detect Which SFL
 		if(is_object($eeSFL_BASE)) { 
 			$eeObject = $eeSFL_BASE;
-			$eeListID = 1;
 			$eeGo = eeSFL_BASE_Go;
 			$eeTime = eeSFL_BASE_noticeTimer();
 		} else { 
 			global $eeSFL, $eeSFLF, $eeSFLA, $eeSFL_Tasks;
 			$eeObject = $eeSFL;
-			if(isset($_POST['eeListID'])) { $eeListID = preg_replace("/[^0-9]/i", '', $_POST['eeListID']); } else { $eeListID = 1; };
 			$eeGo = eeSFL_Go;
 			$eeTime = eeSFL_noticeTimer();
 		}

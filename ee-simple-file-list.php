@@ -264,7 +264,7 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Attributes: ' . implode(', ', array_filter($atts));
 	
 		$eeOutput .= '
-		<!-- Shortcode: ' . $eeShortcode . ' -->';
+		<!-- Shortcode: ' . $eeShortcode . ' List Run: #' . $eeSFL_BASE->eeListRun . ' -->';
 		
 		extract($atts);
 		
@@ -325,8 +325,7 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 	}
 	
 	// Upload Check
-	$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
-	include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-upload-check.php');
+	$eeSFL_Uploaded = $eeSFLU_BASE->eeSFL_UploadCheck($eeSFL_BASE->eeListRun);
 		
 	
 	// Begin Front-End List Display ==================================================================

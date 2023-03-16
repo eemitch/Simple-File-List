@@ -79,8 +79,8 @@ function eeSFL_BASE_BackEnd() {
     
 	if($active_tab == 'file_list') {
 		
-		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		require_once($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-upload-check.php');
+		// Upload Check
+		$eeSFL_Uploaded = $eeSFLU_BASE->eeSFL_UploadCheck($eeSFL_BASE->eeListRun);
 	
 		// Get the File Array
 		$eeSFL_BASE->eeSFL_UpdateFileListArray();
