@@ -12,7 +12,7 @@ function eeSFL_BASE_BackEnd() {
 	
 	$eeConfirm = FALSE;
 	$eeForceSort = FALSE; // Only used in shortcode
-	$eeURL = eeSFL_BASE_GetThisURL();
+	$eeURL = $eeSFL_BASE->eeSFL_GetThisURL();
 	
 	$eeAdmin = is_admin(); // Should be TRUE here
 	if(!$eeAdmin) { return FALSE; }

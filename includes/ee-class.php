@@ -1734,6 +1734,36 @@ class eeSFL_BASE_MainClass {
 	
 	
 	
+	// Get what's in the address bar
+	public function eeSFL_GetThisURL($eeIncludeQuery = TRUE) {
+		
+		// Protocal
+		$eeURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
+	
+		// Host
+		$eeURL .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; // The whole Path with args
+		
+		if(strpos($eeURL, '?')) { // Check for Query String
+			
+			$eeArray = explode('?', $eeURL);
+			
+			$eeURL = $eeArray[0]; // The path part
+		
+			if($eeIncludeQuery) {
+			
+				$eeURL .= '?' . $eeArray[1]; // Add query string 
+			
+				$eeURL = remove_query_arg('eeReScan', $eeURL); // This can get stuck
+			}
+		
+		}
+		
+		return $eeURL;
+	}
+	
+	
+	
+	
 	
 	// This method should return the results of an operation; success, warning or failure.
 	public function eeSFL_ResultsNotification() {

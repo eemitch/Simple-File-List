@@ -352,35 +352,4 @@ function eeSFL_BASE_ProcessEmailString($eeString) {
 	}
 }
 
-
-
-
-
-// Get what's in the address bar
-function eeSFL_BASE_GetThisURL($eeIncludeQuery = TRUE) {
-	
-	// Protocal
-	$eeURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
-
-	// Host
-	$eeURL .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; // The whole Path with args
-	
-	if(strpos($eeURL, '?')) { // Check for Query String
-		
-		$eeArray = explode('?', $eeURL);
-		
-		$eeURL = $eeArray[0]; // The path part
-	
-		if($eeIncludeQuery) {
-		
-			$eeURL .= '?' . $eeArray[1]; // Add query string 
-		
-			$eeURL = remove_query_arg('eeReScan', $eeURL); // This can get stuck
-		}
-	
-	}
-	
-	return $eeURL;
-}
-
 ?>

@@ -27,7 +27,7 @@ $eeOutput .= '
 
 <!-- Simple File List Uploader -->
 		
-<form action="' . eeSFL_BASE_GetThisURL() . '" method="POST" enctype="multipart/form-data" name="eeSFL_UploadForm" id="eeSFL_UploadForm">
+<form action="' . $eeSFL_BASE->eeSFL_GetThisURL() . '" method="POST" enctype="multipart/form-data" name="eeSFL_UploadForm" id="eeSFL_UploadForm">
 
 <input type="hidden" name="MAX_FILE_SIZE" value="' .(($eeSFL_BASE->eeListSettings['UploadMaxFileSize']*1024)*1024) . '" />
 <input type="hidden" name="ee" value="1" />

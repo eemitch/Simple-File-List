@@ -5,7 +5,7 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit 
 
 $eeClass = ''; // Meaning, CSS class
 $eeSFL_ActionNonce = wp_create_nonce('eeSFL_ActionNonce'); // Security for Ajax
-$eeURL = eeSFL_BASE_GetThisURL();
+$eeURL = $eeSFL_BASE->eeSFL_GetThisURL();
 $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loaded: ee-list-display';
 
 if(!isset($eeSFL_HideName)) { $eeSFL_HideName = FALSE; }

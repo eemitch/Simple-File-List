@@ -222,7 +222,7 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 	global $eeSFL_BASE, $eeSFLU_BASE, $eeSFL_BASE_VarsForJS;
     
     $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Shortcode Function Loading ...';
-	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_GetThisURL();
+	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = $eeSFL_BASE->eeSFL_GetThisURL();
 	
 	$eeAdmin = is_admin();
 	if($eeAdmin) { return; } // Don't execute shortcode on page editor

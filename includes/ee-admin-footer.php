@@ -14,7 +14,7 @@ $eeOutput .= '
 	
 		$eeOutput .= '
 		
-		<form id="eeSFL_LangOption" action="' . eeSFL_BASE_GetThisURL() . '" method="post">	
+		<form id="eeSFL_LangOption" action="' . $eeSFL_BASE->eeSFL_GetThisURL() . '" method="post">	
 		
 			<p>' . __('Use English on the Back-End', 'ee-simple-file-list') . '</p>
 				

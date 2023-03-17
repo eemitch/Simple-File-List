@@ -60,7 +60,7 @@ $eeOutput .= '<section class="eeSFL_Settings">
 	</ul>
 
 	<p><a class="button eeGet" target="_blank" href="https://demo.simple-file-list.com/">' . __('Try the Pro Demo', 'ee-simple-file-list') . '</a> 
-	<a class="button eeGet" target="_blank" href="https://get.simplefilelist.com/index.php?eeDomain=' . urlencode(eeSFL_BASE_GetThisURL(FALSE)) . '&eeExtension=ee-simple-file-list-pro&eeEmail=' . urlencode($eeSFL_ThisEmail) . '">' . __('Upgrade to Pro Now', 'ee-simple-file-list') . '</a></p>
+	<a class="button eeGet" target="_blank" href="https://get.simplefilelist.com/index.php?eeDomain=' . urlencode( $eeSFL_BASE->eeSFL_GetThisURL(FALSE) ) . '&eeExtension=ee-simple-file-list-pro&eeEmail=' . urlencode($eeSFL_ThisEmail) . '">' . __('Upgrade to Pro Now', 'ee-simple-file-list') . '</a></p>
 	
 </article>
 

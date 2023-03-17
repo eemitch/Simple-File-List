@@ -27,7 +27,7 @@ $eeOutput .= '<div class="eeSFL_Admin">';
 $eeOutput .= $eeSFL_BASE->eeSFL_ResultsNotification();
 
 // Begin the Page	
-$eeOutput .= '<form action="' . eeSFL_BASE_GetThisURL() . '" method="post" id="eeSFL_Settings">';
+$eeOutput .= '<form action="' . $eeSFL_BASE->eeSFL_GetThisURL() . '" method="post" id="eeSFL_Settings">';
 
 $eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce', TRUE, FALSE);
 
