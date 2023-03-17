@@ -4,41 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Functions' ) ) exit('ERROR 98'); // Exit if nonce fails
 
 
-// User Messaging
-function eeSFL_BASE_UserMessaging() {
-
-	global $eeSFL_BASE;
-	
-	$eeOutput = '';
-	
-	if(isset($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'])) {		
-		if($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors']) { 
-			$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'], 'notice-error');
-			$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'];
-			$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'] = array(); // Clear
-		}
-	}
-	
-	if(isset($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['warnings'])) {		
-		if($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['warnings']) { 
-			$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['warnings'], 'notice-warning');
-			$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['warnings'];
-			$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['warnings'] = array(); // Clear
-		}
-	}
-	
-	if(isset($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'])) {	
-		if($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'] AND $eeSFL_BASE->eeListRun == 1) { 
-			$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'], 'notice-success');
-			$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'];
-			$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'] = array(); // Clear
-		}
-	}
-	
-	return $eeOutput;
-}
-
-
 // Get Elapsed Time
 function eeSFL_BASE_noticeTimer() {
 	
@@ -54,7 +19,6 @@ function eeSFL_BASE_noticeTimer() {
 	
 	return $eeTime . ' S | ' . $eeMemory;
 }
-
 
 
 
@@ -321,71 +285,6 @@ function eeSFL_BASE_ProcessTextInput($eeTerm, $eeType = 'text') {
 	return $eeValue;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// The form submission results bar at the top of the admin pages
-function eeSFL_BASE_ResultsDisplay($eeSFL_Results, $eeResultType) { // error, updated, etc...
-	
-	$eeReturn = '<div class="notice ';
-	
-	if(is_admin()) {
-		$eeReturn .= $eeResultType;
-	} else {
-		$eeReturn .= 'eeResult';
-	}
-	
-	$eeReturn .= ' is-dismissible"><p>';
-	$eeReturn .= eeSFL_BASE_MessageDisplay($eeSFL_Results); // Parse the message array
-	$eeReturn .= '</p></div>';
-	
-	return $eeReturn;
-}
-
-
-
-
-// Problem Display / Error reporting
-function eeSFL_BASE_MessageDisplay($eeSFL_Message) {
-	
-	$eeReturn = '';
-	
-	$eeAdmin = is_admin();
-	
-	if(is_array($eeSFL_Message)) {
-		
-		if(!$eeAdmin) { $eeReturn .= '<div id="eeMessageDisplay">' . PHP_EOL; }
-		
-		$eeReturn .= '<ul>' . PHP_EOL; // Loop through $eeSFL_Messages array
-		foreach($eeSFL_Message as $key => $value) { 
-			if(is_array($value)) {
-				foreach ($value as $value2) {
-					$eeReturn .= "<li>$value2</li>" . PHP_EOL;
-				}
-			} else {
-				$eeReturn .= "<li>$value</li>" . PHP_EOL;
-			}
-		}
-		$eeReturn .= "</ul>" . PHP_EOL;
-		
-		if(!$eeAdmin) { $eeReturn .= '</div>' . PHP_EOL; }
-		
-		return $eeReturn;
-		
-	} else {
-		return $eeSFL_Message;
-	}
-}
 
 
 

@@ -56,7 +56,7 @@ $eeOutput .= '
 <div class="eeSFL" id="eeSFL">';
 
 // User Messaging
-$eeOutput .= eeSFL_BASE_UserMessaging();
+$eeOutput .= $eeSFL_BASE->eeSFL_ResultsNotification();
 
 $eeOutput .= '<span class="eeHide" id="eeSFL_ActionNonce">' . $eeSFL_ActionNonce . '</span>
 

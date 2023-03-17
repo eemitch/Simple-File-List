@@ -21,7 +21,7 @@ if(isset($_REQUEST['eeFolder']) AND $eeSFL_BASE->eeListRun == 1) { // Adjust the
 }
 
 // User Messaging
-$eeOutput .= eeSFL_BASE_UserMessaging();
+$eeOutput .= $eeSFL_BASE->eeSFL_ResultsNotification();
 	
 $eeOutput .= '
 

@@ -65,18 +65,15 @@ if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settin
 	
 	// Update DB
 	update_option('eeSFL_Settings_1', $eeSFL_BASE->eeListSettings);
-	$eeConfirm = __('Settings Saved', 'ee-simple-file-list');
-	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = $eeConfirm;
+	
+	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'][] = __('List Settings Saved', 'ee-simple-file-list');
 	
 }
 
 // Settings Display =========================================
 	
-if( count($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors']) ) { 
-	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'], 'notice-error');
-} elseif( $eeConfirm ) { 
-	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeConfirm, 'notice-success');
-}
+// User Messaging
+$eeOutput .= $eeSFL_BASE->eeSFL_ResultsNotification();
 
 // Begin the Form	
 $eeOutput .= '

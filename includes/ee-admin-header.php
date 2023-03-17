@@ -53,6 +53,7 @@ $eeOutput = '
 
 ';
 
-// if($eeSFL_BASE_DevMode) { $eeOutput .= '<p class="eeAlert">' . __('DEVELOPMENT MODE ON', 'ee-simple-file-list') . '</p>'; }
+// User Messaging
+$eeOutput .= $eeSFL_BASE->eeSFL_ResultsNotification();
 	
 ?>

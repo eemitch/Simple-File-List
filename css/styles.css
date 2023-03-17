@@ -219,11 +219,29 @@
 
 
 
-#eeMessageDisplay ul {
-	list-style: none;
+.eeSFL_ResultsNotification {
+	margin: .25em 0;
+	padding: 3px 6px;
+	border: 1px solid #666;
+	border-radius: 2px;
+	background-color: #EEE;
+	color: #333;
 }
-#eeMessageDisplay ul li:before {
-	content: '✓ ';
+.eeSFL_ResultsNotification_errors {
+	background-color: #ffcccc;	
+}
+.eeSFL_ResultsNotification_warnings {
+	background-color: #ffe8b1;	
+}
+.eeSFL_ResultsNotification_messages {
+	background-color: #dcffdc;	
+}
+.eeSFL_ResultsNotification ul {
+	line-height: 1;
+	margin: .5em;
+	padding: .5em;
+}
+.eeSFL_ResultsNotification ul li {
 }
 
 

@@ -1730,6 +1730,59 @@ class eeSFL_BASE_MainClass {
 			return TRUE;
 		}
 	}
+	
+	
+	
+	
+	
+	// This method should return the results of an operation; success, warning or failure.
+	public function eeSFL_ResultsNotification() {
+		
+		$eeGo = eeSFL_BASE_Go;
+		
+		$eeOutput = '';
+		
+		$eeLogParts = array('errors' => 'error', 'warnings' => 'warning', 'messages' => 'success');
+		
+		foreach($eeLogParts as $eePart => $eeType) {
+			
+			if(!empty($this->eeLog[$eeGo][$eePart])) {
+			
+				$eeOutput .= '<div class="';
+				
+				if( is_admin() ) {
+					$eeOutput .=  'notice notice-' . $eeType . ' is-dismissible';
+				} else {
+					$eeOutput .= 'eeSFL_ResultsNotification eeSFL_ResultsNotification_' . $eeType;
+				}
+				
+				$eeOutput .= '">
+				<ul>';
+				
+				foreach($this->eeLog[$eeGo][$eePart] as $eeValue) { // We can go two-deep arrays
+					
+					if(is_array($eeValue)) {
+						foreach ($eeValue as $eeValue2) {
+							$eeOutput .= '
+							<li>' . $eeValue2 . '</li>' . PHP_EOL;
+						}
+					} else {
+						$eeOutput .= '
+						<li>' . $eeValue . '</li>' . PHP_EOL;
+					}
+				}
+				$eeOutput .= '
+				</ul>
+				</div>';
+				
+				$this->eeLog[$eeGo][$eePart] = array(); // Clear this part fo the array
+				
+			}
+		}
+		
+		return $eeOutput;
+
+	}
 
 		
 	

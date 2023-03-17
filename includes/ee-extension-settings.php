@@ -16,18 +16,15 @@ if(isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-setting
 	// Update DB
 	// update_option('eeSFL_Settings_1', $eeSFL_BASE->eeListSettings );
 	
-	$eeConfirm = __('List Settings Saved', 'ee-simple-file-list');
+	eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'][] = __('Extension Settings Saved', 'ee-simple-file-list');
 }
 
 // Settings Display =========================================
 	
 $eeOutput .= '<div class="eeSFL_Admin">';
 	
-if($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors']) { 
-	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'], 'notice-error');
-} elseif($eeConfirm) { 
-	$eeOutput .=  eeSFL_BASE_ResultsDisplay($eeConfirm, 'notice-success');
-}
+// User Messaging
+$eeOutput .= $eeSFL_BASE->eeSFL_ResultsNotification();
 
 // Begin the Page	
 $eeOutput .= '<form action="' . eeSFL_BASE_GetThisURL() . '" method="post" id="eeSFL_Settings">';
