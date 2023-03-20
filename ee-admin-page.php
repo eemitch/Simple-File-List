@@ -96,8 +96,7 @@ function eeSFL_BASE_BackEnd() {
 		<div id="uploadFilesDiv" class="eeSettingsTile eeAdminUploadForm">';
 		
 		// The Upload Form
-		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		include($eeSFL_BASE->eeEnvironment['pluginDir'] . 'includes/ee-upload-form.php');
+		$eeOutput .= $eeSFLU_BASE->eeSFL_UploadForm();
 		
 		$eeOutput .= '</div>
 		

@@ -8,6 +8,153 @@ class eeSFL_BASE_UploadClass {
 	public $eeUploadedFiles = array(); // Save the original file names for an upload job
 	
 	
+	
+	
+	public function eeSFL_UploadForm() {
+		
+		global $eeSFL_BASE;
+		
+		// Detect Which SFL
+		if(is_object($eeSFL_BASE)) {
+			
+			$eeObject = $eeSFL_BASE;
+		
+		} else {
+			
+			global $eeSFL; $eeObject = $eeSFL;
+		
+			// Check for a Sub-Folder
+			if(isset($_REQUEST['eeFolder']) AND $eeObject->eeListRun == 1) { // Adjust the path based on REQUEST arg
+				$eeObject->eeCurrentFolder = sanitize_text_field(urldecode($_REQUEST['eeFolder'])) . '/'; 
+			} elseif( !empty($eeObject->eeShortcodeFolder) ) {
+				$eeObject->eeCurrentFolder = str_replace('&#34;', '', $eeObject->eeShortcodeFolder) . '/'; // Fix for uploading to draft status page
+			} else {
+				$eeObject->eeCurrentFolder = FALSE;
+			}
+		}
+		
+		// User Messaging
+		$eeOutput .= $eeObject->eeSFL_ResultsNotification();
+			
+		$eeOutput .= '
+		
+		<!-- Simple File List Uploader -->
+				
+		<form action="' . $eeObject->eeSFL_GetThisURL() . '" method="POST" enctype="multipart/form-data" name="eeSFL_UploadForm" id="eeSFL_UploadForm">
+		
+		<input type="hidden" name="MAX_FILE_SIZE" value="' .(($eeObject->eeListSettings['UploadMaxFileSize']*1024)*1024) . '" />
+		<input type="hidden" name="ee" value="1" />
+		<input type="hidden" name="eeSFL_Upload" value="TRUE" />
+		<input type="hidden" name="eeListID" value="' . $eeObject->eeListID . '" />
+		<input type="hidden" name="eeSFL_FileCount" value="" id="eeSFL_FileCount" />
+		<input type="hidden" name="eeSFL_FileList" value="" id="eeSFL_FileList" />';
+		
+		if($eeObject->eeEnvironment['wpUserID'] > 0) { $eeOutput .= '
+		<input type="hidden" name="eeSFL_FileOwner" value="' . $eeObject->eeEnvironment['wpUserID'] . '" id="eeSFL_FileOwner" />'; }
+		
+		if($eeObject->eeCurrentFolder) { $eeOutput .= '
+		<input type="hidden" name="eeSFL_UploadFolder" value="' . urlencode($eeObject->eeCurrentFolder) . '" id="eeSFL_UploadFolder" />'; }
+		
+		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload-form', 'ee-simple-file-list-upload-form-nonce', TRUE, FALSE);
+		
+		$eeOutput .= '
+		
+		<h2 class="eeSFL_UploadFilesTitle">' . __('Upload Files', 'ee-simple-file-list-pro') . '</h2>
+		
+		<div class="eeClearFix" id="eeSFL_FileDropZone" ondrop="eeSFL_DropHandler(event);" ondragover="eeSFL_DragOverHandler(event);">';
+			
+		$eeName = ''; $eeEmail = '';
+		
+		$wpUserObj = wp_get_current_user();
+		
+		if($wpUserObj) {
+			$eeName = $wpUserObj->first_name . ' ' . $wpUserObj->last_name;
+			$eeEmail = $wpUserObj->user_email;
+		}
+		
+		$eeOutput .= '
+		
+		<div id="eeUploadInfoForm" class="eeClearFix">';
+			
+		if(!$eeEmail AND $eeObject->eeListSettings['GetUploaderInfo'] == 'YES') {
+			
+			$eeOutput .= '
+			
+			<label for="eeSFL_Name">' . __('Name', 'ee-simple-file-list-pro') . ':</label>
+			<input type="text" name="eeSFL_Name" value="" id="eeSFL_Name" size="64" maxlength="64" /> 
+			
+			<label for="eeSFL_Email">' . __('Email', 'ee-simple-file-list-pro') . ':</label>
+			<input type="text" name="eeSFL_Email" value="" id="eeSFL_Email" size="64" maxlength="128" />';
+			
+		} else {
+			
+			$eeOutput .= '
+				
+			<input type="hidden" id="eeSFL_Name" name="eeSFL_Name" value="' . $eeName . '" />
+			<input type="hidden" id="eeSFL_Email" name="eeSFL_Email" value="' . $eeEmail . '" />';
+		}
+		
+		if($eeObject->eeListSettings['GetUploaderDesc'] == 'YES' OR $eeAdmin) {
+			
+			$eeOutput .= '<label for="eeSFL_FileDesc">' . __('Description', 'ee-simple-file-list-pro') . '</label>
+			
+			<textarea placeholder="' . __('Add a description (optional)', 'ee-simple-file-list-pro') . '" name="eeSFL_FileDesc" id="eeSFL_FileDesc" rows="5" cols="64" maxlength="5012"></textarea>';
+			
+		}
+			
+		$eeOutput .= '</div>
+		
+		<input type="file" name="eeSFL_FileInput" id="eeSFL_FileInput" onchange="eeSFL_FileInputHandler(event)" multiple />
+		
+		<p id="eeSFL_FilesDrug"></p>
+		
+		<script>
+				
+		var eeSFL_ListID = "' . $eeObject->eeListID . '";
+		var eeSFL_FileUploadDir = "' . urlencode($eeObject->eeCurrentFolder) . '";
+		var eeSFL_FileLimit = ' . $eeObject->eeListSettings['UploadLimit'] . ';
+		var eeSFL_UploadMaxFileSize = ' . (($eeObject->eeListSettings['UploadMaxFileSize']*1024)*1024) . ';
+		var eeSFL_FileFormats = "' . str_replace(' ' , '', $eeObject->eeListSettings['FileFormats']) . '";
+		var eeSFL_Nonce = "' . wp_create_nonce('ee-simple-file-list-upload') . '";
+		var eeSFL_UploadEngineURL = "' . admin_url( 'admin-ajax.php') . '";
+					
+		</script>
+		
+		<span id="eeSFL_UploadProgress"><em class="eeHide">' . __('Processing the Upload', 'ee-simple-file-list-pro') . '</em></span>
+		
+		<div id="eeSFL_FileUploadQueue"></div>
+		
+		<button type="button" class="button" name="eeSFL_UploadGo" id="eeSFL_UploadGo" onclick="eeSFL_UploadProcessor(eeSFL_FileObjects);">' . __('Upload', 'ee-simple-file-list-pro') . '</button>';
+		
+		// if($eeEmail AND !$eeAdmin) { $eeOutput .= '<p>' . __('Submitter:', 'ee-simple-file-list-pro') . ' ' . $eeName . ' (' . $eeEmail . ')</p>'; }
+		
+		if($eeObject->eeListSettings['ShowUploadLimits'] == 'YES') {
+		
+			$eeOutput .= '<p class="sfl_instuctions">' . __('File Limit', 'ee-simple-file-list-pro') . ': ' . $eeObject->eeListSettings['UploadLimit'] . ' ' . __('files', 'ee-simple-file-list-pro') . '<br />
+			
+			' . __('Size Limit', 'ee-simple-file-list-pro') . ': ' . $eeObject->eeListSettings['UploadMaxFileSize'] . ' MB
+			
+			' . __('per file', 'ee-simple-file-list-pro') . '.<br />
+			
+			' . __('Types Allowed', 'ee-simple-file-list-pro') . ': ' . str_replace(',', ', ', $eeObject->eeListSettings['FileFormats'])  . '<br />
+			
+			' . __('Drag-and-drop files here or use the Browse button.', 'ee-simple-file-list-pro') . '</p>';
+		
+		}
+		
+		$eeOutput .= '
+		
+		</div>
+		
+		</form>';
+		
+		return $eeOutput;
+	}
+	
+	
+	
+	
+	
 	// Check for an Upload Job
 	public function eeSFL_UploadCheck($eeListRun) {
 		
@@ -47,6 +194,10 @@ class eeSFL_BASE_UploadClass {
 		
 		return $eeUploaded;
 	}
+	
+	
+	
+	
 	
 	
 	// Process an Upload Job, Update the DB as Needed and Return the Results in a Nice Message

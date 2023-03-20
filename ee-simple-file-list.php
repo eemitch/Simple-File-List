@@ -124,7 +124,7 @@ function eeSFL_BASE_Setup() {
 		
 		// Upload Class
 		$eeSFL_Nonce = wp_create_nonce('eeSFL_Class');
-		require_once(plugin_dir_path(__FILE__) . 'includes/ee-class-uploads.php'); 
+		require_once(plugin_dir_path(__FILE__) . 'uploader/ee-class-uploads.php'); 
 		$eeSFLU_BASE = new eeSFL_BASE_UploadClass();
 		
 		// Initialize the Log
@@ -285,8 +285,8 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 		if($sortby OR $sortorder) { 
 			if( $sortby != $eeSFL_BASE->eeListSettings['SortBy'] OR $sortorder != $eeSFL_BASE->eeListSettings['SortOrder'] ) {
 				$eeForceSort = TRUE;
-				$eeSFL_BASE->eeListSettings['SortBy'] = strtoupper($sortby);
-				$eeSFL_BASE->eeListSettings['SortOrder'] = strtoupper($sortorder);
+				$eeSFL_BASE->eeListSettings['SortBy'] = ucwords($sortby);
+				$eeSFL_BASE->eeListSettings['SortOrder'] = ucwords($sortorder);
 			} else {
 				$eeForceSort = FALSE;
 			}
@@ -350,14 +350,13 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 	if($eeSFL_BASE->eeListSettings['AllowUploads'] != 'NO' AND !$eeSFL_BASE->eeUploadFormRun) {
 		
 		wp_enqueue_style('ee-simple-file-list-css-upload');
-		wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js', $eeDependents , eeSFL_BASE_Version, TRUE);
+		wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'uploader/ee-uploader.js', $eeDependents , eeSFL_BASE_Version, TRUE);
 		$eeSFL_UploadFormRun = TRUE;
 		$eeShowUploadForm = TRUE;
 	}
 	
 	if($eeSFL_BASE->eeListSettings['AllowUploads'] != 'NO' AND !$eeSFL_Uploaded AND $eeSFL_BASE->eeListSettings['UploadPosition'] == 'Above') {
-		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		include($eeSFL_BASE->eeEnvironment['pluginDir'] . '/includes/ee-upload-form.php');
+		$eeOutput .= $eeSFLU_BASE->eeSFL_UploadForm();
 	}	
 		
 	// Who Can View the List?
@@ -382,8 +381,7 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 	}
 	
 	if($eeSFL_BASE->eeListSettings['AllowUploads'] != 'NO' AND !$eeSFL_Uploaded AND $eeSFL_BASE->eeListSettings['UploadPosition'] == 'Below') {
-		$eeSFL_Nonce = wp_create_nonce('eeInclude');
-		include($eeSFL_BASE->eeEnvironment['pluginDir'] . '/includes/ee-upload-form.php');
+		$eeOutput .= $eeSFLU_BASE->eeSFL_UploadForm();
 	}
 	
 	// Smooth Scrolling is AWESOME!
@@ -476,7 +474,7 @@ function eeSFL_BASE_AdminHead($eeHook) {
         wp_enqueue_script('ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js', $deps, eeSFL_BASE_Version, FALSE);
 		wp_enqueue_script('ee-simple-file-list-js-back', plugin_dir_url(__FILE__) . 'js/ee-back.js', $deps, eeSFL_BASE_Version, FALSE);
         wp_enqueue_script('ee-simple-file-list-js-foot', plugin_dir_url(__FILE__) . 'js/ee-footer.js', $deps, eeSFL_BASE_Version, TRUE);
-        wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js',$deps, eeSFL_BASE_Version, TRUE);
+        wp_enqueue_script('ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'uploader/ee-uploader.js',$deps, eeSFL_BASE_Version, TRUE);
         wp_enqueue_script('ee-simple-file-list-js-edit-file', plugin_dir_url(__FILE__) . 'js/ee-edit-file.js',$deps, eeSFL_BASE_Version, TRUE);
 		
 		// Pass variables

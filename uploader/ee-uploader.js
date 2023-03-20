@@ -1,5 +1,7 @@
 // Simple File List Script: ee-uploader.js | Author: Mitchell Bennis | support@simplefilelist.com
 
+console.log('ee-uploader.js Loaded');
+
 var eeSFL_Files = new Array(); // Upload Queue
 var eeSFL_FileSet = new Array(); // Names
 var eeSFL_FileObjects = new Array(); // File objects
@@ -7,36 +9,35 @@ var eeSFL_FileCount = 0; // How many to upload
 var eeSFL_Uploaded = 0; // How many have uploaded
 var eeSFL_Error = false; // Bad things have happened
 
-
 // Receive files from input[type=file]
-function eeSFL_BASE_FileInputHandler(eeEvent) {
+function eeSFL_FileInputHandler(eeEvent) {
 	
 	console.log("File Added via Input");
 	
 	eeSFL_Files = document.getElementById("eeSFL_FileInput").files;
 	
-	eeSFL_BASE_AddFilesToQueue(eeSFL_Files);
+	eeSFL_AddFilesToQueue(eeSFL_Files);
 
 }
 
 // Receive files from the drop zone
-function eeSFL_BASE_DropHandler(eeEvent) {
+function eeSFL_DropHandler(eeEvent) {
   
   	console.log('File Added via Drop Zone');
 
 	// Prevent default behavior (Prevent file from being opened)
 	eeEvent.preventDefault();
 	  
-	eeSFL_BASE_AddFilesToQueue(eeEvent.dataTransfer.files); // The file object
+	eeSFL_AddFilesToQueue(eeEvent.dataTransfer.files); // The file object
 }
 
 // Prevent file from being opened in the browser window
-function eeSFL_BASE_DragOverHandler(eeEvent) {
+function eeSFL_DragOverHandler(eeEvent) {
 	eeEvent.preventDefault();
 }
 
 
-function eeSFL_BASE_QueueRemove(eeID) {
+function eeSFL_QueueRemove(eeID) {
 	
 	eeSFL_FileObjects.splice(eeID, 1); // Remove from the object
 	
@@ -57,7 +58,7 @@ function eeSFL_BASE_QueueRemove(eeID) {
 
 	
 // Check and prep one or more file to be uploaded.
-function eeSFL_BASE_AddFilesToQueue(eeSFL_Files) { // The files object
+function eeSFL_AddFilesToQueue(eeSFL_Files) { // The files object
     
     // Make sure it's not too many
     if(eeSFL_Files.length > eeSFL_FileLimit) { // If so, reset
@@ -155,7 +156,7 @@ function eeSFL_BASE_AddFilesToQueue(eeSFL_Files) { // The files object
 
 
 // The Upload Queue Processor - This runs when the Upload button is clicked
-function eeSFL_BASE_UploadProcessor(eeSFL_FileObjects) {
+function eeSFL_UploadProcessor(eeSFL_FileObjects) {
 	
 	eeSFL_FileCount = eeSFL_FileObjects.length;
 	
@@ -194,7 +195,7 @@ function eeSFL_BASE_UploadProcessor(eeSFL_FileObjects) {
 
 
 // File Upload AJAX Call
-function eeSFL_BASE_UploadFile(eeSFL_File) { // Pass in file object
+function eeSFL_UploadFile(eeSFL_File) { // Pass in file object
     
     var eeXhr = new XMLHttpRequest();
     
