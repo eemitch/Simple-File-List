@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple File List\n"
-"POT-Creation-Date: 2022-10-31 10:51-0500\n"
-"PO-Revision-Date: 2022-10-31 10:55-0500\n"
+"POT-Creation-Date: 2023-03-20 12:03-0500\n"
+"PO-Revision-Date: 2023-03-20 12:21-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: ee-simple-file-list.php\n"
@@ -41,202 +41,211 @@ msgstr "Författare"
 msgid "Get Help"
 msgstr "Skaffa hjälp"
 
-#: ee-admin-page.php:114 ee-list-display.php:98
+#: ee-admin-page.php:113 ee-list-display.php:76
 msgid "Back to the Files"
 msgstr "Tillbaka till filerna"
 
-#: ee-admin-page.php:122
+#: ee-admin-page.php:121
 msgid "Cancel Upload"
 msgstr "Avbryt uppladdning"
 
-#: ee-admin-page.php:123 includes/ee-upload-form.php:48
+#: ee-admin-page.php:122 uploader/ee-class-uploads.php:62
 msgid "Upload Files"
 msgstr "Ladda upp filer"
 
-#: ee-admin-page.php:124
+#: ee-admin-page.php:123
 msgid "Re-Scan Files"
 msgstr "Återskanna filer"
 
-#: ee-admin-page.php:125
+#: ee-admin-page.php:124
 msgid "Create Folder"
 msgstr "Skapa mapp"
 
-#: ee-admin-page.php:141
+#: ee-admin-page.php:140
 msgid "Files"
 msgstr "Filer"
 
-#: ee-admin-page.php:141
+#: ee-admin-page.php:140
 msgid "Sorted by"
 msgstr "Sortera efter"
 
-#: ee-admin-page.php:146
+#: ee-admin-page.php:145
 msgid "Last Changed"
 msgstr "Senast ändrad"
 
-#: ee-admin-page.php:182 includes/ee-list-settings.php:88
+#: ee-admin-page.php:181 includes/ee-list-settings.php:90
 msgid "File List Settings"
 msgstr "Inställningar för fil lista"
 
-#: ee-admin-page.php:188 includes/ee-upload-settings.php:108
+#: ee-admin-page.php:187 includes/ee-upload-settings.php:104
 msgid "File Upload Settings"
 msgstr "Inställningar för fil uppladdning"
 
-#: ee-admin-page.php:194
+#: ee-admin-page.php:193
 msgid "Notification Settings"
 msgstr "Inställningar för aviseringar"
 
-#: ee-list-display.php:52
-msgid "Upload Processing Error. Files may not have been added properly."
-msgstr "Fel vid uppladdning. Filerna kanske inte har lagts till på rätt sätt."
+#: ee-admin-page.php:199 includes/ee-extension-settings.php:41
+msgid "Extension Settings"
+msgstr "Tilläggsinställningar"
 
-#: ee-list-display.php:135
+#: ee-list-display.php:111
 msgid "Upload some files and they will appear here."
 msgstr "Ladda upp några filer och de kommer att visas här."
 
-#: ee-list-display.php:161
+#: ee-list-display.php:137
 msgid "Edit File"
 msgstr "Redigera fil"
 
-#: ee-list-display.php:164 includes/ee-list-settings.php:541
+#: ee-list-display.php:140 includes/ee-list-settings.php:543
 msgid "Added"
 msgstr "Tillagd"
 
-#: ee-list-display.php:165 includes/ee-list-settings.php:545
+#: ee-list-display.php:141 includes/ee-list-settings.php:547
 msgid "Changed"
 msgstr "Ändrad"
 
-#: ee-list-display.php:166 includes/ee-list-display-table.php:38
-#: includes/ee-upload-settings.php:255
+#: ee-list-display.php:142 includes/ee-list-display-table.php:38
+#: includes/ee-upload-settings.php:251
 msgid "Size"
 msgstr "Storlek"
 
-#: ee-list-display.php:169 includes/ee-list-settings.php:314
+#: ee-list-display.php:145 includes/ee-list-settings.php:316
 msgid "File Name"
 msgstr "Filnamn"
 
-#: ee-list-display.php:171
+#: ee-list-display.php:147
 msgid "Change the name."
 msgstr "Ändra namnet."
 
-#: ee-list-display.php:171
+#: ee-list-display.php:147
 msgid "Some characters are not allowed. These will be automatically replaced."
 msgstr "Vissa tecken är inte tillåtna. Dessa ersätts automatiskt."
 
-#: ee-list-display.php:175
+#: ee-list-display.php:149
 msgid "File Nice Name"
 msgstr "Fil Nice Namn"
 
-#: ee-list-display.php:177
+#: ee-list-display.php:151
 msgid "Enter a name that will be shown in place of the real file name."
 msgstr ""
 "Ange ett namn som kommer att visas i stället för det riktiga filnamnet."
 
-#: ee-list-display.php:177
+#: ee-list-display.php:151
 msgid "You may use special characters not allowed in the file name."
 msgstr "Du kan använda specialtecken som inte är tillåtna i filnamnet."
 
-#: ee-list-display.php:179 includes/ee-list-settings.php:568
+#: ee-list-display.php:153 includes/ee-list-settings.php:570
 msgid "File Description"
 msgstr "Filbeskrivning"
 
-#: ee-list-display.php:181
+#: ee-list-display.php:155
 msgid "Add a description."
 msgstr "Lägg till en beskrivning."
 
-#: ee-list-display.php:181
+#: ee-list-display.php:155
 msgid "Use this field to describe this file and apply keywords for searching."
 msgstr ""
 "Använd det här fältet för att beskriva filen och ange nyckelord för sökning."
 
-#: ee-list-display.php:183 includes/ee-admin-footer.php:42
+#: ee-list-display.php:157 includes/ee-admin-footer.php:32
 msgid "Save"
 msgstr "Spara"
 
-#: ee-simple-file-list.php:83 includes/ee-class.php:312
+#: ee-simple-file-list.php:97 includes/ee-class.php:313
 msgid "Edit"
 msgstr "Redigera"
 
-#: ee-simple-file-list.php:84
+#: ee-simple-file-list.php:98
 msgid "Are you sure you want to delete this?"
 msgstr "Är du säker på att du vill radera detta?"
 
-#: ee-simple-file-list.php:85
+#: ee-simple-file-list.php:99
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ee-simple-file-list.php:86
+#: ee-simple-file-list.php:100
 msgid "The Link Has Been Copied"
 msgstr "Länken har kopierats"
 
-#: ee-simple-file-list.php:87
+#: ee-simple-file-list.php:101
 msgid "Upload Limit"
 msgstr "Uppladdningsgräns"
 
-#: ee-simple-file-list.php:88
+#: ee-simple-file-list.php:102
 msgid "This file is too large"
 msgstr "Den här filen är för stor"
 
-#: ee-simple-file-list.php:89
+#: ee-simple-file-list.php:103
 msgid "This file type is not allowed"
 msgstr "Denna filtyp är inte tillåten"
 
-#: ee-simple-file-list.php:90
+#: ee-simple-file-list.php:104
 msgid "Upload Failed"
 msgstr "Uppladdning misslyckades"
 
-#: ee-simple-file-list.php:91
+#: ee-simple-file-list.php:105
 msgid "Files Selected"
 msgstr "Valda filer"
 
-#: ee-simple-file-list.php:94 includes/ee-list-settings.php:267
-#: includes/ee-list-settings.php:515 includes/ee-list-settings.php:529
-#: includes/ee-list-settings.php:555 includes/ee-list-settings.php:569
-#: includes/ee-list-settings.php:583 includes/ee-list-settings.php:599
-#: includes/ee-list-settings.php:610 includes/ee-list-settings.php:621
+#: ee-simple-file-list.php:108 includes/ee-list-settings.php:269
+#: includes/ee-list-settings.php:517 includes/ee-list-settings.php:531
+#: includes/ee-list-settings.php:557 includes/ee-list-settings.php:571
+#: includes/ee-list-settings.php:585 includes/ee-list-settings.php:601
+#: includes/ee-list-settings.php:612 includes/ee-list-settings.php:623
 msgid "Show"
 msgstr "Visa"
 
-#: ee-simple-file-list.php:95
+#: ee-simple-file-list.php:109
 msgid "Hide"
 msgstr "Dölj"
 
-#: ee-simple-file-list.php:621
+#: ee-simple-file-list.php:191
+msgid "EXTENSION DISABLED"
+msgstr "TILLÄGGET ÄR INAKTIVERAT"
+
+#: ee-simple-file-list.php:192
+msgid "Please go to Plugins and update the extension to the latest version."
+msgstr ""
+"Vänligen gå till plugins och uppdatera tillägget till den senaste versionen."
+
+#: ee-simple-file-list.php:578
 msgid "File Delete Failed"
 msgstr "Det gick inte att ta bort filen"
 
-#: ee-simple-file-list.php:625
+#: ee-simple-file-list.php:582
 msgid "Item is Not a File"
 msgstr "Objektet är inte en fil"
 
-#: ee-simple-file-list.php:682
+#: ee-simple-file-list.php:639
 msgid "File Not Found"
 msgstr "Det gick inte att hitta filen"
 
-#: ee-simple-file-list.php:687
+#: ee-simple-file-list.php:644
 msgid "Could Not Change the Name"
 msgstr "Kunde inte ändra namnet"
 
-#: ee-simple-file-list.php:687
+#: ee-simple-file-list.php:644
 msgid "to"
 msgstr "till"
 
-#: ee-simple-file-list.php:697
+#: ee-simple-file-list.php:654
 msgid "Invalid New File Name"
 msgstr "Felaktigt nytt filnamn"
 
-#: ee-simple-file-list.php:724
+#: ee-simple-file-list.php:677
 msgid "Admin List"
 msgstr "Administratörslista"
 
-#: ee-simple-file-list.php:725
+#: ee-simple-file-list.php:678
 msgid "Settings"
 msgstr "Inställningar"
 
-#: includes/ee-admin-footer.php:29
+#: includes/ee-admin-footer.php:19
 msgid "Use English on the Back-End"
 msgstr "Använd engelska på baksidan"
 
-#: includes/ee-admin-footer.php:48
+#: includes/ee-admin-footer.php:38
 msgid ""
 "IMPORTANT: Allowing the public to upload files to your web server comes with "
 "risk."
@@ -244,7 +253,7 @@ msgstr ""
 "VIKTIGT: att tillåta allmänheten att ladda upp filer till din webbserver "
 "kommer med risk."
 
-#: includes/ee-admin-footer.php:49
+#: includes/ee-admin-footer.php:39
 msgid ""
 "Please go to Upload Settings and ensure that you only use the file types "
 "that you absolutely need."
@@ -252,27 +261,27 @@ msgstr ""
 "Vänligen gå till uppladdnings inställningar och se till att du bara använder "
 "de filtyper som du absolut behöver."
 
-#: includes/ee-admin-footer.php:50
+#: includes/ee-admin-footer.php:40
 msgid "Open each file submitted carefully."
 msgstr "Öppna varje fil som skickats in noggrant."
 
-#: includes/ee-admin-footer.php:52
+#: includes/ee-admin-footer.php:42
 msgid "Plugin Documentation"
 msgstr "Dokumentation"
 
-#: includes/ee-admin-footer.php:53
+#: includes/ee-admin-footer.php:43
 msgid "Plugin Website"
 msgstr "Plugin webbplats"
 
-#: includes/ee-admin-footer.php:54
+#: includes/ee-admin-footer.php:44
 msgid "Give Feedback"
 msgstr "Ge respons"
 
-#: includes/ee-admin-footer.php:55
+#: includes/ee-admin-footer.php:45
 msgid "Caution"
 msgstr "Försiktighet"
 
-#: includes/ee-admin-footer.php:59
+#: includes/ee-admin-footer.php:49
 msgid "Version"
 msgstr "Version"
 
@@ -281,7 +290,8 @@ msgid "Upgrade Now"
 msgstr "Uppgradera nu"
 
 #: includes/ee-admin-header.php:13 includes/ee-admin-header.php:49
-#: includes/ee-list-settings.php:107
+#: includes/ee-list-settings.php:109
+#: includes/ee-plugin-extension-SFL-PRO.php:57
 msgid "Upgrade to Pro"
 msgstr "Uppgradera till Pro"
 
@@ -324,90 +334,95 @@ msgstr "Dokumentation"
 msgid "Get Support"
 msgstr "Få support"
 
-#: includes/ee-class.php:286
+#: includes/ee-class.php:287
 msgid "Open"
 msgstr "Öppen"
 
-#: includes/ee-class.php:294
+#: includes/ee-class.php:295
 msgid "Download"
 msgstr "Ladda ner"
 
-#: includes/ee-class.php:302
+#: includes/ee-class.php:303
 msgid "Copy Link"
 msgstr "Kopiera länk"
 
-#: includes/ee-class.php:313
+#: includes/ee-class.php:314
 msgid "Delete"
 msgstr "Radera"
 
-#: includes/ee-class.php:318
+#: includes/ee-class.php:319
 msgid "Move"
 msgstr "Flytta"
 
-#: includes/ee-class.php:319
+#: includes/ee-class.php:320
 msgid "Users"
 msgstr "Användare"
 
-#: includes/ee-class.php:320
+#: includes/ee-class.php:321
 msgid "Send"
 msgstr "Skicka"
 
-#: includes/ee-class.php:1115
+#: includes/ee-class.php:1138
 msgid "Corrupt Image File Deleted"
 msgstr "Korrupt bildfil raderad"
 
-#: includes/ee-class.php:1339
+#: includes/ee-class.php:1362
 msgid "FILE NOT READABLE"
 msgstr "Filen är inte läsbar"
 
-#: includes/ee-class.php:1456
+#: includes/ee-class.php:1479
 msgid "Uploader Information"
 msgstr "Överförarens information"
 
-#: includes/ee-class.php:1461
+#: includes/ee-class.php:1484
 msgid "Uploaded By"
 msgstr "Uppladdad av"
 
-#: includes/ee-class.php:1510
+#: includes/ee-class.php:1529
 msgid "File Upload Notice"
 msgstr "Meddelande om fil överföring"
 
-#: includes/ee-class.php:1553 includes/ee-class.php:1570
+#: includes/ee-class.php:1572 includes/ee-class.php:1589
 msgid "This is not a valid email address."
 msgstr "Detta är inte en giltig e-postadress."
+
+#: includes/ee-class.php:1695
+msgid "Bad Folder Path Given"
+msgstr "Dålig mappsökväg har angetts"
 
 #: includes/ee-email-settings.php:50
 msgid "Notification Settings Saved"
 msgstr "Aviseringsinställningarna har sparats"
 
-#: includes/ee-email-settings.php:76
+#: includes/ee-email-settings.php:73
 msgid "Notifications Settings"
 msgstr "Meddelandeinställningar"
 
-#: includes/ee-email-settings.php:77 includes/ee-list-settings.php:89
-#: includes/ee-upload-settings.php:109
+#: includes/ee-email-settings.php:74 includes/ee-list-settings.php:91
+#: includes/ee-upload-settings.php:105
 msgid "Instructions"
 msgstr "Instruktioner"
 
-#: includes/ee-email-settings.php:83 includes/ee-email-settings.php:203
-#: includes/ee-list-settings.php:95 includes/ee-list-settings.php:658
-#: includes/ee-upload-settings.php:115 includes/ee-upload-settings.php:338
+#: includes/ee-email-settings.php:80 includes/ee-email-settings.php:200
+#: includes/ee-extension-settings.php:48 includes/ee-extension-settings.php:84
+#: includes/ee-list-settings.php:97 includes/ee-list-settings.php:660
+#: includes/ee-upload-settings.php:111 includes/ee-upload-settings.php:334
 msgid "SAVE"
 msgstr "SPARA"
 
-#: includes/ee-email-settings.php:91
+#: includes/ee-email-settings.php:88
 msgid "Notifications"
 msgstr "Aviseringar"
 
-#: includes/ee-email-settings.php:103
+#: includes/ee-email-settings.php:100
 msgid "Enable Notifications"
 msgstr "Aktivera meddelanden"
 
-#: includes/ee-email-settings.php:104
+#: includes/ee-email-settings.php:101
 msgid "Enable"
 msgstr "Aktivera"
 
-#: includes/ee-email-settings.php:108
+#: includes/ee-email-settings.php:105
 msgid ""
 "Send an email notification when a file is uploaded on the front-side of the "
 "website."
@@ -415,113 +430,121 @@ msgstr ""
 "Skicka ett e-postmeddelande när en fil laddas upp på framsidan av "
 "webbplatsen."
 
-#: includes/ee-email-settings.php:124
+#: includes/ee-email-settings.php:121
 msgid "Notice Recipients"
 msgstr "Observera mottagare"
 
-#: includes/ee-email-settings.php:128
+#: includes/ee-email-settings.php:125
 msgid "Notice Email"
 msgstr "Lägg märke till e-post"
 
-#: includes/ee-email-settings.php:130
+#: includes/ee-email-settings.php:127
 msgid "Send an email here whenever a file is uploaded."
 msgstr "Skicka ett e-postmeddelande när en fil laddas upp."
 
-#: includes/ee-email-settings.php:133
+#: includes/ee-email-settings.php:130
 msgid "Copy to Email"
 msgstr "Kopiera till e-post"
 
-#: includes/ee-email-settings.php:135
+#: includes/ee-email-settings.php:132
 msgid "Copy all notice emails here."
 msgstr "Kopiera alla meddelanden här."
 
-#: includes/ee-email-settings.php:137
+#: includes/ee-email-settings.php:134
 msgid "Blind Copy to Email"
 msgstr "Blind kopia till e-post"
 
-#: includes/ee-email-settings.php:139
+#: includes/ee-email-settings.php:136
 msgid "Blind copy all notice emails here."
 msgstr "Kopiera alla meddelanden i blindkopia här."
 
-#: includes/ee-email-settings.php:140
+#: includes/ee-email-settings.php:137
 msgid "Separate multiple addresses with a comma."
 msgstr "Avgränsa flera adresser med kommatecken."
 
-#: includes/ee-email-settings.php:155 includes/ee-email-settings.php:181
+#: includes/ee-email-settings.php:152 includes/ee-email-settings.php:178
 msgid "Message Details"
 msgstr "Meddelandeinformation"
 
-#: includes/ee-email-settings.php:159
+#: includes/ee-email-settings.php:156
 msgid "Your Name"
 msgstr "Ditt namn"
 
-#: includes/ee-email-settings.php:161
+#: includes/ee-email-settings.php:158
 msgid "The visible name in the From field."
 msgstr "Det synliga namnet i fältet från."
 
-#: includes/ee-email-settings.php:163
+#: includes/ee-email-settings.php:160
 msgid "Reply Address"
 msgstr "Svarsadress"
 
-#: includes/ee-email-settings.php:165
+#: includes/ee-email-settings.php:162
 msgid "The notification message's reply-to address."
 msgstr "Svarsadressen för meddelande meddelandet."
 
-#: includes/ee-email-settings.php:187
+#: includes/ee-email-settings.php:184
 msgid "Message Subject"
 msgstr "Meddelandets ämne"
 
-#: includes/ee-email-settings.php:190
+#: includes/ee-email-settings.php:187
 msgid "The notification message subject line."
 msgstr "Ämnesraden för meddelandet."
 
-#: includes/ee-email-settings.php:192
+#: includes/ee-email-settings.php:189
 msgid "Message Body"
 msgstr "Meddelande"
 
-#: includes/ee-email-settings.php:195
+#: includes/ee-email-settings.php:192
 msgid "This is the text for all file upload notification messages."
 msgstr "Detta är texten för alla meddelanden om uppladdning av filer."
 
-#: includes/ee-email-settings.php:195
+#: includes/ee-email-settings.php:192
 msgid "To insert links to the files, use this shortcode:"
 msgstr "För att infoga länkar till filerna använder du den här kortkoden:"
 
-#: includes/ee-email-settings.php:195
+#: includes/ee-email-settings.php:192
 msgid "To insert a link pointing to the file list page, use this shortcode:"
 msgstr ""
 "För att infoga en länk som pekar på sidan med fillistan använder du den här "
 "kortkoden:"
 
-#: includes/ee-functions.php:202
+#: includes/ee-extension-settings.php:19
+msgid "Extension Settings Saved"
+msgstr "Inställningar för förlängning sparade"
+
+#: includes/ee-extension-settings.php:42
+msgid "Information"
+msgstr "Information"
+
+#: includes/ee-functions.php:117
 msgid "Bad Directory Given"
 msgstr "ID för dålig lista"
 
-#: includes/ee-functions.php:221
+#: includes/ee-functions.php:136
 msgid "Cannot Create Windows Directory:"
-msgstr "Det går inte att skapa fil katalogen. Återgår till standard."
+msgstr "Det går inte att skapa fil katalogen. Återgår till standard:"
 
-#: includes/ee-functions.php:228
+#: includes/ee-functions.php:143
 msgid "Cannot Create Linux Directory:"
 msgstr "Kan inte skapa en Linux-katalog:"
 
-#: includes/ee-functions.php:232
+#: includes/ee-functions.php:147
 msgid "ERROR: Could not detect operating system"
 msgstr "FEL: Kunde inte upptäcka operativsystemet"
 
-#: includes/ee-functions.php:237
+#: includes/ee-functions.php:152
 msgid "Cannot create the upload directory"
 msgstr "Det går inte att skapa uppladdningskatalogen"
 
-#: includes/ee-functions.php:238
+#: includes/ee-functions.php:153
 msgid "Please check directory permissions"
 msgstr "Kontrollera katalogbehörigheter"
 
-#: includes/ee-functions.php:267
+#: includes/ee-functions.php:182
 msgid "WARNING! Could not write file"
 msgstr "VARNING! Kunde inte skriva filen"
 
-#: includes/ee-functions.php:268
+#: includes/ee-functions.php:183
 msgid ""
 "Please upload a blank index file to this location to prevent unauthorized "
 "access."
@@ -529,83 +552,60 @@ msgstr ""
 "Ladda upp en tom indexfil till denna plats för att förhindra obehörig "
 "åtkomst."
 
-#: includes/ee-functions.php:372
-msgid "Files Uploaded"
-msgstr "Filer uppladdade"
-
-#: includes/ee-functions.php:374
-msgid "File Uploaded"
-msgstr "Fil uppladdad"
-
-#: includes/ee-functions.php:519
-msgid "File Upload Complete"
-msgstr "Fil överföring slutförd"
-
 #: includes/ee-get-pro.php:16
 msgid "Upgrade to Simple File List Pro"
 msgstr "Uppgradera till Simple File List Pro"
 
-#: includes/ee-get-pro.php:22
+#: includes/ee-get-pro.php:22 includes/ee-plugin-extension-SFL-PRO.php:14
+msgid "The Pro version adds new features and is further extendable."
+msgstr "Pro-versionen innehåller nya funktioner och kan utökas ytterligare."
+
+#: includes/ee-get-pro.php:23 includes/ee-plugin-extension-SFL-PRO.php:15
 msgid ""
-"The Pro version adds new features and is also extendable, allowing you to "
-"add more specific features as needed."
+"Cost is just once per domain. This includes all first-level sub-domains, "
+"plus a separate staging domain. There are no recurring fees."
 msgstr ""
-"Pro-versionen lägger till nya funktioner och är också utbyggbar, vilket gör "
-"att du kan lägga till mer specifika funktioner efter behov."
+"Kostnaden är bara en gång per domän. Detta inkluderar alla underdomäner på "
+"första nivån samt en separat scenisk domän. Det finns inga återkommande "
+"avgifter."
 
-#: includes/ee-get-pro.php:22
-msgid ""
-"Cost is just once per domain, including one staging domain. There are no "
-"recurring fees."
-msgstr ""
-"Kostnaden är bara en gång per domän, inklusive en scenografisk domän. Det "
-"finns inga återkommande avgifter."
-
-#: includes/ee-get-pro.php:24
-msgid "Create Unlimited Sub-Folders"
-msgstr "Skapa mappar och obegränsade nivåer av undermappar."
-
-#: includes/ee-get-pro.php:27
+#: includes/ee-get-pro.php:28 includes/ee-plugin-extension-SFL-PRO.php:20
 msgid "Create folders and unlimited levels of sub-folders."
 msgstr "Skapa mappar och obegränsade nivåer av undermappar."
 
-#: includes/ee-get-pro.php:28
+#: includes/ee-get-pro.php:29 includes/ee-plugin-extension-SFL-PRO.php:21
 msgid "Use the shortcode to display specific folders:"
 msgstr "Använd kortkoden för att visa specifika mappar:"
 
-#: includes/ee-get-pro.php:31
+#: includes/ee-get-pro.php:32 includes/ee-plugin-extension-SFL-PRO.php:24
 msgid "Display different folders in different places on your site."
 msgstr "Visa olika mappar på olika platser på webbplatsen."
 
-#: includes/ee-get-pro.php:32
+#: includes/ee-get-pro.php:33 includes/ee-plugin-extension-SFL-PRO.php:25
 msgid "Breadcrumb navigation indicates where you are."
 msgstr "Navigerings Sök väg anger var du befinner dig."
 
-#: includes/ee-get-pro.php:33
+#: includes/ee-get-pro.php:34 includes/ee-plugin-extension-SFL-PRO.php:26
 msgid "You can even show multiple folders on the same page"
 msgstr "Du kan till och med visa flera mappar på samma sida"
 
-#: includes/ee-get-pro.php:34
+#: includes/ee-get-pro.php:35 includes/ee-plugin-extension-SFL-PRO.php:27
 msgid "Front-side users cannot navigate above the folder you specify."
 msgstr "Användare på fram sidan kan inte navigera ovanför den mapp du anger."
 
-#: includes/ee-get-pro.php:35
+#: includes/ee-get-pro.php:36 includes/ee-plugin-extension-SFL-PRO.php:28
 msgid "Sort folders first or sort along with the files."
 msgstr "Sortera mappar först eller sortera tillsammans med filerna."
 
-#: includes/ee-get-pro.php:36
+#: includes/ee-get-pro.php:37 includes/ee-plugin-extension-SFL-PRO.php:29
 msgid "Display folder sizes and the count of items within."
 msgstr "Visa mappstorlekar och antalet objekt i mappen."
 
-#: includes/ee-get-pro.php:40
-msgid "Get More Features"
-msgstr "Fler funktioner"
-
-#: includes/ee-get-pro.php:43
+#: includes/ee-get-pro.php:38 includes/ee-plugin-extension-SFL-PRO.php:30
 msgid "Optionally define a custom directory for your file list."
 msgstr "Definiera eventuellt en anpassad katalog för din fillista."
 
-#: includes/ee-get-pro.php:44
+#: includes/ee-get-pro.php:39 includes/ee-plugin-extension-SFL-PRO.php:31
 msgid ""
 "Bulk file editing allows you to download, move, delete or add descriptions "
 "to many files or folders at once."
@@ -613,7 +613,7 @@ msgstr ""
 "Massfilredigering låter dig ladda ner, flytta, ta bort eller lägga till "
 "beskrivningar i många filer eller mappar samtidigt."
 
-#: includes/ee-get-pro.php:45
+#: includes/ee-get-pro.php:40 includes/ee-plugin-extension-SFL-PRO.php:32
 msgid ""
 "Edit file dates. Change the date added or the modification date of any file "
 "or folder."
@@ -621,7 +621,7 @@ msgstr ""
 "Redigera fildatum. Ändra datumet för tillägg eller ändring av en fil eller "
 "mapp."
 
-#: includes/ee-get-pro.php:46
+#: includes/ee-get-pro.php:41 includes/ee-plugin-extension-SFL-PRO.php:33
 msgid ""
 "Allow front-end users to download entire folders, or multiple files or "
 "folders at once as a zip file."
@@ -629,7 +629,7 @@ msgstr ""
 "Låt front-end-användare ladda ner hela mappar eller flera filer eller mappar "
 "på en gång som en zip-fil."
 
-#: includes/ee-get-pro.php:47
+#: includes/ee-get-pro.php:42 includes/ee-plugin-extension-SFL-PRO.php:34
 msgid ""
 "Use the Shortcode Builder to create custom snippets for secondary file list "
 "location."
@@ -637,7 +637,7 @@ msgstr ""
 "Använd Shortcode Builder för att skapa anpassade utdrag för den sekundära "
 "fillistans plats."
 
-#: includes/ee-get-pro.php:48
+#: includes/ee-get-pro.php:43 includes/ee-plugin-extension-SFL-PRO.php:35
 msgid ""
 "A Tools Tab allows you to reset settings, the file list array and delete "
 "orphaned thumbnails."
@@ -645,29 +645,25 @@ msgstr ""
 "På fliken Verktyg kan du återställa inställningar, fillistans matris och ta "
 "bort föråldrade miniatyrbilder."
 
-#: includes/ee-get-pro.php:49
-msgid "Go Pro and recieve much improved customer support."
-msgstr "Gå till Pro och få mycket bättre kundsupport."
-
-#: includes/ee-get-pro.php:50
+#: includes/ee-get-pro.php:44 includes/ee-plugin-extension-SFL-PRO.php:36
 msgid "Updating Pro to newer versions works just like the free plugin."
 msgstr ""
 "Uppdatering av Pro till nyare versioner fungerar precis som det kostnadsfria "
 "insticksprogrammet."
 
-#: includes/ee-get-pro.php:53
-msgid "Pro is Extendable"
-msgstr "Pro kan utökas"
+#: includes/ee-get-pro.php:47 includes/ee-plugin-extension-SFL-PRO.php:39
+msgid "Pro is More Extendable"
+msgstr "Pro är mer förlängningsbar"
 
-#: includes/ee-get-pro.php:56
-msgid "Add extensions to give you even more features:"
-msgstr "Lägg till tillägg för att få ännu fler funktioner:"
+#: includes/ee-get-pro.php:49 includes/ee-plugin-extension-SFL-PRO.php:41
+msgid "Pro extensions to give you even more features:"
+msgstr "Pro-tillägg som ger dig ännu fler funktioner:"
 
-#: includes/ee-get-pro.php:58
+#: includes/ee-get-pro.php:52 includes/ee-plugin-extension-SFL-PRO.php:44
 msgid "File Access Manager"
 msgstr "Hanteraren för filåtkomst"
 
-#: includes/ee-get-pro.php:59
+#: includes/ee-get-pro.php:53 includes/ee-plugin-extension-SFL-PRO.php:45
 msgid ""
 "Create additional file lists, each with its own directory, settings and "
 "access restrictions."
@@ -675,30 +671,30 @@ msgstr ""
 "Skapa ytterligare fillistor, var och en med en egen katalog, egna "
 "inställningar och åtkomstbegränsningar."
 
-#: includes/ee-get-pro.php:60
+#: includes/ee-get-pro.php:54 includes/ee-plugin-extension-SFL-PRO.php:46
 msgid "Limit list or file access by WordPress user or role."
 msgstr "Begränsa list- eller filåtkomst för WordPress-användare eller -roller."
 
-#: includes/ee-get-pro.php:61
+#: includes/ee-get-pro.php:55 includes/ee-plugin-extension-SFL-PRO.php:47
 msgid "Search and Pagination"
 msgstr "Sökning och paginering"
 
-#: includes/ee-get-pro.php:62
+#: includes/ee-get-pro.php:56 includes/ee-plugin-extension-SFL-PRO.php:48
 msgid "Search for files by name, description, date range or file owner."
 msgstr ""
 "Sök efter filer med hjälp av namn, beskrivning, datumintervall eller "
 "filägare."
 
-#: includes/ee-get-pro.php:63
+#: includes/ee-get-pro.php:57 includes/ee-plugin-extension-SFL-PRO.php:49
 msgid "Add pagination to break up large file lists into smaller sections."
 msgstr ""
 "Lägg till paginering för att dela upp stora fillistor i mindre avsnitt."
 
-#: includes/ee-get-pro.php:64
+#: includes/ee-get-pro.php:58 includes/ee-plugin-extension-SFL-PRO.php:50
 msgid "Send Files by Email"
 msgstr "Skicka filer via e-post"
 
-#: includes/ee-get-pro.php:65
+#: includes/ee-get-pro.php:59 includes/ee-plugin-extension-SFL-PRO.php:51
 msgid ""
 "Send an email with links to your files. Send to multiple recipients and CC "
 "more."
@@ -706,19 +702,11 @@ msgstr ""
 "Skicka ett e-postmeddelande med länkar till dina filer. Skicka till flera "
 "mottagare och CC med mera."
 
-#: includes/ee-get-pro.php:66
-msgid "Media Player"
-msgstr "Mediaspelare"
-
-#: includes/ee-get-pro.php:67
-msgid "Adds a HTML5 media player below each audio file."
-msgstr "Lägger till en HTML5-mediespelare under varje ljudfil."
-
-#: includes/ee-get-pro.php:71
+#: includes/ee-get-pro.php:62
 msgid "Try the Pro Demo"
 msgstr "Pro kan utökas"
 
-#: includes/ee-get-pro.php:72
+#: includes/ee-get-pro.php:63
 msgid "Upgrade to Pro Now"
 msgstr "Uppgradera till Pro nu"
 
@@ -726,7 +714,7 @@ msgstr "Uppgradera till Pro nu"
 msgid "Thumb"
 msgstr "Tumnagel"
 
-#: includes/ee-list-display-table.php:28 includes/ee-upload-form.php:69
+#: includes/ee-list-display-table.php:28 uploader/ee-class-uploads.php:83
 msgid "Name"
 msgstr "Namn"
 
@@ -734,15 +722,15 @@ msgstr "Namn"
 msgid "Date"
 msgstr "Datum"
 
-#: includes/ee-list-settings.php:63 includes/ee-upload-settings.php:85
-msgid "Settings Saved"
-msgstr "Inställningar Sparade"
+#: includes/ee-list-settings.php:69
+msgid "List Settings Saved"
+msgstr "Sparade List inställningar"
 
-#: includes/ee-list-settings.php:103
+#: includes/ee-list-settings.php:105
 msgid "List Location"
 msgstr "Lista plats"
 
-#: includes/ee-list-settings.php:107
+#: includes/ee-list-settings.php:109
 msgid ""
 "The Pro Version allows you to define a custom file list directory. It must "
 "only be relative to the WordPress home directory."
@@ -750,88 +738,88 @@ msgstr ""
 "I Pro-versionen kan du definiera en egen katalog för fillistan. Den får bara "
 "vara relativ till WordPress hemkatalog."
 
-#: includes/ee-list-settings.php:120
+#: includes/ee-list-settings.php:122
 msgid "File List Access"
 msgstr "Redigera åtkomst till fillista"
 
-#: includes/ee-list-settings.php:124
+#: includes/ee-list-settings.php:126
 msgid "Front-End Display"
 msgstr "Visning på framsidan"
 
-#: includes/ee-list-settings.php:126
+#: includes/ee-list-settings.php:128
 msgid "Show To"
 msgstr "Visa till"
 
-#: includes/ee-list-settings.php:134
+#: includes/ee-list-settings.php:136
 msgid "Everyone"
 msgstr "Vem som helst"
 
-#: includes/ee-list-settings.php:140
+#: includes/ee-list-settings.php:142
 msgid "Only Logged in Users"
 msgstr "Endast inloggade användare"
 
-#: includes/ee-list-settings.php:146
+#: includes/ee-list-settings.php:148
 msgid "Only Logged in Admins"
 msgstr "Endast inloggad administratörer kan ladda upp"
 
-#: includes/ee-list-settings.php:152
+#: includes/ee-list-settings.php:154
 msgid "Hide Completely"
 msgstr "Göm dig helt och hållet"
 
-#: includes/ee-list-settings.php:155
+#: includes/ee-list-settings.php:157
 msgid "Determine who you will show the front-side list to."
 msgstr "Bestäm vem du ska visa listan på framsidan till."
 
-#: includes/ee-list-settings.php:160
+#: includes/ee-list-settings.php:162
 msgid "Back-End Access"
 msgstr "Back-End-åtkomst"
 
-#: includes/ee-list-settings.php:162
+#: includes/ee-list-settings.php:164
 msgid "Choose Role"
 msgstr "Välj roll"
 
-#: includes/ee-list-settings.php:170
+#: includes/ee-list-settings.php:172
 msgid "Subscribers and Above"
 msgstr "Prenumeranter och ovan"
 
-#: includes/ee-list-settings.php:177
+#: includes/ee-list-settings.php:179
 msgid "Contributers and Above"
 msgstr "Bidragsgivare och ovan"
 
-#: includes/ee-list-settings.php:184
+#: includes/ee-list-settings.php:186
 msgid "Authors and Above"
 msgstr "Författare och ovan"
 
-#: includes/ee-list-settings.php:191
+#: includes/ee-list-settings.php:193
 msgid "Editors and Above"
 msgstr "Redaktörer och ovan"
 
-#: includes/ee-list-settings.php:198
+#: includes/ee-list-settings.php:200
 msgid "Admins Only"
 msgstr "Endast administratörer"
 
-#: includes/ee-list-settings.php:202
+#: includes/ee-list-settings.php:204
 msgid "Determine who can access the back-side settings."
 msgstr "Bestäm vem som kan komma åt inställningarna på baksidan."
 
-#: includes/ee-list-settings.php:208
+#: includes/ee-list-settings.php:210
 msgid "Front-End Management"
 msgstr "Front-End Management"
 
-#: includes/ee-list-settings.php:210
+#: includes/ee-list-settings.php:212
 msgid "Allow"
 msgstr "Tillåt"
 
-#: includes/ee-list-settings.php:217
+#: includes/ee-list-settings.php:219
 msgid "Allow file deletion, file renaming, editing descriptions and dates."
 msgstr ""
 "Du kan ta bort filer, byta namn på filer, redigera beskrivningar och datum."
 
-#: includes/ee-list-settings.php:218
+#: includes/ee-list-settings.php:220
 msgid "Upgrade to PRO"
 msgstr "Uppgradera till PRO"
 
-#: includes/ee-list-settings.php:218
+#: includes/ee-list-settings.php:220
 msgid ""
 "Upgrade to allow greater file management control for specific users and "
 "roles."
@@ -839,96 +827,96 @@ msgstr ""
 "Uppgradera för att ge större kontroll över filhanteringen för specifika "
 "användare och roller."
 
-#: includes/ee-list-settings.php:229
+#: includes/ee-list-settings.php:231
 msgid "File List Style"
 msgstr "Stil för fillista"
 
-#: includes/ee-list-settings.php:235
+#: includes/ee-list-settings.php:237
 msgid "Style"
 msgstr "Stil"
 
-#: includes/ee-list-settings.php:243
+#: includes/ee-list-settings.php:245
 msgid "Standard Table Display"
 msgstr "Standardbordsdisplay"
 
-#: includes/ee-list-settings.php:249
+#: includes/ee-list-settings.php:251
 msgid "Tiles Displayed in Columns"
 msgstr "Plattor som visas i kolumner"
 
-#: includes/ee-list-settings.php:255
+#: includes/ee-list-settings.php:257
 msgid "Flexible List Display"
 msgstr "Flexibel listvisning"
 
-#: includes/ee-list-settings.php:258
+#: includes/ee-list-settings.php:260
 msgid "Choose the style of the file list: Table, Tiles or Flex."
 msgstr ""
 "Välj stil för fillistan: Välj en stil för listan: Tabell, Kakel eller Flex."
 
-#: includes/ee-list-settings.php:275
+#: includes/ee-list-settings.php:277
 msgid "Light Theme"
 msgstr "Tema Ljus"
 
-#: includes/ee-list-settings.php:281
+#: includes/ee-list-settings.php:283
 msgid "Dark Theme"
 msgstr "Mörk mall"
 
-#: includes/ee-list-settings.php:287
+#: includes/ee-list-settings.php:289
 msgid "No Theme"
 msgstr "Inget tema"
 
-#: includes/ee-list-settings.php:290
+#: includes/ee-list-settings.php:292
 msgid "Choose the color theme of the file list"
 msgstr "Välj färgtema för fillistan"
 
-#: includes/ee-list-settings.php:290
+#: includes/ee-list-settings.php:292
 msgid "This will rely upon your theme colors"
 msgstr "Detta beror på dina temafärger"
 
-#: includes/ee-list-settings.php:304
+#: includes/ee-list-settings.php:306
 msgid "File Sorting and Order"
 msgstr "Kataloger för enkel fil lista"
 
-#: includes/ee-list-settings.php:306
+#: includes/ee-list-settings.php:308
 msgid "Sort By"
 msgstr "Sortera efter"
 
-#: includes/ee-list-settings.php:321
+#: includes/ee-list-settings.php:323
 msgid "Date File Added"
 msgstr "Datumfil tillagd"
 
-#: includes/ee-list-settings.php:328
+#: includes/ee-list-settings.php:330
 msgid "Date File Changed"
 msgstr "Datumfil ändrad"
 
-#: includes/ee-list-settings.php:335 includes/ee-list-settings.php:554
+#: includes/ee-list-settings.php:337 includes/ee-list-settings.php:556
 msgid "File Size"
 msgstr "Filstorlek"
 
-#: includes/ee-list-settings.php:342
+#: includes/ee-list-settings.php:344
 msgid "Random"
 msgstr "Slumpmässig"
 
-#: includes/ee-list-settings.php:346
+#: includes/ee-list-settings.php:348
 msgid "Reverse Order"
 msgstr "Omvänd ordning"
 
-#: includes/ee-list-settings.php:351
+#: includes/ee-list-settings.php:353
 msgid "Descending"
 msgstr "Fallande"
 
-#: includes/ee-list-settings.php:353
+#: includes/ee-list-settings.php:355
 msgid "Sort the list by name, date, file size, or randomly."
 msgstr "Sortera listan efter namn, datum, fil storlek eller slumpmässigt."
 
-#: includes/ee-list-settings.php:353
+#: includes/ee-list-settings.php:355
 msgid "Check the box to reverse the sort order."
 msgstr "Markera rutan för att vända sorteringsordningen."
 
-#: includes/ee-list-settings.php:361
+#: includes/ee-list-settings.php:363
 msgid "Thumbnail Generation"
 msgstr "Generering av miniatyrbilder"
 
-#: includes/ee-list-settings.php:363
+#: includes/ee-list-settings.php:365
 msgid ""
 "You can choose to generate small representative images of large images, PDF "
 "files and videos files."
@@ -936,29 +924,29 @@ msgstr ""
 "Du kan välja att generera små representativa bilder av stora bilder, PDF-"
 "filer och videofiler."
 
-#: includes/ee-list-settings.php:367
+#: includes/ee-list-settings.php:369
 msgid "Image Thumbnails"
 msgstr "Detta är INTE en bild"
 
-#: includes/ee-list-settings.php:378
+#: includes/ee-list-settings.php:380
 msgid "Read an image file and create a small thumbnail image."
 msgstr "Läser en bildfil och skapar en liten miniatyrbild."
 
-#: includes/ee-list-settings.php:385
+#: includes/ee-list-settings.php:387
 msgid "PDF Thumbnails"
 msgstr "PDF-mallbilder"
 
-#: includes/ee-list-settings.php:393
+#: includes/ee-list-settings.php:395
 msgid "Image Magick is Not Installed. PDF thumbnails cannot be created."
 msgstr ""
 "Image Magick är inte installerad. Det går inte att skapa miniatyrbilder av "
 "PDF-filer."
 
-#: includes/ee-list-settings.php:400
+#: includes/ee-list-settings.php:402
 msgid "Not yet supported for PDF thumbnails."
-msgstr "ännu inte stöds för PDF-miniabilder."
+msgstr "ännu inte stöds för PDF-miniabilder"
 
-#: includes/ee-list-settings.php:404
+#: includes/ee-list-settings.php:406
 msgid ""
 "Read a PDF file and create a representative thumbnail image based on the "
 "first page."
@@ -966,34 +954,34 @@ msgstr ""
 "Läs en PDF-fil och skapa en representativ miniatyrbild baserad på den första "
 "sidan."
 
-#: includes/ee-list-settings.php:411
+#: includes/ee-list-settings.php:413
 msgid "Video Thumbnails"
 msgstr "Miniatyrbilder av videor"
 
-#: includes/ee-list-settings.php:419
+#: includes/ee-list-settings.php:421
 msgid "Video thumbnails will not be created because ffMpeg is not Installed."
 msgstr "Video miniatyrbilder skapas inte eftersom ffMpeg inte är installerat."
 
-#: includes/ee-list-settings.php:424
+#: includes/ee-list-settings.php:426
 msgid ""
 "Read a video file and create a representative thumbnail image at the 1 "
 "second mark."
 msgstr "Läs en videofil och skapa en representativ miniatyrbild vid 1 sekund."
 
-#: includes/ee-list-settings.php:459
+#: includes/ee-list-settings.php:461
 msgid "File Actions"
 msgstr "Filåtgärder"
 
-#: includes/ee-list-settings.php:464
+#: includes/ee-list-settings.php:466
 msgid "Show Open Action"
 msgstr "Visa öppen åtgärd"
 
-#: includes/ee-list-settings.php:465 includes/ee-list-settings.php:479
-#: includes/ee-list-settings.php:494
+#: includes/ee-list-settings.php:467 includes/ee-list-settings.php:481
+#: includes/ee-list-settings.php:496
 msgid "Show Link"
 msgstr "Visa Länk"
 
-#: includes/ee-list-settings.php:472
+#: includes/ee-list-settings.php:474
 msgid ""
 "Display the Open File link. If the browser cannot open the file, it will "
 "prompt the user to download."
@@ -1001,43 +989,43 @@ msgstr ""
 "Visa länken Öppna fil. Om webbläsaren inte kan öppna filen uppmanas "
 "användaren att ladda ner den."
 
-#: includes/ee-list-settings.php:478
+#: includes/ee-list-settings.php:480
 msgid "Show Download Action"
 msgstr "Visa nedladdningsåtgärd"
 
-#: includes/ee-list-settings.php:486
+#: includes/ee-list-settings.php:488
 msgid "The browser will prompt the user to download the file."
 msgstr "Webbläsaren kommer att uppmana användaren att ladda ner filen."
 
-#: includes/ee-list-settings.php:493
+#: includes/ee-list-settings.php:495
 msgid "Show Copy Action"
 msgstr "Visa kopieringsåtgärd"
 
-#: includes/ee-list-settings.php:501
+#: includes/ee-list-settings.php:503
 msgid "Copies the file URL to the user clipboard."
 msgstr "Kopierar filens URL till användarens klippbräda."
 
-#: includes/ee-list-settings.php:511
+#: includes/ee-list-settings.php:513
 msgid "File List Display"
 msgstr "Visning av fillista"
 
-#: includes/ee-list-settings.php:514
+#: includes/ee-list-settings.php:516
 msgid "File Thumbnail"
 msgstr "Fil miniatyr"
 
-#: includes/ee-list-settings.php:522
+#: includes/ee-list-settings.php:524
 msgid "Show file thumbnail images."
 msgstr "Visa miniatyrbilder av filer."
 
-#: includes/ee-list-settings.php:528
+#: includes/ee-list-settings.php:530
 msgid "File Date"
 msgstr "Fil datum"
 
-#: includes/ee-list-settings.php:537
+#: includes/ee-list-settings.php:539
 msgid "Date Type"
 msgstr "Datum Typ"
 
-#: includes/ee-list-settings.php:562
+#: includes/ee-list-settings.php:564
 msgid ""
 "Limit the file information to display on the front-side file list. Enter a "
 "custom label if needed."
@@ -1045,7 +1033,7 @@ msgstr ""
 "Begränsa den filinformation som ska visas i fillistan på framsidan. Ange en "
 "anpassad etikett om det behövs."
 
-#: includes/ee-list-settings.php:576
+#: includes/ee-list-settings.php:578
 msgid ""
 "Show a description of the file, which can include keywords and special "
 "characters not allowed within the file name."
@@ -1053,54 +1041,54 @@ msgstr ""
 "Visa en beskrivning av filen, som kan innehålla nyckelord och specialtecken "
 "som inte är tillåtna i filnamnet."
 
-#: includes/ee-list-settings.php:582
+#: includes/ee-list-settings.php:584
 msgid "File Submitter"
 msgstr "Filinlämnaren"
 
-#: includes/ee-list-settings.php:593
+#: includes/ee-list-settings.php:595
 msgid "Show the name of the user who uploaded the file on the front-end."
 msgstr "Visa namnet på den användare som laddade upp filen i front-end."
 
-#: includes/ee-list-settings.php:598
+#: includes/ee-list-settings.php:600
 msgid "Table Header"
 msgstr "Tabellrubrik"
 
-#: includes/ee-list-settings.php:603
+#: includes/ee-list-settings.php:605
 msgid "Show or hide the file table header."
 msgstr "Visa eller dölja filtabellens rubrik."
 
-#: includes/ee-list-settings.php:609
+#: includes/ee-list-settings.php:611
 msgid "File Extension"
 msgstr "Filändelse"
 
-#: includes/ee-list-settings.php:614
+#: includes/ee-list-settings.php:616
 msgid "Show or hide the file extension."
 msgstr "Visa eller Dölj filnamnstillägget."
 
-#: includes/ee-list-settings.php:620
+#: includes/ee-list-settings.php:622
 msgid "Preserve File Name"
 msgstr "Bevara filnamn"
 
-#: includes/ee-list-settings.php:625
+#: includes/ee-list-settings.php:627
 msgid "Files with illegal characters are renamed to ensure good URLs."
 msgstr ""
 "Filer med olagliga tecken döps om för att säkerställa bra webbadresser."
 
-#: includes/ee-list-settings.php:626
+#: includes/ee-list-settings.php:628
 msgid "This setting will preserve and show the original name as the Nice Name."
 msgstr ""
 "Med den här inställningen bevaras och visas det ursprungliga namnet som Nice "
 "Name."
 
-#: includes/ee-list-settings.php:636
+#: includes/ee-list-settings.php:638
 msgid "Smooth-Scroll"
 msgstr "Smidig rullning"
 
-#: includes/ee-list-settings.php:638
+#: includes/ee-list-settings.php:640
 msgid "Use Smooth-Scroll"
 msgstr "Använd jämn rulle"
 
-#: includes/ee-list-settings.php:645
+#: includes/ee-list-settings.php:647
 msgid ""
 "Uses a JavaScript effect to scroll down to the top of the list after an "
 "action. This can be helpful if the list is not located close to the top of "
@@ -1110,11 +1098,11 @@ msgstr ""
 "efter en åtgärd. Detta kan vara till hjälp om listan inte är placerad nära "
 "toppen av sidan."
 
-#: includes/ee-plugin-author.php:23
+#: includes/ee-plugin-author.php:21
 msgid "Thank You"
 msgstr "Tack"
 
-#: includes/ee-plugin-author.php:25
+#: includes/ee-plugin-author.php:23
 msgid ""
 "Thank you for using my plugin. I am proud of this work and am committed to "
 "supporting it."
@@ -1122,127 +1110,157 @@ msgstr ""
 "Tack för att du använder min plugin. Jag är stolt över detta arbete och har "
 "åtagit mig att stödja det."
 
-#: includes/ee-plugin-author.php:25
+#: includes/ee-plugin-author.php:23
 msgid "The goal is to keep it simple, yet make it do what you need it to do."
 msgstr ""
 "Målet är att hålla det enkelt, men ändå göra det gör vad du behöver det att "
 "göra."
 
-#: includes/ee-plugin-author.php:25
+#: includes/ee-plugin-author.php:23
 msgid "Tell me about the features that you want."
 msgstr "Kontakta mig."
 
-#: includes/ee-plugin-author.php:31
+#: includes/ee-plugin-author.php:29
 msgid "Contact Me"
 msgstr "Kontakta mig"
 
-#: includes/ee-plugin-author.php:31
+#: includes/ee-plugin-author.php:29
 msgid "Feedback or Questions"
 msgstr "Feedback eller frågor"
 
-#: includes/ee-plugin-author.php:37
+#: includes/ee-plugin-author.php:35
 msgid "Contributors"
 msgstr "Medverkande"
 
-#: includes/ee-plugin-author.php:45
+#: includes/ee-plugin-author.php:43
 msgid "Thanks to"
 msgstr "Tack vare"
 
-#: includes/ee-upload-form.php:72
-msgid "Email"
-msgstr "E-post"
+#: includes/ee-plugin-extension-SFL-PRO.php:8
+msgid "Add More Features"
+msgstr "Lägg till fler funktioner"
 
-#: includes/ee-upload-form.php:85
-msgid "Description"
-msgstr "Beskrivning"
+#: includes/ee-plugin-extension-SFL-PRO.php:10
+msgid ""
+"Upgrade to Simple File List Pro and enjoy more features and functionality."
+msgstr ""
+"Uppgradera till Simple File List Pro och få tillgång till fler funktioner."
 
-#: includes/ee-upload-form.php:87
-msgid "Add a description (optional)"
-msgstr "Lägg till en beskrivning (valfritt)"
+#: includes/ee-plugin-extension-SFL-PRO.php:10
+msgid "Pro is also extendable in more ways."
+msgstr "Pro kan också utökas på flera sätt."
 
-#: includes/ee-upload-form.php:108
-msgid "Processing the Upload"
-msgstr "Bearbetning av uppladdning"
+#: includes/ee-plugin-extension-SFL-PRO.php:58
+#: includes/ee-plugin-extension-SFLM.php:26
+msgid "More Information"
+msgstr "Mer information"
 
-#: includes/ee-upload-form.php:112
-msgid "Upload"
-msgstr "Ladda upp"
+#: includes/ee-plugin-extension-SFLM.php:8
+msgid "Add Media Player"
+msgstr "Lägg till mediaspelare"
 
-#: includes/ee-upload-form.php:118 includes/ee-upload-settings.php:241
-msgid "File Limit"
-msgstr "Fil gräns"
+#: includes/ee-plugin-extension-SFLM.php:12
+msgid ""
+"This free extension adds audio and video media players to your file list."
+msgstr ""
+"Det här kostnadsfria tillägget lägger till ljud- och videospelare till din "
+"fillista."
 
-#: includes/ee-upload-form.php:118
-msgid "files"
-msgstr "filer"
+#: includes/ee-plugin-extension-SFLM.php:12
+msgid "Show playback inline or within a pop-up box."
+msgstr "Visa uppspelning i linje eller i en popup-rutan."
 
-#: includes/ee-upload-form.php:120
-msgid "Size Limit"
-msgstr "Storleksgräns"
+#: includes/ee-plugin-extension-SFLM.php:15
+msgid "Add audio and video players to Simple File List."
+msgstr "Lägg till ljud- och videospelare i Simple File List."
 
-#: includes/ee-upload-form.php:122
-msgid "per file"
-msgstr "per fil"
+#: includes/ee-plugin-extension-SFLM.php:16
+msgid ""
+"Display an inline audio player below the file name to allow your users to "
+"play audio files right on the list."
+msgstr ""
+"Visa en inline-ljudspelare under filnamnet så att användarna kan spela upp "
+"ljudfiler direkt i listan."
 
-#: includes/ee-upload-form.php:124
-msgid "Types Allowed"
-msgstr "Typer som tillåts"
+#: includes/ee-plugin-extension-SFLM.php:17
+msgid "Video files open in an overlay, rather than directly within a new tab."
+msgstr "Videofiler öppnas i en överlagring i stället för direkt i en ny flik."
 
-#: includes/ee-upload-form.php:126
-msgid "Drag-and-drop files here or use the Browse button."
-msgstr "Dra och släpp filer här eller Använd bläddringsknappen."
+#: includes/ee-plugin-extension-SFLM.php:18
+msgid "The audio player can be enabled/disabled in the settings."
+msgstr "Ljudspelaren kan aktiveras/avaktiveras i inställningarna."
 
-#: includes/ee-upload-settings.php:129
+#: includes/ee-plugin-extension-SFLM.php:19
+msgid "The height of the audio player can be defined in the settings."
+msgstr "Höjden på ljudspelaren kan definieras i inställningarna."
+
+#: includes/ee-plugin-extension-SFLM.php:20
+msgid ""
+"The file type MIME is auto-detected and passed to the browser, letting it "
+"play whatever it can."
+msgstr ""
+"Filtypen MIME identifieras automatiskt och skickas till webbläsaren så att "
+"den kan spela upp vad den kan."
+
+#: includes/ee-plugin-extension-SFLM.php:25
+msgid "Get Media Player"
+msgstr "Hämta mediaspelare"
+
+#: includes/ee-upload-settings.php:85
+msgid "Upload Settings Saved"
+msgstr "Inställningar för uppladdning sparade"
+
+#: includes/ee-upload-settings.php:125
 msgid "File Upload Restrictions"
 msgstr "Begränsningar för filöverföring"
 
-#: includes/ee-upload-settings.php:132
+#: includes/ee-upload-settings.php:128
 msgid "Who Can Upload Files"
 msgstr "Vem kan ladda upp filer"
 
-#: includes/ee-upload-settings.php:133
+#: includes/ee-upload-settings.php:129
 msgid "Restrict To"
 msgstr "Begränsa till"
 
-#: includes/ee-upload-settings.php:140
+#: includes/ee-upload-settings.php:136
 msgid "Anyone Can Upload"
 msgstr "Vem som helst kan ladda upp"
 
-#: includes/ee-upload-settings.php:146
+#: includes/ee-upload-settings.php:142
 msgid "Only Logged in Users Can Upload"
 msgstr "Endast inloggade användare kan ladda upp"
 
-#: includes/ee-upload-settings.php:152
+#: includes/ee-upload-settings.php:148
 msgid "Only Logged in Admins Can Upload"
 msgstr "Endast inloggad administratörer kan ladda upp"
 
-#: includes/ee-upload-settings.php:158
+#: includes/ee-upload-settings.php:154
 msgid "Hide the Front Side Uploader Completely"
 msgstr "Dölj Front Side Uploader helt"
 
-#: includes/ee-upload-settings.php:162
+#: includes/ee-upload-settings.php:158
 msgid "Allow anyone to upload, only logged-in users, administrators or nobody."
 msgstr ""
 "Tillåt vem som helst att ladda upp, endast inloggade användare, "
 "administratörer eller ingen."
 
-#: includes/ee-upload-settings.php:162
+#: includes/ee-upload-settings.php:158
 msgid "Please use \"Anyone Can Upload\" with Caution"
 msgstr "Använd \"vem som helst som kan ladda upp\" med försiktighet"
 
-#: includes/ee-upload-settings.php:172
+#: includes/ee-upload-settings.php:168
 msgid "Allow File Overwrite"
 msgstr "Tillåt filöverskrivning"
 
-#: includes/ee-upload-settings.php:175
+#: includes/ee-upload-settings.php:171
 msgid "Overwrite or Save as New"
 msgstr "Skriv över eller spara som nytt"
 
-#: includes/ee-upload-settings.php:176
+#: includes/ee-upload-settings.php:172
 msgid "Overwrite"
 msgstr "Skriv över"
 
-#: includes/ee-upload-settings.php:183
+#: includes/ee-upload-settings.php:179
 msgid ""
 "Do not save new copies of files with the same name. Existing files will be "
 "overwritten."
@@ -1250,19 +1268,19 @@ msgstr ""
 "Spara inte nya kopior av filer med samma namn. Befintliga filer kommer att "
 "skrivas över."
 
-#: includes/ee-upload-settings.php:193
+#: includes/ee-upload-settings.php:189
 msgid "Upload Submitter Information"
 msgstr "Ladda upp information om den som skickat in ansökan"
 
-#: includes/ee-upload-settings.php:197
+#: includes/ee-upload-settings.php:193
 msgid "Upload Description"
 msgstr "Uppladdning Beskrivning"
 
-#: includes/ee-upload-settings.php:198
+#: includes/ee-upload-settings.php:194
 msgid "Show Input"
 msgstr "Visa inmatning"
 
-#: includes/ee-upload-settings.php:205
+#: includes/ee-upload-settings.php:201
 msgid ""
 "Display an input allowing the submitter to add a text description of the "
 "file upload."
@@ -1270,19 +1288,19 @@ msgstr ""
 "Visa en ingång som gör det möjligt för den som skickar in filen att lägga "
 "till en textbeskrivning av filuppladdningen."
 
-#: includes/ee-upload-settings.php:212
+#: includes/ee-upload-settings.php:208
 msgid "Submitter Information"
 msgstr "Information om den som lämnat in ansökan"
 
-#: includes/ee-upload-settings.php:213
+#: includes/ee-upload-settings.php:209
 msgid "Require"
 msgstr "Obligatorisk"
 
-#: includes/ee-upload-settings.php:220
+#: includes/ee-upload-settings.php:216
 msgid "Display a form with name and email which is required to be filled out."
 msgstr "Visa ett formulär med namn och e-post som måste fyllas i."
 
-#: includes/ee-upload-settings.php:221
+#: includes/ee-upload-settings.php:217
 msgid ""
 "If the user is logged in the form will not appear. The name and email "
 "address will be automatically captured from the user data."
@@ -1290,77 +1308,81 @@ msgstr ""
 "Om användaren är inloggad visas inte formuläret. Namn och e-postadress "
 "samlas automatiskt in från användardata."
 
-#: includes/ee-upload-settings.php:237
+#: includes/ee-upload-settings.php:233
 msgid "Upload Job Limits"
 msgstr "Ladda upp jobbgränser"
 
-#: includes/ee-upload-settings.php:240
+#: includes/ee-upload-settings.php:236
 msgid "Maximum Files Limit"
 msgstr "Maxgräns för maximala filer"
 
-#: includes/ee-upload-settings.php:244
+#: includes/ee-upload-settings.php:237 uploader/ee-class-uploads.php:133
+msgid "File Limit"
+msgstr "Fil gräns"
+
+#: includes/ee-upload-settings.php:240
 msgid "The maximum number of files that may be uploaded per submission."
 msgstr "Det maximala antalet filer som kan överföras per inlämning."
 
-#: includes/ee-upload-settings.php:254
+#: includes/ee-upload-settings.php:250
 msgid "Maximum File Size"
 msgstr "Maximal fil storlek"
 
-#: includes/ee-upload-settings.php:258
+#: includes/ee-upload-settings.php:254
 msgid "Your hosting limits the maximum file upload size to"
 msgstr "Ditt webbhotell begränsar den maximala fil överförings storleken till"
 
-#: includes/ee-upload-settings.php:267
+#: includes/ee-upload-settings.php:263
 msgid "Allowed File Types"
 msgstr "Tillåtna filtyper"
 
-#: includes/ee-upload-settings.php:271
+#: includes/ee-upload-settings.php:267
 msgid "File Types"
 msgstr "Filtyper"
 
-#: includes/ee-upload-settings.php:274
+#: includes/ee-upload-settings.php:270
 msgid "Only use the file types you absolutely need, such as"
 msgstr "Använd bara de filtyper du absolut behöver, t. ex"
 
-#: includes/ee-upload-settings.php:283
+#: includes/ee-upload-settings.php:279
 msgid "Display"
 msgstr "Visa"
 
-#: includes/ee-upload-settings.php:286
+#: includes/ee-upload-settings.php:282
 msgid "Upload Form Position"
 msgstr "Ladda upp formuläret Position"
 
-#: includes/ee-upload-settings.php:287
+#: includes/ee-upload-settings.php:283
 msgid "Position"
 msgstr "Befattning"
 
-#: includes/ee-upload-settings.php:288
+#: includes/ee-upload-settings.php:284
 msgid "Choose Position"
 msgstr "Välj position"
 
-#: includes/ee-upload-settings.php:292
+#: includes/ee-upload-settings.php:288
 msgid "Above"
 msgstr "Ovan"
 
-#: includes/ee-upload-settings.php:296
+#: includes/ee-upload-settings.php:292
 msgid "Below"
 msgstr "Nedan"
 
-#: includes/ee-upload-settings.php:299
+#: includes/ee-upload-settings.php:295
 msgid "Choose to show the upload form either above or below the file list."
 msgstr ""
 "Välj om du vill visa uppladdningsformuläret antingen ovanför eller nedanför "
 "fillistan."
 
-#: includes/ee-upload-settings.php:304
+#: includes/ee-upload-settings.php:300
 msgid "Confirmation"
 msgstr "Bekräftelse"
 
-#: includes/ee-upload-settings.php:305
+#: includes/ee-upload-settings.php:301
 msgid "Show Results"
 msgstr "Visa resultat"
 
-#: includes/ee-upload-settings.php:312
+#: includes/ee-upload-settings.php:308
 msgid ""
 "Show a resulting list of the files uploaded, or proceed directly back to the "
 "file list."
@@ -1368,20 +1390,80 @@ msgstr ""
 "Visa en lista över de uppladdade filerna eller gå direkt tillbaka till "
 "fillistan."
 
-#: includes/ee-upload-settings.php:317
+#: includes/ee-upload-settings.php:313
 msgid "Show Upload Limits"
 msgstr "Visa uppladdnings gränser"
 
-#: includes/ee-upload-settings.php:318
+#: includes/ee-upload-settings.php:314
 msgid "Show Limits"
 msgstr "Visa gränser"
 
-#: includes/ee-upload-settings.php:325
+#: includes/ee-upload-settings.php:321
 msgid ""
 "Display upload limitations on the front-end, such as size and types allowed."
 msgstr ""
 "Visa uppladdningsbegränsningar på frontenden, till exempel tillåten storlek "
 "och tillåtna typer."
+
+#: uploader/ee-class-uploads.php:86
+msgid "Email"
+msgstr "E-post"
+
+#: uploader/ee-class-uploads.php:99
+msgid "Description"
+msgstr "Beskrivning"
+
+#: uploader/ee-class-uploads.php:101
+msgid "Add a description (optional)"
+msgstr "Lägg till en beskrivning (valfritt)"
+
+#: uploader/ee-class-uploads.php:123
+msgid "Processing the Upload"
+msgstr "Bearbetning av uppladdning"
+
+#: uploader/ee-class-uploads.php:127
+msgid "Upload"
+msgstr "Ladda upp"
+
+#: uploader/ee-class-uploads.php:133
+msgid "files"
+msgstr "filer"
+
+#: uploader/ee-class-uploads.php:135
+msgid "Size Limit"
+msgstr "Storleksgräns"
+
+#: uploader/ee-class-uploads.php:137
+msgid "per file"
+msgstr "per fil"
+
+#: uploader/ee-class-uploads.php:139
+msgid "Types Allowed"
+msgstr "Typer som tillåts"
+
+#: uploader/ee-class-uploads.php:141
+msgid "Drag-and-drop files here or use the Browse button."
+msgstr "Dra och släpp filer här eller Använd bläddringsknappen."
+
+#: uploader/ee-class-uploads.php:253
+msgid "Files Uploaded"
+msgstr "Filer uppladdade"
+
+#: uploader/ee-class-uploads.php:255
+msgid "File Uploaded"
+msgstr "Fil uppladdad"
+
+#: uploader/ee-class-uploads.php:456
+msgid "File Upload Complete"
+msgstr "Fil överföring slutförd"
+
+#: uploader/ee-class-uploads.php:550
+msgid "File size is too large."
+msgstr "Filstorleken är för stor."
+
+#: uploader/ee-class-uploads.php:579
+msgid "File type not allowed"
+msgstr "Filtyp inte tillåten"
 
 #. Plugin Name of the plugin/theme
 msgid "Simple File List"
@@ -1399,6 +1481,26 @@ msgstr "En grundläggande filhanterare med filöverförare"
 #. Author of the plugin/theme
 msgid "Mitchell Bennis"
 msgstr "Mitchell Bennis"
+
+#~ msgid "Upload Processing Error. Files may not have been added properly."
+#~ msgstr ""
+#~ "Fel vid uppladdning. Filerna kanske inte har lagts till på rätt sätt."
+
+#~ msgid ""
+#~ "The Pro version adds new features and is also extendable, allowing you to "
+#~ "add more specific features as needed."
+#~ msgstr ""
+#~ "Pro-versionen lägger till nya funktioner och är också utbyggbar, vilket "
+#~ "gör att du kan lägga till mer specifika funktioner efter behov."
+
+#~ msgid "Create Unlimited Sub-Folders"
+#~ msgstr "Skapa mappar och obegränsade nivåer av undermappar."
+
+#~ msgid "Go Pro and recieve much improved customer support."
+#~ msgstr "Gå till Pro och få mycket bättre kundsupport."
+
+#~ msgid "Adds a HTML5 media player below each audio file."
+#~ msgstr "Lägger till en HTML5-mediespelare under varje ljudfil."
 
 #~ msgid ""
 #~ "Plus, add extensions for larger file lists and flexible user management."
@@ -1475,13 +1577,6 @@ msgstr "Mitchell Bennis"
 #~ msgstr ""
 #~ "Helt enkelt placera denna bit av kortkod i något inlägg, sida eller "
 #~ "widget som du vill att insticks programmet ska visas."
-
-#~ msgid ""
-#~ "Both the file list and uploader will be displayed using the plugin "
-#~ "settings."
-#~ msgstr ""
-#~ "Både fillistan och Uploader kommer att visas med hjälp av plugin-"
-#~ "inställningar."
 
 #~ msgid ""
 #~ "Optionally, use the Shortcode Builder below to create a custom shortcode."
@@ -1567,11 +1662,6 @@ msgstr "Mitchell Bennis"
 
 #~ msgid "To insert file information and link, use this shortcode:"
 #~ msgstr "För att infoga Filinformation och länk, Använd denna kortkod:"
-
-#~ msgid "The Pro version adds features not available in the free version."
-#~ msgstr ""
-#~ "Pro-versionen lägger till funktioner som inte är tillgängliga i "
-#~ "gratisversionen."
 
 #~ msgid "Get Pro Version"
 #~ msgstr "Skaffa pro versionen"
@@ -1793,9 +1883,6 @@ msgstr "Mitchell Bennis"
 #~ msgid "Set to zero to re-scan on each list page load."
 #~ msgstr "Ställ in på noll för att omskanna på varje List sidinläsning."
 
-#~ msgid "Uploader Settings Saved"
-#~ msgstr "Inställningar för överförare sparade"
-
 #~ msgid "Get Pro"
 #~ msgstr "Skaffa PRO"
 
@@ -1834,14 +1921,6 @@ msgstr "Mitchell Bennis"
 
 #~ msgid "Add More Files"
 #~ msgstr "Lägg till fler filer"
-
-#~ msgid "EXTENSION DISABLED"
-#~ msgstr "TILLÄGGET ÄR INAKTIVERAT"
-
-#~ msgid "Please go to Plugins and update the extension to the latest version."
-#~ msgstr ""
-#~ "Vänligen gå till plugins och uppdatera tillägget till den senaste "
-#~ "versionen."
 
 #~ msgid "Folder Delete Failed"
 #~ msgstr "Det gick inte att ta bort mappen"

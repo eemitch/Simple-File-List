@@ -236,9 +236,10 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 ** Go to the new List Settings > Extension Settings tab to access it.
 * Rewrote the entire upload routine to improve reliability and efficiency.
 * Now recording file owner Id on back-end uploads too.
-* Bug fix where if preserving the file name, that name was also used for subsequent files in the upload job.
 * File Nice Name option is now available in the edit dialog even if Preserve File Name is OFF.
 * Improved results messaging, front and back.
+* Bug fix where if preserving the file name, that name was also used for subsequent files in the upload job.
+* Bug fix where sorting attributes were not working in the shortcode.
 
 = 6.0.10 =
 * Fixed some low threat XXS vulnerabilities.
