@@ -9,6 +9,9 @@ var eeSFL_FileCount = 0; // How many to upload
 var eeSFL_Uploaded = 0; // How many have uploaded
 var eeSFL_Error = false; // Bad things have happened
 
+
+
+
 // Receive files from input[type=file]
 function eeSFL_FileInputHandler(eeEvent) {
 	
@@ -75,9 +78,7 @@ function eeSFL_AddFilesToQueue(eeSFL_Files) { // The files object
         
         var eeSFL_File =  eeSFL_Files[i];
 	    
-	    // console.log(eeSFL_File);
-        
-        console.group("File # " + i);
+	    console.group("File # " + i);
 	        
 	        console.log("Name: " + eeSFL_File.name);
 	        
@@ -90,7 +91,12 @@ function eeSFL_AddFilesToQueue(eeSFL_Files) { // The files object
 		        eeSFL_Error = eesfl_vars['eeFileTooLargeText'] + ': ' + eeSFL_File.name;
 	        }
 	        
-	        // Type
+	        if(!eeSFL_File.size || eeSFL_File.size == 0) {
+		        eeSFL_Error = eesfl_vars['eeFileNoSizeText'] + ': ' + eeSFL_File.name;
+	        }
+	        
+	        
+			// Type
 	        if(eeSFL_FileFormats.length > 1) {
 				var eeSFL_FormatsArray = eeSFL_FileFormats.split(","); // An array of the things.
 			}
@@ -116,7 +122,7 @@ function eeSFL_AddFilesToQueue(eeSFL_Files) { // The files object
 			eeSFL_FileSet.push(eeSFL_File.name); // Add this name for the post-processor
 			
 			// Upload Queue Display
-			var eeSFL_UploadQueue = '<p id="eeID' + i + '"><span class="eeSFL_FileUploadRemove" onclick="eeSFL_QueueRemove(' + i + ')">&#9746;</span><span class="eeSFL_FileUploadName">' + eeSFL_File.name + '</span><small><span class="eeSFL_FileUploadType">' + eeSFL_File.type + '</span> &rarr; <span class="eeSFL_FileUploadSize">' + eeSFL_BASE_GetFileSize(eeSFL_File.size) + '</span></small></p>';
+			var eeSFL_UploadQueue = '<p id="eeID' + i + '"><span class="eeSFL_FileUploadRemove" onclick="eeSFL_QueueRemove(' + i + ')">&#9746;</span><span class="eeSFL_FileUploadName">' + eeSFL_File.name + '</span><small><span class="eeSFL_FileUploadType">' + eeSFL_File.type + '</span> &rarr; <span class="eeSFL_FileUploadSize">' + eeSFL_GetFileSize(eeSFL_File.size) + '</span></small></p>';
 			
 			// Populate the Upload Queue
 			jQuery('#eeSFL_FileUploadQueue').append(eeSFL_UploadQueue);
@@ -172,7 +178,7 @@ function eeSFL_UploadProcessor(eeSFL_FileObjects) {
 				return;
 			}
 			
-			if( eeSFL_BASE_ValidateEmail(eeSFL_Email) == 'BAD' ) {
+			if( eeSFL_ValidateEmail(eeSFL_Email) == 'BAD' ) {
 				jQuery('#eeSFL_Email').css('border', '2px solid red');
 				return;
 			}
@@ -187,7 +193,7 @@ function eeSFL_UploadProcessor(eeSFL_FileObjects) {
 			
 			console.log("Processing File: " + eeSFL_FileObjects[i].name);
 						            
-            eeSFL_BASE_UploadFile(eeSFL_FileObjects[i]); // Upload the file using the function below...
+            eeSFL_UploadFile(eeSFL_FileObjects[i]); // Upload the file using the function below...
 		}
 	}		
 }
@@ -259,6 +265,8 @@ function eeSFL_UploadFile(eeSFL_File) { // Pass in file object
 			    	if(n === 0) {
 				    	alert(eesfl_vars['eeUploadErrorText'] + ': ' + eeSFL_File.name);
 				    	jQuery( "#eeUploadingNow" ).fadeOut();
+				    } else {
+					    alert(eeXhr.responseText);
 				    }
 				    return false;
 		        }
@@ -278,18 +286,19 @@ function eeSFL_UploadFile(eeSFL_File) { // Pass in file object
     // WordPress Action
     eeFormData.append("action", "simplefilelist_upload_job");
     
-    // These values are set in ee-upload-form.php
+    // Initial values are set in ee-upload-form.php
     eeFormData.append("file", eeSFL_File);
+    eeFormData.append("eeSFL_ID", eeSFL_ListID);
     eeFormData.append("eeSFL_FileUploadDir", eeSFL_FileUploadDir);
     eeFormData.append("ee-simple-file-list-upload", eeSFL_Nonce);
     
-    // Add the file modification date/time
+    // File modification date/time
     var eeDate = new Date(eeSFL_File.lastModified);
     var eeDateString = eeDate.toISOString().split('T')[0]; // Get just the y-m-d part
     eeFormData.append("eeSFL_FileDate", eeDateString);
     console.log("Date: " + eeDateString);
         
-    // Send the AJAX request...
+    // AJAX request...
     eeXhr.send(eeFormData);
 }
 

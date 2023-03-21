@@ -300,7 +300,7 @@ class eeSFL_BASE_MainClass {
 		if($eeAdmin OR $this->eeListSettings['ShowFileCopyLink'] == 'YES') {
 			
 			$eeOutput .= '
-			<a class="eeSFL_CopyLinkToClipboard" onclick="eeSFL_BASE_CopyLinkToClipboard(\''  . $this->eeFileURL .   '\')" href="#">' . __('Copy Link', 'ee-simple-file-list') . '</a>';														
+			<a class="eeSFL_CopyLinkToClipboard" onclick="eeSFL_CopyLinkToClipboard(\''  . $this->eeFileURL .   '\')" href="#">' . __('Copy Link', 'ee-simple-file-list') . '</a>';														
 		
 		}
 		
@@ -310,8 +310,8 @@ class eeSFL_BASE_MainClass {
 			// <span class="eeSFL_FileManageLinks">
 			
 			$eeOutput .= '
-			<a href="#" onclick="eeSFL_BASE_OpenEditModal(' . $eeFileID . ')">' . __('Edit', 'ee-simple-file-list') . '</a>
-			<a href="#" onclick="eeSFL_BASE_DeleteFile(' . $eeFileID . ')">' . __('Delete', 'ee-simple-file-list') . '</a>';
+			<a href="#" onclick="eeSFL_OpenEditModal(' . $eeFileID . ')">' . __('Edit', 'ee-simple-file-list') . '</a>
+			<a href="#" onclick="eeSFL_DeleteFile(' . $eeFileID . ')">' . __('Delete', 'ee-simple-file-list') . '</a>';
 			
 			if($eeAdmin) {
 			

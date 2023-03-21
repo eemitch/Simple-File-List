@@ -7,7 +7,7 @@ var eeSFL_CheckEmail = false;
 var eeSFL_FileDateAdded = false;
 var eeSFL_FileDateChanged = false;
 
-function eeSFL_BASE_ScrollToIt() {
+function eeSFL_ScrollToIt() {
 	
 	jQuery('html, body').animate({ scrollTop: jQuery('#eeSFL_FileListTop').offset().top }, 1000);
 	

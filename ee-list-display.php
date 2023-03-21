@@ -154,7 +154,7 @@ if($eeAdmin OR $eeSFL_BASE->eeListSettings['AllowFrontManage'] == 'YES') {
 		<textarea cols="64" rows="3" id="eeSFL_FileDescriptionNew" name="eeSFL_FileDescriptionNew"></textarea>
 		<small class="eeSFL_ModalNote">' . __('Add a description.', 'ee-simple-file-list') . ' ' . __('Use this field to describe this file and apply keywords for searching.', 'ee-simple-file-list') . '</small>
 		
-		<button class="button" onclick="eeSFL_BASE_FileEditSaved()">' . __('Save', 'ee-simple-file-list') . '</button>
+		<button class="button" onclick="eeSFL_FileEditSaved()">' . __('Save', 'ee-simple-file-list') . '</button>
 
 	</div>
 	</div>';

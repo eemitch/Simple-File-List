@@ -418,8 +418,8 @@ function eeSFL_BASE_RegisterAssets() {
 	// Register JavaScripts
 	wp_register_script( 'ee-simple-file-list-js-head', plugin_dir_url(__FILE__) . 'js/ee-head.js' );
 	wp_register_script( 'ee-simple-file-list-js-footer', plugin_dir_url(__FILE__) . 'js/ee-footer.js' );
-	wp_register_script( 'ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'js/ee-uploader.js' );
 	wp_register_script( 'ee-simple-file-list-js-edit-file', plugin_dir_url(__FILE__) . 'js/ee-edit-file.js' );
+	wp_register_script( 'ee-simple-file-list-js-uploader', plugin_dir_url(__FILE__) . 'uploader/ee-uploader.js' );
 	
 }
 add_action( 'init', 'eeSFL_BASE_RegisterAssets' );

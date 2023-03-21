@@ -8,7 +8,7 @@ jQuery(document).ready(function($) {
 	console.log('eeSFL Document Ready');
 	
 	window.addEventListener('touchstart', function() {
-		eeSFL_BASE_isTouchscreen = true;
+		eeSFL_isTouchscreen = true;
 	});
 	
 	
@@ -25,13 +25,13 @@ jQuery(document).ready(function($) {
 // SFL FUNCTIONS ---------------------------
 
 // Strip Slashes
-String.prototype.eeSFL_BASE_StripSlashes = function(){
+String.prototype.eeSFL_StripSlashes = function(){
     return this.replace(/\\(.)/mg, "$1");
 }
 
 
 // Copy File URL to Clipboard
-function eeSFL_BASE_CopyLinkToClipboard(eeSFL_FileURL) {
+function eeSFL_CopyLinkToClipboard(eeSFL_FileURL) {
 	
 	var eeTemp = jQuery('<input name="eeTemp" value="' + eeSFL_FileURL + '" type="url" class="" id="eeTemp" />'); // Create a temporary input
 	jQuery("body").append(eeTemp); // Add it to the bottom of the page
@@ -49,7 +49,7 @@ function eeSFL_BASE_CopyLinkToClipboard(eeSFL_FileURL) {
 
 
 // Email Validation
-function eeSFL_BASE_ValidateEmail(eeSFL_CheckEmail) {
+function eeSFL_ValidateEmail(eeSFL_CheckEmail) {
 
 	var eeSFL_EmailFormat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	
@@ -62,7 +62,7 @@ function eeSFL_BASE_ValidateEmail(eeSFL_CheckEmail) {
 
 
 // File Size Formatting
-function eeSFL_BASE_GetFileSize(bytes) {
+function eeSFL_GetFileSize(bytes) {
     
     var si = 1024;
     

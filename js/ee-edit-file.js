@@ -2,7 +2,7 @@
 
 
 // Delete Click Handler
-function eeSFL_BASE_DeleteFile(eeSFL_FileID) {
+function eeSFL_DeleteFile(eeSFL_FileID) {
 	
 	event.preventDefault(); // Don't follow the link
 	
@@ -15,7 +15,7 @@ function eeSFL_BASE_DeleteFile(eeSFL_FileID) {
 	
 	if( confirm( eesfl_vars['eeConfirmDeleteText'] + "\r\n\r\n" + eeSFL_FileName ) ) {
 	
-		eeSFL_BASE_EditFileAction(eeSFL_FileID, 'Delete');
+		eeSFL_EditFileAction(eeSFL_FileID, 'Delete');
 	
 	}
 }
@@ -27,7 +27,7 @@ function eeSFL_BASE_DeleteFile(eeSFL_FileID) {
 
 
 // Edit Button Handler
-function eeSFL_BASE_OpenEditModal(eeSFL_FileID) {
+function eeSFL_OpenEditModal(eeSFL_FileID) {
 	
 	event.preventDefault(); // Don't follow the link
 	
@@ -47,7 +47,7 @@ function eeSFL_BASE_OpenEditModal(eeSFL_FileID) {
 	jQuery('#eeSFL_FileNameNew').val(eeSFL_FileNameOld);
 	
 	eeSFL_FileNiceNameOld = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_FileNiceName').text();
-	eeSFL_FileNiceNameOld = eeSFL_FileNiceNameOld.eeSFL_BASE_StripSlashes();
+	eeSFL_FileNiceNameOld = eeSFL_FileNiceNameOld.eeSFL_StripSlashes();
 	jQuery('#eeSFL_FileNiceNameNew').val(eeSFL_FileNiceNameOld);
 	
 	eeSFL_FileDescriptionOld = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' .eeSFL_FileDesc').text();
@@ -69,7 +69,7 @@ function eeSFL_BASE_OpenEditModal(eeSFL_FileID) {
 
 
 // Modal Form Has Been Saved
-function eeSFL_BASE_FileEditSaved() {
+function eeSFL_FileEditSaved() {
 	
 	eeSFL_FileID = jQuery('#eeSFL_Modal_Manage .eeSFL_Modal_Manage_FileID').text();
 	
@@ -137,7 +137,7 @@ function eeSFL_BASE_FileEditSaved() {
 		
 		if(eeSFL_FileNameNew == false) { eeSFL_FileNameNew = ''; } // Otherwise a file could not be named "false"
 		
-		eeSFL_BASE_EditFileAction(eeSFL_FileID, 'Edit');
+		eeSFL_EditFileAction(eeSFL_FileID, 'Edit');
 	
 	} else {
 		
@@ -153,7 +153,7 @@ function eeSFL_BASE_FileEditSaved() {
 
 
 
-function eeSFL_BASE_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
+function eeSFL_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 	
 	event.preventDefault(); // Don't follow link
 	

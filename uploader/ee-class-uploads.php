@@ -8,28 +8,30 @@ class eeSFL_BASE_UploadClass {
 	public $eeUploadedFiles = array(); // Save the original file names for an upload job
 	
 	
-	
-	
 	public function eeSFL_UploadForm() {
 		
 		global $eeSFL_BASE;
+		$eeOutput = '';
 		
 		// Detect Which SFL
 		if(is_object($eeSFL_BASE)) {
 			
 			$eeObject = $eeSFL_BASE;
+			$eeListID = 1;
+			$eeCurrentFolder = '';
 		
 		} else {
 			
 			global $eeSFL; $eeObject = $eeSFL;
+			$eeListID = $eeSFL->eeListID;
 		
 			// Check for a Sub-Folder
 			if(isset($_REQUEST['eeFolder']) AND $eeObject->eeListRun == 1) { // Adjust the path based on REQUEST arg
-				$eeObject->eeCurrentFolder = sanitize_text_field(urldecode($_REQUEST['eeFolder'])) . '/'; 
+				$eeCurrentFolder = sanitize_text_field(urldecode($_REQUEST['eeFolder'])) . '/'; 
 			} elseif( !empty($eeObject->eeShortcodeFolder) ) {
-				$eeObject->eeCurrentFolder = str_replace('&#34;', '', $eeObject->eeShortcodeFolder) . '/'; // Fix for uploading to draft status page
+				$eeCurrentFolder = str_replace('&#34;', '', $eeObject->eeShortcodeFolder) . '/'; // Fix for uploading to draft status page
 			} else {
-				$eeObject->eeCurrentFolder = FALSE;
+				$eeCurrentFolder = FALSE;
 			}
 		}
 		
@@ -45,15 +47,15 @@ class eeSFL_BASE_UploadClass {
 		<input type="hidden" name="MAX_FILE_SIZE" value="' .(($eeObject->eeListSettings['UploadMaxFileSize']*1024)*1024) . '" />
 		<input type="hidden" name="ee" value="1" />
 		<input type="hidden" name="eeSFL_Upload" value="TRUE" />
-		<input type="hidden" name="eeListID" value="' . $eeObject->eeListID . '" />
+		<input type="hidden" name="eeListID" value="' . $eeListID . '" />
 		<input type="hidden" name="eeSFL_FileCount" value="" id="eeSFL_FileCount" />
 		<input type="hidden" name="eeSFL_FileList" value="" id="eeSFL_FileList" />';
 		
 		if($eeObject->eeEnvironment['wpUserID'] > 0) { $eeOutput .= '
 		<input type="hidden" name="eeSFL_FileOwner" value="' . $eeObject->eeEnvironment['wpUserID'] . '" id="eeSFL_FileOwner" />'; }
 		
-		if($eeObject->eeCurrentFolder) { $eeOutput .= '
-		<input type="hidden" name="eeSFL_UploadFolder" value="' . urlencode($eeObject->eeCurrentFolder) . '" id="eeSFL_UploadFolder" />'; }
+		if($eeCurrentFolder) { $eeOutput .= '
+		<input type="hidden" name="eeSFL_UploadFolder" value="' . urlencode($eeCurrentFolder) . '" id="eeSFL_UploadFolder" />'; }
 		
 		$eeOutput .= wp_nonce_field( 'ee-simple-file-list-upload-form', 'ee-simple-file-list-upload-form-nonce', TRUE, FALSE);
 		
@@ -94,7 +96,7 @@ class eeSFL_BASE_UploadClass {
 			<input type="hidden" id="eeSFL_Email" name="eeSFL_Email" value="' . $eeEmail . '" />';
 		}
 		
-		if($eeObject->eeListSettings['GetUploaderDesc'] == 'YES' OR $eeAdmin) {
+		if($eeObject->eeListSettings['GetUploaderDesc'] == 'YES' OR is_admin() ) {
 			
 			$eeOutput .= '<label for="eeSFL_FileDesc">' . __('Description', 'ee-simple-file-list-pro') . '</label>
 			
@@ -110,8 +112,8 @@ class eeSFL_BASE_UploadClass {
 		
 		<script>
 				
-		var eeSFL_ListID = "' . $eeObject->eeListID . '";
-		var eeSFL_FileUploadDir = "' . urlencode($eeObject->eeCurrentFolder) . '";
+		var eeSFL_ListID = "' . $eeListID . '";
+		var eeSFL_FileUploadDir = "' . urlencode($eeCurrentFolder) . '";
 		var eeSFL_FileLimit = ' . $eeObject->eeListSettings['UploadLimit'] . ';
 		var eeSFL_UploadMaxFileSize = ' . (($eeObject->eeListSettings['UploadMaxFileSize']*1024)*1024) . ';
 		var eeSFL_FileFormats = "' . str_replace(' ' , '', $eeObject->eeListSettings['FileFormats']) . '";
