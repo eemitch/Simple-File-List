@@ -16,7 +16,7 @@ if(isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-setting
 	// Update DB
 	// update_option('eeSFL_Settings_1', $eeSFL_BASE->eeListSettings );
 	
-	eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'][] = __('Extension Settings Saved', 'ee-simple-file-list');
+	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'][] = __('Extension Settings Saved', 'ee-simple-file-list');
 }
 
 // Settings Display =========================================
