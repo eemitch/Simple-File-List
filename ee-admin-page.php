@@ -139,7 +139,7 @@ function eeSFL_BASE_BackEnd() {
 					
 					$eeOutput .= '<small>' . $eeFileCount . ' ' . __('Files', 'ee-simple-file-list') . ' - ' . __('Sorted by', 'ee-simple-file-list') . ' ' . ucwords($eeSFL_BASE->eeListSettings['SortBy']);
 					
-					if($eeSFL_BASE->eeListSettings['SortBy'] == 'Ascending') { $eeOutput .= ' &uarr;'; } else { $eeOutput .= ' &darr;'; } 
+					if($eeSFL_BASE->eeListSettings['SortOrder'] == 'Ascending') { $eeOutput .= ' &uarr;'; } else { $eeOutput .= ' &darr;'; } 
 					
 					$eeOutput .= '<br />' . 
 					__('Last Changed', 'ee-simple-file-list') . ': ' . date_i18n( get_option('date_format'), strtotime( $eeArray[0] ) ) . '</small>';

@@ -53,7 +53,7 @@ if( isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settin
 	}
 	
 	
-	if(isset($_POST['eeSortOrder'])) {
+	if(!empty($_POST['eeSortOrder'])) {
 		$eeSFL_BASE->eeListSettings['SortOrder'] = 'Descending';
 	} else {
 		$eeSFL_BASE->eeListSettings['SortOrder'] = 'Ascending';
@@ -316,16 +316,16 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 			$eeOutput .= '>' . __('File Name', 'ee-simple-file-list') . '</option>
 			
 			
-			<option value="Date"';
+			<option value="Added"';
 			
-			if($eeSFL_BASE->eeListSettings['SortBy'] == 'Date') { $eeOutput .=  ' selected'; }
+			if($eeSFL_BASE->eeListSettings['SortBy'] == 'Added') { $eeOutput .=  ' selected'; }
 			
 			$eeOutput .= '>' . __('Date File Added', 'ee-simple-file-list') . '</option>
 			
 			
-			<option value="DateChanged"';
+			<option value="Changed"';
 			
-			if($eeSFL_BASE->eeListSettings['SortBy'] == 'DateChanged') { $eeOutput .=  ' selected'; }
+			if($eeSFL_BASE->eeListSettings['SortBy'] == 'Changed') { $eeOutput .=  ' selected'; }
 			
 			$eeOutput .= '>' . __('Date File Changed', 'ee-simple-file-list') . '</option>
 			

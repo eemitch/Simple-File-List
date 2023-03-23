@@ -492,7 +492,7 @@ class eeSFL_BASE_UploadClass {
 
 
 	// File Upload Engine
-	function eeSFL_FileUploader() {
+	public function eeSFL_FileUploader() {
 		
 		global $eeSFL_BASE;
 		

@@ -231,6 +231,10 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Changelog ==
 
+= 6.1.2 =
+* Bug fix where sorting was not working.
+* Bug fix where upload class was throwing an error.
+
 = 6.1.1 =
 * Added support for the new Simple File List Media extension.
 ** Go to the new List Settings > Extension Settings tab to access it.

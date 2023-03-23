@@ -83,8 +83,8 @@ class eeSFL_BASE_MainClass {
 		'LabelSize' => 'Size', // Label for the file size
 		'LabelDesc' => 'Description', // Label for the file description
 		'LabelOwner' => 'Submitter', // Label for the file owner
-		'SortBy' => 'DateChanged', // Sort By (Name, Date, DateChanged, Size, Random) -- DateChanged added in 4.3
-		'SortOrder' => 'Descending', // Descending or Ascending
+		'SortBy' => 'Name', // Sort By (Name, Date, DateChanged, Size, Random) -- DateChanged added in 4.3
+		'SortOrder' => 'Ascending', // Descending or Ascending
 		
 		// Display Settings
 		'GenerateImgThumbs' => 'YES', // Create thumbnail images for images if possible.
@@ -1411,8 +1411,6 @@ class eeSFL_BASE_MainClass {
 	// Move the sort item to the array key and then sort. Preserve the key (File ID) in a new element
 	public function eeSFL_SortFiles($eeSortBy, $eeSortOrder) {
 		
-		global $eeSFL, $eeSFLF;
-		
 		if(empty($this->eeAllFiles)) { return; }
 		
 		$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Sorting the File Array';
@@ -1428,9 +1426,9 @@ class eeSFL_BASE_MainClass {
 			return shuffle($this->eeAllFiles);
 		} elseif($eeSortBy == 'Size') {
 			$eeSort = 'FileSize';
-		} elseif($eeSortBy == 'Date') {
+		} elseif($eeSortBy == 'Added') {
 			$eeSort = 'FileDateAdded';
-		} elseif($eeSortBy == 'DateMod') {
+		} elseif($eeSortBy == 'Changed') {
 			$eeSort = 'FileDateChanged';
 		} else {
 			$eeSort = 'FilePath'; // Name

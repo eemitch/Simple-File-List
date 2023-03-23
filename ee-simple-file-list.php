@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 6.1.1
+Version: 6.1.2
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // CONSTANTS
 define('eeSFL_BASE_DevMode', FALSE);
-define('eeSFL_BASE_Version', '6.1.1'); // Plugin version
+define('eeSFL_BASE_Version', '6.1.2'); // Plugin version
 define('eeSFL_BASE_PluginName', 'Simple File List');
 define('eeSFL_BASE_PluginSlug', 'ee-simple-file-list');
 define('eeSFL_BASE_PluginDir', 'simple-file-list');
@@ -832,6 +832,10 @@ function eeSFL_BASE_VersionCheck() {
 		if( !empty($eeSettings) ) {
 			
 			$eeSettings = array_merge($eeSFL_BASE->DefaultListSettings, $eeSettings);
+		
+			// 6.1
+			if($eeSettings['SortBy'] == 'Date') { $eeSettings['SortBy'] = 'Added'; }
+			if($eeSettings['SortBy'] == 'DateMod') { $eeSettings['SortBy'] = 'Changed'; }
 			
 			// These are now uppercase
 			$eeSettings['ShowListStyle'] = strtoupper($eeSettings['ShowListStyle']);
