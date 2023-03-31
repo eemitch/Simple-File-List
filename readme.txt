@@ -231,6 +231,9 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Changelog ==
 
+= 6.1.3 =
+* Added improved WordPress root directory detection.
+
 = 6.1.2 =
 * Bug fix where sorting was not working.
 * Bug fix where upload class was throwing an error.

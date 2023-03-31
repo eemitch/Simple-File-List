@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 6.1.2
+Version: 6.1.3
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // CONSTANTS
 define('eeSFL_BASE_DevMode', FALSE);
-define('eeSFL_BASE_Version', '6.1.2'); // Plugin version
+define('eeSFL_BASE_Version', '6.1.3'); // Plugin version
 define('eeSFL_BASE_PluginName', 'Simple File List');
 define('eeSFL_BASE_PluginSlug', 'ee-simple-file-list');
 define('eeSFL_BASE_PluginDir', 'simple-file-list');
@@ -83,7 +83,27 @@ function eeSFL_BASE_Textdomain() {
 // Plugin Setup
 function eeSFL_BASE_Setup() {
 	
-	global $eeSFL_BASE, $eeSFLU_BASE, $eeSFL_BASE_VarsForJS, $eeSFL_BASE_Extensions;
+	global $eeSFL, $eeSFL_BASE;
+	
+	if(is_object($eeSFL)) { return FALSE; } // Bail if Pro is running
+	
+	// Define the WordPress Root
+	$ee_WP_CONTENT_DIR_ARRAY = explode('/', WP_CONTENT_DIR);
+	$ee_ABSPATH_ARRAY = explode('/', ABSPATH);
+	$eeEnd = min(count($ee_WP_CONTENT_DIR_ARRAY), count($ee_ABSPATH_ARRAY)); // Shortest one
+	$ee = 0;
+	$eePathParts = array();
+	
+	// Add the component if they are the same in both paths
+	while ($ee_WP_CONTENT_DIR[$ee] === $ee_ABSPATH[$ee] and $ee < $eeEnd) {
+  		$eePathParts[] = $ee_WP_CONTENT_DIR[$ee];
+  		$ee++;
+	}
+	
+	define( 'eeSFL_ABSPATH', implode('/', $eePathParts) . '/' );
+	
+	exit(eeSFL_ABSPATH);
+	
 	
 	// A required resource...
 	if(!function_exists('is_plugin_active')) {
