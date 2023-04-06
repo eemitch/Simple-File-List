@@ -232,7 +232,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 == Changelog ==
 
 = 6.1.3 =
-* Added improved WordPress root directory detection.
+* Bug fix where the upload failed to start if non-logged-in user info was not present.
 
 = 6.1.2 =
 * Bug fix where sorting was not working.

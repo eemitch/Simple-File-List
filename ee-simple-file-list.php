@@ -83,27 +83,7 @@ function eeSFL_BASE_Textdomain() {
 // Plugin Setup
 function eeSFL_BASE_Setup() {
 	
-	global $eeSFL, $eeSFL_BASE;
-	
-	if(is_object($eeSFL)) { return FALSE; } // Bail if Pro is running
-	
-	// Define the WordPress Root
-	$ee_WP_CONTENT_DIR_ARRAY = explode('/', WP_CONTENT_DIR);
-	$ee_ABSPATH_ARRAY = explode('/', ABSPATH);
-	$eeEnd = min(count($ee_WP_CONTENT_DIR_ARRAY), count($ee_ABSPATH_ARRAY)); // Shortest one
-	$ee = 0;
-	$eePathParts = array();
-	
-	// Add the component if they are the same in both paths
-	while ($ee_WP_CONTENT_DIR[$ee] === $ee_ABSPATH[$ee] and $ee < $eeEnd) {
-  		$eePathParts[] = $ee_WP_CONTENT_DIR[$ee];
-  		$ee++;
-	}
-	
-	define( 'eeSFL_ABSPATH', implode('/', $eePathParts) . '/' );
-	
-	exit(eeSFL_ABSPATH);
-	
+	global $eeSFL_BASE, $eeSFLU_BASE, $eeSFL_BASE_VarsForJS, $eeSFL_BASE_Extensions;
 	
 	// A required resource...
 	if(!function_exists('is_plugin_active')) {
