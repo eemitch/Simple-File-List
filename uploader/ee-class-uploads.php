@@ -69,7 +69,7 @@ class eeSFL_BASE_UploadClass {
 		
 		$wpUserObj = wp_get_current_user();
 		
-		if($wpUserObj) {
+		if(!empty($wpUserObj->user_email)) {
 			$eeName = $wpUserObj->first_name . ' ' . $wpUserObj->last_name;
 			$eeEmail = $wpUserObj->user_email;
 		}
@@ -88,12 +88,6 @@ class eeSFL_BASE_UploadClass {
 			<label for="eeSFL_Email">' . __('Email', 'ee-simple-file-list-pro') . ':</label>
 			<input type="text" name="eeSFL_Email" value="" id="eeSFL_Email" size="64" maxlength="128" />';
 			
-		} else {
-			
-			$eeOutput .= '
-				
-			<input type="hidden" id="eeSFL_Name" name="eeSFL_Name" value="' . $eeName . '" />
-			<input type="hidden" id="eeSFL_Email" name="eeSFL_Email" value="' . $eeEmail . '" />';
 		}
 		
 		if($eeObject->eeListSettings['GetUploaderDesc'] == 'YES' OR is_admin() ) {
