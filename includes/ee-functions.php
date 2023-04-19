@@ -263,7 +263,7 @@ function eeSFL_BASE_ProcessCheckboxInput($eeTerm) {
 
 
 
-// Settings Text Inputs 
+// Sanitize Form Text Inputs 
 function eeSFL_BASE_ProcessTextInput($eeTerm, $eeType = 'text') {
 	
 	$eeValue = '';
@@ -278,7 +278,7 @@ function eeSFL_BASE_ProcessTextInput($eeTerm, $eeType = 'text') {
 		
 	} else {
 		
-		$eeValue = strip_tags(@$_POST['ee' . $eeTerm]);
+		$eeValue = @strip_tags(@$_POST['ee' . $eeTerm]);
 		$eeValue = esc_textarea(sanitize_text_field($eeValue));
 	}
 	

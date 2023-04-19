@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 6.1.3
+Version: 6.1.4
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // CONSTANTS
 define('eeSFL_BASE_DevMode', FALSE);
-define('eeSFL_BASE_Version', '6.1.3'); // Plugin version
+define('eeSFL_BASE_Version', '6.1.4'); // Plugin version
 define('eeSFL_BASE_PluginName', 'Simple File List');
 define('eeSFL_BASE_PluginSlug', 'ee-simple-file-list');
 define('eeSFL_BASE_PluginDir', 'simple-file-list');
@@ -61,15 +61,6 @@ function eeSFL_BASE_aioseo_filter_conflicting_shortcodes( $conflictingShortcodes
 		'Simple File List Search' => '[eeSFLS]'
    ] );
    return $conflictingShortcodes;
-}
-
-// Custom Hook
-function eeSFL_BASE_UploadCompleted() {
-    do_action('eeSFL_BASE_UploadCompleted'); // To be fired post-upload
-}
-
-function eeSFL_BASE_UploadCompletedAdmin() {
-    do_action('eeSFL_BASE_UploadCompletedAdmin'); // To be fired post-upload
 }
 
 
@@ -204,11 +195,6 @@ function eeSFL_BASE_Setup() {
 		}
 	}
 	
-	
-	
-	
-	
-	
 	return TRUE;
 }
 add_action('init', 'eeSFL_BASE_Setup');
@@ -326,7 +312,6 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 	
 	// Upload Check
 	$eeSFL_Uploaded = $eeSFLU_BASE->eeSFL_UploadCheck($eeSFL_BASE->eeListRun);
-		
 	
 	// Begin Front-End List Display ==================================================================
 	
@@ -386,7 +371,7 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 	
 	// Smooth Scrolling is AWESOME!
 	if( isset($_REQUEST['ee']) AND $eeSFL_BASE->eeListSettings['SmoothScroll'] == 'YES' ) { 
-		$eeOutput .= '<script>eeSFL_BASE_ScrollToIt();</script>'; }
+		$eeOutput .= '<script>eeSFL_ScrollToIt();</script>'; }
 	
 	$eeSFL_BASE->eeListRun++;
 	
@@ -491,45 +476,57 @@ add_action('admin_enqueue_scripts', 'eeSFL_BASE_AdminHead');
 
 // Ajax Handler
 // Function name must be the same as the action name to work on front side ?
-function simplefilelist_upload_job() {
+if(!function_exists('simplefilelist_upload_job')) {
 
-	global $eeSFLU_BASE;
+	function simplefilelist_upload_job() {
 	
-	$eeResult = $eeSFLU_BASE->eeSFL_FileUploader();
+		global $eeSFLU_BASE;
+		
+		$eeResult = $eeSFLU_BASE->eeSFL_FileUploader();
+	
+		echo $eeResult;
+	
+		wp_die();
+	
+	}	
+	add_action( 'wp_ajax_simplefilelist_upload_job', 'simplefilelist_upload_job' );
+	
+	
+	function simplefilelist_edit_job() {
+	
+		$eeResult = eeSFL_BASE_FileEditor();
+	
+		echo $eeResult;
+	
+		wp_die();
+	
+	}	
+	add_action( 'wp_ajax_simplefilelist_edit_job', 'simplefilelist_edit_job' );
+	
+	
+	function simplefilelist_confirm() {
+		
+		delete_option('eeSFL_Confirm');
+	
+		wp_die();
+	
+	}	
+	add_action( 'wp_ajax_simplefilelist_confirm', 'simplefilelist_confirm' );
 
-	echo $eeResult;
-
-	wp_die();
-
-}	
-add_action( 'wp_ajax_simplefilelist_upload_job', 'simplefilelist_upload_job' );
-
-
-function simplefilelist_edit_job() {
-
-	$eeResult = eeSFL_BASE_FileEditor();
-
-	echo $eeResult;
-
-	wp_die();
-
-}	
-add_action( 'wp_ajax_simplefilelist_edit_job', 'simplefilelist_edit_job' );
-
-
+}
 
 
 // File Editor Engine
 function eeSFL_BASE_FileEditor() {
 	
 	// All POST values used shall be expected
-	
 	global $eeSFL_BASE;
 	
 	$eeFileNameNew = FALSE;
 	$eeFileNiceNameNew = FALSE;
 	$eeFileDescriptionNew = FALSE;
 	$eeFileAction = FALSE;
+	$eeMessages = array();
 	
 	// WP Security
 	if( !check_ajax_referer( 'eeSFL_ActionNonce', 'eeSecurity' ) ) { return 'ERROR 98';	}
@@ -550,9 +547,13 @@ function eeSFL_BASE_FileEditor() {
 		// Delete the File
 		if($eeFileAction == 'Delete') {
 			
+			$eeMessages[] = 'Deleting File';
+			
 			$eeSFL_BASE->eeSFL_DetectUpwardTraversal($eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileName); // Die if foolishness
 			
 			$eeFilePath = ABSPATH . $eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileName;
+			
+			$eeMessages[] = $eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileName;
 			
 			if( strpos($eeFileName, '.') ) { // Gotta be a File - Looking for the dot rather than using is_file() for better speed
 				
@@ -572,6 +573,10 @@ function eeSFL_BASE_FileEditor() {
 					
 					$eeSFL_BASE->eeSFL_UpdateThumbnail($eeFileName, FALSE); // Delete the thumb
 					
+					// Add Custom Hook
+					$eeMessages[] = 'File Deleted';
+					do_action('eeSFL_Hook_Deleted', $eeMessages);
+					
 					return 'SUCCESS';
 					
 				} else {
@@ -584,11 +589,15 @@ function eeSFL_BASE_FileEditor() {
 		
 		} elseif($eeFileAction == 'Edit') {
 			
+			$eeMessages[] = 'Editing File';
+			$eeMessages[] = $eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileName;
+			
 			// The Nice Name - Might be empty
 			if($_POST['eeFileNiceNameNew'] != 'false') {
 				$eeFileNiceNameNew = trim(esc_textarea(sanitize_text_field($_POST['eeFileNiceNameNew'])));
 				if(!$eeFileNiceNameNew) { $eeFileNiceNameNew = ''; } 
 				$eeSFL_BASE->eeSFL_UpdateFileDetail($eeFileName, 'FileNiceName', $eeFileNiceNameNew);
+				$eeMessages[] = 'Nice Name: ' . $eeFileNiceNameNew;
 			}
 			
 			
@@ -601,6 +610,8 @@ function eeSFL_BASE_FileEditor() {
 				if(!$eeFileDescriptionNew) { $eeFileDescriptionNew = ''; }
 				
 				$eeSFL_BASE->eeSFL_UpdateFileDetail($eeFileName, 'FileDescription', $eeFileDescriptionNew);
+				
+				$eeMessages[] = 'Description: ' . $eeFileDescriptionNew;
 			}
 
 			
@@ -649,11 +660,17 @@ function eeSFL_BASE_FileEditor() {
 						
 						$eeSFL_BASE->eeSFL_UpdateThumbnail($eeFileName, $eeFileNameNew ); // Rename the thumb
 					}
+					
+					$eeMessages[] = 'Renamed to';
+					$eeMessages[] = $eeSFL_BASE->eeListSettings['FileListDir'] . $eeFileNameNew;
 				
 				} else {
 					return __('Invalid New File Name', 'ee-simple-file-list');
 				}
 			}
+			
+			// Custom Hook
+			do_action('eeSFL_Hook_Edited', $eeMessages);
 			
 			return 'SUCCESS';
 			
@@ -917,9 +934,6 @@ function eeSFL_BASE_VersionCheck() {
 	
 	}
 }
-
-
-
 
 // Plugin Activation ==========================================================
 function eeSFL_BASE_Activate() {

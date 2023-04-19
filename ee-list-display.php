@@ -7,6 +7,7 @@ $eeClass = ''; // Meaning, CSS class
 $eeSFL_ActionNonce = wp_create_nonce('eeSFL_ActionNonce'); // Security for Ajax
 $eeURL = $eeSFL_BASE->eeSFL_GetThisURL();
 $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loaded: ee-list-display';
+$eeMessages = array('File List Loading');
 
 if(!isset($eeSFL_HideName)) { $eeSFL_HideName = FALSE; }
 if(!isset($eeSFL_HideType)) { $eeSFL_HideType = FALSE; }
@@ -161,5 +162,9 @@ if($eeAdmin OR $eeSFL_BASE->eeListSettings['AllowFrontManage'] == 'YES') {
 }
 	
 $eeSFL_BASE->eeEnvironment['FileLists'] = ''; // Remove to clean up display
+
+$eeMessages[] = $eeURL;
+$eeMessages[] = 'Listing ' . $eeSFL_BASE->eeFileCount . ' Items';
+do_action('eeSFL_Hook_Loaded', $eeMessages);
 
 ?>

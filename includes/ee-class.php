@@ -503,6 +503,9 @@ class eeSFL_BASE_MainClass {
 				return FALSE; // Not an item we want to display
 			}
 		}
+		
+		$eeMessages = array($eeFileArray);
+		do_action('eeSFL_Hook_Listed', $eeMessages);
 	    
 	    return TRUE;
 	}
@@ -739,6 +742,7 @@ class eeSFL_BASE_MainClass {
     public function eeSFL_UpdateFileListArray() {
 	    
 	    global $eeSFLU_BASE;
+		$eeMessages = array('Scanning the File List');
 	    
 	    $this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Re-Indexing the File List ...';
 	    
@@ -751,13 +755,14 @@ class eeSFL_BASE_MainClass {
 	    
 	    // Get the File List Array
 	    $this->eeAllFiles = get_option('eeSFL_FileList_1');
-	    if(!is_array($this->eeAllFiles)) { $this->eeAllFiles = array(); }
+	    if(!is_array($this->eeAllFiles)) { $this->eeAllFiles = array(); $eeMessages[] = 'No File Array Found in the Database'; }
 	    
 	    $this->eeSFL_IndexFileListDir();
 		
 		if(empty($this->eeSFL_FileScanArray)) {
 		    $this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - No Files Found';
 		    update_option('eeSFL_FileList_1', array() ); // There are no files, so clear the file array
+			$eeMessages[] = 'No Files Found in ' . $this->eeListSettings['FileListDir'];
 		    return FALSE; // Quit and leave DB alone	    
 		}
 	    
@@ -810,6 +815,11 @@ class eeSFL_BASE_MainClass {
 						$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Removing: ' . $eeFile;
 						
 						unset($this->eeAllFiles[$eeKey]);
+						
+						// Custom Hook
+						array_unshift($eeFileSet, 'File Not Found');
+						do_action('eeSFL_Hook_Removed', $eeFileSet);
+						
 						continue;
 					}
 					
@@ -861,6 +871,10 @@ class eeSFL_BASE_MainClass {
 							}
 							
 							$this->eeAllFiles[] = $eeNewArray;
+							
+							// Custom Hook
+							array_unshift($eeNewArray, 'New File Found');
+							do_action('eeSFL_Hook_Added', $eeNewArray);
 						}
 						
 					}
@@ -921,7 +935,7 @@ class eeSFL_BASE_MainClass {
 			    $this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Skipped Thumbnail Checks';
 		    }
 		    
-		    // Check for Enviroment Changes
+		    // Check for Environment Changes
 		    $eeActual = $eeSFLU_BASE->eeSFL_ActualUploadMax();;
 			if( $this->eeListSettings['UploadMaxFileSize'] > $eeActual ) { 
 				$this->eeListSettings['UploadMaxFileSize'] = $eeActual;
@@ -935,6 +949,8 @@ class eeSFL_BASE_MainClass {
 			
 			// Update the DB
 		    update_option('eeSFL_FileList_1', $this->eeAllFiles);
+			
+			$eeMessages[] = $this->eeAllFiles;
 		    
 		    return TRUE;
 		
@@ -1733,31 +1749,57 @@ class eeSFL_BASE_MainClass {
 	
 	
 	// Get what's in the address bar
-	public function eeSFL_GetThisURL($eeIncludeQuery = TRUE) {
-		
+	public function eeSFL_GetThisURL___($eeIncludeQuery = TRUE) {
+	
 		// Protocal
 		$eeURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
 	
 		// Host
-		$eeURL .= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; // The whole Path with args
-		
+		$eeHost = $_SERVER['HTTP_HOST'];
+		if (empty($eeHost)) {
+			$eeHost = $_SERVER['SERVER_NAME'];
+		}
+		$eeURL .= $eeHost . $_SERVER['REQUEST_URI']; // The whole Path with args
+	
 		if(strpos($eeURL, '?')) { // Check for Query String
-			
+	
 			$eeArray = explode('?', $eeURL);
-			
+	
 			$eeURL = $eeArray[0]; // The path part
-		
+	
 			if($eeIncludeQuery) {
-			
+	
 				$eeURL .= '?' . $eeArray[1]; // Add query string 
-			
+	
 				$eeURL = remove_query_arg('eeReScan', $eeURL); // This can get stuck
 			}
-		
+	
 		}
-		
+	
 		return $eeURL;
 	}
+	
+	
+	// Get the current URL
+	public function eeSFL_GetThisURL($eeIncludeQuery = TRUE) {
+		
+		// Where are we?
+		$eeURL = home_url($_SERVER['REQUEST_URI']); // This should be accurate anywhere
+	
+		if(strpos($eeURL, '?')) { // Split the URL and Query
+			$eeArray = explode('?', $eeURL);
+			$eeURL = $eeArray[0];
+			
+			if($eeIncludeQuery) { // Re-Add the Query
+				$eeURL .= '?' . $eeArray[1];
+				$eeURL = remove_query_arg('eeReScan', $eeURL); // Don't want this
+			}
+		}
+	
+		return $eeURL;
+	}
+
+
 	
 	
 	

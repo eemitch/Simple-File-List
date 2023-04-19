@@ -156,8 +156,10 @@ class eeSFL_BASE_UploadClass {
 		
 		if($eeListRun > 1 ) { return; }
 		
+		
 		global $eeSFL_BASE;
 		$eeListID = 1;
+		$eeMessages = array('Upload Job Complete');
 		
 		$eeUploaded = FALSE; // Show Confirmation
 
@@ -173,15 +175,28 @@ class eeSFL_BASE_UploadClass {
 			
 			if( $eeListID >=1 ) { $this->eeSFL_ProcessUploadJob($eeListID); $eeObject->eeListID = $eeListID; }
 			
+			$eeMessages[] = 'List ID: ' . $eeListID;
+			$eeMessages[] = $_POST['eeSFL_FileList']; // json string
+			
+			// Add Custom Hook
+			if( is_admin() ) { 
+				$eeMessages[] = 'Back-End Upload Complete';
+				do_action('eeSFL_Admin_Hook_Uploaded', $eeMessages);
+			} else { 
+				$eeMessages[] = 'Front-End Upload Complete';
+				do_action('eeSFL_Hook_Uploaded', $eeMessages);
+			}
+			
+			// Legacy
 			if(is_object($eeSFL_BASE)) {
 				
-				if( is_admin() ) { eeSFL_BASE_UploadCompletedAdmin(); // Action Hook: eeSFL_UploadCompletedAdmin  <-- Admin side
-					} else { eeSFL_BASE_UploadCompleted(); } // Action Hook: eeSFL_UploadCompleted <-- Front side
+				if( is_admin() ) { do_action('eeSFL_UploadCompletedAdmin');
+				} else { do_action('eeSFL_UploadCompleted'); }
 				
 			} else {
 				
-				if( is_admin() ) { eeSFL_UploadCompletedAdmin(); // Action Hook: eeSFL_UploadCompletedAdmin  <-- Admin side
-					} else { eeSFL_UploadCompleted(); } // Action Hook: eeSFL_UploadCompleted <-- Front side
+				if( is_admin() ) { do_action('eeSFL_BASE_UploadCompletedAdmin');
+					} else { do_action('eeSFL_BASE_UploadCompleted'); }
 			}
 			
 			if($eeObject->eeListSettings['UploadConfirm'] == 'YES' OR is_admin() ) { $eeUploaded = TRUE; }

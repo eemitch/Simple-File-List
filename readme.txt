@@ -219,7 +219,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Upgrade Notice ==
 
-* 6.1.1 - The never ending quest for perfection.
+* 6.1.4 - The never ending quest for perfection.
 
 
 == Screenshots ==
@@ -230,6 +230,11 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 
 == Changelog ==
+
+= 6.1.4 = 
+* Added a bunch of new hooks you can use to help make SFL do what you need it to do:
+** NEW, MOVE, EDIT, DELETE
+* Fixed a function name conflict issue with the Pro version.
 
 = 6.1.3 =
 * Bug fix where the upload failed to start if non-logged-in user info was not present.
