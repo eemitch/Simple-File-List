@@ -5,7 +5,7 @@ Tags: file list, file sharing, file upload form, upload files, exchange files, h
 Requires at least: 5.0
 Requires PHP: 7
 Tested up to: 6.2
-Stable tag: trunk
+Stable tag: 6.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -233,7 +233,8 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 = 6.1.4 = 
 * Added a bunch of new hooks you can use to help make SFL do what you need it to do:
-** NEW, MOVE, EDIT, DELETE
+** Uploaded, Added, Removed, Deleted, Edited, Listed, Loaded, Scanned
+* Improved the function that obtains the current URL of the page for back-end (AJAX) operations.
 * Fixed a function name conflict issue with the Pro version.
 
 = 6.1.3 =

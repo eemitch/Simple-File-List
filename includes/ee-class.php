@@ -127,6 +127,27 @@ class eeSFL_BASE_MainClass {
 	);
 	
 	
+	// Get the WordPress Root Directory
+	public function eeSFL_GetRootPath() {
+		
+		// Get the upload directory path
+		$eeUploadDir = wp_upload_dir();
+		$eeUploadPath = $eeUploadDir['basedir'];
+	
+		// Navigate up the directory tree until we find the root directory
+		while ( ! file_exists( $eeUploadPath . '/wp-config.php' ) ) {
+			$eeUploadPath = dirname( $eeUploadPath );
+		}
+	
+		// Define the root directory path
+		$eeRootPath = $eeUploadPath . '/';
+	
+		// Return the root directory path
+		return $eeRootPath;
+	}
+
+	
+	
 	
 	// Get Settings for Specified List
     public function eeSFL_GetSettings($eeListID) {
@@ -950,7 +971,10 @@ class eeSFL_BASE_MainClass {
 			// Update the DB
 		    update_option('eeSFL_FileList_1', $this->eeAllFiles);
 			
+			// Add Custom Hook
+			$eeMessages[] = 'Disk Scan Completed';
 			$eeMessages[] = $this->eeAllFiles;
+			do_action('eeSFL_Hook_Scanned', $eeMessages);
 		    
 		    return TRUE;
 		
@@ -1748,38 +1772,6 @@ class eeSFL_BASE_MainClass {
 	
 	
 	
-	// Get what's in the address bar
-	public function eeSFL_GetThisURL___($eeIncludeQuery = TRUE) {
-	
-		// Protocal
-		$eeURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://";
-	
-		// Host
-		$eeHost = $_SERVER['HTTP_HOST'];
-		if (empty($eeHost)) {
-			$eeHost = $_SERVER['SERVER_NAME'];
-		}
-		$eeURL .= $eeHost . $_SERVER['REQUEST_URI']; // The whole Path with args
-	
-		if(strpos($eeURL, '?')) { // Check for Query String
-	
-			$eeArray = explode('?', $eeURL);
-	
-			$eeURL = $eeArray[0]; // The path part
-	
-			if($eeIncludeQuery) {
-	
-				$eeURL .= '?' . $eeArray[1]; // Add query string 
-	
-				$eeURL = remove_query_arg('eeReScan', $eeURL); // This can get stuck
-			}
-	
-		}
-	
-		return $eeURL;
-	}
-	
-	
 	// Get the current URL
 	public function eeSFL_GetThisURL($eeIncludeQuery = TRUE) {
 		
@@ -1790,7 +1782,7 @@ class eeSFL_BASE_MainClass {
 			$eeArray = explode('?', $eeURL);
 			$eeURL = $eeArray[0];
 			
-			if($eeIncludeQuery) { // Re-Add the Query
+			if($eeIncludeQuery) { // Re-Add the Query if Needed
 				$eeURL .= '?' . $eeArray[1];
 				$eeURL = remove_query_arg('eeReScan', $eeURL); // Don't want this
 			}
