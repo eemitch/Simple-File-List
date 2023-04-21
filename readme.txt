@@ -30,6 +30,9 @@ Simple File List is also a good alternative for organizations using clumsy FTP o
 * Collect the users name, email and description of the file(s) uploaded. This can optionally be shown in the file list.
 * Files can be assigned descriptions, which can be added from the Admin list or user uploads.
 * Optionally allow your front-end users full control over renaming, moving, sending, deleting and editing descriptions.
+* Includes a number of custom hooks you can tie into for file and list actions:
+** Uploaded, Added, Removed, Deleted, Edited, Listed, Loaded, Scanned
+
 
 ## This Plugin is Great For:
 
