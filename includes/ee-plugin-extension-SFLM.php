@@ -22,8 +22,7 @@ $eeOutput .= '<div class="eeSettingsTile">
 
 <br class="eeClear" />
 
-<p class="eeCentered"><a class="button" target="_blank" href="">' . __('Get Media Player', 'ee-simple-file-list') . '</a>  
-<a class="button" target="_blank" href="https://simplefilelist.com/add-media-player/">' . __('More Information', 'ee-simple-file-list-pro') . '</a></p>
+<p class="eeCentered"><a class="button" target="_blank" href="https://wordpress.org/plugins/ee-simple-file-list-media/">' . __('Get Media Player', 'ee-simple-file-list') . '</a></p>
 
 </div>';
 

@@ -4,15 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Class' ) ) exit('ERROR 98'); // Exit if nonce fails
 
 class eeSFL_BASE_MainClass {
-			
-	// Basics
-	// public $eePluginName = 'Simple File List';
-	// public $eePluginNameSlug = 'simple-file-list';
-	// public $eePluginSlug = 'ee-simple-file-list';
-	// public $eePluginMenuTitle = 'File List';
-	// public $eePluginWebPage = 'https://simplefilelist.com';
-	// public $eeAllFilesSorted = array();
-	// public $eeUseCache = 1; // Hours
     
     // File Types
     public $eeDynamicImageThumbFormats = array('gif', 'jpg', 'jpeg', 'png', 'tif', 'tiff');
@@ -37,9 +28,7 @@ class eeSFL_BASE_MainClass {
     		
     		'[file-list]' . PHP_EOL . PHP_EOL . 
     		
-    		'File List: [web-page]' . PHP_EOL . PHP_EOL;
-    		
-    
+    		'File List: [web-page]' . PHP_EOL . PHP_EOL;	
     
     // Default Vaules
 	public $eeDefaultUploadLimit = 99;
@@ -1776,7 +1765,7 @@ class eeSFL_BASE_MainClass {
 	public function eeSFL_GetThisURL($eeIncludeQuery = TRUE) {
 		
 		// Where are we?
-		$eeURL = home_url($_SERVER['REQUEST_URI']); // This should be accurate anywhere
+		$eeURL = site_url($_SERVER['REQUEST_URI']); // This should be accurate anywhere
 	
 		if(strpos($eeURL, '?')) { // Split the URL and Query
 			$eeArray = explode('?', $eeURL);

@@ -5,7 +5,7 @@ Tags: file list, file sharing, file upload form, upload files, exchange files, h
 Requires at least: 5.0
 Requires PHP: 7
 Tested up to: 6.2
-Stable tag: 6.1.4
+Stable tag: 6.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,8 @@ Simple File List is also a good alternative for organizations using clumsy FTP o
 * Add descriptions to files and optionally show them in your list.
 * Sort file by name, date modified, date added or file size ... ascending or descending.
 * Files are kept separate from the media library.
+* Add the free Media Player extensions for an improved experience with audio and video files.
+** [Simple File List Media](https://wordpress.org/plugins/ee-simple-file-list-media/)
 
 
 ## File Uploader Features =
@@ -183,7 +185,7 @@ A: No, files are uploaded to a special folder inside your general WordPress uplo
 
 = Q: Can I limit the access to my file to only logged-in users? =
 
-Yes, you can limit to Admins or anyone who is logged in. If you need further users access control, consider the <a href="https://simplefilelist.com/file-access-manager/">File Access Manager</a> extension*.
+Yes, you can limit to Admins or anyone who is logged in. If you need further users access control, consider the <a href="https://simplefilelist.com/file-access-manager/">File Access Manager</a> extension.
 
 = Q: Can people who upload overwrite existing files? =
 
@@ -191,7 +193,7 @@ A: No, by default a file will not be overwritten. If a file is uploaded having t
 
 = Q: Can I place different lists in different places? =
 
-A: Yes, you can put place your file lists on different posts, pages and widgets. If you upgrade to the <a href="https://simplefilelist.com">Pro</a>version, you can even place different folders on your site.
+A: Yes, you can put place your file lists on different posts, pages and widgets. If you upgrade to the <a href="https://simplefilelist.com">Pro</a> version, you can even place different folders on your site.
 
 = Q: Are the files in the list searchable by Google and other search engines? =
 
@@ -201,13 +203,13 @@ A: Only if you place a list on the front-side of your website which is viewable 
 
 A: Yes, the CSS is easily over-ridden, making it easy for anyone with CSS knowledge to customize the page design. Check the Instructions page within the plugin's admin panel for more info.
 
-= Q: Can I create custom behavior after an upload completes? =
+= Q: Can I create custom behavior after an action completes? =
 
-A: Yes, you can hook into the actions "eeSFL_UploadCompleted" and "eeSFL_UploadCompletedAdmin" and do pretty much anything you want upon upload completion.
+A: Yes, you can hook into one of the many [custom hooks](https://free.simple-file-list.com)) provided.
 
 = Q: What is the maximum upload file size? =
 
-A: This is a setting that you choose in the file configuration. The initial default is 8 MB. The absolute maximum size will depend on your hosting setup. which is automatically detected.
+A: This is a setting that you choose in the file configuration. The initial default is the maximum that your host will currently allow. The absolute maximum size will depend on your hosting setup. which is automatically detected.
 
 = Q: What if I have trouble or need assistance? Will you help? =
 
@@ -222,7 +224,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Upgrade Notice ==
 
-* 6.1.4 - The never ending quest for perfection.
+* 6.1.5 - The never ending quest for perfection.
 
 
 == Screenshots ==
@@ -233,6 +235,11 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 
 == Changelog ==
+
+= 6.1.5 =
+* Now ready for the Simple file List Media extension
+** https://wordpress.org/plugins/ee-simple-file-list-media/
+* Other minor improvements
 
 = 6.1.4 = 
 * Added a bunch of new hooks you can use to help make SFL do what you need it to do:
