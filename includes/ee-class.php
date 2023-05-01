@@ -1764,17 +1764,45 @@ class eeSFL_BASE_MainClass {
 	// Get the current URL
 	public function eeSFL_GetThisURL($eeIncludeQuery = TRUE) {
 		
-		// Where are we?
-		$eeURL = site_url($_SERVER['REQUEST_URI']); // This should be accurate anywhere
-	
-		if(strpos($eeURL, '?')) { // Split the URL and Query
-			$eeArray = explode('?', $eeURL);
-			$eeURL = $eeArray[0];
+		// Find what is contained in the address bar?
+		// Example: https://mywebsite.com/wordpress/wp-admin/admin.php?page=ee-simple-file-list-pro&eeFolder=WTEA_Curriculum&eeListID=1&ee=1
+		
+		$eeProtocol = ''; $eeHost = ''; $eeSubFolder = ''; $eeArguments = '';
+		
+		// If HTTP_HOST is empty, use site_url()
+		if( empty($_SERVER['HTTP_HOST']) ) {
 			
-			if($eeIncludeQuery) { // Re-Add the Query if Needed
-				$eeURL .= '?' . $eeArray[1];
-				$eeURL = remove_query_arg('eeReScan', $eeURL); // Don't want this
+			$eeHost = site_url(); // This will contain the path to the WP core files, plus slash
+			
+			if( strpos($_SERVER['REQUEST_URI'], '?') !== FALSE ) { 
+				$eeArray = explode('?', $_SERVER['REQUEST_URI']);
+				if(!empty($eeArray[1])) { $eeArguments = $eeArray[1]; }
 			}
+		
+		} else {
+			
+			$eeProtocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://"; // Protocol
+			$eeHost = $_SERVER['HTTP_HOST']; // Host
+			
+			// Get folder path
+			if( strpos($_SERVER['REQUEST_URI'], '?') !== false ) {
+				
+				$eeArray = explode('?', $_SERVER['REQUEST_URI']);
+				if(!empty($eeArray[0])) { $eeSubFolder = $eeArray[0]; }
+				if(!empty($eeArray[1])) { $eeArguments = $eeArray[1]; }
+			
+			} else {
+				$eeSubFolder = $_SERVER['REQUEST_URI']; // Just a folder path or a single slash
+			}
+		}
+		
+		// Reassemble the URL
+		$eeURL = $eeProtocol . $eeHost . $eeSubFolder;
+		
+		// Re-Add the Query if Needed
+		if($eeIncludeQuery === TRUE) { 
+			$eeURL .= '?' . $eeArguments;
+			$eeURL = remove_query_arg('eeReScan', $eeURL); // Don't want this
 		}
 	
 		return $eeURL;
