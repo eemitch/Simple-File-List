@@ -5,7 +5,7 @@ Tags: file list, file sharing, file upload form, upload files, exchange files, h
 Requires at least: 5.0
 Requires PHP: 7
 Tested up to: 6.2
-Stable tag: 6.1.6
+Stable tag: 6.1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -235,6 +235,10 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 
 == Changelog ==
+
+= 6.1.7 =
+* Bug fix where file names with multiple spaces caused an error on upload.
+* Bug fix where the file Nice Name was ignored if Preserve File Name was OFF.
 
 = 6.1.6 =
 * Bug fix where those with a certain WP configuration saw broken links in the back-end.

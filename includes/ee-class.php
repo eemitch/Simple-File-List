@@ -439,12 +439,10 @@ class eeSFL_BASE_MainClass {
 				
 				
 				// File Nice Name
-				if($this->eeListSettings['PreserveName'] == 'YES') {
-					if( isset($eeFileArray['FileNiceName']) ) {
-						if( strlen($eeFileArray['FileNiceName']) >= 1 ) {
-							$this->eeFileNiceName = $eeFileArray['FileNiceName'];
-							$this->eeFileName = $eeFileArray['FileNiceName'];
-						}
+				if( isset($eeFileArray['FileNiceName']) ) {
+					if( strlen($eeFileArray['FileNiceName']) >= 1 ) {
+						$this->eeFileNiceName = $eeFileArray['FileNiceName'];
+						$this->eeFileName = $eeFileArray['FileNiceName'];
 					}
 				}
 				

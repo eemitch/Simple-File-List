@@ -599,6 +599,7 @@ class eeSFL_BASE_UploadClass {
 					// Set a transient with the new name so we can get it in ProcessUpload() after the form is submitted
 					$eeOldFilePath = 'eeSFL-Renamed-' . str_replace($eeObject->eeListSettings['FileListDir'], '', $eeFileUploadDir . $_FILES['file']['name']); // Strip the FileListDir
 					$eeOldFilePath = esc_sql(urlencode($eeOldFilePath));
+					$eeOldFilePath = preg_replace('/\++/', '+', $eeOldFilePath);
 					$eeNewFilePath = str_replace($eeObject->eeListSettings['FileListDir'], '', $eeTargetFile); // Strip the FileListDir
 					set_transient($eeOldFilePath, $eeNewFilePath, 900); // Expires in 15 minutes
 				}
