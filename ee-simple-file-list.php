@@ -153,6 +153,7 @@ function eeSFL_BASE_Setup() {
 	
 	if(!is_admin() OR !$eeLocaleSetting OR $eeLocaleSetting != 'en_US') {
 		eeSFL_BASE_Textdomain(); 
+		if($eeSFLM) { eeSFLM_Textdomain(); }
 	}
 	
 	
