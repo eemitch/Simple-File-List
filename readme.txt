@@ -237,7 +237,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 == Changelog ==
 
 = 6.1.8 =
-* Bug fix where an fatal error was being thrown on the list settings page for Windows installs.
+* Bug fix where a fatal error was being thrown on the list settings page for Windows installs.
 
 = 6.1.7 =
 * Bug fix where file names with multiple spaces caused an error on upload.
