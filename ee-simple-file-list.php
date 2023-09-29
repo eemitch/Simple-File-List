@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 6.1.8
+Version: 6.2.0.1
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // CONSTANTS
 define('eeSFL_BASE_DevMode', FALSE);
-define('eeSFL_BASE_Version', '6.1.8'); // Plugin version
+define('eeSFL_BASE_Version', '6.2.0.1'); // Plugin version
 define('eeSFL_BASE_PluginName', 'Simple File List');
 define('eeSFL_BASE_PluginSlug', 'ee-simple-file-list');
 define('eeSFL_BASE_PluginDir', 'simple-file-list');
@@ -113,9 +113,8 @@ function eeSFL_BASE_Setup() {
 		$eeSFL_BASE = new eeSFL_BASE_MainClass();
 		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Simple File List is Loading...';
 		
-		// The WordPress ROOT - BETA
-		if(!defined('eeSFL_ABSPATH')) { define('eeSFL_ABSPATH', $eeSFL_BASE->eeSFL_GetRootPath() ); }
-		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Root Path = ' . eeSFL_ABSPATH;
+		// Our File Root
+		if(!defined('eeSFL_ABSPATH')) { if( $eeSFL_BASE->eeSFL_ABSPATH() === FALSE ) { return FALSE; } }
 		
 		// Upload Class
 		$eeSFL_Nonce = wp_create_nonce('eeSFL_Class');

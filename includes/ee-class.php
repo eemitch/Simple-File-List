@@ -1860,6 +1860,47 @@ class eeSFL_BASE_MainClass {
 		return $eeOutput;
 
 	}
+	
+	// Get the best path to where we can upload files
+	public function eeSFL_ABSPATH() {
+	
+		// 1) Check if ABSPATH is defined and populated
+		if (defined('ABSPATH') && ABSPATH) {
+			
+			// Test if 'wp-admin/' is a directory under ABSPATH
+			if (is_dir(ABSPATH . 'wp-admin/')) {
+	
+				// 2) Define eeSFL_ABSPATH with the value of ABSPATH
+				define('eeSFL_ABSPATH', ABSPATH);
+				return TRUE;
+			}
+		}
+		
+		// 3) If ABSPATH is not set or wp-admin/ not found, use wp_upload_dir()
+		$eeUploadDir = wp_upload_dir();
+		if ($eeUploadDir['basedir']) {
+	
+			// Define eeSFL_ABSPATH with the value of the upload directory
+			define('eeSFL_ABSPATH', trailingslashit($eeUploadDir['basedir']));
+			
+			// Attempt to create the file upload directory
+			if (!is_dir(eeSFL_ABSPATH . 'simple-file-list/')) {
+	
+				// Using wp_mkdir_p to recursively create directory structure
+				if (wp_mkdir_p(eeSFL_ABSPATH . 'simple-file-list/')) {
+					return TRUE;
+				} else {
+					return FALSE;
+				}
+	
+			} else { // Directory already exists
+				return TRUE;
+			}
+	
+		} else {
+			return FALSE;
+		}
+	}
 
 		
 	
