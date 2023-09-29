@@ -201,8 +201,7 @@ class eeSFL_BASE_MainClass {
 		$wpUploadDir = $wpUploadArray['basedir'];
 		$eeEnv['wpUploadDir'] = $wpUploadDir . '/'; // The Wordpress Uploads Location
 		$eeEnv['wpUploadURL'] = $wpUploadArray['baseurl'] . '/';
-
-		$eeEnv['FileListDefaultDir'] = str_replace(ABSPATH, '', $eeEnv['wpUploadDir'] . eeSFL_BASE_FileListDefaultDir); // The default file list location
+		$eeEnv['FileListDefaultDir'] = $wpUploadDir . 'simple-file-lst/'; // The default file list location
 		
 		$eeEnv['php_version'] = phpversion(); // PHP Version
 		
@@ -1862,6 +1861,7 @@ class eeSFL_BASE_MainClass {
 	}
 	
 	// Get the best path to where we can upload files
+	// Define the Constant
 	public function eeSFL_ABSPATH() {
 	
 		// 1) Check if ABSPATH is defined and populated
