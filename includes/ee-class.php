@@ -1708,53 +1708,50 @@ class eeSFL_BASE_MainClass {
 	
 	
 	
-	
-	// Detect upward path traversal
 	function eeSFL_DetectUpwardTraversal($eeFilePath) { // Relative to ABSPATH
-		
-		if($this->eeEnvironment['eeOS'] == 'LINUX') {
-			
-			$eeFilePath = str_replace('//', '/', $eeFilePath); // Strip double slashes, which will cause failure
-			
-			if(empty($eeFilePath)) {
-				$this->eeLog[eeSFL_BASE_Go]['errors'][] = __('Bad Folder Path Given', 'ee-simple-file-list');
-				return FALSE;
-			}
-			
-			$eeUserPath = ABSPATH . dirname($eeFilePath);  // This could be problematic with things like ../
-			$eeRealPath = realpath( ABSPATH . dirname($eeFilePath) ); // Expunge the badness and then compare...
-			
-			if ($eeUserPath != $eeRealPath) { // They must match
-			    
-			    $this->eeLog[eeSFL_BASE_Go]['errors'][] = eeSFL_BASE_noticeTimer() . ' - ERROR 99: ' . $eeFilePath;
-			    $this->eeLog[eeSFL_BASE_Go]['errors'][] = eeSFL_BASE_noticeTimer() . ' ---> ' . $eeUserPath . ' != ' . $eeRealPath;
-			    $this->eeSFL_WriteLogData();
-			    
-			    wp_die('Error 99 :-( ' . $eeUserPath . ' != ' . $eeRealPath); // Bad guy found, bail out :-(
-			}
-		
-			$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Traversal Check OK (' . $this->eeEnvironment['eeOS'] . ')';
-			
-			return FALSE;
-		
-		} else {
 	
-			$eeFilePath = urldecode($eeFilePath);
-			
-			if(strpos($eeFilePath, '..') OR strpos($eeFilePath, '..') === 0) {
-				
-				$this->eeLog[eeSFL_BASE_Go]['errors'][] = eeSFL_BASE_noticeTimer() . ' - ERROR 99:';
-				$this->eeLog[eeSFL_BASE_Go]['errors'][] = eeSFL_BASE_noticeTimer() . ' --->' . eeFilePath;
-			    $this->eeSFL_WriteLogData();
-				
-				wp_die('Error 99 :-(' . $eeFilePath); // Bad guy found, bail out :-(
-			}
-		
-			$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Traversal Check OK (' . $this->eeEnvironment['eeOS'] . ')';
-				
-			return TRUE;
+		// Decode URL-encoded characters
+		$eeFilePath = urldecode($eeFilePath);
+	
+		// Convert all directory separators to '/'
+		$eeFilePath = str_replace('\\', '/', $eeFilePath);
+	
+		// Normalize the path: replace double or multiple slashes with a single slash
+		$eeFilePath = preg_replace('~/+~', '/', $eeFilePath);
+	
+		// Check for '..' after decoding and normalization
+		if (strpos($eeFilePath, '..') !== FALSE) {
+			$this->eeLog[eeSFL_BASE_Go]['errors'][] = 'Potential directory traversal detected.';
 		}
+	
+		// Construct the full path and resolve to a real path
+		$eeUserPath = str_replace('\\', '/', ABSPATH . dirname($eeFilePath));
+		$eeRealPath = realpath($eeUserPath);
+	
+		// Ensure paths are valid
+		if ($eeRealPath === FALSE || $eeUserPath === FALSE) {
+			$this->eeLog[eeSFL_BASE_Go]['errors'][] = 'Invalid path detected.';
+		}
+	
+		// Convert real path directory separator for consistency
+		$eeRealPath = str_replace('\\', '/', $eeRealPath);
+	
+		// Check if the real path starts with the intended base directory (ABSPATH)
+		if (strpos($eeRealPath, str_replace('\\', '/', ABSPATH)) !== 0) {
+			$this->eeLog[eeSFL_BASE_Go]['errors'][] = 'Potential directory traversal detected.';
+		}
+	
+		if (!empty($this->eeLog[eeSFL_BASE_Go]['errors'])) {
+			wp_die('Error 99');
+		}
+	
+		// If all checks passed, no traversal detected
+		$this->eeLog[eeSFL_BASE_Go]['notice'][] = 'Traversal check passed.';
+		
+		return TRUE;
 	}
+
+	
 	
 	
 	

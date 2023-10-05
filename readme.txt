@@ -5,7 +5,7 @@ Tags: file list, file sharing, file upload form, upload files, exchange files, h
 Requires at least: 5.0
 Requires PHP: 7
 Tested up to: 6.3
-Stable tag: 6.1.8
+Stable tag: 6.1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -224,7 +224,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Upgrade Notice ==
 
-* 6.1.8 - The never ending quest for perfection.
+* 6.1.9 - Directory Traversal Vulnerability Fix
 
 
 == Screenshots ==
@@ -235,6 +235,9 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 
 == Changelog ==
+
+= 6.1.9 =
+* Directory Traversal Vulnerability Fix
 
 = 6.1.8 =
 * Bug fix where a fatal error was being thrown on the list settings page for Windows installs.
