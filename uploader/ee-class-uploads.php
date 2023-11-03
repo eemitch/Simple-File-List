@@ -524,7 +524,8 @@ class eeSFL_BASE_UploadClass {
 		// The FILE object
 		if(empty($_FILES)) { return 'The File Object is Empty'; }
 		
-		if( !is_admin() ) { // Front-side protections
+		$eeReferer = wp_get_referer();
+		if( !strpos($eeReferer, '/wp-admin/') ) { // Front-side protections
 		
 			// Who should be uploading?
 			switch ($eeObject->eeListSettings['AllowUploads']) {

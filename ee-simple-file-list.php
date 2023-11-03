@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 6.1.9
+Version: 6.1.10
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // CONSTANTS
 define('eeSFL_BASE_DevMode', FALSE);
-define('eeSFL_BASE_Version', '6.1.9'); // Plugin version
+define('eeSFL_BASE_Version', '6.1.10'); // Plugin version
 define('eeSFL_BASE_PluginName', 'Simple File List');
 define('eeSFL_BASE_PluginSlug', 'ee-simple-file-list');
 define('eeSFL_BASE_PluginDir', 'simple-file-list');
@@ -534,10 +534,11 @@ function eeSFL_BASE_FileEditor() {
 	$eeMessages = array();
 	
 	// WP Security
-	if( !check_ajax_referer( 'eeSFL_ActionNonce', 'eeSecurity' ) ) { return 'ERROR 98';	}
+	if( !check_ajax_referer( 'ee-sfl-manage-files', 'eeSecurity' ) ) { return 'ERROR 98';	}
 	
 	// Check if we should be doing this
-	if(is_admin() OR $eeSFL_BASE->eeListSettings['AllowFrontManage'] == 'YES') {
+	$eeReferer = wp_get_referer();
+	if( strpos($eeReferer, '/wp-admin/') OR $eeSFL_BASE->eeListSettings['AllowFrontManage'] == 'YES') {
 		
 		// The Action
 		if( strlen($_POST['eeFileAction']) ) { $eeFileAction = sanitize_text_field($_POST['eeFileAction']); } 
@@ -546,6 +547,12 @@ function eeSFL_BASE_FileEditor() {
 		// The Current File Name
 		if( strlen($_POST['eeFileName']) ) { $eeFileName = esc_textarea(sanitize_text_field($_POST['eeFileName'])); }
 		if(!$eeFileName) { return "Missing the File Name"; }
+		
+		// Ignore these file types
+		$eeParts = pathinfo($eeFileName);
+		if(in_array($eeParts['extension'], $eeSFL_BASE->eeForbiddenTypes)) {
+			return FALSE;
+		}
 		
 		// Folder Path - PRO ONLY
 		

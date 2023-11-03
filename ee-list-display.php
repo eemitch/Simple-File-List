@@ -4,7 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit if nonce fails
 
 $eeClass = ''; // Meaning, CSS class
-$eeSFL_ActionNonce = wp_create_nonce('eeSFL_ActionNonce'); // Security for Ajax
 $eeURL = $eeSFL_BASE->eeSFL_GetThisURL();
 $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loaded: ee-list-display';
 $eeMessages = array('File List Loading');
@@ -59,8 +58,16 @@ $eeOutput .= '
 // User Messaging
 $eeOutput .= $eeSFL_BASE->eeSFL_ResultsNotification();
 
-$eeOutput .= '<span class="eeHide" id="eeSFL_ActionNonce">' . $eeSFL_ActionNonce . '</span>
+// Action Nonce, if applicable
+$eeOutput .= '
+<span class="eeHide" id="eeSFL_ActionNonce">';
+if(is_admin() OR $eeSFL_BASE->eeListSettings['AllowFrontManage'] == 'YES') {
+	$eeSFL_ActionNonce = wp_create_nonce('ee-sfl-manage-files');
+	$eeOutput .= $eeSFL_ActionNonce;
+}
+$eeOutput .= '</span>';
 
+$eeOutput .= '
 <script>
 	var eeSFL_PluginURL = "' . $eeSFL_BASE->eeEnvironment['pluginURL'] . '";
 	var eeSFL_FileListDir = "' . $eeSFL_BASE->eeListSettings['FileListDir'] . '";

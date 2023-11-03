@@ -1574,50 +1574,36 @@ class eeSFL_BASE_MainClass {
 	
 	
 	
-	// Sanitize Email Addresses
+	// Sanitize and Validate Email Addresses
 	public function eeSFL_SanitizeEmailString($eeAddresses) { // Can be one or more addresses, comma deliniated
 		
 		$eeAddressSanitized = '';
 		
-		if(strpos($eeAddresses, ',')) { // Multiple Addresses
-		
-			$eeSFL_Addresses = explode(',', $eeAddresses);
-			
-			$eeSFL_AddressesString = '';
-			
-			foreach($eeSFL_Addresses as $add){
-				
-				$add = trim($add);
-				
-				if(filter_var(sanitize_email($add), FILTER_VALIDATE_EMAIL)) {
-			
-					$eeSFL_AddressesString .= $add . ',';
-					
-				} else {
-					$this->eeLog[eeSFL_BASE_Go]['errors'][] = $add . ' - ' . __('This is not a valid email address.', 'ee-simple-file-list');
-				}
-			}
-			
-			$eeAddressSanitized = substr($eeSFL_AddressesString, 0, -1); // Remove last comma
-			
-		
-		} elseif(filter_var(sanitize_email($eeAddresses), FILTER_SANITIZE_EMAIL)) { // Only one address
-			
-			$add = $eeAddresses;
-			
-			if(filter_var(sanitize_email($add), FILTER_VALIDATE_EMAIL)) {
-				
-				$eeAddressSanitized = $add;
-				
-			} else {
-				
-				$this->eeLog[eeSFL_BASE_Go]['errors'][] = $add . ' - ' . __('This is not a valid email address.', 'ee-simple-file-list');
-			}
-			
-		} else {
-			
-			$eeAddressSanitized = ''; // Anything but a good email gets null.
+		// Check the input string for malicious activities
+		$eeAddresses2 = strip_tags($eeAddresses);
+		$eeAddresses2 = preg_replace('/[^a-zA-Z0-9\-._@,+]/', '', $eeAddresses2);
+		if ($eeAddresses != $eeAddresses2) { 
+			$this->eeLog[eeSFL_BASE_Go]['errors'][] = __('Invalid Input', 'ee-simple-file-list');
+			return ''; // Funny business going on
 		}
+		
+		// Always work as if there are multiple addresses
+		$eeSFL_Addresses = explode(',', $eeAddresses);
+		$eeSFL_AddressesString = '';
+		
+		foreach ($eeSFL_Addresses as $add) {
+			
+			$add = sanitize_email(trim($add));
+			
+			if (filter_var($add, FILTER_VALIDATE_EMAIL)) {
+				$eeSFL_AddressesString .= $add . ',';
+			} else {
+				$this->eeLog[eeSFL_BASE_Go]['errors'][] = __('This is not a valid email address.', 'ee-simple-file-list');
+			}
+		}
+		
+		// Remove last comma
+		$eeAddressSanitized = rtrim($eeSFL_AddressesString, ',');
 		
 		return $eeAddressSanitized;
 	}
