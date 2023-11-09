@@ -22,10 +22,12 @@ function eeSFL_BASE_noticeTimer() {
 
 
 
-
 function eeSFL_BASE_CheckSupported() {
 	
 	global $eeSFL_BASE;
+	
+	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Checking Supported ...';
+
 	
 	// Check for supported technologies
 	$eeSupported = array();
@@ -33,12 +35,16 @@ function eeSFL_BASE_CheckSupported() {
     // Check for ffMpeg
     if(function_exists('shell_exec')) {
 	    
+		$eeSupported[] = 'Shell';
+		
 		if(shell_exec('ffmpeg -version')) {
 			$eeSupported[] = 'ffMpeg';
-			$eeSFL_Log['Supported'][] = 'Supported: ffMpeg';
+			$eeSFL_Log[eeSFL_BASE_Go]['Supported'][] = 'Supported: ffMpeg';
+		} else {
+			$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = '---> shell_exec("ffMpeg") FAILED';
 		}
     } else {
-	    $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['Trouble'] = '---> shell_exec() NOT SUPPORTED'; 
+	    $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = '---> shell_exec() NOT SUPPORTED'; 
     }
     
     if($eeSFL_BASE->eeEnvironment['eeOS'] != 'WINDOWS') {

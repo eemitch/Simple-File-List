@@ -4,7 +4,7 @@ Donate link: http://simplefilelist.com
 Tags: file list, file sharing, file upload form, upload files, exchange files, host files, zip files, dropbox, ftp
 Requires at least: 5.0
 Requires PHP: 7
-Tested up to: 6.3
+Tested up to: 6.4
 Stable tag: 6.1.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -224,7 +224,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Upgrade Notice ==
 
-* 6.1.10 - Security Update
+* 6.1.11 - Improvements
 
 
 == Screenshots ==
@@ -236,9 +236,12 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Changelog ==
 
+= 6.1.11 =
+* General Code Improvements
+
 = 6.1.10 =
 * Fixed a major security bug where a malicious attacker could delete your files.
-* Fixed a minor XSS vunerability in the email settings form.
+* Fixed a minor XSS vulnerability in the email settings form.
 
 = 6.1.9 =
 * Directory Traversal Vulnerability Fix

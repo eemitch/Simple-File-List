@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 6.1.10
+Version: 6.1.11
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -18,8 +18,8 @@ Domain Path: /languages
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // CONSTANTS
-define('eeSFL_BASE_DevMode', FALSE);
-define('eeSFL_BASE_Version', '6.1.10'); // Plugin version
+define('eeSFL_BASE_DevMode', TRUE);
+define('eeSFL_BASE_Version', '6.1.11'); // Plugin version
 define('eeSFL_BASE_PluginName', 'Simple File List');
 define('eeSFL_BASE_PluginSlug', 'ee-simple-file-list');
 define('eeSFL_BASE_PluginDir', 'simple-file-list');
@@ -551,7 +551,7 @@ function eeSFL_BASE_FileEditor() {
 		// Ignore these file types
 		$eeParts = pathinfo($eeFileName);
 		if(in_array($eeParts['extension'], $eeSFL_BASE->eeForbiddenTypes)) {
-			return FALSE;
+			return "Forbidden File Type";
 		}
 		
 		// Folder Path - PRO ONLY
@@ -729,7 +729,7 @@ function eeSFL_BASE_AdminMenu() {
 
 	}
 	
-	// Admin Menu Visability
+	// Admin Menu Visibility
 	if(!isset($eeSFL_BASE->eeListSettings['AdminRole'])) { // First Run
 		$eeSFL_BASE->eeListSettings['AdminRole'] = 5;
 	}

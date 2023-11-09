@@ -394,13 +394,23 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		if( !in_array('ImageMagick' , $eeSupported) ) { 
 			$eeMissing[] = __('Image Magick is Not Installed. PDF thumbnails cannot be created.', 'ee-simple-file-list');
 		}
-		if( !in_array('GhostScript' , $eeSupported) ) { 
-			$eeMissing[] = 'GhostScript is Not Installed. PDF thumbnails cannot be created.';
+		
+		if( !in_array('Shell' , $eeSupported) ) { 
+			
+			$eeMissing[] = __('Shell Access is Denied. PDF and Video thumbnails cannot be created.', 'ee-simple-file-list');
+			$eeMissing[] = __('GhostScript is not available. PDF thumbnails cannot be created.', 'ee-simple-file-list');
+
+		} else {
+			
+			if( !in_array('GhostScript' , $eeSupported) ) { 
+				$eeMissing[] = __('GhostScript is Not Installed. PDF thumbnails cannot be created.', 'ee-simple-file-list');
+			}
+			
+			if( $eeSFL_BASE->eeEnvironment['eeOS'] == 'WINDOWS' ) { 
+				$eeMissing[] = ' <em>Windows: ' . __('Not yet supported for PDF thumbnails.', 'ee-simple-file-list') . '</em>';
+			}
 		}
 		
-		if( $eeSFL_BASE->eeEnvironment['eeOS'] == 'WINDOWS' ) { 
-			$eeMissing[] = ' <em>Windows: ' . __('Not yet supported for PDF thumbnails.', 'ee-simple-file-list') . '</em>';
-		}
 		
 		$eeOutput .= '</p>
 		<div class="eeNote">' . __('Read a PDF file and create a representative thumbnail image based on the first page.', 'ee-simple-file-list');
@@ -414,11 +424,12 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		
 		<input id="eeGenerateVideoThumbs" type="checkbox" name="eeGenerateVideoThumbs" value="YES"';
 		if( $eeSFL_BASE->eeListSettings['GenerateVideoThumbs'] == 'YES' ) { $eeOutput .= ' checked="checked"'; }
-		if( !isset($eeSFL_BASE->eeEnvironment['ffMpeg']) ) { $eeOutput .= ' disabled="disabled"'; }
+		if( !in_array('ffMpeg' , $eeSupported) OR !in_array('Shell' , $eeSupported) ) { 
+			$eeOutput .= ' disabled="disabled"'; }
 		$eeOutput .= ' /> '; 
 		
-		if( !isset($eeSFL_BASE->eeEnvironment['ffMpeg']) ) { 
-			$eeMissing[] = __('Video thumbnails will not be created because ffMpeg is not Installed.', 'ee-simple-file-list');
+		if( !in_array('ffMpeg' , $eeSupported) OR !in_array('Shell' , $eeSupported) ) { 
+			$eeMissing[] = __('Video thumbnails will not be created because ffMpeg is not available.', 'ee-simple-file-list');
 		}
 				 	 
 		$eeOutput .= '</p>

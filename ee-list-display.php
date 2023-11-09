@@ -58,15 +58,6 @@ $eeOutput .= '
 // User Messaging
 $eeOutput .= $eeSFL_BASE->eeSFL_ResultsNotification();
 
-// Action Nonce, if applicable
-$eeOutput .= '
-<span class="eeHide" id="eeSFL_ActionNonce">';
-if(is_admin() OR $eeSFL_BASE->eeListSettings['AllowFrontManage'] == 'YES') {
-	$eeSFL_ActionNonce = wp_create_nonce('ee-sfl-manage-files');
-	$eeOutput .= $eeSFL_ActionNonce;
-}
-$eeOutput .= '</span>';
-
 $eeOutput .= '
 <script>
 	var eeSFL_PluginURL = "' . $eeSFL_BASE->eeEnvironment['pluginURL'] . '";
@@ -133,8 +124,14 @@ $eeOutput .= '
 
 // Modal Input
 if($eeAdmin OR $eeSFL_BASE->eeListSettings['AllowFrontManage'] == 'YES') {
-							
+	
 	$eeOutput .= '
+	<span class="eeHide" id="eeSFL_ActionNonce">';
+	if(is_admin() OR $eeSFL_BASE->eeListSettings['AllowFrontManage'] == 'YES') {
+		$eeSFL_ActionNonce = wp_create_nonce('ee-sfl-manage-files');
+		$eeOutput .= $eeSFL_ActionNonce;
+	}
+	$eeOutput .= '</span>
 	
 	<div class="eeSFL_Modal" id="eeSFL_Modal_Manage">
 	<div class="eeSFL_ModalBackground"></div>
