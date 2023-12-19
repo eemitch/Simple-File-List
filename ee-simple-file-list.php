@@ -18,7 +18,7 @@ Domain Path: /languages
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // CONSTANTS
-define('eeSFL_BASE_DevMode', TRUE);
+define('eeSFL_BASE_DevMode', FALSE);
 define('eeSFL_BASE_Version', '6.1.11'); // Plugin version
 define('eeSFL_BASE_PluginName', 'Simple File List');
 define('eeSFL_BASE_PluginSlug', 'ee-simple-file-list');

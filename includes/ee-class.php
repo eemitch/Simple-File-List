@@ -1136,10 +1136,10 @@ class eeSFL_BASE_MainClass {
 			if(is_file($eeScreenshot)) { // Resize down to $this->eeFileThumbSize
 				
 				if( $this->eeSFL_CreateThumbnailImage($eeScreenshot) ) {
-					unlink($eeScreenshot); // Delete the screeshot file
+					unlink($eeScreenshot); // Delete the screenshot file
 					return TRUE;
 				} else {
-					unlink($eeScreenshot); // Delete the screeshot file anyway
+					unlink($eeScreenshot); // Delete the screenshot file anyway
 					return FALSE;
 				}
 			

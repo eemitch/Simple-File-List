@@ -59,13 +59,15 @@ function eeSFL_BASE_CheckSupported() {
 		// Check for GhostScript
 		if($eeSFL_BASE->eeEnvironment['eeOS'] == 'LINUX') { // TO DO - Make it work for IIS
 		
-			if(function_exists('shell_exec')) {
+			if(function_exists('exec')) {
 			
 				$phpExt = 'gs'; // <<<---- This will be different for Windows
-				if(shell_exec($phpExt . ' --version') >= 1.0) { // <<<---- This will be different for Windows too
+				if(exec($phpExt . ' --version') >= 1.0) { // <<<---- This will be different for Windows too
 					$eeSupported[] = 'GhostScript';
 					$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['Supported'][] = 'Supported: GhostScript';
 				}
+			} else {
+				$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = '---> exec() NOT SUPPORTED'; 
 			}
 		}
 	}
