@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 6.1.11
+Version: 6.1.12
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // CONSTANTS
 define('eeSFL_BASE_DevMode', FALSE);
-define('eeSFL_BASE_Version', '6.1.11'); // Plugin version
+define('eeSFL_BASE_Version', '6.1.12'); // Plugin version
 define('eeSFL_BASE_PluginName', 'Simple File List');
 define('eeSFL_BASE_PluginSlug', 'ee-simple-file-list');
 define('eeSFL_BASE_PluginDir', 'simple-file-list');
@@ -532,6 +532,7 @@ function eeSFL_BASE_FileEditor() {
 	$eeFileDescriptionNew = FALSE;
 	$eeFileAction = FALSE;
 	$eeMessages = array();
+	$eeSubFolder = '';
 	
 	// WP Security
 	if( !check_ajax_referer( 'ee-sfl-manage-files', 'eeSecurity' ) ) { return 'ERROR 98';	}
@@ -628,8 +629,52 @@ function eeSFL_BASE_FileEditor() {
 
 			
 			
-			// Date Modified - PRO ONLY
-		
+			// Edit the Date Added
+			$eeDate = preg_replace("/[^0-9-]/", "", $_POST['eeFileDateAdded']);
+			
+			if(strlen($eeDate) > 1) {
+			
+				// Check to be sure it's a good date 
+				$eeArray = explode('-', $eeDate);
+				if( !checkdate( $eeArray[1], $eeArray[2], $eeArray[0]) ) {
+					
+					return 'Bad Date, Indiana! ' . $eeArray[1] . ', ' . $eeArray[2] . ', ' . $eeArray[0];
+				
+				} else {
+					
+					// Update the Database
+					$eeSFL_BASE->eeSFL_UpdateFileDetail($eeSubFolder. $eeFileName, 'FileDateAdded', $eeDate . ' 00:00:00' );
+					
+					if($eeSFL_BASE->eeListSettings['ShowFileDateAs'] == 'Added') { $eeAdditionalData = '|Date=' . date_i18n( get_option('date_format'), strtotime( $eeDate ) );}
+				}
+			}
+			
+			
+			// Edit the Date Changed
+			$eeDate = preg_replace("/[^0-9-]/", "", $_POST['eeFileDateChanged']);
+			
+			if(strlen($eeDate) > 1) {
+			
+				// Check to be sure it's a good date 
+				$eeArray = explode('-', $eeDate);
+				if( !checkdate( $eeArray[1], $eeArray[2], $eeArray[0]) ) {
+					return 'Bad Date, Indiana! ' . $eeArray[1] . ', ' . $eeArray[2] . ', ' . $eeArray[0];
+				}
+				
+				// Update the File
+				$eeDateTime = strtotime($eeDate);
+				$eeFilePath = ABSPATH . $eeSFL_BASE->eeListSettings['FileListDir'] . $eeSubFolder . $eeFileName;
+				if(is_readable($eeFilePath)) {
+					
+					// Touch the file
+					touch($eeFilePath, $eeDateTime);
+					
+					// Update the Database
+					$eeSFL_BASE->eeSFL_UpdateFileDetail($eeSubFolder . $eeFileName, 'FileDateChanged', $eeDate . ' 00:00:00' );
+					
+					if($eeSFL_BASE->eeListSettings['ShowFileDateAs'] == 'Changed') { $eeAdditionalData = '|Date=' . date_i18n( get_option('date_format'), strtotime( $eeDate ) );}
+				}
+			}
 			
 			
 			// New File Name? - Rename Last
@@ -684,7 +729,7 @@ function eeSFL_BASE_FileEditor() {
 			// Custom Hook
 			do_action('eeSFL_Hook_Edited', $eeMessages);
 			
-			return 'SUCCESS';
+			return 'SUCCESS' . $eeAdditionalData;
 			
 		} else { // End Editing
 			

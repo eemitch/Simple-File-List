@@ -10,10 +10,13 @@ jQuery(document).ready(function($) {
 	window.addEventListener('touchstart', function() {
 		eeSFL_isTouchscreen = true;
 	});
+  
+    // Dynamic File Name Sanitizer
+    eeSFL_SanitizeInputDynamically();
 	
 	
 	jQuery('#eeSFL_Modal_Manage_Close').on('click', function() {
-		jQuery('#eeSFL_Modal_Manage').hide();
+		jQuery('#eeSFL_Modal_EditFile').hide();
 	});
 		
 

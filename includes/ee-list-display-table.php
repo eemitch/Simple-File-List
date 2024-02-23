@@ -48,6 +48,8 @@ if($eeSFL_BASE->eeListSettings['ShowHeader'] == 'YES' OR $eeAdmin) { $eeOutput .
 		if($eeSFL_BASE->eeListSettings['LabelDate']) { $eeOutput .= stripslashes($eeSFL_BASE->eeListSettings['LabelDate']); } 
 			else { $eeOutput .= __('Date', 'ee-simple-file-list'); }
 		
+		if( is_admin() ) { $eeOutput .= ' <small>(' . $eeSFL_BASE->eeListSettings['ShowFileDateAs'] . ')</small>'; }
+		
 		$eeOutput .= '</th>';
 	}
 

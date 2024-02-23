@@ -53,16 +53,21 @@ $eeOutput .= '
 
 <span id="eeSFL_FileListTop"><!-- Simple File List - File List Top --></span>
 
-<div class="eeSFL" id="eeSFL">';
+<div class="eeSFL" id="eeSFL">
+<span class="eeHide" id="eeSFL_ID">1</span>';
 
 // User Messaging
 $eeOutput .= $eeSFL_BASE->eeSFL_ResultsNotification();
 
 $eeOutput .= '
+
 <script>
-	var eeSFL_PluginURL = "' . $eeSFL_BASE->eeEnvironment['pluginURL'] . '";
-	var eeSFL_FileListDir = "' . $eeSFL_BASE->eeListSettings['FileListDir'] . '";
-	var eeSFL_ShowListStyle = "' . $eeSFL_BASE->eeListSettings['ShowListStyle'] . '";
+	eeSFL_ListID = 1;
+	eeSFL_SubFolder = "/";
+	const eeSFL_ThisURL = "' . $eeURL . '";
+	const eeSFL_PluginURL = "' . $eeSFL_BASE->eeEnvironment['pluginURL'] . '";
+	const eeSFL_FileListDir = "' . $eeSFL_BASE->eeListSettings['FileListDir'] . '";
+	const eeSFL_ShowListStyle = "' . $eeSFL_BASE->eeListSettings['ShowListStyle'] . '";
 </script>
 ';
 
@@ -122,7 +127,12 @@ $eeOutput .= '
 
 </div><!-- END .eeSFL -->';
 
-// Modal Input
+
+// Modal Input -------------------------
+					
+$eeOutput .= '
+<span class="eeHide" id="eeSFL_Modal_FileID"></span>';
+
 if($eeAdmin OR $eeSFL_BASE->eeListSettings['AllowFrontManage'] == 'YES') {
 	
 	$eeOutput .= '
@@ -133,7 +143,7 @@ if($eeAdmin OR $eeSFL_BASE->eeListSettings['AllowFrontManage'] == 'YES') {
 	}
 	$eeOutput .= '</span>
 	
-	<div class="eeSFL_Modal" id="eeSFL_Modal_Manage">
+	<div class="eeSFL_Modal" id="eeSFL_Modal_EditFile">
 	<div class="eeSFL_ModalBackground"></div>
 	<div class="eeSFL_ModalBody">
 	
@@ -141,10 +151,12 @@ if($eeAdmin OR $eeSFL_BASE->eeListSettings['AllowFrontManage'] == 'YES') {
 		
 		<h1>' . __('Edit File', 'ee-simple-file-list') . '</h1>
 		
-		<p class="eeSFL_ModalFileDetails">File ID: <span class="eeSFL_Modal_Manage_FileID">???</span> | ' . 
-		__('Added', 'ee-simple-file-list') . ': <span id="eeSFL_FileDateAdded" >???</span> | ' . 
-		__('Changed', 'ee-simple-file-list') . ': <span id="eeSFL_FileDateChanged" >???</span> | ' . 
-		__('Size', 'ee-simple-file-list') . ': <span id="eeSFL_FileSize">???</span>
+		<p class="eeSFL_ModalFilePath eeHide"></p>
+		
+		<p class="eeSFL_ModalFileDetails">' . 
+		__('Added', 'ee-simple-file-list-pro') . ': <span id="eeSFL_FileDateAdded" >???</span> | ' . 
+		__('Changed', 'ee-simple-file-list-pro') . ': <span id="eeSFL_FileDateChanged" >???</span> | ' . 
+		__('Size', 'ee-simple-file-list-pro') . ': <span id="eeSFL_FileSize">???</span>
 		</p>
 		
 		<label for="eeSFL_FileNameNew">' . __('File Name', 'ee-simple-file-list') . '</label>
@@ -159,10 +171,33 @@ if($eeAdmin OR $eeSFL_BASE->eeListSettings['AllowFrontManage'] == 'YES') {
 		<textarea cols="64" rows="3" id="eeSFL_FileDescriptionNew" name="eeSFL_FileDescriptionNew"></textarea>
 		<small class="eeSFL_ModalNote">' . __('Add a description.', 'ee-simple-file-list') . ' ' . __('Use this field to describe this file and apply keywords for searching.', 'ee-simple-file-list') . '</small>
 		
+		<h4>' . __('Item Date Added', 'ee-simple-file-list') . '</h4>
+		
+		<div class="eeSFL_DateNew">
+		<label>' . __('Year', 'ee-simple-file-list') . '<input min="1970" max="' . date('Y') . '" type="number" name="eeSFL_FileDateAddedYearNew" value="" id="eeSFL_FileDateAddedYearNew" /></label>
+		<label>' . __('Month', 'ee-simple-file-list') . '<input min="1" max="12" type="number" name="eeSFL_FileDateAddedMonthNew" value="" id="eeSFL_FileDateAddedMonthNew" /></label>
+		<label>' . __('Day', 'ee-simple-file-list') . '<input min="1" max="31" type="number" name="eeSFL_FileDateAddedDayNew" value="" id="eeSFL_FileDateAddedDayNew" /></label>
+		</div>
+		<small class="eeSFL_ModalNote">' . __('Change the date added to the list.', 'ee-simple-file-list') . '</small>
+		
+		<h4>' . __('Item Date Changed', 'ee-simple-file-list') . '</h4>
+		
+		<div class="eeSFL_DateNew">
+		<label>' . __('Year', 'ee-simple-file-list') . '<input min="1970" max="' . date('Y') . '" type="number" name="eeSFL_FileDateChangedYearNew" value="" id="eeSFL_FileDateChangedYearNew" /></label>
+		<label>' . __('Month', 'ee-simple-file-list') . '<input min="1" max="12" type="number" name="eeSFL_FileDateChangedMonthNew" value="" id="eeSFL_FileDateChangedMonthNew" /></label>
+		<label>' . __('Day', 'ee-simple-file-list') . '<input min="1" max="31" type="number" name="eeSFL_FileDateChangedDayNew" value="" id="eeSFL_FileDateChangedDayNew" /></label>
+		</div>
+		<small class="eeSFL_ModalNote">' . __('Change date the file was last modified.', 'ee-simple-file-list') . '</small>
+		
 		<button class="button" onclick="eeSFL_FileEditSaved()">' . __('Save', 'ee-simple-file-list') . '</button>
 
 	</div>
 	</div>';
+	
+	
+	// echo '<pre>'; print_r($eeSFL_BASE->eeAllFiles); echo '</pre>'; exit;
+	
+	
 }
 	
 $eeSFL_BASE->eeEnvironment['FileLists'] = ''; // Remove to clean up display

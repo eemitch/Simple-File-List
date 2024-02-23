@@ -7,14 +7,14 @@ var eeBaseShortcode = 'eeSFL';
 var eeSFL_FileID = 0;
 
 // Shortcode Builder
-var eeAttsObject = new Object();
-var eeOption = '';
-var eeValue = '';
-var eeNewOption = '';
-var eeNewSetTo = '';
-var eeAttsArray = '';
-var eeArray1 = new Array;
-var eeArray2 = new Array;
+// var eeAttsObject = new Object();
+// var eeOption = '';
+// var eeValue = '';
+// var eeNewOption = '';
+// var eeNewSetTo = '';
+// var eeAttsArray = '';
+// var eeArray1 = new Array;
+// var eeArray2 = new Array;
 
 
 

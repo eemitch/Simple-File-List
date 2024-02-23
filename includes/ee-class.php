@@ -243,6 +243,7 @@ class eeSFL_BASE_MainClass {
 	public $eeFileURL = FALSE;
 	public $eeFileName = FALSE;
 	public $eeFileExt = FALSE;
+	public $eeFileMIME = FALSE;
 	public $eeRealFileName = FALSE;
 	public $eeFileNiceName = FALSE;
 	public $eeFileDescription = FALSE;
@@ -335,16 +336,21 @@ class eeSFL_BASE_MainClass {
 		
 		}
 				
-		$eeOutput .= '
-		
-		</small>'; // Close File List Actions Links
-		
 		// File Details to Pass to the Editor
+		$eeArray = explode(' ', $this->eeFileDateAdded);
+		$eeDateAdded = $eeArray[0];
+		$eeArray = explode(' ', $this->eeFileDateChanged);
+		$eeDateChanged = $eeArray[0];
+				
 		$eeOutput .= '
 		
 		<span class="eeHide eeSFL_FileSize">' . $this->eeFileSize . '</span>
-		<span class="eeHide eeSFL_FileDateAdded">' . $this->eeFileDateAdded . '</span>
-		<span class="eeHide eeSFL_FileDateChanged">' . $this->eeFileDateChanged . '</span>';
+		<span class="eeHide eeSFL_FileDateAdded">' . $eeDateAdded . '</span>
+		<span class="eeHide eeSFL_FileDateAddedNice">' . date_i18n( get_option('date_format'), strtotime( $eeDateAdded ) ) . '</span>
+		<span class="eeHide eeSFL_FileDateChanged">' . $eeDateChanged . '</span>
+		<span class="eeHide eeSFL_FileDateChangedNice">' . date_i18n( get_option('date_format'), strtotime( $eeDateChanged ) ) . '</span>
+		
+		</small>'; // Close File List Actions Links
 		
 		return $eeOutput;
 	    
@@ -370,6 +376,8 @@ class eeSFL_BASE_MainClass {
 			$this->eeFileExt = basename($eeFileArray['FileExt']); // Just the name
 			$this->eeFileURL = $this->eeEnvironment['wpSiteURL'] . $this->eeListSettings['FileListDir'] . $this->eeFilePath; // Clickable URL
 			$this->eeFileSize = $this->eeSFL_FormatFileSize($eeFileArray['FileSize']); // Formatted Size
+			$this->eeFileDateAdded = $eeFileArray['FileDateAdded'];
+			$this->eeFileDateChanged = $eeFileArray['FileDateChanged'];
 			if(isset($eeFileArray['FileMIME'])) {
 				$this->eeFileMIME = $eeFileArray['FileMIME'];
 			} else {
@@ -379,7 +387,6 @@ class eeSFL_BASE_MainClass {
 			// Reset These
 			$this->eeFileNiceName = FALSE;
 			$this->eeFileDescription = FALSE;
-			$this->eeSubmitterComments = FALSE;
 			$this->eeFileOwner = FALSE;
 			$this->eeFileSubmitterEmail = FALSE;
 			$this->eeFileSubmitterName = FALSE;
@@ -389,7 +396,7 @@ class eeSFL_BASE_MainClass {
 			if(strpos($this->eeFilePath, '.')) { // Skip folders and hidden files
 			
 				// Skip names hidden via shortcode
-				if($eeHideName) { // Expecting a comma deleimited string of file names
+				if($eeHideName) { // Expecting a comma delimited string of file names
 					$eeArray = explode(',', $eeHideName);
 					foreach( $eeArray as $eeKey => $eeValue ) {
 						if( strtolower($eeFileName) ==  $eeValue . '.' . $this->eeFileExt ) {  return FALSE; } // Without extension
@@ -398,7 +405,7 @@ class eeSFL_BASE_MainClass {
 				}
 				
 				// Skip types hidden via shortcode
-				if($eeHideType) { // Expecting a comma deleimited string of extensions
+				if($eeHideType) { // Expecting a comma delimited string of extensions
 					if(strpos($eeHideType, $this->eeFileExt) OR strpos($eeHideType, $this->eeFileExt) === 0 ) { 
 						return FALSE;
 					}
@@ -477,12 +484,18 @@ class eeSFL_BASE_MainClass {
 				
 				
 				// File Dates and the Display Date
+				// if($this->eeListSettings['ShowFileDateAs'] == 'Changed') {
+				// 	$this->eeFileDateChanged = date_i18n( get_option('date_format'), strtotime( $eeFileArray['FileDateChanged'] ) ); // The mod date
+				// 	$this->eeFileDate = $this->eeFileDateChanged;
+				// } else {
+				// 	$this->eeFileDateAdded = date_i18n( get_option('date_format'), strtotime( $eeFileArray['FileDateAdded'] ) );
+				// 	$this->eeFileDate = $this->eeFileDateAdded;
+				// }
+				
 				if($this->eeListSettings['ShowFileDateAs'] == 'Changed') {
-					$this->eeFileDateChanged = date_i18n( get_option('date_format'), strtotime( $eeFileArray['FileDateChanged'] ) ); // The mod date
-					$this->eeFileDate = $this->eeFileDateChanged;
+					$this->eeFileDate = date_i18n( get_option('date_format'), strtotime( $this->eeFileDateChanged ) );
 				} else {
-					$this->eeFileDateAdded = date_i18n( get_option('date_format'), strtotime( $eeFileArray['FileDateAdded'] ) );
-					$this->eeFileDate = $this->eeFileDateAdded;
+					$this->eeFileDate = date_i18n( get_option('date_format'), strtotime( $this->eeFileDateAdded ) );
 				}
 				
 				
@@ -492,7 +505,7 @@ class eeSFL_BASE_MainClass {
 					if(is_numeric($eeFileArray['FileOwner'])) {
 						$this->eeFileOwner = $eeFileArray['FileOwner']; // The User ID
 						$wpUserData = get_userdata($this->eeFileOwner);
-						if($wpUserData->user_email) {
+						if(!empty($wpUserData->user_email)) {
 							$this->eeFileSubmitterEmail = $wpUserData->user_email;
 							$this->eeFileSubmitterName = $wpUserData->first_name . ' ' . $wpUserData->last_name;
 						}
