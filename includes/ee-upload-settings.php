@@ -265,7 +265,7 @@ $eeOutput .= '
 		<fieldset>
 		<legend>File Extensions</legend>
 		<div><label>' . __('File Types', 'ee-simple-file-list') . '<br />
-		<textarea name="eeFileFormats" id="eeFormats" cols="32" rows="3" >' . $eeSFL_BASE->eeListSettings['FileFormats'] . '</textarea></label></div>
+		<textarea name="eeFileFormats" id="eeFormats" cols="32" rows="3" >' . esc_textarea($eeSFL_BASE->eeListSettings['FileFormats']) . '</textarea></label></div>
 		
 		<div class="eeNote">' . __('Only use the file types you absolutely need, such as', 'ee-simple-file-list') . ' jpg, jpeg, png, pdf, mp4, etc</div>
 		

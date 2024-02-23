@@ -15,7 +15,7 @@ if($eeSFL_BASE->eeListSettings['ShowHeader'] == 'YES' OR $eeAdmin) { $eeOutput .
 		
 		$eeOutput .= '<th class="eeSFL_Thumbnail">';
 		
-		if($eeSFL_BASE->eeListSettings['LabelThumb']) { $eeOutput .= stripslashes($eeSFL_BASE->eeListSettings['LabelThumb']); } 
+		if($eeSFL_BASE->eeListSettings['LabelThumb']) { $eeOutput .= esc_textarea(stripslashes($eeSFL_BASE->eeListSettings['LabelThumb'])); } 
 			else { $eeOutput .= __('Thumb', 'ee-simple-file-list'); }
 		
 		$eeOutput .= '</th>';
@@ -24,7 +24,7 @@ if($eeSFL_BASE->eeListSettings['ShowHeader'] == 'YES' OR $eeAdmin) { $eeOutput .
 	
 	$eeOutput .= '<th class="eeSFL_FileName">';
 		
-	if($eeSFL_BASE->eeListSettings['LabelName']) { $eeOutput .= stripslashes($eeSFL_BASE->eeListSettings['LabelName']); } 
+	if($eeSFL_BASE->eeListSettings['LabelName']) { $eeOutput .= esc_textarea(stripslashes($eeSFL_BASE->eeListSettings['LabelName'])); } 
 		else { $eeOutput .= __('Name', 'ee-simple-file-list'); }
 	
 	$eeOutput .= '</th>';
@@ -34,7 +34,7 @@ if($eeSFL_BASE->eeListSettings['ShowHeader'] == 'YES' OR $eeAdmin) { $eeOutput .
 		
 		$eeOutput .= '<th class="eeSFL_FileSize">';
 		
-		if($eeSFL_BASE->eeListSettings['LabelSize']) { $eeOutput .= stripslashes($eeSFL_BASE->eeListSettings['LabelSize']); } 
+		if($eeSFL_BASE->eeListSettings['LabelSize']) { $eeOutput .= esc_textarea(stripslashes($eeSFL_BASE->eeListSettings['LabelSize'])); } 
 			else { $eeOutput .= __('Size', 'ee-simple-file-list'); }
 		
 		$eeOutput .= '</th>';
@@ -45,10 +45,10 @@ if($eeSFL_BASE->eeListSettings['ShowHeader'] == 'YES' OR $eeAdmin) { $eeOutput .
 		
 		$eeOutput .= '<th class="eeSFL_FileDate">';
 		
-		if($eeSFL_BASE->eeListSettings['LabelDate']) { $eeOutput .= stripslashes($eeSFL_BASE->eeListSettings['LabelDate']); } 
+		if($eeSFL_BASE->eeListSettings['LabelDate']) { $eeOutput .= esc_textarea(stripslashes($eeSFL_BASE->eeListSettings['LabelDate'])); } 
 			else { $eeOutput .= __('Date', 'ee-simple-file-list'); }
 		
-		if( is_admin() ) { $eeOutput .= ' <small>(' . $eeSFL_BASE->eeListSettings['ShowFileDateAs'] . ')</small>'; }
+		if( is_admin() ) { $eeOutput .= ' <small>(' . esc_textarea($eeSFL_BASE->eeListSettings['ShowFileDateAs']) . ')</small>'; }
 		
 		$eeOutput .= '</th>';
 	}
@@ -92,7 +92,7 @@ foreach($eeSFL_BASE->eeAllFiles as $eeFileKey => $eeFileArray) { // <<<---------
 			
 			if($eeSFL_BASE->eeFileThumbURL) { $eeOutput .= '<a href="' . $eeSFL_BASE->eeFileURL .  '"';
 					
-				$eeOutput .= '><img src="' . $eeSFL_BASE->eeFileThumbURL . '" width="64" height="64" alt="Thumb" /></a>'; }
+				$eeOutput .= '><img src="' . esc_url($eeSFL_BASE->eeFileThumbURL) . '" width="64" height="64" alt="Thumb" /></a>'; }
 			
 			$eeOutput .= '</td>';
 		}
@@ -105,11 +105,11 @@ foreach($eeSFL_BASE->eeAllFiles as $eeFileKey => $eeFileArray) { // <<<---------
 			
 			$eeOutput .= '
 			
-			<span class="eeSFL_RealFileName eeHide">' . $eeSFL_BASE->eeRealFileName . '</span>
-			<span class="eeSFL_FileNiceName eeHide">' . $eeSFL_BASE->eeFileNiceName . '</span>
-			<span class="eeSFL_FileMimeType eeHide">' . $eeSFL_BASE->eeFileMIME . '</span>
+			<span class="eeSFL_RealFileName eeHide">' . esc_textarea($eeSFL_BASE->eeRealFileName) . '</span>
+			<span class="eeSFL_FileNiceName eeHide">' . esc_textarea($eeSFL_BASE->eeFileNiceName) . '</span>
+			<span class="eeSFL_FileMimeType eeHide">' . esc_textarea($eeSFL_BASE->eeFileMIME) . '</span>
 			
-			<p class="eeSFL_FileLink"><a class="eeSFL_FileName" href="' . $eeSFL_BASE->eeFileURL .  '" target="_blank">' . stripslashes($eeSFL_BASE->eeFileName) . '</a></p>';
+			<p class="eeSFL_FileLink"><a class="eeSFL_FileName" href="' . esc_url($eeSFL_BASE->eeFileURL) .  '" target="_blank">' . esc_textarea(stripslashes($eeSFL_BASE->eeFileName)) . '</a></p>';
 			
 			
 			
@@ -117,7 +117,7 @@ foreach($eeSFL_BASE->eeAllFiles as $eeFileKey => $eeFileArray) { // <<<---------
 			if(!$eeAdmin AND $eeSFL_BASE->eeListSettings['ShowFileDesc'] == 'NO') { $eeClass = 'eeHide'; }
 			
 			// This is always here in case of editing, but hidden if empty
-			$eeOutput .= '<p class="eeSFL_FileDesc ' . $eeClass . '">' . stripslashes($eeSFL_BASE->eeFileDescription) . '</p>';
+			$eeOutput .= '<p class="eeSFL_FileDesc ' . $eeClass . '">' . esc_textarea(stripslashes($eeSFL_BASE->eeFileDescription)) . '</p>';
 			
 			
 			// Submitter Info
@@ -132,8 +132,8 @@ foreach($eeSFL_BASE->eeAllFiles as $eeFileKey => $eeFileArray) { // <<<---------
 				}
 			}
 			if($eeShowIt AND $eeSFL_BASE->eeFileSubmitterName) {
-				$eeOutput .= '<p class="eeSFL_FileSubmitter"><span>' . $eeSFL_BASE->eeListSettings['LabelOwner'] . ': </span>
-					<a href="mailto:' . $eeSFL_BASE->eeFileSubmitterEmail . '">' . stripslashes($eeSFL_BASE->eeFileSubmitterName) . '</a></p>';
+				$eeOutput .= '<p class="eeSFL_FileSubmitter"><span>' . esc_textarea($eeSFL_BASE->eeListSettings['LabelOwner']) . ': </span>
+					<a href="mailto:' . $eeSFL_BASE->eeFileSubmitterEmail . '">' . esc_textarea(stripslashes($eeSFL_BASE->eeFileSubmitterName)) . '</a></p>';
 			}
 			$eeShowIt = FALSE;
 			
@@ -150,14 +150,14 @@ foreach($eeSFL_BASE->eeAllFiles as $eeFileKey => $eeFileArray) { // <<<---------
 		// File Size
 		if($eeAdmin OR $eeSFL_BASE->eeListSettings['ShowFileSize'] == 'YES') {
 		
-			$eeOutput .= '<td class="eeSFL_FileSize">' . $eeSFL_BASE->eeFileSize . '</td>';
+			$eeOutput .= '<td class="eeSFL_FileSize">' . esc_textarea($eeSFL_BASE->eeFileSize) . '</td>';
 		}
 		
 		
 		// File Modification Date
 		if($eeAdmin OR $eeSFL_BASE->eeListSettings['ShowFileDate'] == 'YES') {
 			
-			$eeOutput .= '<td class="eeSFL_FileDate">' . $eeSFL_BASE->eeFileDate . '</td>';
+			$eeOutput .= '<td class="eeSFL_FileDate">' . esc_textarea($eeSFL_BASE->eeFileDate) . '</td>';
 		}
 		
 		$eeOutput .= '</tr>';

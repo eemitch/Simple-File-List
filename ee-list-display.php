@@ -64,10 +64,10 @@ $eeOutput .= '
 <script>
 	eeSFL_ListID = 1;
 	eeSFL_SubFolder = "/";
-	const eeSFL_ThisURL = "' . $eeURL . '";
-	const eeSFL_PluginURL = "' . $eeSFL_BASE->eeEnvironment['pluginURL'] . '";
-	const eeSFL_FileListDir = "' . $eeSFL_BASE->eeListSettings['FileListDir'] . '";
-	const eeSFL_ShowListStyle = "' . $eeSFL_BASE->eeListSettings['ShowListStyle'] . '";
+	const eeSFL_ThisURL = "' . esc_url($eeURL) . '";
+	const eeSFL_PluginURL = "' . esc_url($eeSFL_BASE->eeEnvironment['pluginURL']) . '";
+	const eeSFL_FileListDir = "' . esc_js($eeSFL_BASE->eeListSettings['FileListDir']) . '";
+	const eeSFL_ShowListStyle = "' . esc_js($eeSFL_BASE->eeListSettings['ShowListStyle']) . '";
 </script>
 ';
 

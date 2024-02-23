@@ -104,7 +104,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		
 	<h2>' . __('List Location', 'ee-simple-file-list') . '</h2>
 		
-		<p><input class="eeFullWidth" type="text" name="eeFileListDir" value="" placeholder="' . ABSPATH . $eeSFL_BASE->eeListSettings['FileListDir'] . '" disabled="disabled" /></p>
+		<p><input class="eeFullWidth" type="text" name="eeFileListDir" value="" placeholder="' . ABSPATH . esc_textarea($eeSFL_BASE->eeListSettings['FileListDir']) . '" disabled="disabled" /></p>
 		
 		<div class="eeNote">' . __('Upgrade to Pro', 'ee-simple-file-list') . '</a> &rarr; ' . __('The Pro Version allows you to define a custom file list directory. It must only be relative to the WordPress home directory.', 'ee-simple-file-list') . '</div>
 	
@@ -529,7 +529,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		if($eeSFL_BASE->eeListSettings['ShowFileThumb'] == 'YES') { $eeOutput .= ' checked'; }
 		$eeOutput .= ' />
 		<input type="text" name="eeLabelThumb" value="';
-		if( isset($eeSFL_BASE->eeListSettings['LabelThumb']) ) { $eeOutput .= stripslashes($eeSFL_BASE->eeListSettings['LabelThumb']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelThumb']; }
+		if( isset($eeSFL_BASE->eeListSettings['LabelThumb']) ) { $eeOutput .= esc_textarea(stripslashes($eeSFL_BASE->eeListSettings['LabelThumb'])); } else { $eeOutput .= esc_textarea($eeSFL_BASE->DefaultListSettings['LabelThumb']); }
 		$eeOutput .= '" size="32" /></div>
 		
 		<div class="eeNote">' . __('Show file thumbnail images.', 'ee-simple-file-list') . '</div>
@@ -543,7 +543,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		if($eeSFL_BASE->eeListSettings['ShowFileDate'] == 'YES') { $eeOutput .= ' checked'; }
 		$eeOutput .= ' />
 		<input class="eeFortyPercent" type="text" name="eeLabelDate" value="';
-		if( isset($eeSFL_BASE->eeListSettings['LabelDate'])) { $eeOutput .= stripslashes($eeSFL_BASE->eeListSettings['LabelDate']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelDate']; }
+		if( isset($eeSFL_BASE->eeListSettings['LabelDate'])) { $eeOutput .= esc_textarea(stripslashes($eeSFL_BASE->eeListSettings['LabelDate'])); } else { $eeOutput .= esc_textarea($eeSFL_BASE->DefaultListSettings['LabelDate']); }
 		$eeOutput .= '" size="32" />
 		
 		<select name="eeShowFileDateAs" id="eeShowFileDateAs">
@@ -569,7 +569,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		if($eeSFL_BASE->eeListSettings['ShowFileSize'] == 'YES') { $eeOutput .= ' checked'; }
 		$eeOutput .= ' />
 		<input type="text" name="eeLabelSize" value="';
-		if( isset($eeSFL_BASE->eeListSettings['LabelSize']) ) { $eeOutput .= stripslashes($eeSFL_BASE->eeListSettings['LabelSize']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelSize']; }
+		if( isset($eeSFL_BASE->eeListSettings['LabelSize']) ) { $eeOutput .= esc_textarea(stripslashes($eeSFL_BASE->eeListSettings['LabelSize'])); } else { $eeOutput .= esc_textarea($eeSFL_BASE->DefaultListSettings['LabelSize']); }
 		$eeOutput .= '" size="32" /></div>
 				
 		<div class="eeNote">' . __('Limit the file information to display on the front-side file list. Enter a custom label if needed.', 'ee-simple-file-list') . '</div>
@@ -583,7 +583,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		if($eeSFL_BASE->eeListSettings['ShowFileDesc'] == 'YES') { $eeOutput .= ' checked'; }
 		$eeOutput .= ' />
 		<input type="text" name="eeLabelDesc" value="';
-		if( isset($eeSFL_BASE->eeListSettings['LabelDesc']) ) { $eeOutput .= stripslashes($eeSFL_BASE->eeListSettings['LabelDesc']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelDesc']; }
+		if( isset($eeSFL_BASE->eeListSettings['LabelDesc']) ) { $eeOutput .= esc_textarea(stripslashes($eeSFL_BASE->eeListSettings['LabelDesc'])); } else { $eeOutput .= esc_textarea($eeSFL_BASE->DefaultListSettings['LabelDesc']); }
 		$eeOutput .= '" size="32" /></div>
 				
 		<div class="eeNote">' . __('Show a description of the file, which can include keywords and special characters not allowed within the file name.', 'ee-simple-file-list') . '</div>
@@ -600,7 +600,7 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 		
 		// echo '<pre>'; print_r($eeSFL_BASE->DefaultListSettings); echo '</pre>'; exit;
 		
-		if( $eeSFL_BASE->eeListSettings['LabelOwner'] ) { $eeOutput .= stripslashes($eeSFL_BASE->eeListSettings['LabelOwner']); } else { $eeOutput .= $eeSFL_BASE->DefaultListSettings['LabelOwner']; }
+		if( $eeSFL_BASE->eeListSettings['LabelOwner'] ) { $eeOutput .= esc_textarea(stripslashes($eeSFL_BASE->eeListSettings['LabelOwner'])); } else { $eeOutput .= esc_textarea($eeSFL_BASE->DefaultListSettings['LabelOwner']); }
 		$eeOutput .= '" size="32" /></div>
 				
 		<div class="eeNote">' . __('Show the name of the user who uploaded the file on the front-end.', 'ee-simple-file-list') . '</div>

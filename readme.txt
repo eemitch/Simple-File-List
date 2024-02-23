@@ -224,7 +224,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Upgrade Notice ==
 
-* 6.1.12 - Improvements
+* 6.1.12 - BETA
 
 
 == Screenshots ==

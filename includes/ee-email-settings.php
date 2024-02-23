@@ -123,16 +123,16 @@ $eeOutput .= '
 		<fieldset>
 		
 		<div><label class="eeBlock">' . __('Notice Email', 'ee-simple-file-list') . '
-		<input type="text" name="eeNotifyTo" value="' . $eeSFL_BASE->eeListSettings['NotifyTo'] . '" id="eeNotifyTo" /></label></div>
+		<input type="text" name="eeNotifyTo" value="' . esc_textarea($eeSFL_BASE->eeListSettings['NotifyTo']) . '" id="eeNotifyTo" /></label></div>
 		<div class="eeNote">' . __('Send an email here whenever a file is uploaded.', 'ee-simple-file-list') . '</div>
 		
 		
 		<div><label class="eeBlock">' . __('Copy to Email', 'ee-simple-file-list') . '<br />
-		<input type="text" name="eeNotifyCc" value="' . $eeSFL_BASE->eeListSettings['NotifyCc'] . '" id="eeNotifyCc" /></label></div>
+		<input type="text" name="eeNotifyCc" value="' . esc_textarea($eeSFL_BASE->eeListSettings['NotifyCc']) . '" id="eeNotifyCc" /></label></div>
 		<div class="eeNote">' . __('Copy all notice emails here.', 'ee-simple-file-list') . '</div>
 		
 		<div><label class="eeBlock">' . __('Blind Copy to Email', 'ee-simple-file-list') . '<br />
-		<input class="eeFullWidth" type="text" name="eeNotifyBcc" value="' . $eeSFL_BASE->eeListSettings['NotifyBcc'] . '" id="eeNotifyBcc" /></label></div>
+		<input class="eeFullWidth" type="text" name="eeNotifyBcc" value="' . esc_textarea($eeSFL_BASE->eeListSettings['NotifyBcc']) . '" id="eeNotifyBcc" /></label></div>
 		<div class="eeNote">' . __('Blind copy all notice emails here.', 'ee-simple-file-list') . '</div>
 		<div class="eeNote">* ' . __('Separate multiple addresses with a comma.', 'ee-simple-file-list') . '</div>
 		
@@ -154,11 +154,11 @@ $eeOutput .= '
 		<fieldset>	
 		
 		<div><label class="eeBlock">' . __('Your Name', 'ee-simple-file-list') . '<br />
-		<input class="eeFullWidth" type="text" name="eeNotifyFromName" value="' . stripslashes($eeSFL_BASE->eeListSettings['NotifyFromName']) . '" id="eeNotifyFromName" /></label></div>
+		<input class="eeFullWidth" type="text" name="eeNotifyFromName" value="' . esc_textarea(stripslashes($eeSFL_BASE->eeListSettings['NotifyFromName'])) . '" id="eeNotifyFromName" /></label></div>
 		<div class="eeNote">' . __('The visible name in the From field.', 'ee-simple-file-list') . '</div>	
 		
 		<div><label class="eeBlock">' . __('Reply Address', 'ee-simple-file-list') . '<br />
-		<input class="eeFullWidth" type="email" name="eeNotifyFrom" value="' . $eeSFL_BASE->eeListSettings['NotifyFrom'] . '" id="eeNotifyFrom" /></label></div>
+		<input class="eeFullWidth" type="email" name="eeNotifyFrom" value="' . esc_textarea($eeSFL_BASE->eeListSettings['NotifyFrom']) . '" id="eeNotifyFrom" /></label></div>
 		<div class="eeNote">' . __('The notification message\'s reply-to address.', 'ee-simple-file-list') . '</div>
 		
 		</fieldset>
@@ -177,17 +177,17 @@ $eeOutput .= '
 		
 <h2>' . __('Message Details', 'ee-simple-file-list') . '</h2>';
 
-if(!@$eeSFL_BASE->eeListSettings['NotifyMessage']) { $eeSFL_BASE->eeListSettings['NotifyMessage'] = $eeSFL_BASE->eeNotifyMessageDefault; }
+if(!empty($eeSFL_BASE->eeListSettings['NotifyMessage'])) { $eeSFL_BASE->eeListSettings['NotifyMessage'] = $eeSFL_BASE->eeNotifyMessageDefault; }
 	
 $eeOutput .= '
 
 <div><label class="eeBlock">' . __('Message Subject', 'ee-simple-file-list') . '<br />
-<input class="eeFullWidth" type="text" name="eeNotifySubject" value="' . stripslashes($eeSFL_BASE->eeListSettings['NotifySubject']) . '" id="eeNotifySubject" /></label></div>
+<input class="eeFullWidth" type="text" name="eeNotifySubject" value="' . esc_textarea(stripslashes($eeSFL_BASE->eeListSettings['NotifySubject'])) . '" id="eeNotifySubject" /></label></div>
 		
 <div class="eeNote">' . __('The notification message subject line.', 'ee-simple-file-list') . '</div>
 
 <div><label class="eeBlock">' . __('Message Body', 'ee-simple-file-list') . '<br />
-<textarea class="eeFullWidth" name="eeNotifyMessage" id="eeNotifyMessage" cols="64" rows="12" >' . stripslashes($eeSFL_BASE->eeListSettings['NotifyMessage']) . '</textarea></label></div>
+<textarea class="eeFullWidth" name="eeNotifyMessage" id="eeNotifyMessage" cols="64" rows="12" >' . esc_textarea(stripslashes($eeSFL_BASE->eeListSettings['NotifyMessage'])) . '</textarea></label></div>
 	
 <div class="eeNote">' . __('This is the text for all file upload notification messages.', 'ee-simple-file-list') . ' ' . __('To insert links to the files, use this shortcode:', 'ee-simple-file-list') . ' [file-list]' . ' '  . __('To insert a link pointing to the file list page, use this shortcode:', 'ee-simple-file-list') . ' [web-page]</div>
 

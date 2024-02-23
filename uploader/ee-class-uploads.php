@@ -107,10 +107,10 @@ class eeSFL_BASE_UploadClass {
 		<script>
 				
 		var eeSFL_ListID = "' . $eeListID . '";
-		var eeSFL_FileUploadDir = "' . urlencode($eeCurrentFolder) . '";
-		var eeSFL_FileLimit = ' . $eeObject->eeListSettings['UploadLimit'] . ';
-		var eeSFL_UploadMaxFileSize = ' . (($eeObject->eeListSettings['UploadMaxFileSize']*1024)*1024) . ';
-		var eeSFL_FileFormats = "' . str_replace(' ' , '', $eeObject->eeListSettings['FileFormats']) . '";
+		var eeSFL_FileUploadDir = "' . esc_js(urlencode($eeCurrentFolder)) . '";
+		var eeSFL_FileLimit = ' . esc_js($eeObject->eeListSettings['UploadLimit']) . ';
+		var eeSFL_UploadMaxFileSize = ' . esc_js((($eeObject->eeListSettings['UploadMaxFileSize']*1024)*1024)) . ';
+		var eeSFL_FileFormats = "' . esc_js(str_replace(' ' , '', $eeObject->eeListSettings['FileFormats'])) . '";
 		var eeSFL_Nonce = "' . wp_create_nonce('ee-simple-file-list-upload') . '";
 		var eeSFL_UploadEngineURL = "' . admin_url( 'admin-ajax.php') . '";
 					
@@ -128,11 +128,11 @@ class eeSFL_BASE_UploadClass {
 		
 			$eeOutput .= '<p class="sfl_instuctions">' . __('File Limit', 'ee-simple-file-list-pro') . ': ' . $eeObject->eeListSettings['UploadLimit'] . ' ' . __('files', 'ee-simple-file-list-pro') . '<br />
 			
-			' . __('Size Limit', 'ee-simple-file-list-pro') . ': ' . $eeObject->eeListSettings['UploadMaxFileSize'] . ' MB
+			' . __('Size Limit', 'ee-simple-file-list-pro') . ': ' . esc_textarea($eeObject->eeListSettings['UploadMaxFileSize']) . ' MB
 			
 			' . __('per file', 'ee-simple-file-list-pro') . '.<br />
 			
-			' . __('Types Allowed', 'ee-simple-file-list-pro') . ': ' . str_replace(',', ', ', $eeObject->eeListSettings['FileFormats'])  . '<br />
+			' . __('Types Allowed', 'ee-simple-file-list-pro') . ': ' . esc_textarea(str_replace(',', ', ', $eeObject->eeListSettings['FileFormats']))  . '<br />
 			
 			' . __('Drag-and-drop files here or use the Browse button.', 'ee-simple-file-list-pro') . '</p>';
 		
