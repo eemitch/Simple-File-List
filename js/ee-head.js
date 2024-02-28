@@ -20,6 +20,7 @@ const eeSFL_RegEx_Replace = /[.\s]+/g;
 function eeSFL_SanitizeFileName(eeFileName) {
 	
 	let eeNewFileNameOnly = eeSFL_GetFileNameWithoutExtension(eeFileName);
+	eeNewFileNameOnly = eeNewFileNameOnly.replace('.', '_');
 	eeNewFileNameOnly = eeNewFileNameOnly.replace(eeSFL_RegEx_Replace, '-');
 	eeSanitized = eeNewFileNameOnly.replace(eeSFL_RegEx_Remove, '');
 	
@@ -55,6 +56,9 @@ function eeSFL_SanitizeInputDynamically() {
 			this.value = eeSFL_OriginalFileNameOnly + '.' + eeSFL_OriginalFileExtension;
 			return;
 		} // Set in Open Edit Modal
+		
+		// Dot to Underscores
+		eeNewFileNameOnly = eeNewFileNameOnly.replace('.', '_');
 
 		// Regex
 		eeNewFileNameOnly = eeNewFileNameOnly.replace(eeSFL_RegEx_Remove, '');

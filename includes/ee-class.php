@@ -725,7 +725,7 @@ class eeSFL_BASE_MainClass {
 						
 						if( isset($eeNewArray['FilePath']) ) {
 							
-							if( isset($this->eeSanitizedFiles[$eeFile]) ) {
+							if( isset($this->eeSanitizedFiles[$eeFile]) AND $this->eeListSettings['PreserveName'] == 'YES' ) {
 								$eeNewArray['FileNiceName'] = basename($this->eeSanitizedFiles[$eeFile]);
 							}
 							
@@ -849,16 +849,16 @@ class eeSFL_BASE_MainClass {
 		    
 	    $this->eeLog[eeSFL_BASE_Go]['notice'][] = 'Indexing files from: ' . $this->eeListSettings['FileListDir']; 
 	    
-	    $eeFileScanArray = scandir(ABSPATH . $this->eeListSettings['FileListDir']);
+	    $eeLastScan = scandir(ABSPATH . $this->eeListSettings['FileListDir']);
 	    
-	    foreach($eeFileScanArray as $eeThisItemName) {
+	    foreach($eeLastScan as $eeThisItemName) {
+	    	
+	    	if(strpos($eeThisItemName, '.') === 0 ) { continue; }
 	    	
 	    	$eePathParts = pathinfo($eeThisItemName);
 			if(isset($eePathParts['extension'])) {
 				if( in_array($eePathParts['extension'], $this->eeForbiddenTypes) ) { continue; }
 			}
-	    	
-	    	if(strpos($eeThisItemName, '.') === 0 ) { continue; }
 		    	
 	    	if(is_file(ABSPATH . $this->eeListSettings['FileListDir'] . $eeThisItemName)) { // Is a regular file
 	    	
@@ -871,11 +871,11 @@ class eeSFL_BASE_MainClass {
 		        if($eeNewItemName != $eeThisItemName) { // Sanitized
 		        
 					$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - OLD --> Problematic File Name: ' . $eeThisItemName;
-		        
-		        	// Prevent over-writing another file that has been sanitized
-			        if( in_array($eeNewItemName, $this->eeSFL_FileScanArray) ) {
-				        
-				        $eePathParts = pathinfo($eeNewItemName);
+					
+					// Prevent over-writing another file that has been sanitized
+			        if( in_array($eeNewItemName, $eeLastScan) ) {
+						
+						$eePathParts = pathinfo($eeNewItemName);
 						$eeNameOnly = $eePathParts['filename'];
 						$eeExtension = $eePathParts['extension'];
 				        
@@ -883,7 +883,7 @@ class eeSFL_BASE_MainClass {
 							
 							$eeNewItemName = $eeNameOnly . '_' . $i . '.' . $eeExtension; // Add the copy number
 							
-							if(!in_array($eeThisItemPath . $eeNewItemName, $this->eeSFL_FileScanArray)) { break; } // If no copy is there, we're done.
+							if(!in_array($eeThisItemPath . $eeNewItemName, $eeLastScan)) { break; } // If no copy is there, we're done.
 							
 						}
 			        }
@@ -1493,14 +1493,49 @@ class eeSFL_BASE_MainClass {
 	
 	
 	
+	// File/Folder Sanitizer RegEx - These must match the values in ee-head.js as close as possible 
+	public $eeRegEx_Remove = '/[^\w\-. \x00A0-\xD7FF\xF900-\xFDCF\xFDF0-\xFFEF]+|[@~^:;<>?]+/u';
+	public $eeRegEx_Replace = '/[.\s]+/';
+	
 	// Make sure the file name is acceptable
-	public function eeSFL_SanitizeFileName($eeSFL_FileName) {
+	public function eeSFL_SanitizeFileName($eeFileName) {
+		
+		// Make sure file has an extension
+		$eePathParts = pathinfo($eeFileName);
+		$eeFileNameOnly = str_replace('.', '-', $eePathParts['filename']); // Get rid of dots
+		
+		// Replace These: eeSFL_RegEx_Replace
+		$eeFileNameOnly = preg_replace($this->eeRegEx_Replace, '-', $eeFileNameOnly);
+			
+		// Remove These: eeSFL_RegEx_Remove
+		$eeFileNameOnly = preg_replace($this->eeRegEx_Remove, '', $eeFileNameOnly);
+		
+		if($eeFileNameOnly) {
+		
+			if(isset($eePathParts['extension'])) { // It's a File
+		
+				$eeNewFileName = $eeFileNameOnly . '.' . strtolower($eePathParts['extension']);
+				return $eeNewFileName;
+			}
+			
+			// It's a Folder
+			return $eeFileNameOnly;
+		}
+		
+		return FALSE;
+	}
+	
+	
+	
+	
+	// Make sure the file name is acceptable
+	public function eeSFL_SanitizeFileName_OLD($eeSFL_FileName) {
 		
 		// Make sure file has an extension
 		$eeSFL_PathParts = pathinfo($eeSFL_FileName);
 		$eeSFL_FileNameAlone = str_replace('.', '_', $eeSFL_PathParts['filename']); // Get rid of dots
 		$eeSFL_Extension = strtolower($eeSFL_PathParts['extension']);
-		$eeSFL_FileName = sanitize_file_name( $eeSFL_FileNameAlone . '.' . $eeSFL_Extension );
+		$eeSFL_FileName = eeSFL_SanitizeFileName($eeSFL_FileNameAlone . '.' . $eeSFL_Extension);
 	    
 	    return $eeSFL_FileName;
 	}
