@@ -11,8 +11,8 @@ var eeSFL_OriginalFileExtension = ''; // Holder for original file extension
 var eeSFL_FileNameInput = '';
 var eeSFL_SubFolder = ''; 
 
-// File Sanitizer RegEx - These must match the values in ee-class.php as close as possible
-const eeSFL_RegEx_Remove = /[^\w\-. \u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+|[~@^:;<>?]+/g;
+// File Sanitizer RegEx - These must match the values sanitize_file_name() as closely as possible
+const eeSFL_RegEx_Remove = /[\?\[\]\/\\=<>:;,'"&\$#\*\(\)\|~`\!{}\%\+'’«»”“\x00]/g;
 const eeSFL_RegEx_Replace = /[.\s]+/g;
 
 
@@ -95,10 +95,6 @@ function eeSFL_SanitizeInputDynamically() {
 				this.value = eeNewFileNameOnly;
 				console.log('New Folder Name: ' + eeNewFileNameOnly);
 			}
-			
-			
-			
-			
 		}
 
 		// Restore the cursor position
