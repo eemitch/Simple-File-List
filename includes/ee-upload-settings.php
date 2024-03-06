@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98' ); // Exit if nonce fails
 
-$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loading Uploader Settings Page ...';
+$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = 'Loading Uploader Settings Page ...';
 	
 // Check for POST and Nonce
 if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settings', 'ee-simple-file-list-upload-settings-nonce')) {
@@ -54,7 +54,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 		foreach( $eeFileFormatsIN as $eeKey => $eeValue){
 			$eeValue = trim($eeValue);
 			if(in_array($eeValue, $eeSFL_BASE->eeForbiddenTypes)) {
-				$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'][] = 'This file type is not allowed: ' . $eeValue;
+				$eeSFL_BASE->eeLog[eeSFL_Go]['errors'][] = 'This file type is not allowed: ' . $eeValue;
 			} elseif($eeValue) {
 				$eeFileFormatsOK .= $eeValue . ',';
 			}
@@ -82,7 +82,7 @@ if(@$_POST['eePost'] AND check_admin_referer( 'ee-simple-file-list-upload-settin
 	// Update DB
 	update_option('eeSFL_Settings_1', $eeSFL_BASE->eeListSettings);
 	
-	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'][] = __('Upload Settings Saved', 'ee-simple-file-list');
+	$eeSFL_BASE->eeLog[eeSFL_Go]['messages'][] = __('Upload Settings Saved', 'ee-simple-file-list');
 }
 
 // Settings Display =========================================

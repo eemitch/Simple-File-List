@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' )) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Loaded: ee-admin-page';
+$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = 'Loaded: ee-admin-page';
 
 // Admin-Side Display
 function eeSFL_BASE_BackEnd() {
@@ -21,8 +21,8 @@ function eeSFL_BASE_BackEnd() {
 	include('includes/ee-admin-header.php');
 
 	// Upsell to Pro
-	if( $eeAdmin AND !$_POST AND count($eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages']) === 0 ) {
-		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'][] = $eeUpSell;
+	if( $eeAdmin AND !$_POST AND count($eeSFL_BASE->eeLog[eeSFL_Go]['messages']) === 0 ) {
+		$eeSFL_BASE->eeLog[eeSFL_Go]['messages'][] = $eeUpSell;
 	}
 
 	// Get the new tab's query string value. We will only use values to display tabs that we are expecting.
@@ -110,7 +110,7 @@ function eeSFL_BASE_BackEnd() {
 				
 				$eeOutput .= '
 				
-				<a href="' . $eeURL . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . __('Back to the Files', 'ee-simple-file-list') . '</a>';
+				<a href="?page=' . eeSFL_BASE_PluginSlug . '" class="button eeButton" id="eeSFL_BacktoFilesButton">&larr; ' . __('Back to the Files', 'ee-simple-file-list') . '</a>';
 			
 			} else {
 				
@@ -121,7 +121,7 @@ function eeSFL_BASE_BackEnd() {
 				<a class="eeHide button eeFlex1" id="eeSFL_UploadFilesButtonSwap">' . __('Cancel Upload', 'ee-simple-file-list') . '</a>
 				<a href="#" class="button eeFlex1" id="eeSFL_UploadFilesButton">' . __('Upload Files', 'ee-simple-file-list') . '</a>
 				<a href="#" class="button eeFlex1" id="eeSFL_ReScanButton">' . __('Re-Scan Files', 'ee-simple-file-list') . '</a>
-				<a href="' . admin_url() . 'admin.php?page=ee-simple-file-list&tab=pro" class="button eeFlex1" >' . __('Create Folder', 'ee-simple-file-list') . '</a>
+				<a href="?page=ee-simple-file-list&tab=pro" class="button eeFlex1" >' . __('Create Folder', 'ee-simple-file-list') . '</a>
 				
 				</div>
 				

@@ -219,13 +219,13 @@ class eeSFL_BASE_UploadClass {
 		// Detect Which SFL
 		if(is_object($eeSFL_BASE)) { 
 			$eeObject = $eeSFL_BASE;
-			$eeGo = eeSFL_BASE_Go;
-			$eeTime = eeSFL_BASE_noticeTimer();
+			$eeGo = eeSFL_Go;
+			$eeTime = $eeSFL_BASE->eeSFL_NOW();
 		} else { 
 			global $eeSFL, $eeSFLF, $eeSFLA, $eeSFL_Tasks;
 			$eeObject = $eeSFL;
 			$eeGo = eeSFL_Go;
-			$eeTime = eeSFL_noticeTimer();
+			$eeTime = $eeSFL->eeSFL_NOW();
 		}
 		
 		$eeUploadFolder = FALSE;
@@ -511,14 +511,14 @@ class eeSFL_BASE_UploadClass {
 		if(is_object($eeSFL_BASE)) { 
 			$eeObject = $eeSFL_BASE;
 			$eeListID = 1;
-			$eeGo = eeSFL_BASE_Go;
-			$eeTime = eeSFL_BASE_noticeTimer();
+			$eeGo = eeSFL_Go;
+			$eeTime = $eeSFL_BASE->eeSFL_NOW();
 		} else { 
 			global $eeSFL, $eeSFLF, $eeSFLA, $eeSFL_Tasks;
 			$eeObject = $eeSFL;
 			if(isset($_POST['eeSFL_ID'])) { $eeListID = preg_replace("/[^0-9]/i", '', $_POST['eeSFL_ID']); } else { $eeListID = 1; };
 			$eeGo = eeSFL_Go;
-			$eeTime = eeSFL_noticeTimer();
+			$eeTime = $eeSFL->eeSFL_NOW();
 		}
 		
 		// The FILE object

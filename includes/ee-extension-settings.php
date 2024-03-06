@@ -3,20 +3,20 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98 - Extension Settings'); // Exit if nonce fails
 
-$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Loaded: List Settings';
+$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Loaded: List Settings';
 
 // Check for POST and Nonce
 if(isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {
 	
 	// Media Player Settings Process
 	if($eeSFLM) {
-		$eeSFLM->eeSFLM_SettingsProcess('_BASE', eeSFL_BASE_Go, 1);
+		$eeSFLM->eeSFLM_SettingsProcess('_BASE', eeSFL_Go, 1);
 	}
 	
 	// Update DB
 	// update_option('eeSFL_Settings_1', $eeSFL_BASE->eeListSettings );
 	
-	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['messages'][] = __('Extension Settings Saved', 'ee-simple-file-list');
+	$eeSFL_BASE->eeLog[eeSFL_Go]['messages'][] = __('Extension Settings Saved', 'ee-simple-file-list');
 }
 
 // Settings Display =========================================

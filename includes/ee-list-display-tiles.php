@@ -5,7 +5,7 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' )) exit('ERROR 98'); // Exit i
 	
 $eeFileID = 0; // Assign an ID number to each Tile, aka Row
 
-$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'Listing Files in Tile View...';
+$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = 'Listing Files in Tile View...';
 
 $eeOutput .= '<section class="eeFiles">';
 						

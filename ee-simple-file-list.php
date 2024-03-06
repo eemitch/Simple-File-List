@@ -17,18 +17,24 @@ Domain Path: /languages
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-// CONSTANTS
-define('eeSFL_BASE_DevMode', TRUE);
+// CONSTANT CONSTANTS
+if(!defined('eeSFL_DevMode')) { define('eeSFL_DevMode', TRUE); }
+if(!defined('eeSFL_Go')) { define('eeSFL_Go', date('Y-m-d h:m:s')); }
+define('eeSFL_BASE_Go', date('Y-m-d h:m:s')); // LEGACY 6.1.11 and Under
+if(!defined('eeSFL_FileListDefaultDir')) { define('eeSFL_FileListDefaultDir', 'simple-file-list/'); }
+if(!defined('eeSFL_AddOnsURL')) { define('eeSFL_AddOnsURL', 'https://get.simplefilelist.com/index.php'); }
+
+// Base Version
 define('eeSFL_BASE_Version', '6.2.1'); // Plugin version
 define('eeSFL_BASE_PluginName', 'Simple File List');
 define('eeSFL_BASE_PluginSlug', 'ee-simple-file-list');
 define('eeSFL_BASE_PluginDir', 'simple-file-list');
-define('eeSFL_BASE_FileListDefaultDir', 'simple-file-list/'); // Default Upload Directory
+// define('eeSFL_BASE_FileListDefaultDir', 'simple-file-list/'); // Default Upload Directory
+
+
 define('eeSFL_BASE_PluginMenuTitle', 'File List');
 define('eeSFL_BASE_PluginWebPage', 'https://simplefilelist.com');
 define('eeSFL_BASE_AddOnsURL', 'https://get.simplefilelist.com/index.php');
-define('eeSFL_BASE_AdminEmail', 'admin@simplefilelist.com');
-define('eeSFL_BASE_Go', date('Y-m-d h:m:s') ); // Log Entry Key
 
 // Our Core
 $eeSFL_BASE = FALSE; // Our Main Class
@@ -37,7 +43,7 @@ $eeSFL_BASE_VarsForJS = array(); // Strings to Pass to JavaScript
 
 // Supported Extensions
 $eeSFL_BASE_Extensions = array( // Slug => Required Version
-	'ee-simple-file-list-media' => '1' // AV File Playback
+	'ee-simple-file-list-media' => '1.1' // AV File Playback
 );
 
 // Extension Objects
@@ -111,11 +117,11 @@ function eeSFL_BASE_Setup() {
 		$eeSFL_Nonce = wp_create_nonce('eeSFL_Class');
 		require_once(plugin_dir_path(__FILE__) . 'includes/ee-class.php'); 
 		$eeSFL_BASE = new eeSFL_BASE_MainClass();
-		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Simple File List is Loading...';
+		$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Simple File List is Loading...';
 		
 		// The WordPress ROOT - BETA
 		if(!defined('eeSFL_ABSPATH')) { define('eeSFL_ABSPATH', $eeSFL_BASE->eeSFL_GetRootPath() ); }
-		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Root Path = ' . eeSFL_ABSPATH;
+		$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Root Path = ' . eeSFL_ABSPATH;
 		
 		// Upload Class
 		$eeSFL_Nonce = wp_create_nonce('eeSFL_Class');
@@ -160,7 +166,7 @@ function eeSFL_BASE_Setup() {
 	// Extensions
 	if(isset($eeSFL_BASE_Extensions)) {
 	
-		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Checking for Extensions ...';
+		$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Checking for Extensions ...';
 	
 		// Loop thru and set up
 		foreach($eeSFL_BASE_Extensions as $eeSFL_Extension => $eeReqVersion) {
@@ -176,7 +182,7 @@ function eeSFL_BASE_Setup() {
 					
 					if(version_compare( $eeVersion , $eeReqVersion, '>=')) {
 						
-						$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['active'][] = $eeSFL_Extension; // Need this for later
+						$eeSFL_BASE->eeLog[eeSFL_Go]['active'][] = $eeSFL_Extension; // Need this for later
 				
 						$eeSFL_Nonce = wp_create_nonce('eeSFL_Include'); // Used in all extension INI files
 				
@@ -188,7 +194,7 @@ function eeSFL_BASE_Setup() {
 							__('Please go to Plugins and update the extension to the latest version.', 'ee-simple-file-list');
 						
 						if( is_admin() AND @$_GET['page'] == 'ee-simple-file-list') {
-							$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['errors'][] = $eeERROR;
+							$eeSFL_BASE->eeLog[eeSFL_Go]['errors'][] = $eeERROR;
 						}
 					}
 					
@@ -212,8 +218,8 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 	
 	global $eeSFL_BASE, $eeSFLU_BASE, $eeSFL_BASE_VarsForJS;
     
-    $eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Shortcode Function Loading ...';
-	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = $eeSFL_BASE->eeSFL_GetThisURL();
+    $eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Shortcode Function Loading ...';
+	$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_GetThisURL();
 	
 	$eeAdmin = is_admin();
 	if($eeAdmin) { return; } // Don't execute shortcode on page editor
@@ -252,7 +258,7 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 		$eeShortcodeAtts = array_filter($atts);
 		foreach( $eeShortcodeAtts as $eeAtt => $eeValue) { $eeShortcode = ' ' . $eeAtt . '=' . $eeValue; }
 		$eeShortcode = ']';
-		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Attributes: ' . implode(', ', array_filter($atts));
+		$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Attributes: ' . implode(', ', array_filter($atts));
 	
 		$eeOutput .= '
 		<!-- Shortcode: ' . $eeShortcode . ' List Run: #' . $eeSFL_BASE->eeListRun . ' -->';
@@ -288,7 +294,7 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 		if($hidename) { $eeSFL_HideName = strtolower($hidename); } else { $eeSFL_HideName = FALSE; }
 		
 	} else {
-		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = 'No Shortcode Attributes';
+		$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = 'No Shortcode Attributes';
 	}
 	
 	// Javascript
@@ -380,7 +386,7 @@ function eeSFL_BASE_FrontEnd($atts, $content = null) { // Shortcode Usage: [eeSF
 	
 	$eeSFL_BASE->eeListRun++;
 	
-	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - SFL Display Completed';
+	$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - SFL Display Completed';
 	
 	$eeOutput .= $eeSFL_BASE->eeSFL_WriteLogData(); // Only adds output if DevMode is ON
 	
@@ -767,7 +773,7 @@ function eeSFL_BASE_AdminMenu() {
 	if( isset($_GET['page']) ) {
 		
 		$eeOutput = '<!-- Simple File List Admin -->';
-		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Admin Menu Loading ...';
+		$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Admin Menu Loading ...';
 			
 		$eeSFL_Nonce = wp_create_nonce('eeInclude'); // Security
 		include_once($eeSFL_BASE->eeEnvironment['pluginDir'] . 'ee-admin-page.php'); // Admin's List Management Page
@@ -821,16 +827,16 @@ function eeSFL_BASE_VersionCheck() {
 		
 	global $wpdb, $eeSFL_BASE;
 	
-	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Checking DB Version...';
+	$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Checking DB Version...';
 	
 	$eeInstalled = get_option('eeSFL_FREE_DB_Version'); // Legacy
 	if(!$eeInstalled ) { $eeInstalled = get_option('eeSFL_BASE_Version'); } // Hip, now, and in-with-the-times.
 		
-	$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - ' . $eeInstalled . ' is Installed';
+	$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - ' . $eeInstalled . ' is Installed';
 	
 	if( $eeInstalled AND version_compare($eeInstalled, eeSFL_BASE_Version, '>=')  ) {
 		
-		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Version is Up-To-Date';
+		$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Version is Up-To-Date';
 		
 		return TRUE;
 	
@@ -846,7 +852,7 @@ function eeSFL_BASE_VersionCheck() {
 		
 		if($eeOldOldSettings AND !$eeOldSettings) { // Upgrade from Simple File List 3.x
 			
-			$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Version 3.x Detected';
+			$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Version 3.x Detected';
 			
 			// Get Existing Settings
 			$eeSettings['ShowList'] = get_option('eeSFL-1-ShowList');
@@ -980,7 +986,7 @@ function eeSFL_BASE_VersionCheck() {
 		ksort($eeSettings); // Sort for sanity
 		update_option('eeSFL_Settings_1' , $eeSettings);
 		
-		$eeSFL_BASE->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - Plugin Version now at ' . eeSFL_BASE_Version;
+		$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Plugin Version now at ' . eeSFL_BASE_Version;
 		
 		// Write the log file to the Database
 		$eeSFL_BASE->eeSFL_WriteLogData($eeSFL_BASE->eeLog);
