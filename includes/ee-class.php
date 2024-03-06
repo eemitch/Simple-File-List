@@ -32,15 +32,14 @@ class eeSFL_BASE_MainClass {
     public $eeUploadFormRun = FALSE; // Check if uploader form has run or not
     
     // The Log - Written to wp_option -> eeSFL-Log
-    public $eeLog = array(eeSFL_Go => array(
-	    
+    public $eeLog = array(
 	    'Log' => '0.000s | 0 MB Simple File List is Loading...',
 	    'Version' => 'SFL FREE: ' . eeSFL_BASE_Version,
 	    'errors' => array(),
 	    'warnings' => array(),
 	    'messages' => array(),
 	    'notice' => array()
-    ));
+    );
     
     
     // Settings for the Current List
@@ -197,7 +196,7 @@ class eeSFL_BASE_MainClass {
 		$eeEnv['wpUploadDir'] = $wpUploadDir . '/'; // The Wordpress Uploads Location
 		$eeEnv['wpUploadURL'] = $wpUploadArray['baseurl'] . '/';
 
-		$eeEnv['FileListDefaultDir'] = str_replace(ABSPATH, '', $eeEnv['wpUploadDir'] . eeSFL_BASE_FileListDefaultDir); // The default file list location
+		$eeEnv['FileListDefaultDir'] = str_replace(ABSPATH, '', $eeEnv['wpUploadDir'] . $this->eeSFL_FileListDefaultDir); // The default file list location
 		
 		$eeEnv['php_version'] = phpversion(); // PHP Version
 		

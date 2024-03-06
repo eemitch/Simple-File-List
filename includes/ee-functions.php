@@ -16,7 +16,7 @@ function eeSFL_BASE_CheckSupported() {
 	
 	global $eeSFL_BASE;
 	
-	$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Checking Supported ...';
+	$eeSFL_BASE->eeLog['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Checking Supported ...';
 
 	
 	// Check for supported technologies
@@ -31,10 +31,10 @@ function eeSFL_BASE_CheckSupported() {
 			$eeSupported[] = 'ffMpeg';
 			$eeSFL_Log[eeSFL_Go]['Supported'][] = 'Supported: ffMpeg';
 		} else {
-			$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = '---> shell_exec("ffMpeg") FAILED';
+			$eeSFL_BASE->eeLog['notice'][] = '---> shell_exec("ffMpeg") FAILED';
 		}
     } else {
-	    $eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = '---> shell_exec() NOT SUPPORTED'; 
+	    $eeSFL_BASE->eeLog['notice'][] = '---> shell_exec() NOT SUPPORTED'; 
     }
     
     if($eeSFL_BASE->eeEnvironment['eeOS'] != 'WINDOWS') {
@@ -43,7 +43,7 @@ function eeSFL_BASE_CheckSupported() {
 		$phpExt = 'imagick'; 
 		if(extension_loaded($phpExt)) {
 			$eeSupported[] = 'ImageMagick';
-			$eeSFL_BASE->eeLog[eeSFL_Go]['Supported'][] = 'Supported: ImageMagick';
+			$eeSFL_BASE->eeLog['Supported'][] = 'Supported: ImageMagick';
 		}
 		
 		// Check for GhostScript
@@ -54,10 +54,10 @@ function eeSFL_BASE_CheckSupported() {
 				$phpExt = 'gs'; // <<<---- This will be different for Windows
 				if(exec($phpExt . ' --version') >= 1.0) { // <<<---- This will be different for Windows too
 					$eeSupported[] = 'GhostScript';
-					$eeSFL_BASE->eeLog[eeSFL_Go]['Supported'][] = 'Supported: GhostScript';
+					$eeSFL_BASE->eeLog['Supported'][] = 'Supported: GhostScript';
 				}
 			} else {
-				$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = '---> exec() NOT SUPPORTED'; 
+				$eeSFL_BASE->eeLog['notice'][] = '---> exec() NOT SUPPORTED'; 
 			}
 		}
 	}
@@ -112,43 +112,43 @@ function eeSFL_BASE_FileListDirCheck($eeFileListDir) {
 	
 	if(!$eeFileListDir OR substr($eeFileListDir, 0, 1) == '/' OR strpos($eeFileListDir, '../') ) { 
 		
-		$eeSFL_BASE->eeLog[eeSFL_Go]['errors'][] = __('Bad Directory Given', 'ee-simple-file-list') . ': ' . $eeFileListDir;
+		$eeSFL_BASE->eeLog['errors'][] = __('Bad Directory Given', 'ee-simple-file-list') . ': ' . $eeFileListDir;
 		
 		return FALSE;
 	}
 		
-	$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Checking: ' . $eeFileListDir;
+	$eeSFL_BASE->eeLog['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Checking: ' . $eeFileListDir;
 		
 	if( !is_dir(ABSPATH . $eeFileListDir) ) { // Directory Changed or New Install
 	
-		$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - New Install or Directory Change...';
+		$eeSFL_BASE->eeLog['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - New Install or Directory Change...';
 		
 		if(!is_writable( ABSPATH . $eeFileListDir ) ) {
 			
-			$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - No Directory Found. Creating ...';
+			$eeSFL_BASE->eeLog['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - No Directory Found. Creating ...';
 			
 			if ($eeSFL_BASE->eeEnvironment['eeOS'] == 'WINDOWS') {
 			    
 			    if( !mkdir(ABSPATH . $eeFileListDir) ) {
 				    
-				    $eeSFL_BASE->eeLog[eeSFL_Go]['errors'][] = __('Cannot Create Windows Directory:', 'ee-simple-file-list') . ': ' . $eeFileListDir;
+				    $eeSFL_BASE->eeLog['errors'][] = __('Cannot Create Windows Directory:', 'ee-simple-file-list') . ': ' . $eeFileListDir;
 				}
 			
 			} elseif($eeSFL_BASE->eeEnvironment['eeOS'] == 'LINUX') {
 			    
 			    if( !mkdir(ABSPATH . $eeFileListDir , 0755) ) { // Linux - Need to set permissions
 				    
-				    $eeSFL_BASE->eeLog[eeSFL_Go]['errors'][] = __('Cannot Create Linux Directory:', 'ee-simple-file-list') . ': ' . $eeFileListDir;
+				    $eeSFL_BASE->eeLog['errors'][] = __('Cannot Create Linux Directory:', 'ee-simple-file-list') . ': ' . $eeFileListDir;
 				}
 			} else {
 				
-				$eeSFL_BASE->eeLog[eeSFL_Go]['errors'][] = __('ERROR: Could not detect operating system', 'ee-simple-file-list');
+				$eeSFL_BASE->eeLog['errors'][] = __('ERROR: Could not detect operating system', 'ee-simple-file-list');
 				return FALSE;
 			}
 			
 			if(!is_writable( ABSPATH . $eeFileListDir )) {
-				$eeSFL_BASE->eeLog[eeSFL_Go]['errors'][] = __('Cannot create the upload directory', 'ee-simple-file-list') . ': ' . $eeFileListDir;
-				$eeSFL_BASE->eeLog[eeSFL_Go]['errors'][] = __('Please check directory permissions', 'ee-simple-file-list');
+				$eeSFL_BASE->eeLog['errors'][] = __('Cannot create the upload directory', 'ee-simple-file-list') . ': ' . $eeFileListDir;
+				$eeSFL_BASE->eeLog['errors'][] = __('Please check directory permissions', 'ee-simple-file-list');
 			
 				return FALSE;
 			
@@ -156,12 +156,12 @@ function eeSFL_BASE_FileListDirCheck($eeFileListDir) {
 				
 				$eeCopyMaunalFile = TRUE;
 				
-				$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - The File List Dir Has Been Created!';
-				$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeFileListDir;
+				$eeSFL_BASE->eeLog['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - The File List Dir Has Been Created!';
+				$eeSFL_BASE->eeLog['notice'][] = $eeFileListDir;
 			}
 		
 		} else {
-			$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - FileListDir Looks Good';
+			$eeSFL_BASE->eeLog['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - FileListDir Looks Good';
 		}
 		
 	} 
@@ -177,9 +177,9 @@ function eeSFL_BASE_FileListDirCheck($eeFileListDir) {
 				
 				if(!is_readable($eeFile)) {
 				    
-					$eeSFL_BASE->eeLog[eeSFL_Go]['warnings'][] = __('WARNING! Could not write file', 'ee-simple-file-list') . ': index.html';
-					$eeSFL_BASE->eeLog[eeSFL_Go]['warnings'][] = __('Please upload a blank index file to this location to prevent unauthorized access.', 'ee-simple-file-list');
-					$eeSFL_BASE->eeLog[eeSFL_Go]['warnings'][] = ABSPATH . '/' . $eeFileListDir;
+					$eeSFL_BASE->eeLog['warnings'][] = __('WARNING! Could not write file', 'ee-simple-file-list') . ': index.html';
+					$eeSFL_BASE->eeLog['warnings'][] = __('Please upload a blank index file to this location to prevent unauthorized access.', 'ee-simple-file-list');
+					$eeSFL_BASE->eeLog['warnings'][] = ABSPATH . '/' . $eeFileListDir;
 					
 				} else {
 					

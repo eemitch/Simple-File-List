@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' )) exit('ERROR 98'); // Exit if nonce fails
 
-$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = 'Loaded: ee-admin-page';
+$eeSFL_BASE->eeLog['notice'][] = 'Loaded: ee-admin-page';
 
 // Admin-Side Display
 function eeSFL_BASE_BackEnd() {
@@ -21,8 +21,8 @@ function eeSFL_BASE_BackEnd() {
 	include('includes/ee-admin-header.php');
 
 	// Upsell to Pro
-	if( $eeAdmin AND !$_POST AND count($eeSFL_BASE->eeLog[eeSFL_Go]['messages']) === 0 ) {
-		$eeSFL_BASE->eeLog[eeSFL_Go]['messages'][] = $eeUpSell;
+	if( $eeAdmin AND !$_POST AND count($eeSFL_BASE->eeLog['messages']) === 0 ) {
+		$eeSFL_BASE->eeLog['messages'][] = $eeUpSell;
 	}
 
 	// Get the new tab's query string value. We will only use values to display tabs that we are expecting.

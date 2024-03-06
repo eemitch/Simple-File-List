@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Class' ) ) exit('ERROR 98 - ee-class-uploads'); // Exit if nonce fails
 
-class eeSFL_BASE_UploadClass {
+class eeSFL_BASE_Uploads {
 	
 	public $eeUploadedFiles = array(); // Save the original file names for an upload job
 	

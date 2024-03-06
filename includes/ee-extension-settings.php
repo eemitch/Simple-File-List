@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98 - Extension Settings'); // Exit if nonce fails
 
-$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Loaded: List Settings';
+$eeSFL_BASE->eeLog['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - Loaded: List Settings';
 
 // Check for POST and Nonce
 if(isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce')) {
@@ -16,7 +16,7 @@ if(isset($_POST['eePost']) AND check_admin_referer( 'ee-simple-file-list-setting
 	// Update DB
 	// update_option('eeSFL_Settings_1', $eeSFL_BASE->eeListSettings );
 	
-	$eeSFL_BASE->eeLog[eeSFL_Go]['messages'][] = __('Extension Settings Saved', 'ee-simple-file-list');
+	$eeSFL_BASE->eeLog['messages'][] = __('Extension Settings Saved', 'ee-simple-file-list');
 }
 
 // Settings Display =========================================

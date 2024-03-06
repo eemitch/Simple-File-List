@@ -64,7 +64,7 @@ $eeOutput .= '
 <tbody>';
 				
 
-$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = 'Listing Files in Table View...';
+$eeSFL_BASE->eeLog['notice'][] = 'Listing Files in Table View...';
 						
 // Loop through array
 foreach($eeSFL_BASE->eeAllFiles as $eeFileKey => $eeFileArray) { // <<<---------------------------- BEGIN FILE LIST LOOP ----------------<<<	 

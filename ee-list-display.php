@@ -5,7 +5,7 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' ) ) exit('ERROR 98'); // Exit 
 
 $eeClass = ''; // Meaning, CSS class
 $eeURL = $eeSFL_BASE->eeSFL_GetThisURL();
-$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = 'Loaded: ee-list-display';
+$eeSFL_BASE->eeLog['notice'][] = 'Loaded: ee-list-display';
 $eeMessages = array('File List Loading');
 
 if(!isset($eeSFL_HideName)) { $eeSFL_HideName = FALSE; }
@@ -13,7 +13,7 @@ if(!isset($eeSFL_HideType)) { $eeSFL_HideType = FALSE; }
 
 // Who is accessing this list?
 $eeThisUser = get_current_user_id();
-$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - USER ID: ' . $eeThisUser ;
+$eeSFL_BASE->eeLog['notice'][] = $eeSFL_BASE->eeSFL_NOW() . ' - USER ID: ' . $eeThisUser ;
 
 // echo '<pre>'; print_r($eeSFL_BASE->eeAllFiles); echo '</pre>'; exit;
 
@@ -41,8 +41,8 @@ if( $eeSFL_Uploaded ) {
 
 	if(count($eeSFL_BASE->eeAllFiles) == 0) {
 		$eeSFL_BASE->eeAllFiles = array();
-		$eeSFL_BASE->eeLog[eeSFL_Go]['errors'][] = 'Upload Processing Error.';
-		$eeSFL_BASE->eeLog[eeSFL_Go]['errors'][] = $eeSFLU_BASE->eeUploadedFiles;
+		$eeSFL_BASE->eeLog['errors'][] = 'Upload Processing Error.';
+		$eeSFL_BASE->eeLog['errors'][] = $eeSFLU_BASE->eeUploadedFiles;
 	}
 }
 
@@ -107,7 +107,7 @@ if( !empty($eeSFL_BASE->eeAllFiles) ) {
 
 } else {
 	
-	$eeSFL_BASE->eeLog[eeSFL_Go]['notice'][] = 'There are no files here :-(';
+	$eeSFL_BASE->eeLog['notice'][] = 'There are no files here :-(';
 	
 	if($eeAdmin) {
 		$eeOutput .= '<div>
