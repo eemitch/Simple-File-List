@@ -1,4 +1,9 @@
-// File Management JavaScript
+// Simple File List Pro - Copyright 2024
+// Author: Mitchell Bennis | support@simplefilelist.com | https://simplefilelist.com
+// Modifications to this code are not advised and may not be supported.
+
+// console.log('ee-edit-file.js v7 Loaded');
+
 
 
 // Delete Click Handler
@@ -13,9 +18,9 @@ function eeSFL_DeleteFile(eeSFL_FileID) {
 	if(eeSFL_RealFilePath) { eeSFL_SubFolder = eeSFL_RealFilePath; }
 	
 	// Get the File Name
-	var eeSFL_FileName = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' .eeSFL_RealFileName').text();
-	
-	console.log(eeSFL_FileName);
+    var eeSFL_FileName = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' .eeSFL_RealFileName').text();
+    
+    console.log(eeSFL_FileName);
 	
 	if( confirm( eesfl_vars['eeConfirmDeleteText'] + "\r\n\r\n" + eeSFL_FileName ) ) {
 	
@@ -70,6 +75,8 @@ function eeSFL_OpenEditModal(eeSFL_FileID) {
 	
 	eeSFL_FileSize = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_FileSize').text();
 	jQuery('#eeSFL_FileSize').text(eeSFL_FileSize);
+	
+	eeSFL_FileMimeType = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_FileMimeType').text();
 	
 	// Dates - Icky
 	
@@ -214,14 +221,14 @@ function eeSFL_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 	// The File Action Engine
 	var eeActionEngine = eesfl_vars.ajaxurl;
 	var eeFormData = false;
-	var eeSFL_ActionNonce = jQuery('#eeSFL_ActionNonce').text(); // Get the Nonce
-
+	var eeSFL_Nonce = jQuery('#eeSFL_EditNonce').text(); // Get the Nonce
 
 	if(eeSFL_FileAction == 'Edit') {
 		
 		eeFormData = {
 			'action': 'simplefilelist_edit_job',
 			'eeSFL_ID': eeSFL_ListID,
+			'eeFileMimeType': eeSFL_FileMimeType,
 			'eeFileName': eeSFL_FileNameOld,
 			'eeSubFolder': eeSFL_SubFolder,
 			'eeFileNameNew': eeSFL_FileNameNew,
@@ -230,7 +237,7 @@ function eeSFL_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 			'eeFileDateAdded': eeSFL_FileDateAddedNew,
 			'eeFileDateChanged': eeSFL_FileDateChangedNew,
 			'eeFileAction': 'Edit',
-			'eeSecurity': eeSFL_ActionNonce
+			'eeSecurity': eeSFL_Nonce
 		};
 		
 	} else if(eeSFL_FileAction == 'Delete') {
@@ -244,7 +251,7 @@ function eeSFL_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 			'eeFileName': eeSFL_FileName,
 			'eeSubFolder': eeSFL_SubFolder,
 			'eeFileAction': 'Delete',
-			'eeSecurity': eeSFL_ActionNonce
+			'eeSecurity': eeSFL_Nonce
 		};
 	
 	}
@@ -262,7 +269,7 @@ function eeSFL_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 			if(eeSFL_FileAction == 'Edit') {
 				
 				// Update the Display
-				console.log('Updating the Display for File ID# ' + eeSFL_FileID);
+				console.log('Updating the Display...');
 				
 				var eeFileNameDisplay = eeSFL_FileNameOld;
 				var eeFileNameActual = eeSFL_FileNameOld;
@@ -322,7 +329,7 @@ function eeSFL_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 						eeFileNameDisplay = eeSFL_FileNiceNameNew;
 						jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' span.eeSFL_FileNiceName').text(eeSFL_FileNiceNameNew);
 					}
-				
+					
 				} else if(eeSFL_FileNiceNameOld.length >= 1) {
 					eeFileNameDisplay = eeSFL_FileNiceNameOld;
 				}
@@ -351,6 +358,8 @@ function eeSFL_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 						
 					}
 				}
+				
+				console.log('Response: ' + response);
 				
 				// Check for a formatted date in the response
 				if(response.indexOf('|') > 1) {

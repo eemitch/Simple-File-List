@@ -1,8 +1,7 @@
 /*
-// Simple File List Pro - Copyright 2022
+// Simple File List Pro - Copyright 2024
 // Author: Mitchell Bennis | support@simplefilelist.com | https://simplefilelist.com
-// License: EULA | https://simplefilelist.com/end-user-license-agreement/
-// All changes to, modifications to, or re-uses of this script are prohibited without prior consent.
+// Modifications to this code are not advised and may not be supported.
 */
 
 #eeSFL_UploadForm {
@@ -13,7 +12,6 @@
 	background-color: var(--ee-color-upload-form-background);
 	border: 2px solid var(--ee-color-table-border);
 	margin: 0;
-	margin-bottom: 1em;
 }
 
 #eeSFL_UploadForm h2,

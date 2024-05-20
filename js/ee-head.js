@@ -1,4 +1,6 @@
-/* Simple File List Javascript | Mitchell Bennis | Element Engage, LLC | mitch@elementengage.com */
+// Simple File List Pro - Copyright 2024
+// Author: Mitchell Bennis | support@simplefilelist.com | https://simplefilelist.com
+// Modifications to this code are not advised and may not be supported.
 
 var eeSFL_isTouchscreen = false;
 var eeSFL_ListID = 1;
@@ -9,7 +11,11 @@ var eeSFL_FileDateChanged = '';
 var eeSFL_OriginalFileNameOnly = ''; // Holder for original file name
 var eeSFL_OriginalFileExtension = ''; // Holder for original file extension
 var eeSFL_FileNameInput = '';
-var eeSFL_SubFolder = ''; 
+var eeSFL_SubFolder = '';
+var eeSFL_FileMimeType = '';
+var eeSFL_FolderNiceNames = '';
+var eeSFL_Name = '';
+var eeSFL_Email = '';
 
 // File Sanitizer RegEx - These must match the values sanitize_file_name() as closely as possible
 const eeSFL_RegEx_Remove = /[\?\[\]\/\\=<>:;,'"&\$#\*\(\)\|~`\!{}\%\+'’«»”“\x00]/g;
@@ -40,67 +46,71 @@ function eeSFL_SanitizeInputDynamically() {
 	// console.log('SFL - Running eeSFL_SanitizeInputDynamically()');
 
 	const eeInput = document.getElementById('eeSFL_FileNameNew');
-
-	eeInput.addEventListener('input', function() {
-		
-		// console.log('Editing: ' + eeInput.value);
-
-		const eeCursorPosition = eeInput.selectionStart;
-		const eeInputSaved = eeInput.value;
-		let eeNewFileNameOnly = eeSFL_GetFileNameWithoutExtension(eeInput.value);
-		let eeNewFileName = '';
-		let eeDotCount = (eeInput.value.match(/\./g) || []).length;
-		
-		// If the name is missing, reset to the original
-		if(eeNewFileNameOnly.length < 1) { 
-			this.value = eeSFL_OriginalFileNameOnly + '.' + eeSFL_OriginalFileExtension;
-			return;
-		} // Set in Open Edit Modal
-		
-		// Dot to Underscores
-		eeNewFileNameOnly = eeNewFileNameOnly.replace('.', '_');
-
-		// Regex
-		eeNewFileNameOnly = eeNewFileNameOnly.replace(eeSFL_RegEx_Remove, '');
-		eeNewFileNameOnly = eeNewFileNameOnly.replace(eeSFL_RegEx_Replace, '-');
-
-		if(eeSFL_OriginalFileExtension.length >= 1) { // It's a file - Set when edit modal is opened
+	
+	if(eeInput !== null) {
+	
+		eeInput.addEventListener('input', function() {
 			
-			console.log('--> Editing File: ' + eeSFL_OriginalFileNameOnly + '.' + eeSFL_OriginalFileExtension);
+			// console.log('Editing: ' + eeInput.value);
+	
+			const eeCursorPosition = eeInput.selectionStart;
+			const eeInputSaved = eeInput.value;
+			let eeNewFileNameOnly = eeSFL_GetFileNameWithoutExtension(eeInput.value);
+			let eeNewFileName = '';
+			let eeDotCount = (eeInput.value.match(/\./g) || []).length;
 			
-			if(eeDotCount === 0) { 
-				console.log('Removing the extension is not allowed.');
+			// If the name is missing, reset to the original
+			if(eeNewFileNameOnly.length < 1) { 
 				this.value = eeSFL_OriginalFileNameOnly + '.' + eeSFL_OriginalFileExtension;
+				return;
+			} // Set in Open Edit Modal
 			
-			
-			} else if(eeNewFileNameOnly.length < 1) {
-			
-				console.log('Removing the name is not allowed.');
-				this.value = eeSFL_OriginalFileNameOnly + '.' + eeSFL_OriginalFileExtension;
-			
-			
-			} else {
-				this.value = eeNewFileNameOnly + '.' + eeSFL_OriginalFileExtension;
-				console.log('New File Name = ' + eeNewFileNameOnly + '.' + eeSFL_OriginalFileExtension);
+			// Dot to Underscores
+			eeNewFileNameOnly = eeNewFileNameOnly.replace('.', '_');
+	
+			// Regex
+			eeNewFileNameOnly = eeNewFileNameOnly.replace(eeSFL_RegEx_Remove, '');
+			eeNewFileNameOnly = eeNewFileNameOnly.replace(eeSFL_RegEx_Replace, '-');
+	
+			if(eeSFL_OriginalFileExtension.length >= 1) { // It's a file - Set when edit modal is opened
+				
+				console.log('--> Editing File: ' + eeSFL_OriginalFileNameOnly + '.' + eeSFL_OriginalFileExtension);
+				
+				if(eeDotCount === 0) { 
+					console.log('Removing the extension is not allowed.');
+					this.value = eeSFL_OriginalFileNameOnly + '.' + eeSFL_OriginalFileExtension;
+				
+				
+				} else if(eeNewFileNameOnly.length < 1) {
+				
+					console.log('Removing the name is not allowed.');
+					this.value = eeSFL_OriginalFileNameOnly + '.' + eeSFL_OriginalFileExtension;
+				
+				
+				} else {
+					this.value = eeNewFileNameOnly + '.' + eeSFL_OriginalFileExtension;
+					console.log('New File Name = ' + eeNewFileNameOnly + '.' + eeSFL_OriginalFileExtension);
+				}
+				
+				
+	
+			} else { // It's a folder, so no extension
+				
+				console.log('Editing Folder: ' + eeSFL_OriginalFileNameOnly);
+				if(eeDotCount >= 1) {
+					this.value = eeSFL_OriginalFileNameOnly;
+				} else {
+					this.value = eeNewFileNameOnly;
+					console.log('New Folder Name: ' + eeNewFileNameOnly);
+				}
 			}
-			
-			
-
-		} else { // It's a folder, so no extension
-			
-			console.log('Editing Folder: ' + eeSFL_OriginalFileNameOnly);
-			if(eeDotCount >= 1) {
-				this.value = eeSFL_OriginalFileNameOnly;
-			} else {
-				this.value = eeNewFileNameOnly;
-				console.log('New Folder Name: ' + eeNewFileNameOnly);
-			}
-		}
-
-		// Restore the cursor position
-		eeInput.setSelectionRange(eeCursorPosition, eeCursorPosition);
-
-	});
+	
+			// Restore the cursor position
+			eeInput.setSelectionRange(eeCursorPosition, eeCursorPosition);
+	
+		});
+		
+	}
 }
 
 

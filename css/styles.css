@@ -1,8 +1,7 @@
 /*
-// Simple File List Pro - Copyright 2022
+// Simple File List - Copyright 2024
 // Author: Mitchell Bennis | support@simplefilelist.com | https://simplefilelist.com
-// License: EULA | https://simplefilelist.com/end-user-license-agreement/
-// All changes to, modifications to, or re-uses of this script are prohibited without prior consent.
+// Modifications to this code are not advised and may not be supported.
 */
 
 
@@ -10,42 +9,6 @@
 .eeSFL {
 	box-sizing: border-box;
 }
-
-
-/* BREADCRUMB TRAIL */
-.eeSFL_BreadCrumb {
-	width: 100%;
-	padding: .25em;
-	margin-bottom: .5em;
-}
-.eeSFL_BreadCrumb span.eeSFL_Crumb {
-	display: block;
-	float: left;
-	margin-right: .5em;
-	margin-bottom: .5em;
-}
-
-.eeSFL_BreadCrumb .eeSFL_Crumb a {
-	display: block;
-	padding: .5em .75em;
-	background-color: var(--ee-color-action-link-background);
-	border: 1px solid var(--ee-color-table-border);
-	border-radius: 3px;
-	text-decoration: none;
-	color: var(--ee-color-action-link-text);
-}
-.eeSFL_BreadCrumb .eeSFL_Crumb a:hover {
-	text-decoration: none;
-	background-color: var(--ee-color-action-link-background-hover);	
-	color: var(--ee-color-action-link-text-hover);
-}
-.eeSFL_BreadCrumb .eeSFL_Crumb:last-child {
-	background-color: var(--ee-color-action-link-background);
-	border: 1px solid var(--ee-color-action-link-background);
-	padding: .5em .75em;
-}
-
-
 
 /* FILE OPS BAR  */
 .eeSFL_ListOpsBar,
@@ -94,21 +57,28 @@
 }
 
 
+/* AUDIO */
+.eeSFL_AudioPlayerWrap {
+	width: 98%;
+	margin: .5em 0;
+}
+.eeSFL_AudioPlayer {
+	height: auto;
+	width: 100%;
+}
+
+/* VIDEO */
+#eeSFL_Video {
+	text-align: center;
+}
+#eeSFL_Video video {
+	display: inline-block;
+	margin-left: 0 auto;
+	max-width: 80%;
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* MODALS */
 .eeSFL_Modal {
 	display: none;
 }
@@ -123,8 +93,8 @@
 .eeSFL_Modal .eeSFL_ModalBody {
 	position: fixed;
 	z-index: 100;
-	top: 10em;
-	bottom: 10em;
+	top: 5em;
+	bottom: 5em;
 	right: 20%;
 	left: 20%;
 	padding: 2em 3em;
@@ -150,7 +120,6 @@
 	font-size: 120%;
 }
 
-
 .eeSFL_Modal .eeSFL_ModalBody label.eeCheckboxLabel  {
 	display: inline-block;
 	width: auto;
@@ -159,8 +128,6 @@
 .eeSFL_Modal .eeSFL_ModalBody input[type=checkbox] {
 	display: inline-block;
 }
-
-
 
 .eeSFL_Modal .eeSFL_ModalBody input[type=text],
 .eeSFL_Modal .eeSFL_ModalBody input[type=email],
@@ -219,6 +186,8 @@
 
 
 
+
+/* USER MESSAGING */
 .eeSFL_ResultsNotification {
 	margin: .25em 0;
 	padding: 3px 6px;
@@ -245,6 +214,9 @@
 }
 
 
+
+
+/* STRUCTURE */
 
 .eeFlex {
 	width: 100%;
@@ -307,7 +279,6 @@
 .eeSFL_FileRenameEntry, 
 .eeOldFileName,
 .eeSFL_SavedDesc { display: none !important; }
-
 
 .wp-core-ui .button, .wp-core-ui .button-secondary {
 	vertical-align: middle;

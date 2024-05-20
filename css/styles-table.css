@@ -1,94 +1,94 @@
 /*
-// Simple File List Pro - Copyright 2022
+// Simple File List Pro - Copyright 2024
 // Author: Mitchell Bennis | support@simplefilelist.com | https://simplefilelist.com
-// License: EULA | https://simplefilelist.com/end-user-license-agreement/
-// All changes to, modifications to, or re-uses of this script are prohibited without prior consent.
+// Modifications to this code are not advised and may not be supported.
 */
 
 /* DEFAULT TABLE STYLES */
 
-.eeSFL table.eeFiles {
+table.eeFiles {
 	width: 100%;
 	margin: 0 auto 1em;
 	border-collapse: collapse;
 	background-color: var(--ee-color-table-background);
 	border: 1px solid var(--ee-color-table-border);
 }
-.eeSFL table.eeFiles tr {
+table.eeFiles tr {
 	background-color: var(--ee-color-table-row-background);
 }
-.eeSFL table.eeFiles tr:hover {
+table.eeFiles tr:hover {
 	background-color: var(--ee-color-table-row-background-hover);
 }
-.eeSFL table.eeFiles th {
+table.eeFiles th {
 	padding: .25em;
 	text-align: center;
 	background-color: var(--ee-color-table-header-background);
 	color: var(--ee-color-table-header-text);
 }
-.eeSFL table.eeFiles td {
+table.eeFiles td {
 	padding: .25em 0;
 	background-color: var(--ee-color-table-background);
 	border-bottom: 1px solid var(--ee-color-table-border);
 	text-align: center;
+	overflow: hidden;
 	vertical-align: middle;
 	width: auto;
 }
-.eeSFL table.eeFiles th,
-.eeSFL table.eeFiles td {
+table.eeFiles th,
+table.eeFiles td {
 	word-break: break-word;
 	width: auto;
 }
-.eeSFL table.eeFiles td.eeSFL_Thumbnail {
+table.eeFiles td.eeSFL_Thumbnail {
 	width: 80px;
 }
-.eeSFL table.eeFiles td.eeSFL_Thumbnail a {
+table.eeFiles td.eeSFL_Thumbnail a {
 	display: inline-block;
 	width: 100%;
 }
-.eeSFL table.eeFiles td.eeSFL_Thumbnail img {
+table.eeFiles td.eeSFL_Thumbnail img {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
 }
-.eeSFL table.eeFiles td.eeSFL_FileName {
+table.eeFiles td.eeSFL_FileNameCell {
 	text-align: left;
 	padding-left: 3px;
 }
-.eeSFL table.eeFiles p.eeSFL_FileLink,
-.eeSFL table.eeFiles p.eeSFL_FileDesc,
-.eeSFL table.eeFiles p.eeSFL_FileSubmitter {
+table.eeFiles p.eeSFL_FileLink,
+table.eeFiles p.eeSFL_FileDesc,
+table.eeFiles p.eeSFL_FileSubmitter {
 	margin: 0;
 	padding: 0;
 }
-.eeSFL table.eeFiles p.eeSFL_FileDesc,
-.eeSFL table.eeFiles p.eeSFL_FileSubmitter {
+table.eeFiles p.eeSFL_FileDesc,
+table.eeFiles p.eeSFL_FileSubmitter {
 	font-size: 80%;
 }
-.eeSFL table.eeFiles th.eeSFL_FileName,
-.eeSFL table.eeFiles td.eeSFL_FileName {
+table.eeFiles th.eeSFL_FileName,
+table.eeFiles td.eeSFL_FileNameCell {
 	text-align: left;
 	padding-left: 10px;
 }
-.eeSFL table.eeFiles td a {
+table.eeFiles td a {
 	text-decoration: none;
 }
-.eeSFL table.eeFiles td.eeSFL_FileSize,
-.eeSFL table.eeFiles td.eeSFL_FileDate {
+table.eeFiles td.eeSFL_FileSize,
+table.eeFiles td.eeSFL_FileDate {
 	font-size: 80%;
 	padding-left: 1em;
 	padding-right: 1em;
 }
-.eeSFL table.eeFiles .eeSFL_FileSize {
+table.eeFiles .eeSFL_FileSize {
 	white-space: nowrap;
 }
 
-.eeSFL table.eeFiles .eeSFL_ListFileActions {
+table.eeFiles .eeSFL_ListFileActions {
 	display: block;
 	padding-top: .5em;
 }
 
-.eeSFL table.eeFiles .eeSFL_ListFileActions a {
+table.eeFiles .eeSFL_ListFileActions a {
 	display: inline-block;
 	color: var(--ee-color-action-link-text);
 	background-color: var(--ee-color-action-link-background);
@@ -97,7 +97,7 @@
 	border-radius: 3px;
 	font-size: 80%;
 }
-.eeSFL table.eeFiles .eeSFL_ListFileActions a:hover {
+table.eeFiles .eeSFL_ListFileActions a:hover {
 	color: var(--ee-color-action-link-text-hover);
 	background-color: var(--ee-color-action-link-background-hover);
 }
@@ -147,7 +147,7 @@
 	.eeSFL table.eeFiles th,
 	.eeSFL table.eeFiles td,
 	.eeSFL table.eeFiles td.eeSFL_Thumbnail,
-	.eeSFL table.eeFiles td.eeSFL_FileName {
+	.eeSFL table.eeFiles td.eeSFL_FileNameCell {
 		display: block;
 		width: 100%;
 		margin: 0;
