@@ -131,11 +131,13 @@ function eeSFL_BackEnd() {
     <span class="nav-tab-wrapper-right">';
 	
 	// Extensions
-    $eeOutput .= '
-	<a href="?page=' . eeSFL_PluginSlug . '&tab=settings&subtab=extension_settings&eeListID=' . $eeSFL->eeListID . '" class="nav-tab tabSupport ';   
-	if($eeActiveTab == 'extensions') {$eeOutput .= '  eeActiveTab '; }  
-	$eeActiveTab == 'extensions' ? 'nav-tab-active' : ''; 
-	$eeOutput .= $eeActiveTab . '">' . __('Pro Extensions', 'ee-simple-file-list') . '</a>';
+	// if(defined('eeSFL_Pro')) {
+    // 	$eeOutput .= '
+	// 	<a href="?page=' . eeSFL_PluginSlug . '&tab=settings&subtab=extension_settings&eeListID=' . $eeSFL->eeListID . '" class="nav-tab tabSupport ';   
+	// 	if($eeActiveTab == 'extensions') {$eeOutput .= '  eeActiveTab '; }  
+	// 	$eeActiveTab == 'extensions' ? 'nav-tab-active' : ''; 
+	// 	$eeOutput .= $eeActiveTab . '">' . __('Pro Extensions', 'ee-simple-file-list') . '</a>';
+	// }
 	
 	// Me
 	$eeOutput .= '
@@ -279,7 +281,7 @@ function eeSFL_BackEnd() {
 				$eeOutput .= '<a href="?page=' . eeSFL_PluginSlug . '&tab=settings&subtab=list_access&eeListID=' . $eeSFL->eeListID . '" class="nav-tab ';  
 				if($eeActiveSubTab == 'list_access') {$eeOutput .= '  eeActiveTab ';}    
 			    $eeActiveSubTab == 'list_access' ? 'nav-tab-active' : '';    
-			    $eeOutput .= $eeActiveSubTab . '">' . __('List Access Settings', 'ee-simple-file-list') . '</a>';
+			    $eeOutput .= $eeActiveSubTab . '">' . __('List Access', 'ee-simple-file-list') . '</a>';
 			} else {
 				$eeSFLA = FALSE;
 			}
@@ -289,25 +291,27 @@ function eeSFL_BackEnd() {
 		$eeOutput .= '<a href="?page=' . eeSFL_PluginSlug . '&tab=settings&subtab=list_settings&eeListID=' . $eeSFL->eeListID . '" class="nav-tab ';  
 		if($eeActiveSubTab == 'list_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $eeActiveSubTab == 'list_settings' ? 'nav-tab-active' : '';    
-	    $eeOutput .= $eeActiveSubTab . '">' . __('File List Settings', 'ee-simple-file-list') . '</a>';
+	    $eeOutput .= $eeActiveSubTab . '">' . __('File List', 'ee-simple-file-list') . '</a>';
 	    
 	    // Upload Settings
 		$eeOutput .= '<a href="?page=' . eeSFL_PluginSlug . '&tab=settings&subtab=uploader_settings&eeListID=' . $eeSFL->eeListID . '" class="nav-tab ';  
 		if($eeActiveSubTab == 'uploader_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $eeActiveSubTab == 'uploader_settings' ? 'nav-tab-active' : '';    
-	    $eeOutput .= $eeActiveSubTab . '">' . __('File Upload Settings', 'ee-simple-file-list') . '</a>';
+	    $eeOutput .= $eeActiveSubTab . '">' . __('File Upload', 'ee-simple-file-list') . '</a>';
 	    
 	    // Notification Settings
 		$eeOutput .= '<a href="?page=' . eeSFL_PluginSlug . '&tab=settings&subtab=email_settings&eeListID=' . $eeSFL->eeListID . '" class="nav-tab ';  
 		if($eeActiveSubTab == 'email_settings') {$eeOutput .= '  eeActiveTab ';}    
 	    $eeActiveSubTab == 'email_settings' ? 'nav-tab-active' : '';    
-	    $eeOutput .= $eeActiveSubTab . '">' . __('Notification Settings', 'ee-simple-file-list') . '</a>';
+	    $eeOutput .= $eeActiveSubTab . '">' . __('Notification', 'ee-simple-file-list') . '</a>';
 	    
 	    // Extension Settings
-		$eeOutput .= '<a href="?page=' . eeSFL_PluginSlug . '&tab=settings&subtab=extension_settings&eeListID=' . $eeSFL->eeListID . '" class="nav-tab ';  
-		if($eeActiveSubTab == 'extension_settings') {$eeOutput .= '  eeActiveTab ';}    
-		$eeActiveSubTab == 'extension_settings' ? 'nav-tab-active' : '';    
-		$eeOutput .= $eeActiveSubTab . '">' . __('Extension Settings', 'ee-simple-file-list') . '</a>';
+		if(defined('eeSFL_Pro')) {	
+			$eeOutput .= '<a href="?page=' . eeSFL_PluginSlug . '&tab=settings&subtab=extension_settings&eeListID=' . $eeSFL->eeListID . '" class="nav-tab ';  
+			if($eeActiveSubTab == 'extension_settings') {$eeOutput .= '  eeActiveTab ';}    
+			$eeActiveSubTab == 'extension_settings' ? 'nav-tab-active' : '';    
+			$eeOutput .= $eeActiveSubTab . '">' . __('Extensions', 'ee-simple-file-list') . '</a>';
+		}
 		
 	    // Tools
 		$eeOutput .= '<a href="?page=' . eeSFL_PluginSlug . '&tab=settings&subtab=tools&eeListID=' . $eeSFL->eeListID . '" class="nav-tab ';  

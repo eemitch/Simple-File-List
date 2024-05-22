@@ -26,10 +26,9 @@ if( isset($_POST['eeSFL_Upload']) ) {
 if( $eeShowOps AND !$eeShowingResults ) {
 	
 	// Bulk Edit / Folder Creation Input Display
-	$eeOutput .= '<div class="eeSFL_ListOpsBar">
-	
+	$eeOutput .= '
+	<div class="eeSFL_ListOpsBar">
 	<form action="' . $eeSFL->eeURL . '" method="POST">
-	
 	<input type="hidden" name="ee" value="1" />
 	<input type="hidden" name="eeListID" value="' . $eeSFL->eeListID . '" />
 	<input type="hidden" id="eeSFL_FileOpsFiles" name="eeSFL_FileOpsFiles" value="" />';
@@ -37,7 +36,6 @@ if( $eeShowOps AND !$eeShowingResults ) {
 	$eeOutput .= wp_nonce_field('eeSFL_Nonce', eeSFL_Nonce, TRUE, FALSE);
 		
 	$eeOutput .= '
-	
 	<select id="eeSFL_FileOpsAction" name="eeSFL_FileOpsAction">';
 	
 	if( defined('eeSFL_Pro') ) { $eeOutput .= $eeSFL_Pro->eeSFL_CreateFolderInputDisplay(); }
@@ -50,8 +48,9 @@ if( $eeShowOps AND !$eeShowingResults ) {
 		// if(is_admin() AND $eeSFLA) { $eeOutput .= '<option value="Grant">' . __('Grant Access to Items', 'ee-simple-file-list') . '</option>'; }
 		
 	$eeOutput .= '
+	</select>
 	
-	</select>';
+	<input type="text" id="eeSFL_FileOpsActionInput" name="eeSFL_Input" value="" placeholder="" required="required" />';
 	
 	if( defined('eeSFL_Pro') ) { $eeOutput .= $eeSFL_Pro->eeSFL_MoveToInputDisplay(); }
 	

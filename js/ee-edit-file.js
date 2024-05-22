@@ -10,15 +10,13 @@ jQuery(document).ready(function() {
 	
 	// The File Operations Bar -----------------
 	
-	jQuery('#eeSFL_FileOpsAction').val('Download'); // Make sure this gets reset if the page is reloaded.
+	jQuery('#eeSFL_FileOpsAction').val('Description'); // Make sure this gets reset if the page is reloaded.
 	jQuery('.eeSFL_BulkDownloadBar').hide();
-	
-	// Get translated text items
-	// var eeSFL_NewFolderNamePlaceholder = jQuery('#eeSFL_NewFolderNamePlaceholder').text();
-	jQuery('#eeSFL_FileOpsActionInput').attr('placeholder', eeSFL_NewFolderNamePlaceholder); // Place this right away
 	var eeSFL_ZipFileName = jQuery('#eeSFL_ZipFileName').text();
 	var eeSFL_DeleteText = jQuery('#eeSFL_DeleteText').text();
 	var eeSFL_DescriptionPlaceholder = jQuery('#eeSFL_DescriptionPlaceholder').html();
+	jQuery('#eeSFL_FileOpsActionInput').attr('name', 'eeSFL_Description');
+	jQuery('#eeSFL_FileOpsActionInput').attr('value', eeSFL_DescriptionPlaceholder);
 	
 	// Required Inputs per Action
 	jQuery('#eeSFL_FileOpsAction').on('change', function() {
