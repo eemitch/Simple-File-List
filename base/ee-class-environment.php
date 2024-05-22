@@ -54,7 +54,7 @@ class eeSFL_Environment {
 		$eeArray = array();
 		
 		// Detect the Operating System
-		$this->eeSFL->eeLog['notice'][] = $this->eeSFL->eeSFL_NOW() . PHP_OS;
+		$this->eeSFL->eeLog['notice'][] = $this->eeSFL->eeSFL_NOW() . 'PHP_OS: ' . PHP_OS;
 		$eeOS = strtoupper(PHP_OS);
 		
 		// Using explicit comparison to avoid false positives
@@ -71,7 +71,6 @@ class eeSFL_Environment {
 			$eeArray['eeOS'] = 'BSD';
 			$this->eeSFL->eeLog['notice'][] = $this->eeSFL->eeSFL_NOW() . ' BSD Detected';
 		}
-
 
 		
 		// Detect Web Server
@@ -164,13 +163,13 @@ class eeSFL_Environment {
 		$eeResponse = wp_remote_get($eeTestUrl);
 		if (is_wp_error($eeResponse)) {
 			$eeErrorMessage = $eeResponse->get_error_message();
-			$this->eeSFL->eeLog['notice'][] = $this->eeSFL->eeSFL_NOW() . '! The SFL Plugin Directory Has a Problem...';
-			$this->eeSFL->eeLog['notice'][] = $this->eeSFL->eeSFL_NOW() . $eeErrorMessage;
+			$this->eeSFL->eeLog['issues'][] = $this->eeSFL->eeSFL_NOW() . '! The SFL Plugin Directory Has a Problem...';
+			$this->eeSFL->eeLog['issues'][] = $this->eeSFL->eeSFL_NOW() . $eeErrorMessage;
 		} else {
 			$eeResponseCode = wp_remote_retrieve_response_code($eeResponse);
 			if ($eeResponseCode != 200) {
-				$this->eeSFL->eeLog['notice'][] = $this->eeSFL->eeSFL_NOW() . '! The SFL Plugin Directory is Not Reachable by URL';
-				$this->eeSFL->eeLog['notice'][] = $this->eeSFL->eeSFL_NOW() . '! Response Code: ' . $eeResponseCode;
+				$this->eeSFL->eeLog['issues'][] = $this->eeSFL->eeSFL_NOW() . '! The SFL Plugin Directory is Not Reachable by URL';
+				$this->eeSFL->eeLog['issues'][] = $this->eeSFL->eeSFL_NOW() . '! Response Code: ' . $eeResponseCode;
 			}
 		}
 
@@ -178,7 +177,7 @@ class eeSFL_Environment {
 		// Check File List Dir Permissions
 		$eePermissions = substr(sprintf('%o', fileperms(ABSPATH . $this->eeSFL->eeListSettings['FileListDir'])), -4);
 		if ($eePermissions !== '0755' && $eePermissions !== '0775') {
-			$this->eeSFL->eeLog['notice'][] = $this->eeSFL->eeSFL_NOW() . ' ! Uncommon permissions in the File List Directory: ' . $eePermissions;
+			$this->eeSFL->eeLog['issues'][] = $this->eeSFL->eeSFL_NOW() . ' ! Uncommon permissions in the File List Directory: ' . $eePermissions;
 		}
 
 		
@@ -239,6 +238,10 @@ class eeSFL_Environment {
 	
 	public function eeSFL_ScanAndSanitize($eeScanDir = FALSE) { // Relative to ABSPATH
 		
+		// If $eeScanDir is given, those files found will be returned
+		// If $eeScanDir is FALSE, $eeSFL->eeFileScanArray will be filled.
+		
+		
 		$this->eeSFL->eeLog['notice'][] = $this->eeSFL->eeSFL_NOW() . 'Scanning the Disk...';
 	
 		if(!$eeScanDir) { $eeScanDir = $this->eeSFL->eeListSettings['FileListDir']; } // wp-content/uploads/simple-file-list/
@@ -246,6 +249,7 @@ class eeSFL_Environment {
 		if(is_dir(ABSPATH . $eeScanDir) === FALSE) { return FALSE; } // Bail if empty
 		
 		// Do the Scan Man
+		$eeFilesFound = array();
 		$eeIterator = new RecursiveDirectoryIterator(ABSPATH . $eeScanDir, RecursiveDirectoryIterator::SKIP_DOTS);
 		$eeArray = new RecursiveIteratorIterator($eeIterator, RecursiveIteratorIterator::SELF_FIRST);
 			
@@ -292,7 +296,7 @@ class eeSFL_Environment {
 				
 				// Prevent over-writing another item that has just been sanitized
 				// Rename using a sequential numbering system
-				if( in_array($eeThisItemPath . $eeNewItemName, $this->eeSFL->eeFileScanArray) ) {
+				if( in_array($eeThisItemPath . $eeNewItemName, $eeFilesFound) ) {
 					
 					$eePathParts = pathinfo($eeNewItemName);
 					$eeNameOnly = $eePathParts['filename'];
@@ -307,7 +311,7 @@ class eeSFL_Environment {
 						}
 						
 						// Maybe this name is already there too?
-						if(!in_array($eeThisItemPath . $eeNewItemName, $this->eeSFL->eeFileScanArray)) { break; } // If not, we're done.
+						if(!in_array($eeThisItemPath . $eeNewItemName, $eeFilesFound)) { break; } // If not, we're done.
 						
 					}
 					
@@ -325,7 +329,7 @@ class eeSFL_Environment {
 				
 			// Add to the Array
 			if($eeIsDir) { $eeThisItemName .= '/' ; } // Save folders with a trailing slash
-			$this->eeSFL->eeFileScanArray[] = $eeThisItemPath . $eeThisItemName;
+			$eeFilesFound[] = $eeThisItemPath . $eeThisItemName;
 			
 				
 			// Ensure there is a blank index.html file to prevent directory browsing
@@ -339,6 +343,13 @@ class eeSFL_Environment {
 					$this->eeSFL->eeLog['notice'][] = $this->eeSFL->eeSFL_NOW() . 'Unable to create blank index file in ' . $eeScanDir;
 				}
 			}
+		}
+		
+		if($eeScanDir == $this->eeSFL->eeListSettings['FileListDir']) { // Scanning All
+			$this->eeSFL->eeFileScanArray = $eeFilesFound; // Fill $eeSFL->eeFileScanArray
+			return TRUE;
+		} else { // Scanning a Specific Dir
+			return $eeFilesFound; // Just return the files found
 		}	
 	}
 	

@@ -5,6 +5,158 @@
 // console.log('ee-edit-file.js v7 Loaded');
 
 
+// Upon page load completion...
+jQuery(document).ready(function() {
+	
+	// The File Operations Bar -----------------
+	
+	jQuery('#eeSFL_FileOpsAction').val('Download'); // Make sure this gets reset if the page is reloaded.
+	jQuery('.eeSFL_BulkDownloadBar').hide();
+	
+	// Get translated text items
+	// var eeSFL_NewFolderNamePlaceholder = jQuery('#eeSFL_NewFolderNamePlaceholder').text();
+	jQuery('#eeSFL_FileOpsActionInput').attr('placeholder', eeSFL_NewFolderNamePlaceholder); // Place this right away
+	var eeSFL_ZipFileName = jQuery('#eeSFL_ZipFileName').text();
+	var eeSFL_DeleteText = jQuery('#eeSFL_DeleteText').text();
+	var eeSFL_DescriptionPlaceholder = jQuery('#eeSFL_DescriptionPlaceholder').html();
+	
+	// Required Inputs per Action
+	jQuery('#eeSFL_FileOpsAction').on('change', function() {
+		
+		if(jQuery(this).val() == 'Delete') {
+			
+			console.log('Deleting Files');
+			
+			jQuery('#eeSFL_MoveToFolder').hide();
+			jQuery('#eeSFL_FileOpsActionInput').show();
+			jQuery('#eeSFL_FileOpsActionInput').attr('name', 'eeSFL_DeletingFiles');
+			jQuery('#eeSFL_FileOpsActionInput').attr('value', '');
+			jQuery('#eeSFL_FileOpsActionInput').attr('placeholder', eeSFL_DeleteText);
+			jQuery('#eeSFL_FileOpsActionInput').attr('disabled', 'disabled');
+			jQuery('#eeSFL_FileOpsActionInput').removeAttr('required');
+		
+		} else if(jQuery(this).val() == 'Description') {
+			
+			console.log('Adding Description');
+			
+			jQuery('#eeSFL_MoveToFolder').hide();
+			jQuery('#eeSFL_FileOpsActionInput').show();
+			jQuery('#eeSFL_FileOpsActionInput').attr('name', 'eeSFL_Description');
+			jQuery('#eeSFL_FileOpsActionInput').attr('value', '');
+			jQuery('#eeSFL_FileOpsActionInput').attr('placeholder', eeSFL_DescriptionPlaceholder);
+			jQuery('#eeSFL_FileOpsActionInput').attr('required', 'required');
+			jQuery('#eeSFL_FileOpsActionInput').removeAttr('disabled');
+		
+		} else if(jQuery(this).val() == 'Download') {
+			
+			console.log('Downloading Files');
+			
+			jQuery('#eeSFL_MoveToFolder').hide();
+			jQuery('#eeSFL_FileOpsActionInput').show();
+			jQuery('#eeSFL_FileOpsActionInput').attr('name', 'eeSFL_ZipFileName');
+			jQuery('#eeSFL_FileOpsActionInput').attr('value', eeSFL_ZipFileName + '.zip');
+			jQuery('#eeSFL_FileOpsActionInput').attr('required', 'required');
+			jQuery('#eeSFL_FileOpsActionInput').removeAttr('disabled');
+		
+		} else if(jQuery(this).val() == 'Move') {
+			
+			console.log('Moving Files');
+			
+			jQuery('#eeSFL_FileOpsActionInput').removeAttr('required');
+			jQuery('#eeSFL_FileOpsActionInput').hide();
+			jQuery('#eeSFL_MoveToFolder').show();
+		
+		} else {
+		
+			jQuery('#eeSFL_MoveToFolder').hide();
+			jQuery('#eeSFL_FileOpsActionInput').show();
+			jQuery('#eeSFL_FileOpsActionInput').attr('name', 'eeSFL_NewFolderName');
+			jQuery('#eeSFL_FileOpsActionInput').attr('value', '');
+			jQuery('#eeSFL_FileOpsActionInput').attr('placeholder', eeSFL_NewFolderNamePlaceholder);
+			jQuery('#eeSFL_FileOpsActionInput').attr('required', 'required');
+			jQuery('#eeSFL_FileOpsActionInput').removeAttr('disabled');
+		}
+		
+	});
+	
+	
+	
+	// Bulk Editing Checkboxes -------------------------------------
+	
+	// Check / Uncheck All
+	jQuery('#eeSFL_BulkEditAll').on('click', function() {
+			
+		if( ! jQuery('.eeSFL_BulkDownloadBar').is(":visible") ) {
+			jQuery('.eeSFL_BulkDownloadBar').slideDown();
+		}
+		
+		var eeSFL_FileOpsFiles = '';
+		
+		if(jQuery('#eeSFL_BulkEditAll').is(':checked')) {
+			
+			// console.log('Checking all ...');
+			jQuery('.eeSFL_BulkEditCheck').prop('checked', jQuery(this).prop('checked'));
+			
+			
+			// Loop through all checkboxes
+			jQuery('.eeSFL_BulkEditCheck').each(function () {
+				
+				eeSFL_FileOpsFiles += ',' + jQuery(this).val();
+			});
+			
+		} else {
+			
+			// console.log('Unchecking all ...');
+			jQuery('.eeSFL_BulkEditCheck').removeAttr('checked');
+			
+			
+			
+			jQuery('.eeSFL_BulkDownloadBar').slideUp();
+		}
+		
+		jQuery('#eeSFL_FileOpsFiles').val(eeSFL_FileOpsFiles); // Fill the hidden input
+	});
+
+	
+	
+	// Add Files to Bulk Edit List
+	jQuery('.eeSFL_BulkEditCheck').on('click', function() {
+		
+		var eeSFL_BulkFileID = jQuery(this).val(); // This checkbox
+		var eeSFL_FileOpsFiles = jQuery('#eeSFL_FileOpsFiles').val(); // The files we're working with
+		
+		if(eeSFL_BulkFileID) {
+			
+			if(jQuery('#eeSFL_BulkEdit_' + eeSFL_BulkFileID).is(':checked') ) {
+				
+				console.log('Bulk Edit File ID ADD: ' + eeSFL_BulkFileID);
+				
+				if( ! jQuery('.eeSFL_BulkDownloadBar').is(":visible") ) {
+					jQuery('.eeSFL_BulkDownloadBar').slideDown();
+				}
+				
+				eeSFL_FileOpsFiles = eeSFL_FileOpsFiles + ',' + eeSFL_BulkFileID;
+	
+			} else {
+				
+				console.log('Bulk Edit File ID REMOVE: ' + eeSFL_BulkFileID);
+				
+				eeSFL_FileOpsFiles = eeSFL_FileOpsFiles.replace(',' + eeSFL_BulkFileID, ''); // Remove this ID
+				
+				if( ! jQuery('.eeSFL_BulkEditCheck').is(':checked') ) {
+					jQuery('.eeSFL_BulkDownloadBar').slideUp();
+				}
+			}
+		}
+		
+		jQuery('#eeSFL_FileOpsFiles').val(eeSFL_FileOpsFiles);
+		console.log('#eeSFL_FileOpsFiles = ' + eeSFL_FileOpsFiles);
+		
+	});
+	
+}); // END Ready Function
+
+
 
 // Delete Click Handler
 function eeSFL_DeleteFile(eeSFL_FileID) {
@@ -22,11 +174,12 @@ function eeSFL_DeleteFile(eeSFL_FileID) {
     
     console.log(eeSFL_FileName);
 	
-	if( confirm( eesfl_vars['eeConfirmDeleteText'] + "\r\n\r\n" + eeSFL_FileName ) ) {
-	
-		eeSFL_EditFileAction(eeSFL_FileID, 'Delete');
-	
-	}
+	eeSFL_ConfirmModal(eesfl_vars['eeConfirmDeleteText'], function(confirm) {
+		if (confirm) {
+			console.log('Deleting the file...');
+			eeSFL_EditFileAction(eeSFL_FileID, 'Delete');
+		}
+	});
 }
 
 
@@ -114,7 +267,7 @@ function eeSFL_OpenEditModal(eeSFL_FileID) {
 
 
 // Modal Form Has Been Saved
-function eeSFL_FileEditSaved() {
+function eeSFL_FileEditSaved(eeSFL_FileID) {
 	
 	var eeChanged = false;
 	
@@ -390,7 +543,7 @@ function eeSFL_EditFileAction(eeSFL_FileID, eeSFL_FileAction) {
 		
 		} else { // NOT SUCCESS :-(
 			
-			alert(response);
+			eeSFL_AlertModal('<h1>' + eesfl_vars['eeEditProblem'] + '</h1><p>' + response + '</p>');
 		}
 		
 		console.log(response);

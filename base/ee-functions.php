@@ -718,9 +718,9 @@ function eeSFL_VersionCheck() {
 			if(!$eeTasks) { $eeTasks = get_option('eeSFL_Tasks'); }
 		}
 			
-		for($ee = 1; $ee <= 999; $ee++) {
+		for($eeID = 1; $eeID <= 999; $eeID++) {
 			
-			$eeSFL->eeListSettings = get_option('eeSFL_Settings_' . $ee);
+			$eeSFL->eeListSettings = get_option('eeSFL_Settings_' . $eeID);
 			
 			if($eeSFL->eeListSettings) {
 				

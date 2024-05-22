@@ -93,14 +93,24 @@
 .eeSFL_Modal .eeSFL_ModalBody {
 	position: fixed;
 	z-index: 100;
-	top: 5em;
-	bottom: 5em;
+	top: 8em;
+	bottom: 8em;
 	right: 20%;
 	left: 20%;
 	padding: 2em 3em;
-	background-color: rgba(255, 255, 255, 1);
+	background-color: rgba(255, 255, 255, .925);
 	border: 1px solid #999;
 	overflow: auto;
+}
+.eeSFL_Modal .eeSFL_AlertModalBody {
+	top: 20em;
+	bottom: 20em;
+	right: 20%;
+	left: 20%;
+	text-align: center;
+}
+.eeSFL_Modal .eeSFL_ModalBody .eSFL_ConfirmInputs {
+	padding: 2em 0;
 }
 .eeSFL_Modal .eeSFL_ModalBody h1,
 .eeSFL_Modal .eeSFL_ModalBody p {
@@ -167,6 +177,10 @@
 	clear: both;
 	font-size: 150%;
 }
+.eeSFL_Modal .eeSFL_ModalBody .eSFL_ConfirmInputs button {
+	float: none;
+	margin: 0 .25em;
+}
 .eeSFL_Modal p.eeSFL_ModalFileDetails {
 	clear: both;
 	text-align: center;
@@ -183,7 +197,6 @@
 	width: 1.5em;
 	line-height: 0;
 }
-
 
 
 

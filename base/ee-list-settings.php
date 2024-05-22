@@ -206,13 +206,15 @@ $eeOutput .= '<div class="eeColInline eeSettingsTile">
 							
 		} else {
 			
-			$eeOutput .= '
+			$eeAlert = htmlentities('<h1>' . __('File List Location', 'ee-simple-file-list') . '</h1><p>' . 
+			__('This must be relative to your Wordpress home folder.', 'ee-simple-file-list') . 
+			' (ABSPATH)<br />* ' . __('Default Location', 'ee-simple-file-list') . ': <em>wp-content/uploads/simple-file-list/</em><br />* ' . 
+			__('The directory you enter will be created if it does not exist.', 'ee-simple-file-list') . '<br />* ' . 
+			__('If you change this later, some file details will be lost.', 'ee-simple-file-list') . '</p>');
 			
+			$eeOutput .= '
 			<input class="eeFullWidth" type="text" name="eeFileListDir" value="' . esc_textarea($eeSFL->eeListSettings['FileListDir']) . '" id="eeFileListDir" /></p>
-			<div class="eeNote">' . __('This must be relative to your Wordpress home folder.', 'ee-simple-file-list') . ' (ABSPATH)<br />
-				* ' . __('Default Location', 'ee-simple-file-list') . ': <em>wp-content/uploads/simple-file-list/</em><br />
-				* ' . __('The directory you enter will be created if it does not exist.', 'ee-simple-file-list') . '<br />
-				* ' . __('If you change this later, information such as file descriptions will be lost.', 'ee-simple-file-list') . '
+			<div class="eeNote">' . __('This must be relative to your Wordpress home folder.', 'ee-simple-file-list') . ' <a href="#" class="eeSFL_Action" data-action="alert" data-id="0" data-html="' . $eeAlert . '">' . __('Learn More', 'ee-simple-file-list') . '</a>
 			</div>';
 		}
 	
@@ -502,6 +504,8 @@ $eeOutput .= '
 		
 		$eeOutput .= ' />
 			<div class="eeNote">' . __('Read an image file and create a small thumbnail image.', 'ee-simple-file-list') . '</div>
+			
+			<p>USE CUSTOM THUMBS...</p>
 		
 		</fieldset>
 		

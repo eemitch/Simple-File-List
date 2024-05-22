@@ -159,6 +159,44 @@ function eeSFL_GetFileExtension(eeFileName) {
 }
 
 
+// Are you Sure?
+function eeSFL_ConfirmModal(message, callback) {
+	
+	jQuery('#eeSFL_ConfirmMessage').text(message);
+	var eeModal = jQuery('#eeSFL_ConfirmModal');
+	jQuery('#eeSFL_ConfirmMessage').html(message.replace(/\n/g, '<br>'));
+	eeModal.show();
+
+	jQuery('#eeSFL_ConfirmYes, #eeSFL_ConfirmNo').off().click(function() {
+		eeModal.hide();
+		var eeResult = (this.id === "eeSFL_ConfirmYes");
+		callback(eeResult);
+	});
+
+	jQuery('.eeSFL_close').click(function() {
+		eeModal.hide();
+		callback(false); // Assume "No" if the modal is closed without choosing
+	});
+}
+
+
+
+// General Alerts, Both Clicks and Returns
+function eeSFL_AlertModal(eeSFL_Alert) { // HTML
+	
+	event.preventDefault();
+	console.log('SFL --> ALERT');
+	
+	// For modal display, convert \n back to <br> for HTML display if needed
+	jQuery('#eeSFL_AlertMessage').html(eeSFL_Alert.replace(/\n/g, '<br>'));
+	jQuery('#eeSFL_AlertModal').show();
+	
+	// Convert to Plain Text and Log
+	var eeAlertText = eeSFL_Alert.replace(/<br\s*\/?>/gi, '\n').replace(/<\/?p>/gi, '\n');
+	eeAlertText = jQuery("<div>").html(eeAlertText).text();
+	console.log(eeAlertText);
+}
+
 
 
 

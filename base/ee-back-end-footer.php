@@ -95,9 +95,11 @@ $eeOutput .= '
 		<a class="eeCaution" href="#" id="eeFooterImportantLink">' . __('Caution', 'ee-simple-file-list') . '</a>
 	</div>';
 
-$eeOutput .= '</footer>
+$eeOutput .= '</footer>';
 
-</main><!-- END .eeSFL_Admin -->
+require_once(eeSFL_PluginDir . 'base/ee-alert-modal.php');
+
+$eeOutput .= '</main><!-- END .eeSFL_Admin -->
 </div><!-- END .wrap -->
 
 <!-- END SFL ADMIN -->

@@ -88,12 +88,11 @@ if(!defined('eeSFL_Pro')) { // This is the BASE version
 	add_filter( 'aioseo_conflicting_shortcodes', 'eeSFL_aioseo_filter_conflicting_shortcodes' ); // Prevent All in One SEO plugin from parsing SFL
 	add_filter( 'cron_schedules','eeSFL_CronSchedule' ); // Configure SFL WP-Cron
 	add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'eeSFL_ActionPluginLinks' ); // Add links to the plugins page item
+	
+	// BASE
+	add_action( 'admin_enqueue_scripts', 'eeSFL_BASE_AdminHead');
 }
 
-
-function eeSFL_VersionCheck() {
-	return TRUE;
-}
 
 
 // Load Back-End Resources

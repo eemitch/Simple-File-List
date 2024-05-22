@@ -281,7 +281,7 @@ jQuery(document).ready(function() {
 		jQuery('#eeSFL_ShortCode').select();
 		document.execCommand('copy');
 		
-		alert('Copied to Clipboard: ' + eeShortCode);
+		eeSFL_AlertModal('<h1>' + eesfl_vars['eeCopyShortcodeHeading'] + '</h1><p>' + eesfl_vars['eeCopyShortcodeText'] + '</p>');
     
    	});
 	

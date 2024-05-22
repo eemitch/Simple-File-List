@@ -73,7 +73,7 @@ if(isset($_POST['reset-settings'])) {
 		if($eeSFL->eeListID) {
 			
 			// Get the file list dir contents
-			$eeSFL_Environment->eeSFL_ScanAndSanitize( $eeSFL->eeListSettings['FileListDir'] );
+			$eeSFL_Environment->eeSFL_ScanAndSanitize();
 			
 			$eeExtensionsToCheck = array_merge($eeSFL_Thumbs->eeDynamicImageThumbFormats, $eeSFL_Thumbs->eeDynamicVideoThumbFormats);
 			$eeExtensionsToCheck[] = 'pdf';

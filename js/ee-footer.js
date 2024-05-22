@@ -15,11 +15,100 @@ jQuery(document).ready(function() {
 	});
 	
 	// Dynamic File Name Sanitizer
-	eeSFL_SanitizeInputDynamically();
+	eeSFL_SanitizeInputDynamically(); // This is Awesome
 	
+	// Closes All Modals
 	jQuery('.eeSFL_ModalClose').on('click', function() {
 		jQuery('.eeSFL_Modal').hide();
 	});
+	
+	
+	// Event Listeners for SFL Actions
+	jQuery(document).on('click', '.eeSFL_Action', function(event) {
+		
+		// event.preventDefault();
+		
+		var eeAction = jQuery(this).data('action');
+		eeSFL_FileID = jQuery(this).data('id');
+		
+		console.log('Taking Action on Item: ' + eeSFL_FileID);
+		
+		switch(eeAction) {
+			case 'alert':
+				// event.preventDefault();
+				var eeString = jQuery(this).data('html');
+				eeSFL_AlertModal(eeString);
+				break;
+			case 'copy-link':
+				// event.preventDefault();
+				eeSFL_CopyLinkToClipboard(eeSFL_FileID);
+				break;
+			case 'upload':
+				// event.preventDefault();
+				eeSFL_UploadProcessor(eeSFL_FileObjects);
+				break;
+			case 'upload-remove':
+				// event.preventDefault();
+				eeSFL_QueueRemove(eeSFL_FileID);
+				break;
+			case 'edit':
+				// event.preventDefault();
+				eeSFL_OpenEditModal(eeSFL_FileID);
+				break;
+			case 'edit-save':
+				// event.preventDefault();
+				eeSFL_FileEditSaved(eeSFL_FileID);
+				break;
+			case 'delete':
+				// event.preventDefault();
+				eeSFL_DeleteFile(eeSFL_FileID);
+				break;
+			case 'move':
+				// event.preventDefault();
+				eeSFL_OpenMoveFileModal(eeSFL_FileID); // TO-DO
+				break;
+			case 'move-it':
+				// event.preventDefault();
+				eeSFL_FileDoMove(eeSFL_FileID); // TO-DO
+				break;
+			
+			
+			
+			case 'zip-extract':
+				event.preventDefault();
+				var eeString = jQuery(this).data('filename'); // TO-DO
+				console.log('zip-extract: ' + eeString);
+				eeSFL_ExtractArchive(eeString, event);
+				break;
+			
+			
+			
+			case 'zip-folder':
+				var eeString = jQuery(this).data('filename'); // TO-DO
+				eeSFL_DownloadFolder(eeSFL_FileID, eeString);
+				break;
+			
+			
+			case 'send-file':
+				// event.preventDefault();
+				eeSFLE_SendFile(eeSFL_FileID);
+				break;
+			
+			case 'access-file':
+				// event.preventDefault();
+				eeSFLA_OpenAccessModal(eeSFL_FileID);
+				break;
+			case 'access-copy-file':
+				// event.preventDefault();
+				eeSFLA_OpenCopyModal(eeSFL_FileID);
+				break;
+			
+			default:
+				console.error('! No Action Defined');
+		}
+	});
+	
+	
 	
 	// Look for Media Files and Add Player
 	jQuery( '.eeSFL_Item' ).each(function( index ) {
@@ -114,16 +203,12 @@ jQuery(document).ready(function() {
 	jQuery('.eeSFL_PlayAUDIO').on('click', function() {
 		
 		event.preventDefault();
-	
 		var eeSFL_ThisID = jQuery(this).attr('data-ee-id');
 		
 		if(eeSFL_ThisID !== undefined) {
-		
 			document.getElementById('eeSFL_AudioPlayer' + eeSFL_ThisID).play();
 		}
-		
 	});
-	
 	
 	// VIDEO
 	// Produce the Video Player
@@ -137,30 +222,19 @@ jQuery(document).ready(function() {
 		
 		if(eeSFL_ThisID !== undefined) {
 		
-			// alert('PLAY');
-			
 			var eeSFL_VideoPlayer = '<div class="eeSFL_Modal" id="eeSFL_Video"><div class="eeSFL_ModalBackground"></div><div class="eeSFL_ModalBody">';
-			
 			eeSFL_VideoPlayer += '<button class="eeSFL_ModalClose">&times;</button>';
-			
 			eeSFL_VideoPlayer += '<video id="eeSFL_VideoPlayer" autoplay controls><source src="' + eeSFL_ThisURL + '" type="' + eeSFL_FileMIME + '">' + eesfl_vars.eeBrowserWarning + '</video>';
-			
 			eeSFL_VideoPlayer += '</div></div>';
-			
 			eeSFL_VideoPlayer += '<script>';
 			eeSFL_VideoPlayer += "jQuery('.eeSFL_ModalClose').on('click', function() {  jQuery('#eeSFL_Video').trigger('pause');jQuery('#eeSFL_Video').remove(); });";
 			eeSFL_VideoPlayer += "jQuery('.eeSFL_Modal').on('click', function() { jQuery('#eeSFL_Video').trigger('pause'); jQuery('#eeSFL_Video').remove(); });";
-			
 			eeSFL_VideoPlayer += '';
 			eeSFL_VideoPlayer += '</script>';
 			
-			
 			jQuery('.eeSFL').append(eeSFL_VideoPlayer);
-	
 			jQuery('#eeSFL_Video').show();
-			
 		}
-		
 	});
 
 }); // END Ready Function
@@ -172,23 +246,26 @@ String.prototype.eeSFL_StripSlashes = function(){
 }
 
 
+
+
 // Copy File URL to Clipboard
-function eeSFL_CopyLinkToClipboard(eeSFL_FileURL) {
+function eeSFL_CopyLinkToClipboard(eeSFL_FileID) {
 	
-	var eeTemp = jQuery('<input name="eeTemp" value="' + eeSFL_FileURL + '" type="url" class="" id="eeTemp" />'); // Create a temporary input
-	jQuery("body").append(eeTemp); // Add it to the bottom of the page
+	eeSFL_FileURL = jQuery('#eeSFL_FileID-' + eeSFL_FileID + ' a.eeSFL_FileName').attr('href');
 	
-	var eeTempInput = jQuery('#eeTemp');
-	eeTempInput.focus();
-	eeTempInput.select(); // Select the temp input
-	// eeTempInput.setSelectionRange(0, 99999); /* For mobile devices <<<------------ TO DO */
+	var eeInput = jQuery('<input>', {
+		type: 'text',
+		style: 'position: absolute; left: -1000px; top: -1000px;', // Position it off-screen
+		value: eeSFL_FileURL
+	}).appendTo('body');
+	
+	eeInput[0].focus({ preventScroll: true });
+	eeInput.select(); // Select the temp input
 	document.execCommand("copy"); // Copy to clipboard
-	eeTemp.remove(); // Remove the temp input
+	eeInput.remove(); // Remove the temp input
     
-    alert(eesfl_vars['eeCopyLinkText'] + "\r\n" + eeSFL_FileURL); // Alert the user
+    eeSFL_AlertModal('<h1>' + eesfl_vars['eeCopyLinkHeading'] + '</h1><p>' + eesfl_vars['eeCopyLinkText'] + '</p><p>' + eeSFL_FileURL + '</p>'); // Alert the user
 }
-
-
 
 
 
@@ -210,7 +287,6 @@ function eeSFL_EditFile(eeSFL_FileID) {
 
 
 
-
 // Triggered when you click the Delete link
 function eeSFL_Delete(eeSFL_FileID) {
 	
@@ -223,12 +299,14 @@ function eeSFL_Delete(eeSFL_FileID) {
     
     console.log(eeSFL_FileName);
 	
-	if( confirm( eesfl_vars['eeConfirmDeleteText'] + "\r\n\r\n" + eeSFL_FileName ) ) {
-	
-		eeSFL_FileAction(eeSFL_FileID, 'Delete');
-	
-	}
-
+	eeSFL_ConfirmModal('Are you sure you want to delete this file?', function(confirm) {
+		if (confirm) {
+			console.log('Deleting the file...');
+			eeSFL_FileAction(eeSFL_FileID, 'Delete');
+		} else {
+			console.log('CANCELED');
+		}
+	});
 }
 
 

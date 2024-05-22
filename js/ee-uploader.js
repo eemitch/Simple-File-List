@@ -71,8 +71,9 @@ function eeSFL_AddFilesToQueue(eeSFL_Files) { // The files object
 	    eeSFL_Error = false;
 	    eeSFL_File = false;
 	    jQuery("#eeSFL_FileInput").val("");
-	    alert(eesfl_vars['eeUploadLimitText'] + ': ' + eeSFL_FileLimit);
-	    return false;   
+		let eeAlert = '<h1>' + eesfl_vars['eeUploadProblem'] + '</h1><p>' + eesfl_vars['eeUploadLimitText'] + ': ' + eeSFL_FileLimit + '</p>';
+		eeSFL_AlertModal(eeAlert); // Alert the user.
+		return false;   
 	}
     
     // Loop through file object
@@ -124,14 +125,15 @@ function eeSFL_AddFilesToQueue(eeSFL_Files) { // The files object
 			eeSFL_FileSet.push(eeSFL_File.name); // Add this name for the post-processor
 			
 			// Upload Queue Display
-			var eeSFL_UploadQueue = '<p id="eeID' + i + '"><span class="eeSFL_FileUploadRemove" onclick="eeSFL_QueueRemove(' + i + ')">&#9746;</span><span class="eeSFL_FileUploadName">' + eeSFL_File.name + '</span><small><span class="eeSFL_FileUploadType">' + eeSFL_File.type + '</span> &rarr; <span class="eeSFL_FileUploadSize">' + eeSFL_GetFileSize(eeSFL_File.size) + '</span></small></p>';
+			var eeSFL_UploadQueue = '<p id="eeID' + i + '"><span class="eeSFL_FileUploadRemove eeSFL_Action" data-action="upload-remove" data-id="' + i + '">&#9746;</span><span class="eeSFL_FileUploadName">' + eeSFL_File.name + '</span><small><span class="eeSFL_FileUploadType">' + eeSFL_File.type + '</span> &rarr; <span class="eeSFL_FileUploadSize">' + eeSFL_GetFileSize(eeSFL_File.size) + '</span></small></p>';
 			
 			// Populate the Upload Queue
 			jQuery('#eeSFL_FileUploadQueue').append(eeSFL_UploadQueue);
 			
         } else {
 	        
-	        alert(eeSFL_Error); // Alert the user.
+	        let eeAlert = '<h1>' + eesfl_vars['eeUploadProblem'] + '</h1><p>' + eeSFL_Error + '</p>';
+			eeSFL_AlertModal(eeAlert); // Alert the user.
 	        
 	        eeSFL_Error = false;
 	        eeSFL_File = false;
@@ -266,10 +268,12 @@ function eeSFL_UploadFile(eeSFL_File) { // Pass in file object
 			    	
 			    	var n = eeXhr.responseText.search("<"); // Error condition
 			    	if(n === 0) {
-				    	alert(eesfl_vars['eeUploadErrorText'] + ': ' + eeSFL_File.name);
+						let eeAlert = '<h1>' + eesfl_vars['eeUploadProblem'] + '</h1><p>' + eesfl_vars['eeUploadErrorText'] + ': ' + eeSFL_File.name + '</p>';
+						eeSFL_AlertModal(eeAlert); // Alert the user.
 				    	jQuery( "#eeUploadingNow" ).fadeOut();
 				    } else {
-					    alert(eeXhr.responseText);
+					    let eeAlert = '<h1>' + eesfl_vars['eeUploadProblem'] + '</h1><p>' + eeXhr.responseText + '</p>';
+						eeSFL_AlertModal(eeAlert); // Alert the user.
 				    }
 				    return false;
 		        }

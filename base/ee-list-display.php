@@ -11,7 +11,7 @@ $eeSFL->eeLog['notice'][] = $eeSFL->eeSFL_NOW() . 'Running File List Display #' 
 $eeSFL_Include = wp_create_nonce(eeSFL_Include);
 $eeClass = ''; // CSS Class
 // $eeListPosition = FALSE; // eeSFLS
-// $eeShowOps = FALSE; // Assume No
+$eeShowOps = FALSE; // Assume No
 $eeShowingResults = FALSE;
 if(!isset($eeSFL_HideName)) { $eeSFL_HideName = FALSE; }
 if(!isset($eeSFL_HideType)) { $eeSFL_HideType = FALSE; }
@@ -31,10 +31,11 @@ if(isset($_GET['eeSFL_ArchivePath']) AND isset($_GET['eeSFL_ArchiveListID'])) { 
 	}	
 }
 
-// echo '<pre>'; print_r($eeSFL->eeAllFiles); echo '</pre>'; exit;
-
 // PRO
 if( defined('eeSFL_Pro') ) {  require_once(eeSFL_PluginDir . 'pro/ee-list-display-folder-process.php'); }
+
+// Bulk Ops
+require_once(eeSFL_PluginDir . 'base/ee-list-ops-bar-process.php');
 
 // Check for Upload Job
 if($eeSFL_Uploaded) { 
@@ -54,11 +55,10 @@ if($eeSFL_Uploaded) {
 	}
 }
 
-
 // PRO
 if( defined('eeSFL_Pro') ) {
 	require_once(eeSFL_PluginDir . 'pro/ee-list-display-pre-process.php');
-} elseif(empty($eeSFL->eeDisplayFiles)) {
+} else {
 	foreach($eeSFL->eeAllFiles as $eeKey => $eeFileArray) {
 		if(!strpos($eeFileArray['FilePath'], '/')) { // Omit these if any
 			$eeSFL->eeDisplayFiles[] = $eeFileArray;
@@ -66,6 +66,7 @@ if( defined('eeSFL_Pro') ) {
 	}
 	$eeSFL->eeAllFiles = array();
 }
+
 
 // LIST DISPLAY ===================================================
 
@@ -118,19 +119,9 @@ if(!is_admin() AND $eeSFL_Uploaded) {
 
 if($eeSFLS) { require_once(WP_PLUGIN_DIR . '/ee-simple-file-list-search/includes/ee-search-form.php'); }
 
-// Show File Ops or Not
-if( is_admin() ) { $eeShowOps = TRUE; } 
-	else { if( $eeSFL->eeListSettings['AllowFrontManage'] == 'YES' AND $eeSFL->eeListRun == 1 ) { 
-		$eeShowOps = TRUE; }	
-}
 
-// Never show these things after upload or search
-if( isset($_POST['eeSFL_Upload']) ) { 
-	$eeShowingResults = TRUE;
-	$eeShowOps = FALSE;
-	$eeSFL->eeListSettings['AllowFrontManage'] = 'NO';
-	$eeSFL->eeListSettings['AllowBulkFileDownload'] = 'NO'; // PRO
-}
+// Bulk Operations Bar
+require_once(eeSFL_PluginDir . 'base/ee-list-ops-bar-display.php');
 
 // PRO
 if( defined('eeSFL_Pro') ) { require_once(eeSFL_PluginDir . 'pro/ee-list-display-pro.php'); }
@@ -164,81 +155,10 @@ if( $eeSFL->eeItemCount ) {
 
 $eeOutput .= '
 
-</div><!-- END SFL File List Bottom -->
+</div><!-- END SFL File List Bottom -->';
 
-<!-- BEGIN SFL Modals -->';
-
-// Modal Inputs -------------------------
-					
-$eeOutput .= '
-<span class="eeHide" id="eeSFL_Modal_FileID"></span>';
-
-if($eeSFLE) { require_once(WP_PLUGIN_DIR . '/ee-simple-file-list-email/includes/ee-list-display-email-1.php'); } // PRO
-
-if(is_admin() OR $eeSFL->eeListSettings['AllowFrontManage'] == 'YES') {
-
-	$eeOutput .= '
-	<span class="eeHide" id="eeSFL_EditNonce">' . wp_create_nonce(eeSFL_Nonce) . '</span>
-	
-	<div class="eeSFL_Modal" id="eeSFL_Modal_EditFile">
-	<div class="eeSFL_ModalBackground"></div>
-	<div class="eeSFL_ModalBody">
-	
-		<button class="eeSFL_ModalClose">&times;</button>
-		
-		<h1>' . __('Edit Item', 'ee-simple-file-list') . '</h1>
-		
-		<p class="eeSFL_ModalFilePath eeHide"></p>
-		
-		<p class="eeSFL_ModalFileDetails">' . 
-		__('Added', 'ee-simple-file-list') . ': <span id="eeSFL_FileDateAdded" >???</span> | ' . 
-		__('Changed', 'ee-simple-file-list') . ': <span id="eeSFL_FileDateChanged" >???</span> | ' . 
-		__('Size', 'ee-simple-file-list') . ': <span id="eeSFL_FileSize">???</span>
-		</p>
-		
-		<label for="eeSFL_FileNameNew">' . __('Item Name', 'ee-simple-file-list') . '</label>
-		<input type="text" id="eeSFL_FileNameNew" name="eeSFL_FileNameNew" value="??" size="64" />
-		<small class="eeSFL_ModalNote">' . __('Change the name.', 'ee-simple-file-list') . ' ' . __('Some characters are not allowed. These will be automatically replaced.', 'ee-simple-file-list') . '</small>';
-			
-		$eeOutput .= '<label for="eeSFL_FileNiceNameNew">' . __('File Nice Name', 'ee-simple-file-list') . '</label>
-		<input type="text" id="eeSFL_FileNiceNameNew" name="eeSFL_FileNiceNameNew" value="" size="64" />
-		<small class="eeSFL_ModalNote">' . __('Enter a name that will be shown in place of the real file name.', 'ee-simple-file-list') . ' ' . __('You may use special characters not allowed in the file name.', 'ee-simple-file-list') . '</small>';
-		
-		$eeOutput .= '<label for="eeSFL_FileDescriptionNew">' . __('Item Description', 'ee-simple-file-list') . '</label>
-		<textarea cols="64" rows="3" id="eeSFL_FileDescriptionNew" name="eeSFL_FileDescriptionNew"></textarea>
-		<small class="eeSFL_ModalNote">' . __('Add a description.', 'ee-simple-file-list') . ' ' . __('Use this field to describe this item and apply keywords for searching.', 'ee-simple-file-list') . '</small>
-		
-		<h4>' . __('Item Date Added', 'ee-simple-file-list') . '</h4>
-		
-		<div class="eeSFL_DateNew">
-		<label>' . __('Year', 'ee-simple-file-list') . '<input min="1970" max="' . date('Y') . '" type="number" name="eeSFL_FileDateAddedYearNew" value="" id="eeSFL_FileDateAddedYearNew" /></label>
-		<label>' . __('Month', 'ee-simple-file-list') . '<input min="1" max="12" type="number" name="eeSFL_FileDateAddedMonthNew" value="" id="eeSFL_FileDateAddedMonthNew" /></label>
-		<label>' . __('Day', 'ee-simple-file-list') . '<input min="1" max="31" type="number" name="eeSFL_FileDateAddedDayNew" value="" id="eeSFL_FileDateAddedDayNew" /></label>
-		</div>
-		<small class="eeSFL_ModalNote">' . __('Change the date added to the list.', 'ee-simple-file-list') . '</small>
-		
-		<h4>' . __('Item Date Changed', 'ee-simple-file-list') . '</h4>
-		
-		<div class="eeSFL_DateNew">
-		<label>' . __('Year', 'ee-simple-file-list') . '<input min="1970" max="' . date('Y') . '" type="number" name="eeSFL_FileDateChangedYearNew" value="" id="eeSFL_FileDateChangedYearNew" /></label>
-		<label>' . __('Month', 'ee-simple-file-list') . '<input min="1" max="12" type="number" name="eeSFL_FileDateChangedMonthNew" value="" id="eeSFL_FileDateChangedMonthNew" /></label>
-		<label>' . __('Day', 'ee-simple-file-list') . '<input min="1" max="31" type="number" name="eeSFL_FileDateChangedDayNew" value="" id="eeSFL_FileDateChangedDayNew" /></label>
-		</div>
-		<small class="eeSFL_ModalNote">' . __('Change date the file was last modified.', 'ee-simple-file-list') . '</small>
-		
-		<button class="button" onclick="eeSFL_FileEditSaved()">' . __('Save', 'ee-simple-file-list') . '</button>
-
-	</div>
-	</div>';
-	
-	// PRO
-	if( defined('eeSFL_Pro') ) { require_once(eeSFL_PluginDir . 'pro/ee-list-display-move-modal.php'); }
-	if($eeSFLA) { require_once(WP_PLUGIN_DIR . '/ee-simple-file-list-access/includes/ee-list-display-access-2.php'); } // PRO
-}
-
-$eeOutput .= '
-
-<!-- End SFL Modals -->';
+require_once(eeSFL_PluginDir . 'base/ee-list-display-modals.php');
+require_once(eeSFL_PluginDir . 'base/ee-alert-modal.php');
 
 // List Loaded
 $eeMessages[] = $eeSFL->eeURL;

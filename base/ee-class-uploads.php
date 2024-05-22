@@ -41,8 +41,7 @@ class eeSFL_Uploads {
 			
 		$eeOutput .= '
 		
-		<!-- Simple File List Uploader -->
-				
+		<!-- Simple File List Uploader -->	
 		<form action="' . $this->eeSFL->eeSFL_GetThisURL() . '" method="POST" enctype="multipart/form-data" name="eeSFL_UploadForm" id="eeSFL_UploadForm">
 		
 		<input type="hidden" name="MAX_FILE_SIZE" value="' . (($this->eeSFL->eeListSettings['UploadMaxFileSize']*1024)*1024) . '" />
@@ -106,22 +105,20 @@ class eeSFL_Uploads {
 		
 		<p id="eeSFL_FilesDrug"></p>
 		
-		<script>
-				
+		<script>	
 		var eeSFL_ListID = "' . $eeListID . '";
 		var eeSFL_FileUploadDir = "' . esc_js(urlencode($eeCurrentFolder)) . '";
 		var eeSFL_FileLimit = ' . esc_js($this->eeSFL->eeListSettings['UploadLimit']) . ';
 		var eeSFL_UploadMaxFileSize = ' . esc_js((($this->eeSFL->eeListSettings['UploadMaxFileSize']*1024)*1024)) . ';
 		var eeSFL_FileFormats = "' . esc_js(str_replace(' ' , '', $this->eeSFL->eeListSettings['FileFormats'])) . '";
-		var eeSFL_UploadEngineURL = "' . admin_url( 'admin-ajax.php') . '";
-					
+		var eeSFL_UploadEngineURL = "' . admin_url( 'admin-ajax.php') . '";			
 		</script>
 		
 		<span id="eeSFL_UploadProgress"><em class="eeHide">' . __('Processing the Upload', 'ee-simple-file-list') . '</em></span>
 		
 		<div id="eeSFL_FileUploadQueue"></div>
 		
-		<button type="button" class="button" name="eeSFL_UploadGo" id="eeSFL_UploadGo" onclick="eeSFL_UploadProcessor(eeSFL_FileObjects);">' . __('Upload', 'ee-simple-file-list') . '</button>';
+		<button type="button" class="button eeSFL_Action" name="eeSFL_UploadGo" id="eeSFL_UploadGo" data-id="0" data-action="upload">' . __('Upload', 'ee-simple-file-list') . '</button>';
 		
 		// if($eeEmail AND !is_admin()) { $eeOutput .= '<p>' . __('Submitter:', 'ee-simple-file-list') . ' ' . $eeName . ' (' . $eeEmail . ')</p>'; }
 		
@@ -140,9 +137,7 @@ class eeSFL_Uploads {
 		}
 		
 		$eeOutput .= '
-		
 		</div>
-		
 		</form>';
 		
 		return $eeOutput;

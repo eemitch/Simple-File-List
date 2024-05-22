@@ -42,7 +42,7 @@ class eeSFL_MainClass {
 			
 		// List Settings
 		'ListTitle' => 'Main File List', // List Title (Not currently used)
-		'FileListDir' => 'wp-content/uploads/simple-file-list/', // List Directory Name (relative to ABSPATH)
+		'FileListDir' => eeSFL_FileListDirDefault, // List Directory Name (relative to ABSPATH)
 		'UseCache' => 'OFF', // Re-Scan Interval: Each, Hour, Day, OFF
 		'UseCacheCron' => 'NO', // Use the Wordpress Cron-like System, or not
 		'ShowList' => 'YES', // Show the File List (YES, ADMIN, USER, NO)
@@ -226,7 +226,7 @@ class eeSFL_MainClass {
 					$this->eeFileCount++;
 				}
 			}
-			$this->eeLog['notice'][] = $this->eeSFL_NOW() . 'Counted ' . $this->eeFileCount . ' Total Files';
+			// $this->eeLog['notice'][] = $this->eeSFL_NOW() . 'Counted ' . $this->eeFileCount . ' Total Files';
 		}
 	}
 	
@@ -787,20 +787,21 @@ class eeSFL_MainClass {
 			if(is_admin() OR $this->eeListSettings['ShowFileCopyLink'] == 'YES') {
 				
 				$eeOutput .= '
-				<a class="eeSFL_CopyLinkToClipboard" onclick="eeSFL_CopyLinkToClipboard(\''  . $this->eeFileURL .   '\')" href="#">' . __('Copy Link', 'ee-simple-file-list') . '</a>';														
+				<a href="#" class="eeSFL_Action eeSFL_CopyLinkToClipboard" data-action="copy-link" data-id="' . $eeFileID . '">' . __('Copy Link', 'ee-simple-file-list') . '</a>';														
+														
 			}
 		}
 		
 		// Front-End Manage or Admin
 		if( (is_admin() OR $this->eeListSettings['AllowFrontManage'] == 'YES') AND $this->eeListRun == 1) {							
 			$eeOutput .= '
-			<a href="#" onclick="eeSFL_OpenEditModal(' . $eeFileID . ')">' . __('Edit', 'ee-simple-file-list') . '</a>
-			<a href="#" onclick="eeSFL_DeleteFile(' . $eeFileID . ')">' . __('Delete', 'ee-simple-file-list') . '</a>';	
+			<a href="#" class="eeSFL_Action" data-action="edit" data-id="' . $eeFileID . '">' . __('Edit', 'ee-simple-file-list') . '</a>
+			<a href="#" class="eeSFL_Action" data-action="delete" data-id="' . $eeFileID . '">' . __('Delete', 'ee-simple-file-list') . '</a>';	
 		}
 		
 		if(defined('eeSFL_Pro')) {
 			$eeSFL_Include = wp_create_nonce(eeSFL_Include);
-			require_once(eeSFL_PluginDir . 'pro/ee-file-actions.php');
+			require(eeSFL_PluginDir . 'pro/ee-file-actions.php');
 		}
 		
 		// File Details to Pass to the Editor
@@ -876,12 +877,15 @@ class eeSFL_MainClass {
 
     
     
+    public $eeUsingCustomThumbs = FALSE;
     
-    
-    
+    // Prepare to Display the Item in the List
     public function eeSFL_ProcessFileArray($eeFileArray, $eeHideName = FALSE, $eeHideType = FALSE) {
 	    
 	    global $eeSFL_Thumbs;
+		
+		
+		// $this->eeLog['notice'][] = $this->eeSFL_NOW() . 'Processing File Array...';
 	    
 	    if( is_array($eeFileArray) ) {
 
@@ -913,6 +917,7 @@ class eeSFL_MainClass {
 			$this->eeFileSubmitterComments = FALSE;
 			$this->eeAccessUsers = FALSE;
 			$this->eeAccessRole = FALSE;
+			$this->eeFileThumbURL = FALSE;
 			
 			
 			// Skip names hidden via shortcode
@@ -935,7 +940,7 @@ class eeSFL_MainClass {
 				$this->eeFileCount++; // Bump the file count
 				
 				// Skip types hidden via shortcode
-				if($eeHideType) { // Expecting a comma deleimited string of extensions
+				if($eeHideType) { // Expecting a comma delimited string of extensions
 					if(strpos($eeHideType, $this->eeFileExt) OR strpos($eeHideType, $this->eeFileExt) === 0 ) { 
 						return FALSE;
 					}
@@ -944,34 +949,71 @@ class eeSFL_MainClass {
 				// Thumbnail
 				$eeThumbSet = FALSE;
 				$eeHasCreatedThumb = FALSE;
-				if( in_array($this->eeFileExt,  $eeSFL_Thumbs->eeDynamicImageThumbFormats) AND $this->eeListSettings['GenerateImgThumbs'] == 'YES' ) { $eeHasCreatedThumb = TRUE; }
-				if( in_array($this->eeFileExt,  $eeSFL_Thumbs->eeDynamicVideoThumbFormats) AND isset($this->eeEnvironment['thumbsVIDEO']) AND $this->eeListSettings['GenerateVideoThumbs'] == 'YES' ) { $eeHasCreatedThumb = TRUE; }
-				if( $this->eeFileExt == 'pdf' AND isset($this->eeEnvironment['thumbsPDF']) AND $this->eeListSettings['GeneratePDFThumbs'] == 'YES' ) { $eeHasCreatedThumb = TRUE; }
-				
-				if($eeHasCreatedThumb) { // Images use .jpg files
-	
+				if($this->eeUsingCustomThumbs) {
 					$eePathParts = pathinfo($this->eeFilePath);
-					
-					if($eePathParts['dirname'] AND $eePathParts['dirname'] != '.') { $eeFolder = $eePathParts['dirname'] . '/'; } else { $eeFolder = ''; }
-					
-					$eeFileThumbPath = ABSPATH . $this->eeListSettings['FileListDir'] . $eeFolder . '.thumbnails/thumb_' . $eePathParts['filename'] . '.jpg';
-					
-					if( is_readable($eeFileThumbPath) ) {
-						$eeFileThumbURL = $this->eeListSettings['FileListURL'];
-						if($eePathParts['dirname']) { $eeFileThumbURL .= $eePathParts['dirname'] . '/'; }
-						$this->eeFileThumbURL = $eeFileThumbURL . '.thumbnails/thumb_' . $eePathParts['filename'] . '.jpg';
+					$eeFileNamePart = $eePathParts['filename'] . '-thumb';
+					// $this->eeLog['notice'][] = $this->eeSFL_NOW() . 'Checking for: ' . $eeFileNamePart . '.jpg';
+					if(is_readable(eeSFL_CustomThumbsDir . $eeFileNamePart . '.jpg')) {
+						// $this->eeLog['notice'][] = $this->eeSFL_NOW() . 'Found';
+						$this->eeFileThumbURL = eeSFL_CustomThumbsURL . $eeFileNamePart . '.jpg';
 						$eeThumbSet = TRUE;
+					}
+				} 
+				
+				if(!$this->eeFileThumbURL) {
+					
+					if( in_array($this->eeFileExt,  $eeSFL_Thumbs->eeDynamicImageThumbFormats) AND $this->eeListSettings['GenerateImgThumbs'] == 'YES' ) { $eeHasCreatedThumb = TRUE; }
+					if( in_array($this->eeFileExt,  $eeSFL_Thumbs->eeDynamicVideoThumbFormats) AND isset($this->eeEnvironment['thumbsVIDEO']) AND $this->eeListSettings['GenerateVideoThumbs'] == 'YES' ) { $eeHasCreatedThumb = TRUE; }
+					if( $this->eeFileExt == 'pdf' AND isset($this->eeEnvironment['thumbsPDF']) AND $this->eeListSettings['GeneratePDFThumbs'] == 'YES' ) { $eeHasCreatedThumb = TRUE; }
+					
+					if($eeHasCreatedThumb) { // Images use .jpg files
+		
+						$eePathParts = pathinfo($this->eeFilePath);
+						
+						if($eePathParts['dirname'] AND $eePathParts['dirname'] != '.') { $eeFolder = $eePathParts['dirname'] . '/'; } else { $eeFolder = ''; }
+						
+						$eeFileThumbPath = ABSPATH . $this->eeListSettings['FileListDir'] . $eeFolder . '.thumbnails/thumb_' . $eePathParts['filename'] . '.jpg';
+						
+						if( is_readable($eeFileThumbPath) ) {
+							$eeFileThumbURL = $this->eeListSettings['FileListURL'];
+							if($eePathParts['dirname']) { $eeFileThumbURL .= $eePathParts['dirname'] . '/'; }
+							$this->eeFileThumbURL = $eeFileThumbURL . '.thumbnails/thumb_' . $eePathParts['filename'] . '.jpg';
+							$eeThumbSet = TRUE;
+						}
 					}
 				}
 				
+				// We supply the thumbnail based on file type
 				if(!$eeThumbSet) {
-					
-					// Use our awesome .svg files
-					if( !in_array($this->eeFileExt, $eeSFL_Thumbs->eeDefaultThumbFormats) ) { $eeDefaultThumb = '!default.svg'; } // What the heck is this? 
-							else { $eeDefaultThumb = $this->eeFileExt . '.svg'; } // Use our sweet icon
 						
-					$this->eeFileThumbURL = $this->eeEnvironment['pluginURL'] . 'images/thumbnails/' . $eeDefaultThumb;
-				
+					// Optional Custom Thumbnail
+					if($this->eeUsingCustomThumbs) {
+						
+						// Based on File Type
+						// $this->eeLog['notice'][] = $this->eeSFL_NOW() . 'Checking for: ' . $this->eeFileExt . '.jpg';
+						if(is_readable(eeSFL_CustomThumbsDir . $this->eeFileExt . '.jpg')) {
+							// $this->eeLog['notice'][] = $this->eeSFL_NOW() . 'Found';
+							$this->eeFileThumbURL = eeSFL_CustomThumbsURL . $this->eeFileExt . '.jpg';
+							$eeThumbSet = TRUE;
+						}
+						
+						// Based on File Name
+						$eeFileNamePart = basename($this->eeFilePath) . '-thumb';
+						if(is_readable(eeSFL_CustomThumbsDir . $eeFileNamePart . '.jpg')) {
+							// $this->eeLog['notice'][] = $this->eeSFL_NOW() . 'Custom Thumbnail Found: ' . $eeFileNamePart . '.jpg';
+							$this->eeFileThumbURL = eeSFL_CustomThumbsURL . $eeFileNamePart . '.jpg';
+							$eeThumbSet = TRUE;
+						}
+					}
+					
+					if(!$eeThumbSet) {
+						if(is_readable(eeSFL_PluginDir . 'images/thumbnails/' . $this->eeFileExt . '.svg')) {
+							// $this->eeLog['notice'][] = $this->eeSFL_NOW() . 'Using File Type Icon';
+							$this->eeFileThumbURL = eeSFL_PluginURL . 'images/thumbnails/' . $this->eeFileExt . '.svg';
+						} else {
+							$this->eeFileThumbURL = eeSFL_PluginURL . 'images/thumbnails/!default.svg';
+						}
+					}
 				}
 				
 			} elseif( defined('eeSFL_Pro') AND $eeFileArray['FileExt'] == 'folder' ) { // This is a Folder
@@ -983,7 +1025,20 @@ class eeSFL_MainClass {
 				if( strpos($this->eeFileURL, 'eeListID') ) { $this->eeFileURL = remove_query_arg('eeListID', $this->eeFileURL); } // Reset
 				$this->eeFileURL .= '&eeListID=' . $this->eeListID; // Add true
 				if( strpos($this->eeFileURL, 'ee=1') === FALSE ) { $this->eeFileURL .= '&ee=1';  } // Smooth scroll after file nav
-				$this->eeFileThumbURL = $this->eeEnvironment['pluginURL'] . 'images/thumbnails/folder.svg';
+				
+				// Optional Custom Thumbnail
+				if($this->eeUsingCustomThumbs) {
+					$eePathParts = pathinfo($this->eeFilePath);
+					$eeFileNamePart = $eePathParts['filename'] . '-thumb';
+					// $this->eeLog['notice'][] = $this->eeSFL_NOW() . 'Checking for: ' . $eeFileNamePart . '.jpg';
+					if(is_readable(eeSFL_CustomThumbsDir . $eeFileNamePart . '.jpg')) {
+						// $this->eeLog['notice'][] = $this->eeSFL_NOW() . 'Found';
+						$this->eeFileThumbURL = eeSFL_CustomThumbsURL . $eeFileNamePart . '.jpg';
+						$eeThumbSet = TRUE;
+					}
+				}
+				
+				if(!$this->eeFileThumbURL) { $this->eeFileThumbURL = $this->eeEnvironment['pluginURL'] . 'images/thumbnails/folder.svg'; }
 				$this->eeItemCount = $eeFileArray['ItemCount']; // Files and folders within
 				$this->eeFolderCount++; // Bump the folder count
 				
@@ -1049,6 +1104,8 @@ class eeSFL_MainClass {
 		
 		$eeMessages = array($eeFileArray);
 		do_action('eeSFL_Hook_Listed', $eeMessages);
+		
+		// $this->eeLog['notice'][] = $this->eeSFL_NOW() . 'Complete.';
 	    
 	    return TRUE; // Properties have been updated
 	}
