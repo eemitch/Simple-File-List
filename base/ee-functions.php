@@ -5,6 +5,7 @@
 	
 if(!defined('ABSPATH')) exit('<p>This is an <a href="https://simplefilelist.com">SFL</a> file.</p>');
 
+
 // Plugin Setup
 function eeSFL_Setup() {
 	
@@ -53,6 +54,13 @@ function eeSFL_Setup() {
 		require_once(plugin_dir_path(__FILE__) . 'ee-class-thumbs.php');
 		$eeSFL_Thumbs = new eeSFL_Thumbnails($eeSFL);
 		
+		// Optional Custom Thumbs
+		if(is_dir(eeSFL_CustomThumbsDir)) { 
+			$eeSFL->eeUsingCustomThumbs = TRUE;
+			$eeSFL->eeLog['notice'][] = $eeSFL->eeSFL_NOW() . 'Using Custom Thumbnails';
+			$eeSFL->eeLog['notice'][] = $eeSFL->eeSFL_NOW() . eeSFL_CustomThumbsURL;
+		}
+		
 		// Upload Class
 		require_once(plugin_dir_path(__FILE__) . 'ee-class-uploads.php'); 
 		$eeSFL_Upload = new eeSFL_Uploads($eeSFL);
@@ -73,6 +81,9 @@ function eeSFL_Setup() {
 			}
 			$eeSFL->eeLog['notice'][] = $eeSFL->eeSFL_NOW() . 'Loading List #' . $eeSFL->eeListID;	
 		}
+		
+		// Install or Update if Needed.
+		if( is_admin() ) { eeSFL_VersionCheck(); }
 		
 		// Populate the Settings Array
 		$eeSFL->eeSFL_GetSettings($eeSFL->eeListID);
@@ -98,8 +109,6 @@ function eeSFL_Setup() {
 		// Extension Check
 		if( $eeSFLE AND isset($_POST['eeSFLE_Send']) ) { $eeSFLE->eeSFLE_SendFilesEmail(); } // Sending Files
 		
-		// Install or Update if Needed.
-		if( is_admin() ) { eeSFL_VersionCheck(); }
 		
 		
 		// Translation strings to pass to javascript as eesfl_vars
@@ -108,15 +117,20 @@ function eeSFL_Setup() {
 		$eeSFL_VarsForJS = array(
 			'ajaxurl' => admin_url( 'admin-ajax.php', $eeProtocol ), // AJAX
 			
-			'eeCopyLinkText' => __('The Link Has Been Copied', 'ee-simple-file-list'),
+			'eeCopyShortcodeHeading' => __('Success', 'ee-simple-file-list'),
+			'eeCopyShortcodeText' => __('The shortcode has been copied', 'ee-simple-file-list'),
+			'eeCopyLinkHeading' => __('Success', 'ee-simple-file-list'),
+			'eeCopyLinkText' => __('The link has been copied', 'ee-simple-file-list'),
 			
 			// Item Editing
+			'eeEditProblem' => __('There was a Problem', 'ee-simple-file-list'),
 			'eeEditText' => __('Edit', 'ee-simple-file-list'), // Edit link text
 			'eeConfirmDeleteText' => __('Are you sure you want to delete this?', 'ee-simple-file-list'), // Delete confirmation
 			'eeCancelText' => __('Cancel', 'ee-simple-file-list'),
 			
 			// File Uploading
-			'eeUploadLimitText' => __('Upload Limit', 'ee-simple-file-list'),
+			'eeUploadProblem' => __('There is a Problem', 'ee-simple-file-list'),
+			'eeUploadLimitText' => __('There are too many files. The limit is', 'ee-simple-file-list'),
 			'eeFileTooLargeText' => __('This file is too large', 'ee-simple-file-list'),
 			'eeFileNoSizeText' => __('This file is empty', 'ee-simple-file-list'),
 			'eeFileNotAllowedText' => __('This file type is not allowed', 'ee-simple-file-list'),
@@ -146,7 +160,7 @@ function eeSFL_Setup() {
 		);
 		
 		// Front-End Display
-		include_once(eeSFL_PluginDir . 'base/ee-front-end.php');
+		require_once(eeSFL_PluginDir . 'base/ee-front-end.php');
 		add_shortcode( 'eeSFL', 'eeSFL_FrontEnd' );
 		
 		$eeSFL->eeLog['notice'][] = $eeSFL->eeSFL_NOW() . 'List ID = ' . $eeSFL->eeListID . ' --> Setup Loaded.';
@@ -637,16 +651,227 @@ function eeSFL_OptInReportGenerator() {
 }
 
 
-// LEGACY - Get Elapsed Time
-// function eeSFL_noticeTimer() { // 6.1.12 and under
-// 	global $eeSFL; // Time SFL got going
-// 	return $eeSFL->eeSFL_NOW();
-// }
 
-// LEGACY - Convert hyphens to spaces for display only - Under 6.0
-// function eeSFL_PreserveSpaces($eeFileName) {
-// 	$eeFileName = str_replace('-', ' ', $eeFileName);
-// 	return $eeFileName;
-// }
+
+
+
+
+
+// Plugin Version Check
+function eeSFL_VersionCheck() {
+	
+	global $wpdb, $eeSFL, $eeSFL_Environment;
+	if(defined('eeSFL_Pro')) { global $eeSFL_Pro, $eeSFLA, $eeSFLS; }
+	
+	// Search for a current installation
+	$eeInstalled = FALSE;
+	$eeInstalled = get_option('eeSFL_Pro_Version'); // 6.2.x
+	if(!$eeInstalled) { $eeInstalled = get_option('eeSFL_Base_Version'); } // 6.2.x
+	if(!$eeInstalled) { $eeInstalled = get_option('eeSFL_Version'); } // 6.x
+	if(!$eeInstalled) { $eeInstalled = get_option('eeSFL_DB_Version'); } // 5.x
+	if(!$eeInstalled) { $eeInstalled = get_option('eeSFL-DB-Version'); } // 4.xx
+	if(!$eeInstalled) { $eeInstalled = get_option('eeSFL-FREE-DB-Version'); } // Free 3.x
+	if(!$eeInstalled) { $eeInstalled = get_option('eeSFL_FREE_DB_Version'); } // Free 4.x
+	
+	if( $eeInstalled AND version_compare($eeInstalled, eeSFL_ThisPluginVersion, '==') ) {
+		
+		$eeSFL->eeLog['notice'][] = $eeSFL->eeSFL_NOW() . 'Nice! SFL is Up-to-Date :-)';
+				
+		return TRUE;
+	
+	} elseif(!$eeInstalled) { // NOT Installed -> New Install (Woo Hoo!)
+		
+		$eeSFL->eeLog['notice'][] = $eeSFL->eeSFL_NOW() . '--> New Installation <--';
+		
+		$eeSFL->eeListID = 1;
+		$eeSFL->eeListSettings = $eeSFL->eeDefaultListSettings; // Load Default Settings
+		
+		update_option('eeSFL_Settings_1' , $eeSFL->eeListSettings); // Save to DB
+		
+		// Create the file list directory
+		if( !$eeSFL_Environment->eeSFL_FileListDirCheck($this->eeListSettings['FileListDir']) ) { 
+			$eeSFL->eeSFL_WriteLogData();
+			return FALSE;
+		}
+
+		// Add the Documentation File
+		$eeCopyFrom = dirname(__FILE__) . '/Simple-File-List.pdf';
+		$eeCopyTo = ABSPATH . '/' . $eeSFL->eeListSettings['FileListDir'] . 'Simple-File-List.pdf';
+		copy($eeCopyFrom, $eeCopyTo);
+		
+		eeSFL_UpdateFileListArray(); // Scan the Disk
+		
+		$eeSFL->eeLog['notice'][] = $eeSFL->eeSFL_NOW() . 'New Installation Completed';
+	
+	
+	} else { // Upgrading from Older Version
+		
+		// Update to Newer Version
+		$eeSFL->eeLog['notice'][] = $eeSFL->eeSFL_NOW() . 'Updating SFL ' . eeSFL_PluginMenuTitle . ' from ' . $eeInstalled . ' to '. eeSFL_ThisPluginVersion . ' ...';
+			
+		// Check for Previous Install
+		$eeSFL->eeListSettings = get_option('eeSFL-Settings'); // < 5.0
+		if(!$eeSFL->eeListSettings) { $eeSFL->eeListSettings = get_option('eeSFL_Settings_1'); }
+		
+		if(defined('eeSFL_Pro')) { // Background Tasks
+			$eeTasks = get_option('eeSFL_Crons'); // Legacy
+			if(!$eeTasks) { $eeTasks = get_option('eeSFL_Tasks'); }
+		}
+			
+		for($ee = 1; $ee <= 999; $ee++) {
+			
+			$eeSFL->eeListSettings = get_option('eeSFL_Settings_' . $ee);
+			
+			if($eeSFL->eeListSettings) {
+				
+				// 6.1
+				if($eeSFL->eeListSettings['SortBy'] == 'Date') { $eeSFL->eeListSettings['SortBy'] = 'Added'; }
+				if($eeSFL->eeListSettings['SortBy'] == 'DateMod') { $eeSFL->eeListSettings['SortBy'] = 'Changed'; }
+				
+				// 5.3
+				if(isset($eeSFL->eeListSettings['ExpireTime'])) { // Migrate to new cache setting name 
+					$eeSFL->eeListSettings['UseCache'] = $eeSFL->eeListSettings['ExpireTime'];
+					unset($eeSFL->eeListSettings['ExpireTime']);
+					if(is_numeric($eeSFL->eeListSettings['UseCache'])) { $eeSFL->eeListSettings['UseCache'] = 'YES'; }
+				}
+				
+				// 5.4
+				if(isset($eeSFL->eeListSettings['UseCache'])) { // Migrate to new cache system 
+					if($eeSFL->eeListSettings['UseCache'] == 'YES') {
+						$eeSFL->eeListSettings['UseCache'] = 'DAY';
+						$eeSFL->eeListSettings['UseCacheCron'] = 'NO';
+					}
+				}
+				
+				if(isset($eeSFL->eeListSettings['ShowFileDescription'])) {
+					$eeSFL->eeListSettings['ShowFileDesc'] = $eeSFL->eeListSettings['ShowFileDescription']; // V5
+					unset($eeSFL->eeListSettings['ShowFileDescription']);
+				}
+				
+				// Merge-in any new settings
+				$eeSFL->eeListSettings = array_merge($eeSFL->eeDefaultListSettings, $eeSFL->eeListSettings);
+				
+				if($eeSFLA) {
+					
+					// Merge any new Access settings
+					$eeSFL->eeListSettings = array_merge( $eeSFLA->eeDefaultAccessSettings, $eeSFL->eeListSettings );
+					
+					// Mode is now UPPERCASE
+					$eeSFL->eeListSettings['Mode'] = strtoupper($eeSFL->eeListSettings['Mode']);
+					
+					// Settings changes for Limited mode
+					if( isset($eeSFL->eeListSettings['ListMatchMode']) ) {
+						$eeSFL->eeListSettings['LimitedMatchMode'] = $eeSFL->eeListSettings['ListMatchMode'];
+						unset($eeSFL->eeListSettings['ListMatchMode']);
+					}
+					if( isset($eeSFL->eeListSettings['ListRole']) ) {
+						$eeSFL->eeListSettings['LimitedRole'] = $eeSFL->eeListSettings['ListRole'];
+						unset($eeSFL->eeListSettings['ListRole']);
+					}
+					
+					// MaxSize was moved to each list in version 5.2
+					if(isset($eeSFLA_Settings['MaxSize']) AND !isset($eeSFL_Settings['MaxSize'])) { 
+						$eeSFL->eeListSettings['MaxSize'] = $eeSFLA_Settings['MaxSize'];
+					}
+				}
+				
+				if(is_array($eeTasks)) {
+					
+					if(isset($eeTasks[$eeID]['ReIndex'])) {
+						$eeTasks[$eeID]['Scan'] = $eeTasks[$eeID]['ReIndex'];
+					} else {
+						$eeTasks[$eeID]['Scan'] = $eeSFL->eeDefaultListSettings['UseCache'];
+					}
+					if(isset($eeTasks[$eeID]['GenerateThumbs'])) {
+						$eeThumbs = $eeTasks[$eeID]['GenerateThumbs'];
+					} else {
+						$eeThumbs = 'NO';
+					}
+					
+					if($eeTasks[$eeID]['Scan'] == 'YES') {
+						$eeTasks[$eeID]['Scan'] = 'HOUR';
+					} else {
+						$eeTasks[$eeID]['Scan'] = 'NO';
+					}
+					$eeTasks[$eeID]['Background'] = 'NO';
+					$eeTasks[$eeID]['GenerateThumbs'] = $eeThumbs;
+					
+					unset($eeTasks[$eeID]['ReIndex']); // Out with the old
+					
+				} else {
+					$eeTasks = array(1 => array('Scan' => 'DAY', 'Background' => 'NO', 'GenerateThumbs' => 'NO'));
+				}
+				
+				// Update Database
+				ksort($eeSFL->eeListSettings); // Sort for sanity
+				
+				update_option('eeSFL_Settings_' . $eeID , $eeSFL->eeListSettings);
+				
+				// Update File List Option Name, if needed - Rename the file list's option_name value
+				if(get_option('eeSFL-FileList-' . $eeID)) {
+					$eeQuery = "UPDATE $wpdb->options SET option_name = 'eeSFL_FileList_" . $eeID . "' WHERE option_name = 'eeSFL-FileList-" . $eeID . "'";
+					$wpdb->query( $eeQuery );
+					delete_option('eeSFL-FileList-' . $eeID);
+				}
+			}
+		}	
+	}
+	
+	// Plugin General ----------
+	
+	// SFLA
+	if($eeSFLA) {
+		unset($eeSFLA_Settings['MaxSize']); // Remove this now
+		update_option('eeSFLA_Settings', $eeSFLA_Settings);
+	}
+	
+	// Tasks
+	if(defined('eeSFL_Pro')) {
+		update_option('eeSFL_Tasks', $eeTasks);
+		
+		$eeString = get_option('eeSFL-Auth');
+		if($eeString) {
+			add_option('eeSFL_Auth',$eeString); // In with the new
+			delete_option('eeSFL-Auth'); // Out with the old
+		}
+		
+		$eeString = get_option('eeSFL-Registration');
+		if($eeString) {
+			add_option('eeSFL_Registration',$eeString); // In with the new
+			delete_option('eeSFL-Registration'); // Out with the old
+		}
+	}
+	
+	$eeLog = get_option('eeSFL-Log');
+	if($eeLog) {
+		add_option('eeSFL_TheLog', $eeLog); // In with the new
+		delete_option('eeSFL-Log'); // Out with the old
+	}
+	
+	delete_transient('eeSFL-1-FileListDirCheck');
+	delete_transient('eeSFL_FileList_1');
+	delete_transient('eeSFL_FileList-1'); // DB 4.2 and earlier
+	delete_option('eeSFL-DB-Version'); // Out with the old
+	delete_option('eeSFL_DB_Version'); // Out with the old
+	delete_option('eeSFL-FREE-DB-Version'); // Out with the old
+	delete_option('eeSFL_FREE_DB_Version'); // Out with the old
+	delete_option('eeSFL-Settings'); // Out with the old
+	delete_option('eeSFLA-Settings'); // Out with the old
+	delete_option('eeSFL_FREE_DB_Version'); // Out with the old
+	delete_option('eeSFL_FREE_Log'); // Out with the old
+	delete_option('eeSFL_Crons');
+	
+	$eeSFL->eeLog['notice'][] = $eeSFL->eeSFL_NOW() . 'Plugin at Version ' . eeSFL_ThisPluginVersion;
+	
+	$eeSFL->eeSFL_WriteLogData();
+	
+	if(defined('eeSFL_BASE_Version')) {
+		update_option('eeSFL_Base_Version', eeSFL_ThisPluginVersion);
+	} else {
+		update_option('eeSFL_Pro_Version', eeSFL_ThisPluginVersion);
+	}
+	
+	return TRUE;
+}
 
 ?>

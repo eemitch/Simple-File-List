@@ -1,6 +1,6 @@
 === Simple File List ===
 Contributors: eemitch
-Donate link: http://simplefilelist.com
+Donate link: https://simplefilelist.com
 Tags: file list, file sharing, file upload form, upload files, exchange files, host files, zip files, dropbox, ftp
 Requires at least: 5.0
 Requires PHP: 7

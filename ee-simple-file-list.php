@@ -5,11 +5,11 @@
  */
 /*
 Plugin Name: Simple File List
-Plugin URI: http://simplefilelist.com
+Plugin URI: https://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 6.2.1
-Author URI: http://simplefilelist.com
+Version: 6.2.2
+Author URI: https://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
 Domain Path: /languages
@@ -17,13 +17,14 @@ Domain Path: /languages
 
 if(!defined('ABSPATH')) exit('<p>This is an <a href="https://simplefilelist.com">SFL</a> file.</p>');
 
-define('eeSFL_BASE_Version', '6.2.1'); // This is the BASE version
+define('eeSFL_BASE_Version', '6.2.2'); // This is the BASE version
 
-// Prevent Loading if PRO is Active
-if(!defined('eeSFL_Pro')) {
+if(!defined('eeSFL_Pro')) { // This is the BASE version
+	
+	define('eeSFL_Product', 'Base');
+	define('eeSFL_ThisPluginVersion', eeSFL_BASE_Version);
 
 	define('eeSFL_DevMode', TRUE);
-	define('eeSFL_ThisPluginVersion', eeSFL_BASE_Version);
 	
 	// Simple File List Base
 	define('eeSFL_Base', TRUE);
@@ -38,8 +39,11 @@ if(!defined('eeSFL_Pro')) {
 	define('eeSFL_PluginDir', WP_PLUGIN_DIR . '/' . eeSFL_PluginSlug . '/');
 	define('eeSFL_PluginURL', plugins_url() . '/' . eeSFL_PluginSlug . '/');
 	define('eeSFL_Go', date('Y-m-d h:m:s') );
+	define('eeSFL_FileListDirDefault', WP_CONTENT_DIR . '/uploads/simple-file-list/');
 	define('eeSFL_TempDir', WP_CONTENT_DIR . '/simple-file-list-temp-files/');
-	define('eeSFL_TempURL', WP_CONTENT_URL . '/uploads/simple-file-list-temp-files/');
+	define('eeSFL_TempURL', WP_CONTENT_URL . '/simple-file-list-temp-files/');
+	define('eeSFL_CustomThumbsDir', WP_CONTENT_DIR . '/simple-file-list-custom-thumbs/');
+	define('eeSFL_CustomThumbsURL', WP_CONTENT_URL . '/simple-file-list-custom-thumbs/');
 	define('eeSFL_PluginWebPage', 'https://simplefilelist.com/');
 	define('eeSFL_PluginSupportPage', 'https://simplefilelist.com/get-support/');
 	define('eeSFL_AddOnsURL', 'https://get.simplefilelist.com/index.php');
@@ -71,7 +75,6 @@ if(!defined('eeSFL_Pro')) {
 	add_action( 'admin_menu', 'eeSFL_AdminMenu' );
 	add_action( 'admin_notices', 'eeSFL_ALERT' ); // Throw an Admin Notice
 	add_action( 'wp_enqueue_scripts', 'eeSFL_Enqueue' );
-	add_action( 'admin_enqueue_scripts', 'eeSFL_AdminHead'); // <--- BASE ONLY
 	
 	// AJAX
 	add_action( 'wp_ajax_simplefilelist_dismiss', 'simplefilelist_dismiss' ); // Acknowledge New Feature
@@ -85,9 +88,6 @@ if(!defined('eeSFL_Pro')) {
 	add_filter( 'aioseo_conflicting_shortcodes', 'eeSFL_aioseo_filter_conflicting_shortcodes' ); // Prevent All in One SEO plugin from parsing SFL
 	add_filter( 'cron_schedules','eeSFL_CronSchedule' ); // Configure SFL WP-Cron
 	add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'eeSFL_ActionPluginLinks' ); // Add links to the plugins page item
-	
-	// Nobody would ever want to do this, but...
-	register_deactivation_hook( __FILE__, 'eeSFL_Deactivate' );
 }
 
 
@@ -97,9 +97,9 @@ function eeSFL_VersionCheck() {
 
 
 // Load Back-End Resources
-function eeSFL_AdminHead($eeHook) {
+function eeSFL_BASE_AdminHead($eeHook) {
 
-	global $eeSFL, $eeSFL_VarsForJS, $eeSFLA, $eeSFL_Pro;
+	global $eeSFL, $eeSFL_VarsForJS;
 	
 	$eeDependents = array('jquery'); // Requires jQuery
 	
@@ -133,11 +133,11 @@ function eeSFL_AdminHead($eeHook) {
 
 
 // Plugin Activation ==========================================================
-function eeSFL_Activate() {
+function eeSFL_BASE_Activate() {
 	return TRUE;
 }
 
 // Activate
-register_activation_hook( __FILE__, 'eeSFL_Activate' );
+register_activation_hook( __FILE__, 'eeSFL_BASE_Activate' );
 
 ?>
