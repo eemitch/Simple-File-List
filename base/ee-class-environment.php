@@ -314,15 +314,16 @@ class eeSFL_Environment {
 						if(!in_array($eeThisItemPath . $eeNewItemName, $eeFilesFound)) { break; } // If not, we're done.
 						
 					}
+				}
 					
-					// Rename the Item on the Disk
-					if(rename(ABSPATH . $eeThisItemPath . $eeThisItemName, ABSPATH . $eeThisItemPath . $eeNewItemName)) {
-						$this->eeSFL->eeSanitizedFiles[$eeThisItemPath . $eeNewItemName] = $eeThisItemPath . $eeThisItemName;
-						$eeThisItemName = $eeNewItemName;
-						$this->eeSFL->eeLog['notice'][] = $this->eeSFL->eeSFL_NOW() . 'SANITIZED: ' . $eeNewItemName;
-					} else {
-						$this->eeSFL->eeLog['warnings'][] = $this->eeSFL->eeSFL_NOW() . 'RENAME FAILED: ' . $eeThisItemName;
-					}
+				// Rename the Item on the Disk
+				$eePath = ABSPATH . $eeScanDir . $eeThisItemPath;
+				if(rename($eePath . $eeThisItemName, $eePath . $eeNewItemName)) {
+					$this->eeSFL->eeSanitizedFiles[$eeThisItemPath . $eeNewItemName] = $eeThisItemPath . $eeThisItemName;
+					$eeThisItemName = $eeNewItemName;
+					$this->eeSFL->eeLog['notice'][] = $this->eeSFL->eeSFL_NOW() . 'SANITIZED: ' . $eeNewItemName;
+				} else {
+					$this->eeSFL->eeLog['warnings'][] = $this->eeSFL->eeSFL_NOW() . 'RENAME FAILED: ' . $eeThisItemName;
 				}
 			}
 			

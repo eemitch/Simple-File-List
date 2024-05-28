@@ -1,7 +1,7 @@
 === Simple File List ===
 Contributors: eemitch
 Donate link: https://simplefilelist.com
-Tags: file list, file sharing, file upload form, upload files, exchange files, host files, zip files, dropbox, ftp
+Tags: file list, share files, download files, upload files, manage files
 Requires at least: 5.0
 Requires PHP: 7
 Tested up to: 6.4
