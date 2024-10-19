@@ -235,14 +235,8 @@ class eeSFL_BASE_MainClass {
     }
 	
 	
-	// All Files and Folders for a Given List (Big)
 	public $eeAllFiles = array(); 
-	
-	// Files and Folders to Display (Small)
 	public $eeDisplayFiles = array();
-	
-	// Original and Sanitized Names
-	public $eeSanitizedFiles = array(); 
 	
 	public $eeIsFile = FALSE;
 	public $eeFilePath = FALSE;
@@ -598,60 +592,6 @@ class eeSFL_BASE_MainClass {
 			return FALSE;
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	// Contains All Items
-	public $eeSFL_FileScanArray = array(); 
-	
-	// Fill $eeSFL_FileScanArray with files (and folders)
-	public function eeSFL_ScanTheDisk($eeScanDir = FALSE) {
-		
-		// Default to the configured file list directory if no directory is specified
-		$eeScanDir = !$eeScanDir ? $this->eeListSettings['FileListDir'] : $eeScanDir;
-	
-		// Return if the directory does not exist
-		if (!is_dir(ABSPATH . $eeScanDir)) { return FALSE; }
-	
-		// Scan the Disk
-		$eeDirectoryIterator = new DirectoryIterator(ABSPATH . $eeScanDir);
-	
-		// Loop thru and fill $eeSFL_FileScanArray
-		foreach ($eeDirectoryIterator as $eeFile) {
-			
-			$eeFileName = $eeFile->getFilename();
-	
-			// Skip These...
-			if($eeFileName == 'index.html') { continue; } // Skip Directory Protectors
-			if($eeFile->isDot()) { continue; } // Skip upward directories
-			if(strpos($eeFileName, '.') === 0) { continue; } // Skip hidden files
-			if(strpos($eeFileName, '__MACOSX') === 0) { continue; } // Skip MacOS specific files
-			if(!$eeFile->isDir() AND in_array($eeFile->getExtension(), $this->eeForbiddenTypes)) { continue; } // Skip forbidden file types
-	
-			$eeItemPathName = $eeFile->getPathname();
-			$eeItemPathName = str_replace(ABSPATH . $this->eeListSettings['FileListDir'], '', $eeItemPathName);
-			
-			$eePathParts = pathinfo($eeItemPathName);
-			$eeItemName = $eePathParts['basename'];
-			$eeItemExt = $eePathParts['extension'] ?? FALSE;
-			$eeItemPath = $eePathParts['dirname'] === '.' ? '' : $eePathParts['dirname'] . '/';
-			
-			// Processing for directories
-			if ($eeFile->isDir() AND defined('eeSFL_Version')) { // (Pro Only)
-				$this->eeSFL_FileScanArray[] = $eeItemPath . $eeItemName . '/';
-				$this->eeSFL_ScanTheDisk($eeScanDir . $eeItemName . '/'); // Dive Deeper
-			} 
-			// Processing for files
-			elseif ($eeFile->isFile()) {
-				$this->eeSFL_FileScanArray[] = $eeItemPath . $eeItemName;
-			}
-		}
-	}
     
     
     
@@ -676,8 +616,7 @@ class eeSFL_BASE_MainClass {
 	    $this->eeAllFiles = get_option('eeSFL_FileList_1');
 	    if(!is_array($this->eeAllFiles)) { $this->eeAllFiles = array(); $eeMessages[] = 'No File Array Found in the Database'; }
 	    
-	    // List the actual files on the disk and fill $this->eeSFL_FileScanArray
-		$this->eeSFL_ScanTheDisk();
+	    $this->eeSFL_IndexFileListDir();
 		
 		if(empty($this->eeSFL_FileScanArray)) {
 		    $this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - No Files Found';
@@ -886,59 +825,136 @@ class eeSFL_BASE_MainClass {
 		
 		// exit('THUD');
     }
+    
+    
+    
+	
+	// Files on the Disk
+	private $eeSFL_FileScanArray = array();
+	
+	// Original and Sanitized Names
+	private $eeSanitizedFiles = array(); 
+	
+	// Get All the Files
+	private function eeSFL_IndexFileListDir() {
+	    
+	    $eeThisItemPath = ''; // BASE Never Has a Folder Path
+	    
+	    if(!is_dir(ABSPATH . $this->eeListSettings['FileListDir'])) {
+		    
+		    $this->eeLog[eeSFL_BASE_Go]['errors'][] = 'The directory is Gone :-0  Re-Creating...';
+		    
+		    eeSFL_BASE_FileListDirCheck($this->eeListSettings['FileListDir']);
+	    }
+		    
+	    $this->eeLog[eeSFL_BASE_Go]['notice'][] = 'Indexing files from: ' . $this->eeListSettings['FileListDir']; 
+	    
+	    $eeLastScan = scandir(ABSPATH . $this->eeListSettings['FileListDir']);
+	    
+	    foreach($eeLastScan as $eeThisItemName) {
+	    	
+	    	if(strpos($eeThisItemName, '.') === 0 ) { continue; }
+	    	
+	    	$eePathParts = pathinfo($eeThisItemName);
+			if(isset($eePathParts['extension'])) {
+				if( in_array($eePathParts['extension'], $this->eeForbiddenTypes) ) { continue; }
+			}
+		    	
+	    	if(is_file(ABSPATH . $this->eeListSettings['FileListDir'] . $eeThisItemName)) { // Is a regular file
+	    	
+		    	if(in_array($eeThisItemName, $this->eeExcludedFileNames) )  { continue; } // Excluded
+		    	
+		        $this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - File Found: ' . $eeThisItemName;
+		        
+		        $eeNewItemName = $this->eeSFL_SanitizeFileName($eeThisItemName);
+		        
+		        if($eeNewItemName != $eeThisItemName) { // Sanitized
+		        
+					$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - OLD --> Problematic File Name: ' . $eeThisItemName;
+					
+					// Prevent over-writing another file that has been sanitized
+			        if( in_array($eeNewItemName, $eeLastScan) ) {
+						
+						$eePathParts = pathinfo($eeNewItemName);
+						$eeNameOnly = $eePathParts['filename'];
+						$eeExtension = $eePathParts['extension'];
+				        
+				        for ($i = 1; $i <= 10000; $i++) { // Loop thru
+							
+							$eeNewItemName = $eeNameOnly . '_' . $i . '.' . $eeExtension; // Add the copy number
+							
+							if(!in_array($eeThisItemPath . $eeNewItemName, $eeLastScan)) { break; } // If no copy is there, we're done.
+							
+						}
+			        }
+		            
+		            if(rename(ABSPATH . $this->eeListSettings['FileListDir'] . $eeThisItemName, ABSPATH . $this->eeListSettings['FileListDir'] . $eeNewItemName)) {
+			        	
+			        	$this->eeSanitizedFiles[$eeThisItemPath . $eeNewItemName] = $eeThisItemPath . $eeThisItemName;
+			        	
+			        	$eeThisItemName = $eeNewItemName;
+			        	
+						$this->eeLog[eeSFL_BASE_Go]['notice'][] = eeSFL_BASE_noticeTimer() . ' - NEW --> File Name Sanitized: ' . $eeNewItemName;
+		        	}
+	            }
+	            
+	            $this->eeSFL_FileScanArray[] = $eeThisItemName;
+
+			}
+	    	
+	    }
+
+		return;
+	}
 	
 	
 	
 	// Move, Rename or Delete a thumbnail - Expects path relative to FileListDir
-	public function eeSFL_UpdateThumbnail($eeFileFrom, $eeFileTo) {		
+	public function eeSFL_UpdateThumbnail($eeFileFrom, $eeFileTo) {
 		
 		$this->eeListSettings = $this->eeSFL_GetSettings(1); // Get this list
-	
+		
 		$eePathPartsFrom = pathinfo($eeFileFrom);
-	
+		
 		if(isset($eePathPartsFrom['extension'])) { // Files only
-	
+			
 			if($eePathPartsFrom['extension'] = 'pdf' 
-	
 				OR in_array($eePathPartsFrom['extension'], $this->eeDynamicImageThumbFormats) 
-	
 					OR in_array($eePathPartsFrom['extension'], $this->eeDynamicVideoThumbFormats) ) {
-	
+				
 				// All thumbs are JPGs
 				if($eePathPartsFrom['extension'] != 'jpg') { 
-	
 					$eeFileFrom = str_replace('.' . $eePathPartsFrom['extension'], '.jpg', $eeFileFrom);
-	
 					$eeFileTo = str_replace('.' . $eePathPartsFrom['extension'], '.jpg', $eeFileTo);
 				}
-	
+				
 				$eeThumbFrom = ABSPATH . $this->eeListSettings['FileListDir'];
-	
+				
 				if($eePathPartsFrom['dirname'] != '.') { $eeThumbFrom .= $eePathPartsFrom['dirname']; }
-	
+				
 				$eeThumbFrom .= '/.thumbnails/thumb_' . basename($eeFileFrom);
-	
+				
 				if( is_file($eeThumbFrom) ) {
-	
+					
 					if(!$eeFileTo) { // Delete the thumb
-	
+						
 						if(unlink($eeThumbFrom)) {
-	
+							
 							$eeSFL_Log['notice'][] = 'Deleted Thumbnail For: ' . basename($eeFileFrom);
-	
+							
 							return;
-	
 						}
+					
 					} else { // Move / Rename
-	
+						
 						$eePathPartsTo = pathinfo($eeFileTo);
-	
+						
 						$eeThumbTo = ABSPATH . $this->eeListSettings['FileListDir'] . $eePathPartsTo['dirname'] . '/.thumbnails/thumb_' . basename($eeFileTo);
-	
+						
 						if(rename($eeThumbFrom, $eeThumbTo)) { // Do nothing on failure
-	
+						
 							$eeSFL_Log['notice'][] = 'Thumbnail Updated For: ' . basename($eeFileFrom);
-	
+							
 							return;
 						}
 					}
@@ -946,6 +962,7 @@ class eeSFL_BASE_MainClass {
 			}
 		}
 	}
+	
 	
 	
 	
@@ -1476,17 +1493,22 @@ class eeSFL_BASE_MainClass {
 	
 	
 	
+	// File/Folder Sanitizer RegEx - These must match the values in ee-head.js as close as possible 
+	public $eeRegEx_Remove = '/[^\w\-. \x00A0-\xD7FF\xF900-\xFDCF\xFDF0-\xFFEF]+|[@~^:;<>?]+/u';
+	public $eeRegEx_Replace = '/[.\s]+/';
+	
 	// Make sure the file name is acceptable
 	public function eeSFL_SanitizeFileName($eeFileName) {
 		
-		// Get the name and extension
+		// Make sure file has an extension
 		$eePathParts = pathinfo($eeFileName);
+		$eeFileNameOnly = str_replace('.', '-', $eePathParts['filename']); // Get rid of dots
 		
-		// Let WordPress sanitize
-		$eeFileNameOnly = sanitize_file_name($eePathParts['filename']);
-		
-		// Get rid of dots in the name
-		$eeFileNameOnly = str_replace('.', '_', $eeFileNameOnly); // Get rid of dots
+		// Replace These: eeSFL_RegEx_Replace
+		$eeFileNameOnly = preg_replace($this->eeRegEx_Replace, '-', $eeFileNameOnly);
+			
+		// Remove These: eeSFL_RegEx_Remove
+		$eeFileNameOnly = preg_replace($this->eeRegEx_Remove, '', $eeFileNameOnly);
 		
 		if($eeFileNameOnly) {
 		
@@ -1498,14 +1520,25 @@ class eeSFL_BASE_MainClass {
 			
 			// It's a Folder
 			return $eeFileNameOnly;
-		
-		} else {
-			$this->eeLog[eeSFL_BASE_Go]['warning'][] = 'File Name Sanitization Left No Name for ' . addslashes($eeFileName);
 		}
 		
 		return FALSE;
 	}
 	
+	
+	
+	
+	// Make sure the file name is acceptable
+	public function eeSFL_SanitizeFileName_OLD($eeSFL_FileName) {
+		
+		// Make sure file has an extension
+		$eeSFL_PathParts = pathinfo($eeSFL_FileName);
+		$eeSFL_FileNameAlone = str_replace('.', '_', $eeSFL_PathParts['filename']); // Get rid of dots
+		$eeSFL_Extension = strtolower($eeSFL_PathParts['extension']);
+		$eeSFL_FileName = eeSFL_SanitizeFileName($eeSFL_FileNameAlone . '.' . $eeSFL_Extension);
+	    
+	    return $eeSFL_FileName;
+	}
 	
 	
 	

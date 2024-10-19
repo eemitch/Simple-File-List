@@ -237,8 +237,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 == Changelog ==
 
 = 6.1.12 =
-* Updated disk scanning method gives a boost to larger list performance.
-* Fixes and Improvements to file editing, with an improved and a more user friendly name sanitizer.
+* Fixes and Improvements to file editing, with an improved and more liberal name sanitizer.
 * Added in the Pro version's ability to edit file dates, both date added and the date changed.
 * Improved the Admin File List table header so you know if the dates listed are Added or Changed.
 * Improved Security
