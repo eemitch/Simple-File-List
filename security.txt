@@ -1,0 +1,8 @@
+# security.txt
+# Contact information for security issues related to Simple File List plugins
+
+Contact: mailto:support@simplefilelist.com
+Contact: mailto:mitch@elementengage.com  # Backup contact
+Preferred-Languages: en
+Policy: https://simplefilelist.com/simple-file-list-security-policy/
+Expires: 2026-01-01T00:00:00Z

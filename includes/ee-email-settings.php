@@ -60,7 +60,7 @@ $eeOutput .= $eeSFL_BASE->eeSFL_ResultsNotification();
 // Begin the Form	
 $eeOutput .= '
 
-<form action="' . admin_url() . '?page=' . eeSFL_BASE_PluginSlug . '&tab=settings&subtab=email_settings" method="post" id="eeSFL_Settings">
+<form action="' . $eeURL . '" method="post" id="eeSFL_Settings">
 <input type="hidden" name="eePost" value="TRUE" />';	
 $eeOutput .= wp_nonce_field( 'ee-simple-file-list-settings', 'ee-simple-file-list-settings-nonce', TRUE, FALSE);
 

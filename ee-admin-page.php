@@ -26,7 +26,11 @@ function eeSFL_BASE_BackEnd() {
 	}
 
 	// Get the new tab's query string value. We will only use values to display tabs that we are expecting.
-	if( isset( $_GET[ 'tab' ] ) ) { $active_tab = esc_js(sanitize_text_field($_GET[ 'tab' ])); } else { $active_tab = 'file_list'; }
+	if( isset( $_GET['tab'] ) ) {
+		$active_tab = sanitize_text_field( $_GET['tab'] ); // Sanitize input
+	} else {
+		$active_tab = 'file_list'; // Default tab
+	}
 	
 	$eeOutput .= '
 	<h2 class="nav-tab-wrapper">';
@@ -35,44 +39,30 @@ function eeSFL_BASE_BackEnd() {
 	
 	// File List
 	$eeOutput .= '
-	
 	<span class="nav-tab-wrapper-left">
-	
-	<a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=file_list" class="nav-tab ';  
-	if($active_tab == 'file_list') {$eeOutput .= ' eeActiveTab '; }    
-    $active_tab == 'file_list' ? 'nav-tab-active' : '';
-    $eeOutput .= $active_tab . '">' . __('File List', 'ee-simple-file-list') . '</a>';
-    
+	<a href="?page=' . esc_attr(eeSFL_BASE_PluginSlug) . '&tab=file_list" class="nav-tab ' . ($active_tab == 'file_list' ? 'nav-tab-active eeActiveTab' : '') . '">' . __('File List', 'ee-simple-file-list') . '</a>';
 	
 	// Settings
-    $eeOutput .= '
-    <a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=settings" class="nav-tab ';   
-	if($active_tab == 'settings') {$eeOutput .= ' eeActiveTab '; }  
-    $active_tab == 'settings' ? 'nav-tab-active' : ''; 
-    $eeOutput .= $active_tab . '">' . __('List Settings', 'ee-simple-file-list') . '</a>
-    
-    <a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=pro" class="nav-tab ';   
-	if($active_tab == 'pro') {$eeOutput .= ' eeActiveTab '; }  
-    $active_tab == 'pro' ? 'nav-tab-active' : ''; 
-    $eeOutput .= $active_tab . '">' . __('Upgrade Version', 'ee-simple-file-list') . '</a>
-    
-    
-    </span>
-    <span class="nav-tab-wrapper-right">
-    
-    
-    <a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=author" class="nav-tab ';   
-	if($active_tab == 'author') {$eeOutput .= ' eeActiveTab '; }  
-    $active_tab == 'author' ? 'nav-tab-active' : ''; 
-    $eeOutput .= $active_tab . '">' . __('Author', 'ee-simple-file-list') . '</a>';
-    
-    // Link to Support Form
-    $eeOutput .= '
-    <a href="https://simplefilelist.com/get-support/" class="nav-tab" target="_blank">' . __('Get Help', 'ee-simple-file-list') . ' &rarr;</a>
-    
-    </span>
-    
-    </h2>'; // END Main Tabs   
+	$eeOutput .= '
+	<a href="?page=' . esc_attr(eeSFL_BASE_PluginSlug) . '&tab=settings" class="nav-tab ' . ($active_tab == 'settings' ? 'nav-tab-active eeActiveTab' : '') . '">' . __('List Settings', 'ee-simple-file-list') . '</a>';
+	
+	// Pro Upgrade
+	$eeOutput .= '
+	<a href="?page=' . esc_attr(eeSFL_BASE_PluginSlug) . '&tab=pro" class="nav-tab ' . ($active_tab == 'pro' ? 'nav-tab-active eeActiveTab' : '') . '">' . __('Upgrade Version', 'ee-simple-file-list') . '</a>
+	</span>';
+	
+	// Right Tabs -------
+	$eeOutput .= '
+	<span class="nav-tab-wrapper-right">
+	<a href="?page=' . esc_attr(eeSFL_BASE_PluginSlug) . '&tab=author" class="nav-tab ' . ($active_tab == 'author' ? 'nav-tab-active eeActiveTab' : '') . '">' . __('Author', 'ee-simple-file-list') . '</a>';
+	
+	// Link to Support Form
+	$eeOutput .= '
+	<a href="https://simplefilelist.com/get-support/" class="nav-tab" target="_blank">' . __('Get Help', 'ee-simple-file-list') . ' &rarr;</a>
+	</span>
+	</h2>';
+	// END Main Tabs
+   
     
     
     // Tab Content =============================================================
@@ -167,38 +157,30 @@ function eeSFL_BASE_BackEnd() {
 	} elseif($active_tab == 'settings') {
 		
 		// Sub Tabs
-		if( isset( $_GET[ 'subtab' ] ) ) { $active_subtab = esc_js(sanitize_text_field($_GET['subtab'])); } else { $active_subtab = 'list_settings'; }
-	    	
-    	$eeOutput .= '
-    	
-    	<h2 class="nav-tab-wrapper">
-    	<div class="ee-nav-sub-tabs">';
+		if( isset( $_GET['subtab'] ) ) {
+			$active_subtab = sanitize_text_field( $_GET['subtab'] ); // Sanitize input
+		} else {
+			$active_subtab = 'list_settings'; // Default subtab
+		}
+		
+		$eeOutput .= '
+		<h2 class="nav-tab-wrapper">
+		<div class="ee-nav-sub-tabs">';
 		
 		// List Settings
-		$eeOutput .= '<a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=settings&subtab=list_settings" class="nav-tab ';  
-		if($active_subtab == 'list_settings') {$eeOutput .= '  eeActiveTab ';}    
-	    $active_subtab == 'list_settings' ? 'nav-tab-active' : '';    
-	    $eeOutput .= $active_subtab . '">' . __('File List Settings', 'ee-simple-file-list') . '</a>';
-	    
-	    // Uploader Settings
-		$eeOutput .= '<a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=settings&subtab=uploader_settings" class="nav-tab ';  
-		if($active_subtab == 'uploader_settings') {$eeOutput .= '  eeActiveTab ';}    
-	    $active_subtab == 'uploader_settings' ? 'nav-tab-active' : '';    
-	    $eeOutput .= $active_subtab . '">' . __('File Upload Settings', 'ee-simple-file-list') . '</a>';
-	    
-	    // Notifications Settings
-		$eeOutput .= '<a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=settings&subtab=email_settings" class="nav-tab ';  
-		if($active_subtab == 'email_settings') {$eeOutput .= '  eeActiveTab ';}    
-	    $active_subtab == 'email_settings' ? 'nav-tab-active' : '';    
-	    $eeOutput .= $active_subtab . '">' . __('Notification Settings', 'ee-simple-file-list') . '</a>';
-	    
-	    // Extension Settings (Coming Soon)
-		$eeOutput .= '<a href="?page=' . eeSFL_BASE_PluginSlug . '&tab=settings&subtab=extension_settings" class="nav-tab ';  
-		if($active_subtab == 'extension_settings') {$eeOutput .= '  eeActiveTab ';}    
-		$active_subtab == 'extension_settings' ? 'nav-tab-active' : '';    
-		$eeOutput .= $active_subtab . '">' . __('Extension Settings', 'ee-simple-file-list') . '</a>';
-	    
-	    // END Subtabs
+		$eeOutput .= '<a href="?page=' . esc_attr(eeSFL_BASE_PluginSlug) . '&tab=settings&subtab=list_settings" class="nav-tab ' . ($active_subtab == 'list_settings' ? 'nav-tab-active' : '') . '">' . __('File List Settings', 'ee-simple-file-list') . '</a>';
+		
+		// Uploader Settings
+		$eeOutput .= '<a href="?page=' . esc_attr(eeSFL_BASE_PluginSlug) . '&tab=settings&subtab=uploader_settings" class="nav-tab ' . ($active_subtab == 'uploader_settings' ? 'nav-tab-active' : '') . '">' . __('File Upload Settings', 'ee-simple-file-list') . '</a>';
+		
+		// Notifications Settings
+		$eeOutput .= '<a href="?page=' . esc_attr(eeSFL_BASE_PluginSlug) . '&tab=settings&subtab=email_settings" class="nav-tab ' . ($active_subtab == 'email_settings' ? 'nav-tab-active' : '') . '">' . __('Notification Settings', 'ee-simple-file-list') . '</a>';
+		
+		// Extension Settings (Coming Soon)
+		$eeOutput .= '<a href="?page=' . esc_attr(eeSFL_BASE_PluginSlug) . '&tab=settings&subtab=extension_settings" class="nav-tab ' . ($active_subtab == 'extension_settings' ? 'nav-tab-active' : '') . '">' . __('Extension Settings', 'ee-simple-file-list') . '</a>';
+		
+		// End Subtabs
+
 	    $eeOutput .= '
 	    
 	    </div>

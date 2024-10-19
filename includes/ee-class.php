@@ -1580,52 +1580,56 @@ class eeSFL_BASE_MainClass {
 	
 	
 	
-	// Get the current URL
+	// Get the current URL securely
 	public function eeSFL_GetThisURL($eeIncludeQuery = TRUE) {
-		
-		// Find what is contained in the address bar?
-		// Example: https://mywebsite.com/wordpress/wp-admin/admin.php?page=ee-simple-file-list-pro&eeFolder=WTEA_Curriculum&eeListID=1&ee=1
-		
+	
 		$eeProtocol = ''; $eeHost = ''; $eeSubFolder = ''; $eeArguments = '';
-		
+	
 		// If HTTP_HOST is empty, use site_url()
 		if( empty($_SERVER['HTTP_HOST']) ) {
-			
-			$eeHost = site_url(); // This will contain the path to the WP core files, plus slash
-			
+	
+			$eeHost = esc_url( site_url() ); // This will contain the path to the WP core files, plus slash
+	
 			if( strpos($_SERVER['REQUEST_URI'], '?') !== FALSE ) { 
-				$eeArray = explode('?', $_SERVER['REQUEST_URI']);
-				if(!empty($eeArray[1])) { $eeArguments = $eeArray[1]; }
+				$eeArray = explode('?', sanitize_text_field($_SERVER['REQUEST_URI'])); // Sanitize input
+				if(!empty($eeArray[1])) { 
+					$eeArguments = sanitize_text_field($eeArray[1]); // Sanitize query string arguments
+				}
 			}
-		
+	
 		} else {
-			
+	
 			$eeProtocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://"; // Protocol
-			$eeHost = $_SERVER['HTTP_HOST']; // Host
-			
-			// Get folder path
+			$eeHost = sanitize_text_field($_SERVER['HTTP_HOST']); // Sanitize Host
+	
+			// Get folder path and sanitize the URI
 			if( strpos($_SERVER['REQUEST_URI'], '?') !== false ) {
-				
-				$eeArray = explode('?', $_SERVER['REQUEST_URI']);
-				if(!empty($eeArray[0])) { $eeSubFolder = $eeArray[0]; }
-				if(!empty($eeArray[1])) { $eeArguments = $eeArray[1]; }
-			
+	
+				$eeArray = explode('?', sanitize_text_field($_SERVER['REQUEST_URI'])); // Sanitize input
+				if(!empty($eeArray[0])) { 
+					$eeSubFolder = sanitize_text_field($eeArray[0]); // Sanitize path
+				}
+				if(!empty($eeArray[1])) { 
+					$eeArguments = sanitize_text_field($eeArray[1]); // Sanitize query string arguments
+				}
+	
 			} else {
-				$eeSubFolder = $_SERVER['REQUEST_URI']; // Just a folder path or a single slash
+				$eeSubFolder = sanitize_text_field($_SERVER['REQUEST_URI']); // Sanitize the folder path
 			}
-		}
-		
-		// Reassemble the URL
-		$eeURL = $eeProtocol . $eeHost . $eeSubFolder;
-		
-		// Re-Add the Query if Needed
-		if($eeIncludeQuery === TRUE) { 
-			$eeURL .= '?' . $eeArguments;
-			$eeURL = remove_query_arg('eeReScan', $eeURL); // Don't want this
 		}
 	
-		return $eeURL;
+		// Reassemble the URL
+		$eeURL = $eeProtocol . $eeHost . $eeSubFolder;
+	
+		// Re-Add the Query if Needed
+		if($eeIncludeQuery === TRUE && !empty($eeArguments)) { 
+			$eeURL .= '?' . $eeArguments;
+			$eeURL = esc_url( remove_query_arg('eeReScan', $eeURL) ); // Ensure the URL is escaped and sanitized
+		}
+	
+		return esc_url( $eeURL ); // Return safely escaped URL
 	}
+
 
 
 	
