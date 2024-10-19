@@ -128,7 +128,7 @@ function eeSFL_BASE_BackEnd() {
 				<div class="eeColHalfRight">';
 				
 				// Check Array and Get File Count
-				if(!empty($eeSFL_BASE->eeAllFiles)) { 
+				if(is_array($eeSFL_BASE->eeAllFiles)) { 
 					
 					$eeFileCount = count($eeSFL_BASE->eeAllFiles);
 					
@@ -147,7 +147,7 @@ function eeSFL_BASE_BackEnd() {
 					unset($eeArray);
 				
 				} else { 
-					$eeSFL_BASE->eeAllFiles = array();
+					$eeSFL_BASE->eeAllFiles = array('' => ''); // No files found :-(
 				}
 				
 				$eeOutput .= '</div>';
