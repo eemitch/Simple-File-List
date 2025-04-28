@@ -4,8 +4,8 @@ Donate link: http://simplefilelist.com
 Tags: file list, file sharing, file upload form, upload files, exchange files, host files, zip files, dropbox, ftp
 Requires at least: 5.0
 Requires PHP: 7
-Tested up to: 6.4
-Stable tag: 6.1.13
+Tested up to: 6.8
+Stable tag: 6.1.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,7 +94,7 @@ Simple File List is also a good alternative for organizations using clumsy FTP o
 
 Try out the free demo:
 
-[Simple File List Demo](https://free.simple-file-list.com)
+[Simple File List Demo](https://free.simplefilelist.com)
 
 
 ##Upgrade to the PRO Version to Add Sub-Folder Support
@@ -158,7 +158,7 @@ Restrict access to all of the files by default. Grant access to specific files t
 * Use a shortcode to place a search form anywhere on your website.
 **[eeSFLS permalink='file-list-url']**
 
-[More Information](htts://simplefilelist.com/) | [Try the Demo](https://demo.simple-file-list.com/add-search-and-pagination/)
+[More Information](htts://simplefilelist.com/) | [Try the Demo](https://demo.simplefilelist.com/add-search-and-pagination/)
 
 
 == Installation ==
@@ -224,7 +224,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Upgrade Notice ==
 
-* 6.1.13 - Security Fixes
+* 6.1.14 - Updates and Fixes
 
 
 == Screenshots ==
@@ -236,8 +236,12 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Changelog ==
 
+= 6.1.14 =
+* Removed the feature to force English on the back-end.
+
+
 = 6.1.13 =
-* Security Fix for a reflecte cross-site scripting (XSS) issue
+* Security Fix for a reflected cross-site scripting (XSS) issue
 * Security improvements to back-end navigation tabs.
 
 = 6.1.11 =

@@ -2,38 +2,10 @@
 	
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeInclude' )) exit('ERROR 98'); // Exit if nonce fails
-
-$eeLocale = get_locale();
-$eeLocaleSetting = get_option('eeSFL_Lang');
 	
 $eeOutput .= '
 
 <footer class="eeClearFix">';
-
-	if($eeLocale != 'en_US') {
-	
-		$eeOutput .= '
-		
-		<form id="eeSFL_LangOption" action="' . $eeSFL_BASE->eeSFL_GetThisURL() . '" method="post">	
-		
-			<p>' . __('Use English on the Back-End', 'ee-simple-file-list') . '</p>
-				
-			
-			<input type="radio" id="eeLangOptionNative" name="eeLangOption" value="' . $eeLocale . '"';
-			
-			if(!$eeLocaleSetting OR $eeLocaleSetting != 'en_US') { $eeOutput .= ' checked="checked"'; }
-			
-			$eeOutput .= '> <label for="eeLangOptionNative">' . $eeLocale . '</label> | <input type="radio" id="eeLangOptionEnglish" name="eeLangOption" value="en_US"';
-			
-			if($eeLocaleSetting == 'en_US') { $eeOutput .= ' checked="checked"'; }
-			
-			$eeOutput .= '> <label for="eeLangOptionEnglish">en_US</label> 
-			
-			<input class="button" type="submit" name="eeLangOptionSubmit" value="' . __('Save', 'ee-simple-file-list') . '" />
-			
-		</form>';
-	
-	}
 	
 	$eeOutput .= '<p id="eeFooterImportant" class="eeHide">' . __('IMPORTANT: Allowing the public to upload files to your web server comes with risk.', 'ee-simple-file-list') . ' ' .  
 	__('Please go to Upload Settings and ensure that you only use the file types that you absolutely need.', 'ee-simple-file-list') . ' ' .  
@@ -57,8 +29,6 @@ $eeOutput .= '
 
 <!-- END SFL ADMIN -->
 
-
 ';
 
-	
 ?>

@@ -8,7 +8,7 @@ Plugin Name: Simple File List
 Plugin URI: http://simplefilelist.com
 Description: A Basic File List Manager with File Uploader
 Author: Mitchell Bennis
-Version: 6.1.13
+Version: 6.1.14
 Author URI: http://simplefilelist.com
 License: GPLv2 or later
 Text Domain: ee-simple-file-list
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // CONSTANTS
 define('eeSFL_BASE_DevMode', FALSE);
-define('eeSFL_BASE_Version', '6.1.13'); // Plugin version
+define('eeSFL_BASE_Version', '6.1.14'); // Plugin version
 define('eeSFL_BASE_PluginName', 'Simple File List');
 define('eeSFL_BASE_PluginSlug', 'ee-simple-file-list');
 define('eeSFL_BASE_PluginDir', 'simple-file-list');
@@ -63,12 +63,10 @@ function eeSFL_BASE_aioseo_filter_conflicting_shortcodes( $conflictingShortcodes
    return $conflictingShortcodes;
 }
 
-
-// Language Enabler
 function eeSFL_BASE_Textdomain() {
-	load_plugin_textdomain( 'ee-simple-file-list', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+	load_plugin_textdomain('ee-simple-file-list', false, basename(dirname(__FILE__)) . '/languages/');
 }
-
+add_action('plugins_loaded', 'eeSFL_BASE_Textdomain');
 
 
 // Plugin Setup
@@ -138,24 +136,6 @@ function eeSFL_BASE_Setup() {
 		// echo '<pre>'; print_r($eeSFL_BASE->eeListSettings); echo '</pre>';
 		// echo '<pre>'; print_r($eeSFL_BASE->eeLog); echo '</pre>'; exit;
 	}
-	
-	// Language Setup
-	if(isset($_POST['eeLangOptionSubmit'])) {
-	
-		if($_POST['eeLangOption'] == 'en_US') {
-			update_option('eeSFL_Lang', 'en_US');
-		} else {
-			delete_option('eeSFL_Lang');
-		}
-	}
-	
-	$eeLocaleSetting = get_option('eeSFL_Lang');
-	
-	if(!is_admin() OR !$eeLocaleSetting OR $eeLocaleSetting != 'en_US') {
-		eeSFL_BASE_Textdomain(); 
-		if($eeSFLM) { eeSFLM_Textdomain(); }
-	}
-	
 	
 	// Extensions
 	if(isset($eeSFL_BASE_Extensions)) {
