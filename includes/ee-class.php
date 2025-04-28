@@ -5,7 +5,9 @@ if ( ! wp_verify_nonce( $eeSFL_Nonce, 'eeSFL_Class' ) ) exit('ERROR 98'); // Exi
 
 class eeSFL_BASE_MainClass {
     
-    // File Types
+    public $eeListID = 1;
+	
+	// File Types
     public $eeDynamicImageThumbFormats = array('gif', 'jpg', 'jpeg', 'png', 'tif', 'tiff');
     
     public $eeDynamicVideoThumbFormats = array('avi', 'flv', 'm4v', 'mov', 'mp4', 'webm', 'wmv');
@@ -243,6 +245,7 @@ class eeSFL_BASE_MainClass {
 	public $eeFileURL = FALSE;
 	public $eeFileName = FALSE;
 	public $eeFileExt = FALSE;
+	public $eeFileMIME = FALSE;
 	public $eeRealFileName = FALSE;
 	public $eeFileNiceName = FALSE;
 	public $eeFileDescription = FALSE;
@@ -379,7 +382,7 @@ class eeSFL_BASE_MainClass {
 			// Reset These
 			$this->eeFileNiceName = FALSE;
 			$this->eeFileDescription = FALSE;
-			$this->eeSubmitterComments = FALSE;
+			$this->eeFileSubmitterComments = FALSE;
 			$this->eeFileOwner = FALSE;
 			$this->eeFileSubmitterEmail = FALSE;
 			$this->eeFileSubmitterName = FALSE;

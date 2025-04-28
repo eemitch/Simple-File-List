@@ -238,7 +238,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 = 6.1.14 =
 * Removed the feature to force English on the back-end.
-
+* Quelled some PHP 8 depreciation notices.
 
 = 6.1.13 =
 * Security Fix for a reflected cross-site scripting (XSS) issue

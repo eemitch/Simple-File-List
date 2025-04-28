@@ -66,7 +66,7 @@ function eeSFL_BASE_aioseo_filter_conflicting_shortcodes( $conflictingShortcodes
 function eeSFL_BASE_Textdomain() {
 	load_plugin_textdomain('ee-simple-file-list', false, basename(dirname(__FILE__)) . '/languages/');
 }
-add_action('plugins_loaded', 'eeSFL_BASE_Textdomain');
+add_action('init', 'eeSFL_BASE_Textdomain');
 
 
 // Plugin Setup
@@ -136,7 +136,7 @@ function eeSFL_BASE_Setup() {
 		// echo '<pre>'; print_r($eeSFL_BASE->eeListSettings); echo '</pre>';
 		// echo '<pre>'; print_r($eeSFL_BASE->eeLog); echo '</pre>'; exit;
 	}
-	
+		
 	// Extensions
 	if(isset($eeSFL_BASE_Extensions)) {
 	
