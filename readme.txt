@@ -1,11 +1,11 @@
 === Simple File List ===
 Contributors: eemitch
 Donate link: http://simplefilelist.com
-Tags: file list, file sharing, file upload form, upload files, exchange files, host files, zip files, dropbox, ftp
+Tags: file list, file sharing, share documents, zip files, ftp alternative
 Requires at least: 5.0
 Requires PHP: 7
 Tested up to: 6.8
-Stable tag: 6.1.14
+Stable tag: 6.1.15
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,7 @@ Simple File List is also a good alternative for organizations using clumsy FTP o
 * Manage your files and the list settings from the Admin List on the back-end.
 * Choose from three file list styles: table, tiles or flex.
 * Choose from a light or dark theme, or choose no theme and provide the styling of your theme.
-* Complete settings for the file list style and display, file upload restrictions, and upload notifications. 
+* Complete settings for the file list style and display, file upload restrictions, and upload notifications.
 * Both the front-end list and file upload form can be shown to users based on their role; Everyone, Only Logged-in User, Only Admins or Nobody (OFF).
 * Collect the users name, email and description of the file(s) uploaded. This can optionally be shown in the file list.
 * Files can be assigned descriptions, which can be added from the Admin list or user uploads.
@@ -39,7 +39,7 @@ Simple File List is also a good alternative for organizations using clumsy FTP o
 * Posting official documents.
 * Sharing files within an organization.
 * Sharing files with business clients or a community.
-* Enabling distance learning by allowing schools to share class materials with students. 
+* Enabling distance learning by allowing schools to share class materials with students.
 * When you need a list of archived files, such as videos, PDF files, or music files.
 * When you need a simple front-side uploader so people can send you files.
 * Exchanging files when the sizes get too large for email attachments.
@@ -189,7 +189,7 @@ Yes, you can limit to Admins or anyone who is logged in. If you need further use
 
 = Q: Can people who upload overwrite existing files? =
 
-A: No, by default a file will not be overwritten. If a file is uploaded having the same name as one already present, a series number is appended to the name ( filename_(2).ext ). If you don’t want this, uncheck the box on the Upload Settings tab. 
+A: No, by default a file will not be overwritten. If a file is uploaded having the same name as one already present, a series number is appended to the name ( filename_(2).ext ). If you don’t want this, uncheck the box on the Upload Settings tab.
 
 = Q: Can I place different lists in different places? =
 
@@ -224,7 +224,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 == Upgrade Notice ==
 
-* 6.1.14 - Updates and Fixes
+* 6.1.15 - Security Fix
 
 
 == Screenshots ==
@@ -235,6 +235,9 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 
 
 == Changelog ==
+
+= 6.1.15 =
+* Addressed a security issue involving file renaming.
 
 = 6.1.14 =
 * Removed the feature to force English on the back-end.
@@ -269,7 +272,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 ** https://wordpress.org/plugins/ee-simple-file-list-media/
 * Other minor improvements
 
-= 6.1.4 = 
+= 6.1.4 =
 * Added a bunch of new hooks you can use to help make SFL do what you need it to do:
 ** Uploaded, Added, Removed, Deleted, Edited, Listed, Loaded, Scanned
 * Improved the function that obtains the current URL of the page for back-end (AJAX) operations.
@@ -316,7 +319,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 * Bug fix where the footer language selector was not working.
 * General code improvements.
 
-= 6.0.4 = 
+= 6.0.4 =
 * Added additional shortcode attributes: style and theme
 * Bug fix where eeSFL_ScrollToIt was not defined.
 * Bug fix where the file link within the notice email was broken.
@@ -358,7 +361,7 @@ A: I got frustrated with the difficulties of getting files back and forth betwee
 * Bug fix where disallowed file types were being listed if added outside the plugin.
 * Updated documentation.
 
-= 4.4.6 = 
+= 4.4.6 =
 * Added new option settings to allow you to individually show or hide the Open, Download and/or Copy Link actions on the front-end.
 * Added a new option setting to Enable or Disable the front-side Smooth Scrolling effect.
 * Language updates
@@ -423,7 +426,7 @@ Pages using the "showfolder" shortcode attribute will show "ERROR 95" where the 
 
 = 4.2.11 =
 * Fixed a bug where the file uploader's info was not being collected.
-* Fixed a bug where the "Get Submitter Information" setting was getting cleared when saving Upload Settings. 
+* Fixed a bug where the "Get Submitter Information" setting was getting cleared when saving Upload Settings.
 * French and German language improvement.
 * Code improvements.
 
@@ -580,7 +583,7 @@ Pages using the "showfolder" shortcode attribute will show "ERROR 95" where the 
 * Fixed a bug where the default thumbnail SVG was not appearing for unaccounted-for file types
 * Minor Admin UI changes
 
-= 3.2.2 = 
+= 3.2.2 =
 
 * Fixed an issue where jQuery was not being loaded on some themes.
 * Fixed an issue where File Thumbs were being turned off upon plugin update
@@ -630,7 +633,7 @@ Pages using the "showfolder" shortcode attribute will show "ERROR 95" where the 
 = 3.0.5 =
 * Minor Bug Fix
 
-= 3.0.4 = 
+= 3.0.4 =
 
 * Added ability to hide the size or date columns
 * Improved the list loading speed for large lists
@@ -650,7 +653,7 @@ Pages using the "showfolder" shortcode attribute will show "ERROR 95" where the 
 * Improved directory creation failure fallback
 * Fixed bug where no uploader would appear in the admin area if "None" was selected for the front-side
 
-= 2.0.7 = 
+= 2.0.7 =
 
 * Added multi-file uploading option
 * Added optional front-side user input form
@@ -668,7 +671,7 @@ Pages using the "showfolder" shortcode attribute will show "ERROR 95" where the 
 * Added support for the Table Sorter plugin by Farhan Noor, so the file list may be sortable by name or date
 * Minor bug fixes
 
-= 1.0.3 = 
+= 1.0.3 =
 
 * HTML Bug Fix
 * Improved error reporting
